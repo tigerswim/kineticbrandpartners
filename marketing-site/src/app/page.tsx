@@ -134,7 +134,7 @@ export default function Home() {
                 About Kinetic Brand Partners
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                We're a team of passionate marketing professionals dedicated to helping businesses 
+                We&apos;re a team of passionate marketing professionals dedicated to helping businesses 
                 achieve their growth goals through strategic, data-driven marketing solutions.
               </p>
               <p className="text-lg text-gray-600 mb-8">
@@ -184,7 +184,7 @@ export default function Home() {
               Ready to Transform Your Marketing?
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Let's discuss how we can help you achieve your business goals
+              Let&apos;s discuss how we can help you achieve your business goals
             </p>
           </div>
           
