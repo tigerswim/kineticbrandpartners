@@ -3,17 +3,6 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
-      {/* Hero Logo at Top */}
-      <div className="w-full flex justify-center pt-12 pb-4">
-        <Image
-          src="/Kinetic Brand Partners logo.png"
-          alt="Kinetic Brand Partners Logo"
-          width={320}
-          height={128}
-          className="mx-auto"
-          priority
-        />
-      </div>
       {/* Navigation */}
       <nav className="shadow-sm border-b" style={{ background: 'var(--brand-blue)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,6 +31,17 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="home" className="relative" style={{ background: 'linear-gradient(90deg, #1976D2 0%, #1565C0 100%)', color: 'white' }}>
+        {/* Brand logo below header, above headline */}
+        <div className="w-full flex justify-center pt-12 pb-4">
+          <Image
+            src="/Kinetic Brand Partners logo.png"
+            alt="Kinetic Brand Partners Logo"
+            width={320}
+            height={128}
+            className="mx-auto"
+            priority
+          />
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -59,24 +59,6 @@ export default function Home() {
                 <button className="border-2 px-8 py-3 rounded-lg font-semibold transition-colors" style={{ borderColor: 'white', color: 'white' }}>
                   View Our Work
                 </button>
-              </div>
-            </div>
-            <div className="relative">
-              {/* Brand logo in a circle */}
-              <div className="bg-white/10 rounded-lg p-8 text-center">
-                <div className="w-64 h-64 mx-auto rounded-full overflow-hidden bg-white flex items-center justify-center shadow-lg">
-                  <Image
-                    src="/Kinetic Brand Partners logo.png"
-                    alt="Kinetic Brand Partners Logo"
-                    width={256}
-                    height={256}
-                    className="object-contain w-full h-full"
-                    priority
-                  />
-                </div>
-                <p className="text-blue-100 text-sm mt-4">
-                  Kinetic Brand Partners
-                </p>
               </div>
             </div>
           </div>
