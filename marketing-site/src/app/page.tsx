@@ -51,18 +51,20 @@ export default function Home() {
               </div>
             </div>
             <div className="relative">
-              {/* Professional headshot photo */}
+              {/* Brand logo in a circle */}
               <div className="bg-white/10 rounded-lg p-8 text-center">
-                <Image
-                  src="/Professional headshot.jpg"
-                  alt="Professional marketing consultant headshot"
-                  width={256}
-                  height={256}
-                  className="w-64 h-64 mx-auto rounded-full object-cover shadow-lg"
-                  priority
-                />
+                <div className="w-64 h-64 mx-auto rounded-full overflow-hidden bg-white flex items-center justify-center shadow-lg">
+                  <Image
+                    src="/Kinetic Brand Partners logo.png"
+                    alt="Kinetic Brand Partners Logo"
+                    width={256}
+                    height={256}
+                    className="object-contain w-full h-full"
+                    priority
+                  />
+                </div>
                 <p className="text-blue-100 text-sm mt-4">
-                  Professional Marketing Consultant
+                  Kinetic Brand Partners
                 </p>
               </div>
             </div>
