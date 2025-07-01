@@ -8,14 +8,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-        <Image
+              <Image
                 src="/Kinetic Brand Partners logo Rectangle.png"
                 alt="Kinetic Brand Partners Logo"
-                width={800}
-                height={200}
-                className="mx-auto w-full max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-auto"
-          priority
-        />
+                width={160}
+                height={40}
+                className="h-10 w-auto max-h-12"
+                priority
+              />
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -30,7 +30,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative" style={{ background: 'var(--light-gray)', color: 'var(--foreground)' }}>
+      <section id="home" className="relative" style={{ background: 'var(--light-gray)' }}>
         {/* Brand logo below header, above headline */}
         <div className="w-full flex justify-center pt-12 pb-4">
           <Image
@@ -45,10 +45,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
                 Transform Your Brand with Strategic Marketing
               </h1>
-              <p className="text-xl mb-8" style={{ color: '#E3F2FD' }}>
+              <p className="text-xl mb-8 text-gray-700">
                 We help businesses grow through data-driven marketing strategies, 
                 compelling content, and results-focused campaigns that drive real ROI.
               </p>
@@ -69,10 +69,10 @@ export default function Home() {
       <section id="services" className="py-20" style={{ background: 'var(--brand-blue)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Our Services
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Comprehensive marketing solutions tailored to your business goals
             </p>
           </div>
@@ -80,39 +80,39 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Service Card 1 */}
             <div className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Digital Marketing</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-700">
                 Comprehensive digital marketing strategies including SEO, PPC, social media, and content marketing.
               </p>
             </div>
 
             {/* Service Card 2 */}
             <div className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Brand Strategy</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-700">
                 Develop your unique brand identity, messaging, and positioning to stand out in your market.
               </p>
             </div>
 
             {/* Service Card 3 */}
             <div className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Growth Marketing</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-700">
                 Data-driven growth strategies that scale your business and maximize your marketing ROI.
               </p>
             </div>
