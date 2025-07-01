@@ -3,6 +3,17 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
+      {/* Hero Logo at Top */}
+      <div className="w-full flex justify-center pt-12 pb-4">
+        <Image
+          src="/Kinetic Brand Partners logo.png"
+          alt="Kinetic Brand Partners Logo"
+          width={320}
+          height={128}
+          className="mx-auto"
+          priority
+        />
+      </div>
       {/* Navigation */}
       <nav className="shadow-sm border-b" style={{ background: 'var(--brand-blue)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,36 +154,6 @@ export default function Home() {
                 With years of experience across various industries, we understand what it takes 
                 to build successful marketing campaigns that drive real results.
               </p>
-              <div className="flex items-center space-x-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">500+</div>
-                  <div className="text-sm text-gray-600">Happy Clients</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">$50M+</div>
-                  <div className="text-sm text-gray-600">Revenue Generated</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">95%</div>
-                  <div className="text-sm text-gray-600">Client Retention</div>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              {/* Team or office photo placeholder */}
-              <div className="flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 rounded-lg p-8 text-center shadow-lg">
-                <Image
-                  src="/Kinetic Brand Partners logo.png"
-                  alt="Kinetic Brand Partners Logo"
-                  width={320}
-                  height={128}
-                  className="mx-auto mb-4"
-                  priority
-                />
-                <p className="text-gray-600 text-sm">
-                  Our brand represents our commitment to your growth.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -198,20 +179,14 @@ export default function Home() {
                   <svg className="w-6 h-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  <span>hello@kineticbrandpartners.com</span>
-                </div>
-                <div className="flex items-center">
-                  <svg className="w-6 h-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <span>(555) 123-4567</span>
+                  <span>sales@kineticbrandpartners.com</span>
                 </div>
                 <div className="flex items-center">
                   <svg className="w-6 h-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>123 Marketing Ave, Suite 100<br />Your City, ST 12345</span>
+                  <span>Atlanta, GA</span>
                 </div>
               </div>
             </div>
@@ -255,16 +230,6 @@ export default function Home() {
       <footer className="py-8" style={{ background: 'var(--dark-gray)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-4">
-              <Image
-                src="/Kinetic Brand Partners logo.png"
-                alt="Kinetic Brand Partners Logo"
-                width={180}
-                height={36}
-                className="h-6 w-auto mx-auto filter brightness-0 invert"
-                priority
-              />
-            </div>
             <p>&copy; 2024 Kinetic Brand Partners. All rights reserved.</p>
           </div>
         </div>
