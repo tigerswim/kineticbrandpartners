@@ -9,7 +9,7 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Image
-                src="/Kinetic Brand Partners logo Rectangle white.png"
+                src="/Kinetic Brand Partners logo white.png"
                 alt="Kinetic Brand Partners Logo"
                 width={200}
                 height={40}
