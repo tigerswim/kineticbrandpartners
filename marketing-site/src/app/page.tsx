@@ -158,17 +158,17 @@ export default function Home() {
             </div>
             <div className="relative">
               {/* Team or office photo placeholder */}
-              <div className="bg-gradient-to-br from-blue-50 to-gray-100 rounded-lg p-8 text-center shadow-lg">
-                <div className="w-80 h-64 mx-auto bg-gradient-to-br from-blue-200 to-gray-300 rounded-lg flex items-center justify-center mb-4 border-2 border-dashed border-blue-300">
-                  <div className="text-center">
-                    <svg className="w-16 h-16 mx-auto text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span className="text-lg text-blue-600 font-medium">Add Team Photo</span>
-                  </div>
-                </div>
+              <div className="flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 rounded-lg p-8 text-center shadow-lg">
+                <Image
+                  src="/Kinetic Brand Partners logo.png"
+                  alt="Kinetic Brand Partners Logo"
+                  width={320}
+                  height={128}
+                  className="mx-auto mb-4"
+                  priority
+                />
                 <p className="text-gray-600 text-sm">
-                  Perfect for team photos, office space, or company culture images
+                  Our brand represents our commitment to your growth.
                 </p>
               </div>
             </div>
