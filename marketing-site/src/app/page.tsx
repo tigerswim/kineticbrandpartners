@@ -34,7 +34,7 @@ export default function Home() {
         {/* Brand logo below header, above headline */}
         <div className="w-full flex justify-center pt-12 pb-4">
           <Image
-            src="/Kinetic Brand Partners logo Rectangle.png"
+            src="/Kinetic Brand Partners logo Rectangle clear.png"
             alt="Kinetic Brand Partners Logo"
             width={800}
             height={200}
