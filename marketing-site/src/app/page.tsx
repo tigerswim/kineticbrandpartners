@@ -8,14 +8,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Image
+        <Image
                 src="/Kinetic Brand Partners logo Rectangle.png"
                 alt="Kinetic Brand Partners Logo"
                 width={800}
                 height={200}
                 className="mx-auto w-full max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-auto"
-                priority
-              />
+          priority
+        />
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
