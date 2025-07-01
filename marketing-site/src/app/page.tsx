@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="shadow-sm border-b" style={{ background: 'var(--brand-blue)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -19,10 +19,10 @@ export default function Home() {
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <a href="#home" className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                <a href="#services" className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Services</a>
-                <a href="#about" className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">About</a>
-                <a href="#contact" className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                <a href="#home" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                <a href="#services" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Services</a>
+                <a href="#about" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">About</a>
+                <a href="#contact" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Contact</a>
               </div>
             </div>
           </div>
@@ -30,22 +30,22 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <section id="home" className="relative" style={{ background: 'linear-gradient(90deg, #1976D2 0%, #1565C0 100%)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 Transform Your Brand with Strategic Marketing
               </h1>
-              <p className="text-xl mb-8 text-blue-100">
+              <p className="text-xl mb-8" style={{ color: '#E3F2FD' }}>
                 We help businesses grow through data-driven marketing strategies, 
                 compelling content, and results-focused campaigns that drive real ROI.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                <button className="px-8 py-3 rounded-lg font-semibold transition-colors" style={{ background: 'var(--accent-orange)', color: 'white' }}>
                   Get Started
                 </button>
-                <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                <button className="border-2 px-8 py-3 rounded-lg font-semibold transition-colors" style={{ borderColor: 'white', color: 'white' }}>
                   View Our Work
                 </button>
               </div>
@@ -73,7 +73,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
+      <section id="services" className="py-20" style={{ background: 'var(--light-gray)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -128,7 +128,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20" style={{ background: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -179,7 +179,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-900 text-white">
+      <section id="contact" className="py-20" style={{ background: 'var(--brand-blue)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -252,7 +252,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
+      <footer className="py-8" style={{ background: 'var(--dark-gray)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-4">

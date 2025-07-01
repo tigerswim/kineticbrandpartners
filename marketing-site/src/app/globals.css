@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-blue: #1976D2;
+  --accent-orange: #FF9800;
+  --light-blue: #E3F2FD;
+  --dark-gray: #212121;
+  --light-gray: #F5F5F5;
+  --background: var(--light-blue);
+  --foreground: var(--dark-gray);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
