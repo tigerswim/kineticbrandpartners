@@ -11,9 +11,9 @@ export default function Home() {
               <Image
                 src="/Kinetic Brand Partners logo Rectangle.png"
                 alt="Kinetic Brand Partners Logo"
-                width={200}
-                height={40}
-                className="h-8 w-auto"
+                width={800}
+                height={200}
+                className="mx-auto w-full max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-auto"
                 priority
               />
             </div>
@@ -30,15 +30,15 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative" style={{ background: 'linear-gradient(90deg, #1976D2 0%, #1565C0 100%)', color: 'white' }}>
+      <section id="home" className="relative" style={{ background: 'var(--light-gray)', color: 'var(--foreground)' }}>
         {/* Brand logo below header, above headline */}
         <div className="w-full flex justify-center pt-12 pb-4">
           <Image
             src="/Kinetic Brand Partners logo Rectangle.png"
             alt="Kinetic Brand Partners Logo"
-            width={320}
-            height={128}
-            className="mx-auto"
+            width={800}
+            height={200}
+            className="mx-auto w-full max-w-[400px] md:max-w-[600px] lg:max-w-[800px] h-auto"
             priority
           />
         </div>
@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20" style={{ background: 'var(--light-gray)' }}>
+      <section id="services" className="py-20" style={{ background: 'var(--brand-blue)', color: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
