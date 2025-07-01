@@ -9,7 +9,7 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Image
-                src="/Kinetic Brand Partners logo.png"
+                src="/Kinetic Brand Partners logo Rectangle.png"
                 alt="Kinetic Brand Partners Logo"
                 width={200}
                 height={40}
@@ -34,7 +34,7 @@ export default function Home() {
         {/* Brand logo below header, above headline */}
         <div className="w-full flex justify-center pt-12 pb-4">
           <Image
-            src="/Kinetic Brand Partners logo.png"
+            src="/Kinetic Brand Partners logo Rectangle.png"
             alt="Kinetic Brand Partners Logo"
             width={320}
             height={128}
