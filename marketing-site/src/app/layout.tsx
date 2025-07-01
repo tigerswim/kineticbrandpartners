@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/favicon.png',
+        url: '/Kinetic Brand Partners logo Favicon clear.png',
         sizes: '32x32',
         type: 'image/png',
       },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         type: 'image/png',
       }
     ],
-    apple: '/favicon.png',
+    apple: '/Kinetic Brand Partners logo Favicon clear.png',
   },
 };
 
@@ -40,10 +40,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/Kinetic Brand Partners logo Favicon clear.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/Kinetic Brand Partners logo Favicon clear.png" />
+        <link rel="apple-touch-icon" href="/Kinetic Brand Partners logo Favicon clear.png" />
+        <link rel="shortcut icon" href="/Kinetic Brand Partners logo Favicon clear.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
