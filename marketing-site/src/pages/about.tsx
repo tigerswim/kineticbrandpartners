@@ -32,8 +32,7 @@ export default function About() {
           </h1>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
             <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
-              {/* Official LinkedIn logo (blue 'in' on white) */}
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g><rect width="32" height="32" rx="4" fill="#fff"/><path d="M27 0H5C2.24 0 0 2.24 0 5v22c0 2.76 2.24 5 5 5h22c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM9.34 27H5.67V12.67h3.67V27zm-1.83-16.33c-1.18 0-2.14-.96-2.14-2.14 0-1.18.96-2.14 2.14-2.14 1.18 0 2.14.96 2.14 2.14 0 1.18-.96 2.14-2.14 2.14zM27 27h-3.67v-6.67c0-1.59-.03-3.63-2.21-3.63-2.21 0-2.55 1.73-2.55 3.52V27h-3.67V12.67h3.52v1.96h.05c.49-.93 1.68-1.91 3.46-1.91 3.7 0 4.38 2.44 4.38 5.62V27z" fill="#0A66C2"/></g></svg>
+              <Image src="/linkedin-logo.png" alt="LinkedIn Logo" width={90} height={28} style={{ display: 'inline', verticalAlign: 'middle' }} />
               LinkedIn Profile
             </span>
           </Link>
