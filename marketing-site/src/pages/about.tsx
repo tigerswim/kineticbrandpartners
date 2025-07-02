@@ -33,7 +33,6 @@ export default function About() {
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
             <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
               <Image src="/LI-Logo.png" alt="LinkedIn Logo" width={90} height={28} style={{ display: 'inline', verticalAlign: 'middle' }} />
-              LinkedIn Profile
             </span>
           </Link>
         </div>
