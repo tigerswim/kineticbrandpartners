@@ -8,20 +8,44 @@ export default function About() {
     <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
       <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-10">
-          <Image
-            src="/Professional headshot.jpg"
-            alt="Professional Headshot"
-            width={160}
-            height={160}
-            className="rounded-full mb-4"
-            priority
-          />
+          <div style={{ position: 'relative', width: 160, height: 160, marginBottom: 16 }}>
+            <Image
+              src="/Professional headshot.jpg"
+              alt="Professional Headshot"
+              width={160}
+              height={160}
+              className="rounded-full shadow-lg"
+              priority
+              style={{
+                objectFit: 'cover',
+                border: '6px solid white',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: '-20px', // head pokes out
+                zIndex: 2,
+              }}
+            />
+            <div style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: '20px',
+              background: 'white',
+              borderBottomLeftRadius: '80px',
+              borderBottomRightRadius: '80px',
+              zIndex: 1,
+            }} />
+          </div>
           <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--brand-blue)' }}>
             About Dan Hoeller
           </h1>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
             <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.785-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm15.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.838-1.563 3.036 0 3.6 2.001 3.6 4.601v5.595z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="#0A66C2"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-340.7C24.09 107.3 0 83.2 0 53.6A53.6 53.6 0 0 1 53.6 0a53.6 53.6 0 0 1 53.6 53.6c0 29.6-24.09 53.7-53.36 53.7zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.7 31.1-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-242.1 0-267.1h92.4v37.9c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z"/></svg>
               LinkedIn Profile
             </span>
           </Link>
