@@ -9,23 +9,28 @@ export default function About() {
       <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-10">
           <div className="relative mb-4" style={{ width: 160, height: 160 }}>
-            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 160, height: 160, top: '-24px' }}>
-              <Image
-                src="/Professional headshot.jpg"
-                alt="Professional Headshot"
-                width={160}
-                height={160}
-                className="rounded-full border-4 border-white shadow-xl object-cover"
-                priority
-                style={{
-                  objectFit: 'cover',
-                  aspectRatio: '1/1',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
-                }}
-              />
+            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 160, height: 160, top: '-24px', overflow: 'visible' }}>
+              <div style={{ position: 'relative', width: 160, height: 160, overflow: 'visible' }}>
+                <Image
+                  src="/Professional headshot.jpg"
+                  alt="Professional Headshot"
+                  width={160}
+                  height={160}
+                  className="rounded-full border-4 border-white shadow-xl object-cover"
+                  priority
+                  style={{
+                    objectFit: 'cover',
+                    aspectRatio: '1/1',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: '-24px',
+                    zIndex: 2,
+                  }}
+                />
+              </div>
             </div>
-            {/* White mask to create the 3D pop-out effect */}
-            <div className="absolute left-0 right-0 mx-auto bg-white z-0" style={{ width: 160, height: 32, bottom: 0, borderBottomLeftRadius: 80, borderBottomRightRadius: 80 }} />
           </div>
           <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--brand-blue)' }}>
             About Dan Hoeller
