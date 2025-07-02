@@ -9,7 +9,7 @@ export default function About() {
       <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-10">
           <div className="relative mb-2" style={{ width: 240, height: 240 }}>
-            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 240, height: 240, top: '-36px', overflow: 'visible' }}>
+            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 240, height: 240, top: '0', overflow: 'visible' }}>
               <div style={{ position: 'relative', width: 240, height: 240, overflow: 'visible' }}>
                 <Image
                   src="/Professional headshot.jpg"
@@ -25,7 +25,7 @@ export default function About() {
                     position: 'absolute',
                     left: 0,
                     right: 0,
-                    top: '-36px',
+                    top: '-24px',
                     zIndex: 2,
                   }}
                 />
@@ -33,7 +33,7 @@ export default function About() {
             </div>
           </div>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
-            <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg mt-2">
+            <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg mt-[-12px]">
               <Image src="/LI-Logo.png" alt="LinkedIn Logo" width={90} height={28} style={{ display: 'inline', verticalAlign: 'middle' }} />
             </span>
           </Link>
