@@ -174,26 +174,33 @@ export default function Home() {
             </div>
             
             <div>
-              <form className="space-y-4">
+              <form name="contact" method="POST" data-netlify="true" className="space-y-4">
+                <input type="hidden" name="form-name" value="contact" />
                 <div>
                   <input
                     type="text"
+                    name="name"
                     placeholder="Your Name"
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
+                    required
                   />
                 </div>
                 <div>
                   <input
                     type="email"
+                    name="email"
                     placeholder="Your Email"
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
+                    required
                   />
                 </div>
                 <div>
                   <textarea
+                    name="message"
                     placeholder="Your Message"
                     rows={4}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
+                    required
                   ></textarea>
                 </div>
                 <button
