@@ -8,44 +8,34 @@ export default function About() {
     <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
       <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-10">
-          <div style={{ position: 'relative', width: 160, height: 160, marginBottom: 16 }}>
-            <Image
-              src="/Professional headshot.jpg"
-              alt="Professional Headshot"
-              width={160}
-              height={160}
-              className="rounded-full shadow-lg"
-              priority
-              style={{
-                objectFit: 'cover',
-                border: '6px solid white',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: '-20px', // head pokes out
-                zIndex: 2,
-              }}
-            />
-            <div style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: '20px',
-              background: 'white',
-              borderBottomLeftRadius: '80px',
-              borderBottomRightRadius: '80px',
-              zIndex: 1,
-            }} />
+          <div className="relative mb-4" style={{ width: 160, height: 160 }}>
+            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 160, height: 160, top: '-24px' }}>
+              <Image
+                src="/Professional headshot.jpg"
+                alt="Professional Headshot"
+                width={160}
+                height={160}
+                className="rounded-full border-4 border-white shadow-xl object-cover"
+                priority
+                style={{
+                  objectFit: 'cover',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+                }}
+              />
+            </div>
+            {/* White mask to create the 3D pop-out effect */}
+            <div className="absolute left-0 right-0 mx-auto bg-white z-0" style={{ width: 160, height: 32, bottom: 0, borderBottomLeftRadius: 80, borderBottomRightRadius: 80 }} />
           </div>
           <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--brand-blue)' }}>
             About Dan Hoeller
           </h1>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
             <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="#0A66C2"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-340.7C24.09 107.3 0 83.2 0 53.6A53.6 53.6 0 0 1 53.6 0a53.6 53.6 0 0 1 53.6 53.6c0 29.6-24.09 53.7-53.36 53.7zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.7 31.1-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-242.1 0-267.1h92.4v37.9c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z"/></svg>
+              {/* Official circular LinkedIn SVG icon */}
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="#0A66C2"/>
+                <path d="M22.23 22.23h-2.46v-3.36c0-.8-.01-1.83-1.12-1.83-1.12 0-1.29.87-1.29 1.77v3.42h-2.46v-6.92h2.36v.95h.03c.33-.62 1.13-1.27 2.33-1.27 2.49 0 2.95 1.64 2.95 3.77v3.47zM11.13 14.36c-.79 0-1.43-.64-1.43-1.43 0-.79.64-1.43 1.43-1.43.79 0 1.43.64 1.43 1.43 0 .79-.64 1.43-1.43 1.43zm1.23 7.87h-2.46v-6.92h2.46v6.92z" fill="white"/>
+              </svg>
               LinkedIn Profile
             </span>
           </Link>
