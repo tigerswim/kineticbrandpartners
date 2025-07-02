@@ -8,14 +8,14 @@ export default function About() {
     <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
       <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-10">
-          <div className="relative mb-4" style={{ width: 160, height: 160 }}>
-            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 160, height: 160, top: '-24px', overflow: 'visible' }}>
-              <div style={{ position: 'relative', width: 160, height: 160, overflow: 'visible' }}>
+          <div className="relative mb-2" style={{ width: 240, height: 240 }}>
+            <div className="absolute left-0 right-0 mx-auto z-10" style={{ width: 240, height: 240, top: '-36px', overflow: 'visible' }}>
+              <div style={{ position: 'relative', width: 240, height: 240, overflow: 'visible' }}>
                 <Image
                   src="/Professional headshot.jpg"
                   alt="Professional Headshot"
-                  width={160}
-                  height={160}
+                  width={240}
+                  height={240}
                   className="rounded-full border-4 border-white shadow-xl object-cover"
                   priority
                   style={{
@@ -25,18 +25,15 @@ export default function About() {
                     position: 'absolute',
                     left: 0,
                     right: 0,
-                    top: '-24px',
+                    top: '-36px',
                     zIndex: 2,
                   }}
                 />
               </div>
             </div>
           </div>
-          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--brand-blue)' }}>
-            About Dan Hoeller
-          </h1>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
-            <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
+            <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg mt-2">
               <Image src="/LI-Logo.png" alt="LinkedIn Logo" width={90} height={28} style={{ display: 'inline', verticalAlign: 'middle' }} />
             </span>
           </Link>
