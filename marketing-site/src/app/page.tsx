@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
               <div className="ml-10 flex items-baseline space-x-4">
                 <a href="#home" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Home</a>
                 <a href="#services" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Services</a>
-                <a href="/about" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">About</a>
+                <Link href="/about" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">About</Link>
                 <a href="#contact" className="text-white hover:text-[var(--accent-orange)] px-3 py-2 rounded-md text-sm font-medium">Contact</a>
               </div>
             </div>
