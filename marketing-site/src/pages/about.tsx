@@ -19,6 +19,7 @@ export default function About() {
                 priority
                 style={{
                   objectFit: 'cover',
+                  aspectRatio: '1/1',
                   boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
                 }}
               />
@@ -31,11 +32,8 @@ export default function About() {
           </h1>
           <Link href="https://www.linkedin.com/in/danhoeller/" target="_blank" rel="noopener noreferrer">
             <span className="inline-flex items-center gap-2 text-blue-700 hover:underline text-lg">
-              {/* Official circular LinkedIn SVG icon */}
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="16" cy="16" r="16" fill="#0A66C2"/>
-                <path d="M22.23 22.23h-2.46v-3.36c0-.8-.01-1.83-1.12-1.83-1.12 0-1.29.87-1.29 1.77v3.42h-2.46v-6.92h2.36v.95h.03c.33-.62 1.13-1.27 2.33-1.27 2.49 0 2.95 1.64 2.95 3.77v3.47zM11.13 14.36c-.79 0-1.43-.64-1.43-1.43 0-.79.64-1.43 1.43-1.43.79 0 1.43.64 1.43 1.43 0 .79-.64 1.43-1.43 1.43zm1.23 7.87h-2.46v-6.92h2.46v6.92z" fill="white"/>
-              </svg>
+              {/* Official LinkedIn logo (blue 'in' on white) */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g><rect width="32" height="32" rx="4" fill="#fff"/><path d="M27 0H5C2.24 0 0 2.24 0 5v22c0 2.76 2.24 5 5 5h22c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM9.34 27H5.67V12.67h3.67V27zm-1.83-16.33c-1.18 0-2.14-.96-2.14-2.14 0-1.18.96-2.14 2.14-2.14 1.18 0 2.14.96 2.14 2.14 0 1.18-.96 2.14-2.14 2.14zM27 27h-3.67v-6.67c0-1.59-.03-3.63-2.21-3.63-2.21 0-2.55 1.73-2.55 3.52V27h-3.67V12.67h3.52v1.96h.05c.49-.93 1.68-1.91 3.46-1.91 3.7 0 4.38 2.44 4.38 5.62V27z" fill="#0A66C2"/></g></svg>
               LinkedIn Profile
             </span>
           </Link>
