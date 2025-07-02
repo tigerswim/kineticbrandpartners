@@ -42,7 +42,7 @@ export default function About() {
           <h2 className="text-2xl font-semibold mb-3">Bio</h2>
           <p className="text-lg text-gray-700 mb-2">
             {/* Replace this with your actual LinkedIn bio content */}
-            Dan Hoeller is a seasoned marketing consultant with a passion for helping businesses grow through strategic branding, digital marketing, and data-driven solutions. With a proven track record in both B2B and B2C environments, Dan brings a unique blend of creativity and analytical thinking to every project. Connect with Dan on LinkedIn to learn more about his professional journey and expertise.
+            Dan Hoeller is a seasoned marketing professional with a passion for helping businesses grow through strategic branding, digital marketing, and data-driven solutions. With a proven track record in both B2B and B2C environments, Dan brings a unique blend of creativity and analytical thinking to every project. Connect with Dan on LinkedIn to learn more about his professional journey and expertise.
           </p>
         </div>
         <div className="mb-10">
