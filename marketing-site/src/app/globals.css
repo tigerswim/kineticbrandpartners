@@ -12,6 +12,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --executive-navy: #1b365d;
+  --growth-green:   #2e7d32;
+  --professional-gray: #424242;
+  --accent-gold:    #ffa726;
+  --font-primary: 'Inter', Arial, sans-serif;
+  --font-secondary: 'Merriweather', Georgia, serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,4 +31,226 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-secondary);
+  color: var(--professional-gray);
+  line-height: 1.6;
+  background: #fff;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.site-header {
+  background: var(--executive-navy);
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.logo {
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--accent-gold);
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+
+.hero h1 {
+  font-family: var(--font-primary);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--executive-navy);
+  margin-bottom: 1rem;
+}
+
+.subhead {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  font-size: 1.05rem;
+}
+
+.cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--growth-green);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--growth-green);
+  border: 2px solid var(--growth-green);
+}
+
+.btn-accent {
+  background: var(--accent-gold);
+  color: #fff;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.metric strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--executive-navy);
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
+
+.values article {
+  background: #f7f9fc;
+  padding: 1.5rem;
+  border-left: 5px solid var(--executive-navy);
+}
+
+.spotlight {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2.5rem 0;
+}
+
+.trust img {
+  height: 45px;
+  object-fit: contain;
+  filter: grayscale(100%);
+}
+
+.site-footer {
+  background: var(--executive-navy);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 3rem;
+}
+
+.pillars,
+.metrics-list,
+.resume-list {
+  list-style: none;
+  margin: 1rem 0 2rem;
+  padding-left: 1rem;
+}
+
+.timeline {
+  list-style: none;
+  border-left: 3px solid var(--executive-navy);
+  margin: 1rem 0 2rem;
+  padding-left: 1.5rem;
+}
+
+.timeline li {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 0.35rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--accent-gold);
+  border-radius: 50%;
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+
+.case-table th,
+.case-table td {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.case-table th {
+  background: #f7f9fc;
+}
+
+.hero-quote {
+  font-style: italic;
+  font-size: 1.25rem;
+  margin: 2rem 0;
+  color: var(--executive-navy);
+}
+
+@media (max-width: 600px) {
+  .nav-links { flex-direction: column; gap: 0.75rem; }
+  .cta-group { flex-direction: column; }
+  .trust img { height: 35px; }
 }
