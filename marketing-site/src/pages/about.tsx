@@ -66,18 +66,21 @@ export default function About() {
         <div className="metric"><strong>290 M</strong><span>Olympic Impressions</span></div>
       </section>
       <section className="values container">
-        <article>
-          <h3>Strategic Vision &amp; P&amp;L Ownership</h3>
-          <p>Brand architecture, pricing, market expansion, and growth acceleration.</p>
-        </article>
-        <article>
-          <h3>Execution &amp; Digital Transformation</h3>
-          <p>Omnichannel campaigns, martech leadership, and data-driven optimization.</p>
-        </article>
-        <article>
-          <h3>Servant Leadership &amp; Culture Building</h3>
-          <p>Player-coach style that develops high-performing, mission-driven teams.</p>
-        </article>
+        <h2>Career Highlights</h2>
+        <ul>
+          <li>
+            <strong>Strategic Vision &amp; P&amp;L Ownership</strong>
+            <br />Brand architecture, pricing, market expansion, and growth acceleration.
+          </li>
+          <li>
+            <strong>Execution &amp; Digital Transformation</strong>
+            <br />Omnichannel campaigns, martech leadership, and data-driven optimization.
+          </li>
+          <li>
+            <strong>Servant Leadership &amp; Culture Building</strong>
+            <br />Player-coach style that develops high-performing, mission-driven teams.
+          </li>
+        </ul>
       </section>
       <section className="spotlight container">
         <h2>#FlipTheTurf Campaign</h2>
