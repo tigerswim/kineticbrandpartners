@@ -35,7 +35,12 @@ export default function About() {
       </section>
       <section className="about-main container">
         <h1>Mission Statement</h1>
-        <p>Marketing sits at the intersection of data, empathy, and the courage to take smart risks.</p>
+        <p>I believe the best marketing happens when:</p>
+        <ul>
+          <li>Strategy meets empathy</li>
+          <li>Data tells a story that actually matters</li>
+          <li>Taking smart risks leads to moments that stick with people long after they've scrolled past</li>
+        </ul>
 
         <h2>Leadership Pillars</h2>
         <ul className="pillars">
