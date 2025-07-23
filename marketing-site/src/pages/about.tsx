@@ -36,7 +36,7 @@ export default function About() {
       <section className="about-main container">
         <h1>Mission Statement</h1>
         <p>I believe the best marketing happens when:</p>
-        <ul>
+        <ul className="mission-points">
           <li>Strategy meets empathy</li>
           <li>Data tells a story that actually matters</li>
           <li>Taking smart risks leads to moments that stick with people long after they've scrolled past</li>
