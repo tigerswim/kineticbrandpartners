@@ -5,6 +5,7 @@ import sql from '../../../../lib/db';
 export async function GET() {
   try {
     if (!sql) {
+      console.error('Database connection not available - NETLIFY_DATABASE_URL may not be set');
       return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
     
@@ -23,6 +24,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     if (!sql) {
+      console.error('Database connection not available - NETLIFY_DATABASE_URL may not be set');
       return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
     
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     if (!sql) {
+      console.error('Database connection not available - NETLIFY_DATABASE_URL may not be set');
       return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
     
@@ -78,6 +81,7 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     if (!sql) {
+      console.error('Database connection not available - NETLIFY_DATABASE_URL may not be set');
       return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
     
