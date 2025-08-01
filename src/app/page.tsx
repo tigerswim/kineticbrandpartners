@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Plus, User, Calendar, MessageCircle, Building2, ExternalLink, Edit2, Trash2, X } from 'lucide-react';
 
 // Types
@@ -73,11 +73,6 @@ const JobTracker = () => {
     dateAdded: new Date().toISOString().split('T')[0]
   });
 
-  // Memoize form handlers to prevent unnecessary re-renders
-  const handleJobFormChange = React.useCallback((field: string, value: string) => {
-    setJobForm(prev => ({ ...prev, [field]: value }));
-  }, []);
-
   // Contact form state
   const [contactForm, setContactForm] = useState({
     name: '',
@@ -91,11 +86,6 @@ const JobTracker = () => {
     interactions: [] as Interaction[]
   });
 
-  // Memoize contact form handlers
-  const handleContactFormChange = React.useCallback((field: string, value: string) => {
-    setContactForm(prev => ({ ...prev, [field]: value }));
-  }, []);
-
   // Interaction form state
   const [interactionForm, setInteractionForm] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -104,13 +94,21 @@ const JobTracker = () => {
     notes: ''
   });
 
-  // Memoize interaction form handlers
-  const handleInteractionFormChange = React.useCallback((field: string, value: string) => {
+  // Memoized form handlers to prevent re-renders
+  const handleJobFormChange = useCallback((field: string, value: string) => {
+    setJobForm(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleContactFormChange = useCallback((field: string, value: string) => {
+    setContactForm(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleInteractionFormChange = useCallback((field: string, value: string) => {
     setInteractionForm(prev => ({ ...prev, [field]: value }));
   }, []);
 
   // API helper functions
-  const apiCall = async (url: string, options: RequestInit = {}) => {
+  const apiCall = useCallback(async (url: string, options: RequestInit = {}) => {
     try {
       const response = await fetch(url, {
         headers: {
@@ -129,7 +127,7 @@ const JobTracker = () => {
       console.error('API call failed:', error);
       throw error;
     }
-  };
+  }, []);
 
   // Load data from API on component mount
   useEffect(() => {
@@ -162,10 +160,10 @@ const JobTracker = () => {
     };
 
     loadData();
-  }, []);
+  }, [apiCall]);
 
   // Add/Edit Job
-  const handleJobSubmit = async (e: { preventDefault: () => void }) => {
+  const handleJobSubmit = useCallback(async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       if (editingJob) {
@@ -209,10 +207,10 @@ const JobTracker = () => {
       setError('Failed to save job. Please try again.');
       // Don't reset form or close modal on error
     }
-  };
+  }, [editingJob, jobForm, jobs, apiCall]);
 
   // Add/Edit Contact
-  const handleContactSubmit = async (e: { preventDefault: () => void }) => {
+  const handleContactSubmit = useCallback(async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       if (editingContact) {
@@ -256,10 +254,10 @@ const JobTracker = () => {
       setError('Failed to save contact. Please try again.');
       // Don't reset form or close modal on error
     }
-  };
+  }, [editingContact, contactForm, contacts, apiCall]);
 
   // Add Interaction
-  const handleInteractionSubmit = async (e: { preventDefault: () => void }) => {
+  const handleInteractionSubmit = useCallback(async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!selectedContact) return;
     
@@ -288,10 +286,10 @@ const JobTracker = () => {
       setError('Failed to save interaction. Please try again.');
       // Don't reset form or close modal on error
     }
-  };
+  }, [selectedContact, interactionForm, apiCall]);
 
   // Delete functions
-  const deleteJob = async (id: number) => {
+  const deleteJob = useCallback(async (id: number) => {
     try {
       await apiCall(`/api/jobs?id=${id}`, { method: 'DELETE' });
       setJobs(jobs.filter(job => job.id !== id));
@@ -299,9 +297,9 @@ const JobTracker = () => {
       console.error('Error deleting job:', error);
       setError('Failed to delete job. Please try again.');
     }
-  };
+  }, [jobs, apiCall]);
 
-  const deleteContact = async (id: number) => {
+  const deleteContact = useCallback(async (id: number) => {
     try {
       await apiCall(`/api/contacts?id=${id}`, { method: 'DELETE' });
       setContacts(contacts.filter(contact => contact.id !== id));
@@ -309,10 +307,10 @@ const JobTracker = () => {
       console.error('Error deleting contact:', error);
       setError('Failed to delete contact. Please try again.');
     }
-  };
+  }, [contacts, apiCall]);
 
   // Edit functions
-  const editJob = (job: Job) => {
+  const editJob = useCallback((job: Job) => {
     setJobForm({
       company: job.company,
       position: job.position,
@@ -325,9 +323,9 @@ const JobTracker = () => {
     });
     setEditingJob(job);
     setShowJobModal(true);
-  };
+  }, []);
 
-  const editContact = (contact: Contact) => {
+  const editContact = useCallback((contact: Contact) => {
     setContactForm({
       name: contact.name,
       company: contact.company || '',
@@ -341,10 +339,10 @@ const JobTracker = () => {
     });
     setEditingContact(contact);
     setShowContactModal(true);
-  };
+  }, []);
 
   // Move job between columns
-  const moveJob = async (jobId: number, newStatus: string) => {
+  const moveJob = useCallback(async (jobId: number, newStatus: string) => {
     try {
       const job = jobs.find(j => j.id === jobId);
       if (!job) return;
@@ -369,17 +367,17 @@ const JobTracker = () => {
       console.error('Error moving job:', error);
       setError('Failed to move job. Please try again.');
     }
-  };
+  }, [jobs, apiCall]);
 
   // Get contacts for a specific job
-  const getJobContacts = (jobId: number) => {
+  const getJobContacts = useCallback((jobId: number) => {
     const job = jobs.find(j => j.id === jobId);
     if (!job) return [];
     return contacts.filter(contact => contact.associated_job === job.company);
-  };
+  }, [jobs, contacts]);
 
   // Modal component
-  const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
+  const Modal = useCallback(({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
     if (!isOpen) return null;
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -394,7 +392,7 @@ const JobTracker = () => {
         </div>
       </div>
     );
-  };
+  }, []);
 
   if (loading) {
     return (
