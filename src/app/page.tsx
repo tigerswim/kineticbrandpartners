@@ -11,9 +11,9 @@ interface Job {
   status: string;
   salary: string;
   location: string;
-  jobUrl: string;
+  job_url: string;
   notes: string;
-  dateAdded: string;
+  date_added: string;
 }
 
 interface Interaction {
@@ -32,7 +32,7 @@ interface Contact {
   email: string;
   phone: string;
   linkedin: string;
-  associatedJob: string;
+  associated_job: string;
   notes: string;
   interactions: Interaction[];
 }
@@ -48,6 +48,8 @@ const JobTracker = () => {
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Kanban columns
   const columns = [
@@ -92,124 +94,297 @@ const JobTracker = () => {
     notes: ''
   });
 
-  // Load data from localStorage on component mount
+  // API helper functions
+  const apiCall = async (url: string, options: RequestInit = {}) => {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('API call failed:', error);
+      throw error;
+    }
+  };
+
+  // Load data from API on component mount
   useEffect(() => {
-    const savedJobs = localStorage.getItem('jobTracker-jobs');
-    const savedContacts = localStorage.getItem('jobTracker-contacts');
-    
-    if (savedJobs) {
-      setJobs(JSON.parse(savedJobs));
-    }
-    if (savedContacts) {
-      setContacts(JSON.parse(savedContacts));
-    }
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Initialize database if needed
+        try {
+          await apiCall('/api/init-db', { method: 'POST' });
+        } catch (error) {
+          // Database might already be initialized, continue
+        }
+        
+        // Load jobs and contacts
+        const [jobsData, contactsData] = await Promise.all([
+          apiCall('/api/jobs'),
+          apiCall('/api/contacts')
+        ]);
+        
+        setJobs(jobsData);
+        setContacts(contactsData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setError('Failed to load data. Please refresh the page.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  // Save data to localStorage whenever jobs or contacts change
-  useEffect(() => {
-    localStorage.setItem('jobTracker-jobs', JSON.stringify(jobs));
-  }, [jobs]);
-
-  useEffect(() => {
-    localStorage.setItem('jobTracker-contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
   // Add/Edit Job
-  const handleJobSubmit = (e: { preventDefault: () => void }) => {
+  const handleJobSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (editingJob) {
-      setJobs(jobs.map(job => job.id === editingJob.id ? { ...jobForm, id: editingJob.id } as Job : job));
-      setEditingJob(null);
-    } else {
-      const newJob: Job = { ...jobForm, id: Date.now() } as Job;
-      setJobs([...jobs, newJob]);
+    try {
+      if (editingJob) {
+        const updatedJob = await apiCall('/api/jobs', {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: editingJob.id,
+            company: jobForm.company,
+            position: jobForm.position,
+            status: jobForm.status,
+            salary: jobForm.salary,
+            location: jobForm.location,
+            jobUrl: jobForm.jobUrl,
+            notes: jobForm.notes,
+            dateAdded: jobForm.dateAdded
+          })
+        });
+        setJobs(jobs.map(job => job.id === editingJob.id ? updatedJob : job));
+        setEditingJob(null);
+      } else {
+        const newJob = await apiCall('/api/jobs', {
+          method: 'POST',
+          body: JSON.stringify({
+            company: jobForm.company,
+            position: jobForm.position,
+            status: jobForm.status,
+            salary: jobForm.salary,
+            location: jobForm.location,
+            jobUrl: jobForm.jobUrl,
+            notes: jobForm.notes,
+            dateAdded: jobForm.dateAdded
+          })
+        });
+        setJobs([newJob, ...jobs]);
+      }
+      setJobForm({ company: '', position: '', status: 'interested', salary: '', location: '', jobUrl: '', notes: '', dateAdded: new Date().toISOString().split('T')[0] });
+      setShowJobModal(false);
+    } catch (error) {
+      console.error('Error saving job:', error);
+      setError('Failed to save job. Please try again.');
     }
-    setJobForm({ company: '', position: '', status: 'interested', salary: '', location: '', jobUrl: '', notes: '', dateAdded: new Date().toISOString().split('T')[0] });
-    setShowJobModal(false);
   };
 
   // Add/Edit Contact
-  const handleContactSubmit = (e: { preventDefault: () => void }) => {
+  const handleContactSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (editingContact) {
-      setContacts(contacts.map(contact => contact.id === editingContact.id ? { ...contactForm, id: editingContact.id } as Contact : contact));
-      setEditingContact(null);
-    } else {
-      const newContact: Contact = { ...contactForm, id: Date.now(), interactions: [] } as Contact;
-      setContacts([...contacts, newContact]);
+    try {
+      if (editingContact) {
+        const updatedContact = await apiCall('/api/contacts', {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: editingContact.id,
+            name: contactForm.name,
+            company: contactForm.company,
+            position: contactForm.position,
+            email: contactForm.email,
+            phone: contactForm.phone,
+            linkedin: contactForm.linkedin,
+            associatedJob: contactForm.associatedJob,
+            notes: contactForm.notes
+          })
+        });
+        setContacts(contacts.map(contact => contact.id === editingContact.id ? updatedContact : contact));
+        setEditingContact(null);
+      } else {
+        const newContact = await apiCall('/api/contacts', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: contactForm.name,
+            company: contactForm.company,
+            position: contactForm.position,
+            email: contactForm.email,
+            phone: contactForm.phone,
+            linkedin: contactForm.linkedin,
+            associatedJob: contactForm.associatedJob,
+            notes: contactForm.notes
+          })
+        });
+        setContacts([newContact, ...contacts]);
+      }
+      setContactForm({ name: '', company: '', position: '', email: '', phone: '', linkedin: '', associatedJob: '', notes: '', interactions: [] });
+      setShowContactModal(false);
+    } catch (error) {
+      console.error('Error saving contact:', error);
+      setError('Failed to save contact. Please try again.');
     }
-    setContactForm({ name: '', company: '', position: '', email: '', phone: '', linkedin: '', associatedJob: '', notes: '', interactions: [] });
-    setShowContactModal(false);
   };
 
   // Add Interaction
-  const handleInteractionSubmit = (e: { preventDefault: () => void }) => {
+  const handleInteractionSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!selectedContact) return;
     
-    const newInteraction: Interaction = { ...interactionForm, id: Date.now() } as Interaction;
-    setContacts(contacts.map(contact => 
-      contact.id === selectedContact.id 
-        ? { ...contact, interactions: [...contact.interactions, newInteraction] }
-        : contact
-    ));
-    setInteractionForm({ date: new Date().toISOString().split('T')[0], type: 'email', summary: '', notes: '' });
-    setShowInteractionModal(false);
-    setSelectedContact(null);
+    try {
+      const newInteraction = await apiCall('/api/interactions', {
+        method: 'POST',
+        body: JSON.stringify({
+          contactId: selectedContact.id,
+          date: interactionForm.date,
+          type: interactionForm.type,
+          summary: interactionForm.summary,
+          notes: interactionForm.notes
+        })
+      });
+      
+      // Reload contacts to get the updated data with interactions
+      const updatedContacts = await apiCall('/api/contacts');
+      setContacts(updatedContacts);
+      
+      setInteractionForm({ date: new Date().toISOString().split('T')[0], type: 'email', summary: '', notes: '' });
+      setShowInteractionModal(false);
+      setSelectedContact(null);
+    } catch (error) {
+      console.error('Error saving interaction:', error);
+      setError('Failed to save interaction. Please try again.');
+    }
   };
 
   // Delete functions
-  const deleteJob = (id: number) => {
-    setJobs(jobs.filter(job => job.id !== id));
+  const deleteJob = async (id: number) => {
+    try {
+      await apiCall(`/api/jobs?id=${id}`, { method: 'DELETE' });
+      setJobs(jobs.filter(job => job.id !== id));
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      setError('Failed to delete job. Please try again.');
+    }
   };
 
-  const deleteContact = (id: number) => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+  const deleteContact = async (id: number) => {
+    try {
+      await apiCall(`/api/contacts?id=${id}`, { method: 'DELETE' });
+      setContacts(contacts.filter(contact => contact.id !== id));
+    } catch (error) {
+      console.error('Error deleting contact:', error);
+      setError('Failed to delete contact. Please try again.');
+    }
   };
 
   // Edit functions
   const editJob = (job: Job) => {
-    setJobForm(job);
+    setJobForm({
+      company: job.company,
+      position: job.position,
+      status: job.status,
+      salary: job.salary || '',
+      location: job.location || '',
+      jobUrl: job.job_url || '',
+      notes: job.notes || '',
+      dateAdded: job.date_added
+    });
     setEditingJob(job);
     setShowJobModal(true);
   };
 
   const editContact = (contact: Contact) => {
-    setContactForm(contact);
+    setContactForm({
+      name: contact.name,
+      company: contact.company || '',
+      position: contact.position || '',
+      email: contact.email || '',
+      phone: contact.phone || '',
+      linkedin: contact.linkedin || '',
+      associatedJob: contact.associated_job || '',
+      notes: contact.notes || '',
+      interactions: contact.interactions || []
+    });
     setEditingContact(contact);
     setShowContactModal(true);
   };
 
-  // Drag and drop for kanban
-  const moveJob = (jobId: number, newStatus: string) => {
-    setJobs(jobs.map(job => job.id === jobId ? { ...job, status: newStatus } : job));
+  // Move job between columns
+  const moveJob = async (jobId: number, newStatus: string) => {
+    try {
+      const job = jobs.find(j => j.id === jobId);
+      if (!job) return;
+      
+      const updatedJob = await apiCall('/api/jobs', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: job.id,
+          company: job.company,
+          position: job.position,
+          status: newStatus,
+          salary: job.salary,
+          location: job.location,
+          jobUrl: job.job_url,
+          notes: job.notes,
+          dateAdded: job.date_added
+        })
+      });
+      
+      setJobs(jobs.map(j => j.id === jobId ? updatedJob : j));
+    } catch (error) {
+      console.error('Error moving job:', error);
+      setError('Failed to move job. Please try again.');
+    }
   };
 
   // Get contacts for a specific job
   const getJobContacts = (jobId: number) => {
-    return contacts.filter(contact => contact.associatedJob === jobId.toString());
+    const job = jobs.find(j => j.id === jobId);
+    if (!job) return [];
+    return contacts.filter(contact => contact.associated_job === job.company);
   };
 
-  // Modal Component
+  // Modal component
   const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
     if (!isOpen) return null;
-    
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="flex justify-between items-center p-6 border-b">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">{title}</h2>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
-          <div className="p-6">
-            {children}
-          </div>
+          {children}
         </div>
       </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading job tracker...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -218,19 +393,19 @@ const JobTracker = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">Job Tracker</h1>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2">
               <button
                 onClick={() => setShowJobModal(true)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
               >
-                <Plus size={20} />
+                <Plus size={16} />
                 <span>Add Job</span>
               </button>
               <button
                 onClick={() => setShowContactModal(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
               >
-                <User size={20} />
+                <User size={16} />
                 <span>Add Contact</span>
               </button>
             </div>
@@ -238,475 +413,468 @@ const JobTracker = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Error Message */}
+      {error && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-800">{error}</p>
+            <button 
+              onClick={() => setError(null)}
+              className="text-red-600 hover:text-red-800 text-sm mt-2"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => setActiveTab('kanban')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'kanban'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Kanban Board
-            </button>
-            <button
-              onClick={() => setActiveTab('contacts')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'contacts'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Contacts
-            </button>
-          </nav>
+        <div className="flex space-x-1 bg-white rounded-lg p-1 shadow-sm">
+          <button
+            onClick={() => setActiveTab('kanban')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+              activeTab === 'kanban' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Kanban Board
+          </button>
+          <button
+            onClick={() => setActiveTab('contacts')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+              activeTab === 'contacts' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Contacts
+          </button>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {activeTab === 'kanban' && (
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        {activeTab === 'kanban' ? (
+          // Kanban Board
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             {columns.map(column => (
-              <div key={column.id} className={`${column.color} rounded-lg p-4 min-h-96`}>
+              <div key={column.id} className={`${column.color} rounded-lg p-4 border-2`}>
                 <h3 className="font-semibold text-gray-800 mb-4">{column.title}</h3>
                 <div className="space-y-3">
-                  {jobs.filter(job => job.status === column.id).map(job => (
-                    <div key={job.id} className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-gray-900">{job.position}</h4>
-                        <div className="flex space-x-1">
-                          <button
-                            onClick={() => editJob(job)}
-                            className="text-gray-400 hover:text-blue-600"
-                          >
-                            <Edit2 size={16} />
-                          </button>
-                          <button
-                            onClick={() => deleteJob(job.id)}
-                            className="text-gray-400 hover:text-red-600"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                  {jobs
+                    .filter(job => job.status === column.id)
+                    .map(job => (
+                      <div key={job.id} className="bg-white rounded-lg p-3 shadow-sm border">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-medium text-sm text-gray-900">{job.position}</h4>
+                          <div className="flex space-x-1">
+                            <button
+                              onClick={() => editJob(job)}
+                              className="text-gray-400 hover:text-gray-600"
+                            >
+                              <Edit2 size={14} />
+                            </button>
+                            <button
+                              onClick={() => deleteJob(job.id)}
+                              className="text-gray-400 hover:text-red-600"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm text-gray-600 mb-2">
-                        <Building2 size={16} />
-                        <span>{job.company}</span>
-                      </div>
-                      {job.location && (
-                        <p className="text-sm text-gray-600 mb-2">{job.location}</p>
-                      )}
-                      {job.salary && (
-                        <p className="text-sm text-green-600 font-medium mb-2">{job.salary}</p>
-                      )}
-                      
-                      {/* Associated Contacts */}
-                      {getJobContacts(job.id).length > 0 && (
-                        <div className="mt-3 pt-3 border-t">
-                          <p className="text-xs text-gray-500 mb-2">Contacts:</p>
-                          {getJobContacts(job.id).map(contact => (
-                            <div key={contact.id} className="text-sm text-blue-600">
-                              {contact.name} - {contact.position}
+                        <p className="text-xs text-gray-600 mb-2">{job.company}</p>
+                        {job.location && (
+                          <p className="text-xs text-gray-500 mb-2">{job.location}</p>
+                        )}
+                        {job.salary && (
+                          <p className="text-xs text-green-600 font-medium">{job.salary}</p>
+                        )}
+                        {job.job_url && (
+                          <a
+                            href={job.job_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center"
+                          >
+                            <ExternalLink size={12} className="mr-1" />
+                            View Job
+                          </a>
+                        )}
+                        <div className="mt-2 pt-2 border-t border-gray-100">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-gray-500">
+                              {new Date(job.date_added).toLocaleDateString()}
+                            </span>
+                            <div className="flex space-x-1">
+                              {columns.map(col => (
+                                <button
+                                  key={col.id}
+                                  onClick={() => moveJob(job.id, col.id)}
+                                  className={`w-2 h-2 rounded-full ${
+                                    job.status === col.id ? 'bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'
+                                  }`}
+                                  title={col.title}
+                                />
+                              ))}
                             </div>
-                          ))}
+                          </div>
                         </div>
-                      )}
-
-                      {/* Status Change Buttons */}
-                      <div className="mt-3 flex flex-wrap gap-1">
-                        {columns.filter(col => col.id !== job.status).map(col => (
-                          <button
-                            key={col.id}
-                            onClick={() => moveJob(job.id, col.id)}
-                            className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
-                          >
-                            Move to {col.title}
-                          </button>
-                        ))}
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             ))}
           </div>
-        )}
-
-        {activeTab === 'contacts' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {contacts.map(contact => (
-              <div key={contact.id} className="bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{contact.name}</h3>
-                    <p className="text-sm text-gray-600">{contact.position}</p>
-                    <p className="text-sm text-gray-500">{contact.company}</p>
-                  </div>
-                  <div className="flex space-x-1">
-                    <button
-                      onClick={() => editContact(contact)}
-                      className="text-gray-400 hover:text-blue-600"
-                    >
-                      <Edit2 size={16} />
-                    </button>
-                    <button
-                      onClick={() => deleteContact(contact.id)}
-                      className="text-gray-400 hover:text-red-600"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Contact Info */}
-                <div className="space-y-2 mb-4">
-                  {contact.email && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <span>📧</span>
-                      <a href={`mailto:${contact.email}`} className="hover:text-blue-600">{contact.email}</a>
+        ) : (
+          // Contacts List
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Contacts</h2>
+              <div className="space-y-4">
+                {contacts.map(contact => (
+                  <div key={contact.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h3 className="font-medium text-gray-900">{contact.name}</h3>
+                        <p className="text-sm text-gray-600">{contact.position} at {contact.company}</p>
+                        {contact.email && (
+                          <p className="text-sm text-gray-500">{contact.email}</p>
+                        )}
+                        {contact.phone && (
+                          <p className="text-sm text-gray-500">{contact.phone}</p>
+                        )}
+                        {contact.linkedin && (
+                          <a
+                            href={contact.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:text-blue-800"
+                          >
+                            LinkedIn Profile
+                          </a>
+                        )}
+                        {contact.notes && (
+                          <p className="text-sm text-gray-600 mt-2">{contact.notes}</p>
+                        )}
+                      </div>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => {
+                            setSelectedContact(contact);
+                            setShowInteractionModal(true);
+                          }}
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          Add Interaction
+                        </button>
+                        <button
+                          onClick={() => editContact(contact)}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <Edit2 size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteContact(contact.id)}
+                          className="text-gray-400 hover:text-red-600"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
-                  )}
-                  {contact.phone && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <span>📱</span>
-                      <span>{contact.phone}</span>
-                    </div>
-                  )}
-                  {contact.linkedin && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <span>💼</span>
-                      <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 flex items-center space-x-1">
-                        <span>LinkedIn</span>
-                        <ExternalLink size={12} />
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                {/* Associated Job */}
-                {contact.associatedJob && (
-                  <div className="mb-4 p-2 bg-blue-50 rounded">
-                    <p className="text-sm text-blue-800">
-                      Associated Job: {jobs.find(job => job.id.toString() === contact.associatedJob)?.position} at {jobs.find(job => job.id.toString() === contact.associatedJob)?.company}
-                    </p>
-                  </div>
-                )}
-
-                {/* Interactions */}
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium text-gray-900">Interactions</h4>
-                    <button
-                      onClick={() => {
-                        setSelectedContact(contact);
-                        setShowInteractionModal(true);
-                      }}
-                      className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
-                    >
-                      <Plus size={16} />
-                      <span>Add</span>
-                    </button>
-                  </div>
-                  {contact.interactions && contact.interactions.length > 0 ? (
-                    <div className="space-y-2">
-                      {contact.interactions.slice(0, 2).map(interaction => (
-                        <div key={interaction.id} className="text-sm bg-gray-50 p-2 rounded">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="font-medium capitalize">{interaction.type}</span>
-                            <span className="text-gray-500">{new Date(interaction.date).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-gray-700">{interaction.summary}</p>
+                    
+                    {/* Interactions */}
+                    {contact.interactions && contact.interactions.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <h4 className="text-sm font-medium text-gray-900 mb-2">Interactions</h4>
+                        <div className="space-y-2">
+                          {contact.interactions.map(interaction => (
+                            <div key={interaction.id} className="bg-gray-50 rounded p-2">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="text-xs font-medium text-gray-700">
+                                    {new Date(interaction.date).toLocaleDateString()} - {interaction.type}
+                                  </p>
+                                  <p className="text-xs text-gray-600">{interaction.summary}</p>
+                                  {interaction.notes && (
+                                    <p className="text-xs text-gray-500 mt-1">{interaction.notes}</p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                      {contact.interactions.length > 2 && (
-                        <p className="text-sm text-gray-500">+{contact.interactions.length - 2} more interactions</p>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-gray-500">No interactions yet</p>
-                  )}
-                </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         )}
       </div>
 
       {/* Job Modal */}
-      <Modal
-        isOpen={showJobModal}
-        onClose={() => {
-          setShowJobModal(false);
-          setEditingJob(null);
-          setJobForm({ company: '', position: '', status: 'interested', salary: '', location: '', jobUrl: '', notes: '', dateAdded: new Date().toISOString().split('T')[0] });
-        }}
-        title={editingJob ? 'Edit Job' : 'Add New Job'}
-      >
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Modal isOpen={showJobModal} onClose={() => setShowJobModal(false)} title={editingJob ? 'Edit Job' : 'Add Job'}>
+        <form onSubmit={handleJobSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
             <input
               type="text"
-              placeholder="Company Name"
               value={jobForm.company}
               onChange={(e) => setJobForm({...jobForm, company: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Position"
-              value={jobForm.position}
-              onChange={(e) => setJobForm({...jobForm, position: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Position</label>
+            <input
+              type="text"
+              value={jobForm.position}
+              onChange={(e) => setJobForm({...jobForm, position: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
               value={jobForm.status}
               onChange={(e) => setJobForm({...jobForm, status: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {columns.map(column => (
                 <option key={column.id} value={column.id}>{column.title}</option>
               ))}
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Salary</label>
             <input
               type="text"
-              placeholder="Salary (e.g., $80k - $100k)"
               value={jobForm.salary}
               onChange={(e) => setJobForm({...jobForm, salary: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., $80,000 - $100,000"
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
             <input
               type="text"
-              placeholder="Location"
               value={jobForm.location}
               onChange={(e) => setJobForm({...jobForm, location: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <input
-              type="url"
-              placeholder="Job URL"
-              value={jobForm.jobUrl}
-              onChange={(e) => setJobForm({...jobForm, jobUrl: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., San Francisco, CA"
             />
           </div>
-          <textarea
-            placeholder="Notes"
-            value={jobForm.notes}
-            onChange={(e) => setJobForm({...jobForm, notes: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows={3}
-          />
-          <div className="flex justify-end space-x-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Job URL</label>
+            <input
+              type="url"
+              value={jobForm.jobUrl}
+              onChange={(e) => setJobForm({...jobForm, jobUrl: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="https://..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea
+              value={jobForm.notes}
+              onChange={(e) => setJobForm({...jobForm, notes: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+              placeholder="Any additional notes..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date Added</label>
+            <input
+              type="date"
+              value={jobForm.dateAdded}
+              onChange={(e) => setJobForm({...jobForm, dateAdded: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex space-x-3 pt-4">
             <button
-              type="button"
-              onClick={() => {
-                setShowJobModal(false);
-                setEditingJob(null);
-                setJobForm({ company: '', position: '', status: 'interested', salary: '', location: '', jobUrl: '', notes: '', dateAdded: new Date().toISOString().split('T')[0] });
-              }}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                handleJobSubmit({ preventDefault: () => {} });
-              }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
             >
               {editingJob ? 'Update Job' : 'Add Job'}
             </button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* Contact Modal */}
-      <Modal
-        isOpen={showContactModal}
-        onClose={() => {
-          setShowContactModal(false);
-          setEditingContact(null);
-          setContactForm({ name: '', company: '', position: '', email: '', phone: '', linkedin: '', associatedJob: '', notes: '', interactions: [] });
-        }}
-        title={editingContact ? 'Edit Contact' : 'Add New Contact'}
-      >
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={contactForm.name}
-              onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Position/Title"
-              value={contactForm.position}
-              onChange={(e) => setContactForm({...contactForm, position: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <input
-            type="text"
-            placeholder="Company"
-            value={contactForm.company}
-            onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="email"
-              placeholder="Email"
-              value={contactForm.email}
-              onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <input
-              type="tel"
-              placeholder="Phone"
-              value={contactForm.phone}
-              onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <input
-            type="url"
-            placeholder="LinkedIn URL"
-            value={contactForm.linkedin}
-            onChange={(e) => setContactForm({...contactForm, linkedin: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <select
-            value={contactForm.associatedJob}
-            onChange={(e) => setContactForm({...contactForm, associatedJob: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Associate with a job (optional)</option>
-            {jobs.map(job => (
-              <option key={job.id} value={job.id}>{job.position} at {job.company}</option>
-            ))}
-          </select>
-          <textarea
-            placeholder="Notes"
-            value={contactForm.notes}
-            onChange={(e) => setContactForm({...contactForm, notes: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows={3}
-          />
-          <div className="flex justify-end space-x-3">
             <button
               type="button"
-              onClick={() => {
-                setShowContactModal(false);
-                setEditingContact(null);
-                setContactForm({ name: '', company: '', position: '', email: '', phone: '', linkedin: '', associatedJob: '', notes: '', interactions: [] });
-              }}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+              onClick={() => setShowJobModal(false)}
+              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
             >
               Cancel
             </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Contact Modal */}
+      <Modal isOpen={showContactModal} onClose={() => setShowContactModal(false)} title={editingContact ? 'Edit Contact' : 'Add Contact'}>
+        <form onSubmit={handleContactSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input
+              type="text"
+              value={contactForm.name}
+              onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+            <input
+              type="text"
+              value={contactForm.company}
+              onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Position</label>
+            <input
+              type="text"
+              value={contactForm.position}
+              onChange={(e) => setContactForm({...contactForm, position: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              value={contactForm.email}
+              onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+            <input
+              type="tel"
+              value={contactForm.phone}
+              onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label>
+            <input
+              type="url"
+              value={contactForm.linkedin}
+              onChange={(e) => setContactForm({...contactForm, linkedin: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="https://linkedin.com/in/..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Associated Job</label>
+            <input
+              type="text"
+              value={contactForm.associatedJob}
+              onChange={(e) => setContactForm({...contactForm, associatedJob: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Company name or job title"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea
+              value={contactForm.notes}
+              onChange={(e) => setContactForm({...contactForm, notes: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+              placeholder="Any additional notes..."
+            />
+          </div>
+          <div className="flex space-x-3 pt-4">
             <button
-              type="button"
-              onClick={() => {
-                handleContactSubmit({ preventDefault: () => {} });
-              }}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+              type="submit"
+              className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
             >
               {editingContact ? 'Update Contact' : 'Add Contact'}
             </button>
+            <button
+              type="button"
+              onClick={() => setShowContactModal(false)}
+              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
+            >
+              Cancel
+            </button>
           </div>
-        </div>
+        </form>
       </Modal>
 
       {/* Interaction Modal */}
-      <Modal
-        isOpen={showInteractionModal}
-        onClose={() => {
-          setShowInteractionModal(false);
-          setSelectedContact(null);
-          setInteractionForm({ date: new Date().toISOString().split('T')[0], type: 'email', summary: '', notes: '' });
-        }}
-        title="Add Interaction"
-      >
-        {selectedContact && (
-          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-            <p className="font-medium text-blue-800">Adding interaction for: {selectedContact.name}</p>
-          </div>
-        )}
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Modal isOpen={showInteractionModal} onClose={() => setShowInteractionModal(false)} title="Add Interaction">
+        <form onSubmit={handleInteractionSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input
               type="date"
               value={interactionForm.date}
               onChange={(e) => setInteractionForm({...interactionForm, date: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
             <select
               value={interactionForm.type}
               onChange={(e) => setInteractionForm({...interactionForm, type: e.target.value})}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="email">Email</option>
               <option value="phone">Phone Call</option>
-              <option value="meeting">In-Person Meeting</option>
-              <option value="linkedin">LinkedIn Message</option>
-              <option value="coffee">Coffee Chat</option>
-              <option value="networking">Networking Event</option>
+              <option value="meeting">Meeting</option>
+              <option value="interview">Interview</option>
+              <option value="follow-up">Follow-up</option>
               <option value="other">Other</option>
             </select>
           </div>
-          <input
-            type="text"
-            placeholder="Brief summary (e.g., 'Discussed software engineering role')"
-            value={interactionForm.summary}
-            onChange={(e) => setInteractionForm({...interactionForm, summary: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-          />
-          <textarea
-            placeholder="Detailed notes about the conversation..."
-            value={interactionForm.notes}
-            onChange={(e) => setInteractionForm({...interactionForm, notes: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows={4}
-          />
-          <div className="flex justify-end space-x-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
+            <input
+              type="text"
+              value={interactionForm.summary}
+              onChange={(e) => setInteractionForm({...interactionForm, summary: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Brief summary of the interaction"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea
+              value={interactionForm.notes}
+              onChange={(e) => setInteractionForm({...interactionForm, notes: e.target.value})}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+              placeholder="Detailed notes about the interaction..."
+            />
+          </div>
+          <div className="flex space-x-3 pt-4">
             <button
-              type="button"
-              onClick={() => {
-                setShowInteractionModal(false);
-                setSelectedContact(null);
-                setInteractionForm({ date: new Date().toISOString().split('T')[0], type: 'email', summary: '', notes: '' });
-              }}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                handleInteractionSubmit({ preventDefault: () => {} });
-              }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
             >
               Add Interaction
             </button>
+            <button
+              type="button"
+              onClick={() => setShowInteractionModal(false)}
+              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
+            >
+              Cancel
+            </button>
           </div>
-        </div>
+        </form>
       </Modal>
     </div>
   );
