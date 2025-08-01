@@ -1,8 +1,13 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  command = "npm run export"
+  publish = "out"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200 
+  from = "/job-tracker/*"
+  to = "/job-tracker/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/job-tracker"
+  to = "/job-tracker/"
+  status = 301 
