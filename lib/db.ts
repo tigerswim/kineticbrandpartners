@@ -1,6 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 
-// Only create the SQL connection if DATABASE_URL is available
-const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
+// Use the NETLIFY_DATABASE_URL that Netlify automatically created from Neon integration
+const sql = process.env.NETLIFY_DATABASE_URL ? neon(process.env.NETLIFY_DATABASE_URL) : null;
 
 export default sql; 
