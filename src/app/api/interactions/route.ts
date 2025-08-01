@@ -4,6 +4,10 @@ import sql from '../../../../lib/db';
 // POST new interaction
 export async function POST(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { contactId, date, type, summary, notes } = body;
 
@@ -23,6 +27,10 @@ export async function POST(request: NextRequest) {
 // PUT update interaction
 export async function PUT(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { id, date, type, summary, notes } = body;
 
@@ -46,6 +54,10 @@ export async function PUT(request: NextRequest) {
 // DELETE interaction
 export async function DELETE(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

@@ -4,6 +4,10 @@ import sql from '../../../../lib/db';
 // GET all contacts with their interactions
 export async function GET() {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const contacts = await sql`
       SELECT 
         c.*,
@@ -38,6 +42,10 @@ export async function GET() {
 // POST new contact
 export async function POST(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { name, company, position, email, phone, linkedin, associatedJob, notes } = body;
 
@@ -57,6 +65,10 @@ export async function POST(request: NextRequest) {
 // PUT update contact
 export async function PUT(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { id, name, company, position, email, phone, linkedin, associatedJob, notes } = body;
 
@@ -85,6 +97,10 @@ export async function PUT(request: NextRequest) {
 // DELETE contact
 export async function DELETE(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

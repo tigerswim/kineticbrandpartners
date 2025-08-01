@@ -4,6 +4,10 @@ import sql from '../../../../lib/db';
 // GET all jobs
 export async function GET() {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const jobs = await sql`
       SELECT * FROM jobs 
       ORDER BY created_at DESC
@@ -18,6 +22,10 @@ export async function GET() {
 // POST new job
 export async function POST(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { company, position, status, salary, location, jobUrl, notes, dateAdded } = body;
 
@@ -37,6 +45,10 @@ export async function POST(request: NextRequest) {
 // PUT update job
 export async function PUT(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const body = await request.json();
     const { id, company, position, status, salary, location, jobUrl, notes, dateAdded } = body;
 
@@ -65,6 +77,10 @@ export async function PUT(request: NextRequest) {
 // DELETE job
 export async function DELETE(request: NextRequest) {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

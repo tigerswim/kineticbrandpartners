@@ -4,6 +4,10 @@ import path from 'path';
 
 export async function initializeDatabase() {
   try {
+    if (!sql) {
+      throw new Error('Database connection not available');
+    }
+    
     // Read the schema file
     const schemaPath = path.join(process.cwd(), 'lib', 'schema.sql');
     const schema = fs.readFileSync(schemaPath, 'utf8');
