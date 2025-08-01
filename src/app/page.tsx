@@ -73,6 +73,11 @@ const JobTracker = () => {
     dateAdded: new Date().toISOString().split('T')[0]
   });
 
+  // Memoize form handlers to prevent unnecessary re-renders
+  const handleJobFormChange = React.useCallback((field: string, value: string) => {
+    setJobForm(prev => ({ ...prev, [field]: value }));
+  }, []);
+
   // Contact form state
   const [contactForm, setContactForm] = useState({
     name: '',
@@ -86,6 +91,11 @@ const JobTracker = () => {
     interactions: [] as Interaction[]
   });
 
+  // Memoize contact form handlers
+  const handleContactFormChange = React.useCallback((field: string, value: string) => {
+    setContactForm(prev => ({ ...prev, [field]: value }));
+  }, []);
+
   // Interaction form state
   const [interactionForm, setInteractionForm] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -93,6 +103,11 @@ const JobTracker = () => {
     summary: '',
     notes: ''
   });
+
+  // Memoize interaction form handlers
+  const handleInteractionFormChange = React.useCallback((field: string, value: string) => {
+    setInteractionForm(prev => ({ ...prev, [field]: value }));
+  }, []);
 
   // API helper functions
   const apiCall = async (url: string, options: RequestInit = {}) => {
@@ -186,11 +201,13 @@ const JobTracker = () => {
         });
         setJobs([newJob, ...jobs]);
       }
+      // Only reset form and close modal after successful submission
       setJobForm({ company: '', position: '', status: 'interested', salary: '', location: '', jobUrl: '', notes: '', dateAdded: new Date().toISOString().split('T')[0] });
       setShowJobModal(false);
     } catch (error) {
       console.error('Error saving job:', error);
       setError('Failed to save job. Please try again.');
+      // Don't reset form or close modal on error
     }
   };
 
@@ -231,11 +248,13 @@ const JobTracker = () => {
         });
         setContacts([newContact, ...contacts]);
       }
+      // Only reset form and close modal after successful submission
       setContactForm({ name: '', company: '', position: '', email: '', phone: '', linkedin: '', associatedJob: '', notes: '', interactions: [] });
       setShowContactModal(false);
     } catch (error) {
       console.error('Error saving contact:', error);
       setError('Failed to save contact. Please try again.');
+      // Don't reset form or close modal on error
     }
   };
 
@@ -260,12 +279,14 @@ const JobTracker = () => {
       const updatedContacts = await apiCall('/api/contacts');
       setContacts(updatedContacts);
       
+      // Only reset form and close modal after successful submission
       setInteractionForm({ date: new Date().toISOString().split('T')[0], type: 'email', summary: '', notes: '' });
       setShowInteractionModal(false);
       setSelectedContact(null);
     } catch (error) {
       console.error('Error saving interaction:', error);
       setError('Failed to save interaction. Please try again.');
+      // Don't reset form or close modal on error
     }
   };
 
@@ -619,7 +640,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={jobForm.company}
-              onChange={(e) => setJobForm({...jobForm, company: e.target.value})}
+              onChange={(e) => handleJobFormChange('company', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -629,7 +650,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={jobForm.position}
-              onChange={(e) => setJobForm({...jobForm, position: e.target.value})}
+              onChange={(e) => handleJobFormChange('position', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -638,7 +659,7 @@ const JobTracker = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
               value={jobForm.status}
-              onChange={(e) => setJobForm({...jobForm, status: e.target.value})}
+              onChange={(e) => handleJobFormChange('status', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {columns.map(column => (
@@ -651,7 +672,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={jobForm.salary}
-              onChange={(e) => setJobForm({...jobForm, salary: e.target.value})}
+              onChange={(e) => handleJobFormChange('salary', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., $80,000 - $100,000"
             />
@@ -661,7 +682,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={jobForm.location}
-              onChange={(e) => setJobForm({...jobForm, location: e.target.value})}
+              onChange={(e) => handleJobFormChange('location', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., San Francisco, CA"
             />
@@ -671,7 +692,7 @@ const JobTracker = () => {
             <input
               type="url"
               value={jobForm.jobUrl}
-              onChange={(e) => setJobForm({...jobForm, jobUrl: e.target.value})}
+              onChange={(e) => handleJobFormChange('jobUrl', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://..."
             />
@@ -680,7 +701,7 @@ const JobTracker = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
               value={jobForm.notes}
-              onChange={(e) => setJobForm({...jobForm, notes: e.target.value})}
+              onChange={(e) => handleJobFormChange('notes', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               placeholder="Any additional notes..."
@@ -691,7 +712,7 @@ const JobTracker = () => {
             <input
               type="date"
               value={jobForm.dateAdded}
-              onChange={(e) => setJobForm({...jobForm, dateAdded: e.target.value})}
+              onChange={(e) => handleJobFormChange('dateAdded', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -721,7 +742,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={contactForm.name}
-              onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+              onChange={(e) => handleContactFormChange('name', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -731,7 +752,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={contactForm.company}
-              onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+              onChange={(e) => handleContactFormChange('company', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -740,7 +761,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={contactForm.position}
-              onChange={(e) => setContactForm({...contactForm, position: e.target.value})}
+              onChange={(e) => handleContactFormChange('position', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -749,7 +770,7 @@ const JobTracker = () => {
             <input
               type="email"
               value={contactForm.email}
-              onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+              onChange={(e) => handleContactFormChange('email', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -758,7 +779,7 @@ const JobTracker = () => {
             <input
               type="tel"
               value={contactForm.phone}
-              onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+              onChange={(e) => handleContactFormChange('phone', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -767,7 +788,7 @@ const JobTracker = () => {
             <input
               type="url"
               value={contactForm.linkedin}
-              onChange={(e) => setContactForm({...contactForm, linkedin: e.target.value})}
+              onChange={(e) => handleContactFormChange('linkedin', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://linkedin.com/in/..."
             />
@@ -777,7 +798,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={contactForm.associatedJob}
-              onChange={(e) => setContactForm({...contactForm, associatedJob: e.target.value})}
+              onChange={(e) => handleContactFormChange('associatedJob', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Company name or job title"
             />
@@ -786,7 +807,7 @@ const JobTracker = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
               value={contactForm.notes}
-              onChange={(e) => setContactForm({...contactForm, notes: e.target.value})}
+              onChange={(e) => handleContactFormChange('notes', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               placeholder="Any additional notes..."
@@ -818,7 +839,7 @@ const JobTracker = () => {
             <input
               type="date"
               value={interactionForm.date}
-              onChange={(e) => setInteractionForm({...interactionForm, date: e.target.value})}
+              onChange={(e) => handleInteractionFormChange('date', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -827,7 +848,7 @@ const JobTracker = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
             <select
               value={interactionForm.type}
-              onChange={(e) => setInteractionForm({...interactionForm, type: e.target.value})}
+              onChange={(e) => handleInteractionFormChange('type', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="email">Email</option>
@@ -843,7 +864,7 @@ const JobTracker = () => {
             <input
               type="text"
               value={interactionForm.summary}
-              onChange={(e) => setInteractionForm({...interactionForm, summary: e.target.value})}
+              onChange={(e) => handleInteractionFormChange('summary', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Brief summary of the interaction"
               required
@@ -853,7 +874,7 @@ const JobTracker = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
               value={interactionForm.notes}
-              onChange={(e) => setInteractionForm({...interactionForm, notes: e.target.value})}
+              onChange={(e) => handleInteractionFormChange('notes', e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               placeholder="Detailed notes about the interaction..."
