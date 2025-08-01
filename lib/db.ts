@@ -1,10 +1,10 @@
 import { neon } from '@neondatabase/serverless';
 
-// Use the NETLIFY_DATABASE_URL that Netlify automatically created from Neon integration
-const databaseUrl = process.env.NETLIFY_DATABASE_URL;
+// Check for database URL in different environments
+const databaseUrl = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL || process.env.NEON_DATABASE_URL;
 
 if (!databaseUrl) {
-  console.error('NETLIFY_DATABASE_URL environment variable is not set');
+  console.error('No database URL found. Please set NETLIFY_DATABASE_URL, DATABASE_URL, or NEON_DATABASE_URL environment variable');
 }
 
 const sql = databaseUrl ? neon(databaseUrl) : null;
