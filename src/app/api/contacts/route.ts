@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import sql from '../../../../lib/db';
+import sql from '@/lib/db';
 
 // GET all contacts with their interactions
 export async function GET() {

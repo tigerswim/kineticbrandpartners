@@ -1,4 +1,4 @@
-import sql from './db';
+import sql from '@/lib/db';
 import fs from 'fs';
 import path from 'path';
 

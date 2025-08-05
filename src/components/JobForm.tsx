@@ -1,0 +1,306 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target } from "lucide-react";
+import { createJob, updateJob, Job } from "@/lib/jobs";
+import { supabase } from "@/lib/supabase";
+
+const BLANK = {
+  company: "",
+  job_title: "",
+  status: "interested" as const,
+  salary: "",
+  location: "",
+  notes: "",
+};
+
+const statusOptions = [
+  { 
+    id: 'interested', 
+    title: 'Interested',
+    description: 'Job looks promising',
+    color: 'text-slate-600',
+    bg: 'bg-slate-50',
+    border: 'border-slate-200'
+  },
+  { 
+    id: 'applied', 
+    title: 'Applied',
+    description: 'Application submitted',
+    color: 'text-blue-600',
+    bg: 'bg-blue-50',
+    border: 'border-blue-200'
+  },
+  { 
+    id: 'interviewing', 
+    title: 'Interviewing',
+    description: 'In interview process',
+    color: 'text-blue-700',
+    bg: 'bg-blue-100',
+    border: 'border-blue-300'
+  },
+  { 
+    id: 'onhold', 
+    title: 'On Hold',
+    description: 'Waiting for response',
+    color: 'text-slate-500',
+    bg: 'bg-slate-100',
+    border: 'border-slate-300'
+  },
+  { 
+    id: 'offered', 
+    title: 'Offered',
+    description: 'Received job offer',
+    color: 'text-blue-600',
+    bg: 'bg-blue-50',
+    border: 'border-blue-200'
+  },
+  { 
+    id: 'rejected', 
+    title: 'Rejected',
+    description: 'Application declined',
+    color: 'text-slate-500',
+    bg: 'bg-slate-50',
+    border: 'border-slate-200'
+  }
+];
+
+interface JobFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSaved: () => void;
+  editingJob?: Job | null;
+}
+
+export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFormProps) {
+  const [form, setForm] = useState(BLANK);
+  const [loading, setLoading] = useState(false);
+
+  // Reset form when modal opens/closes or editing job changes
+  useEffect(() => {
+    if (isOpen && editingJob) {
+      setForm({
+        company: editingJob.company,
+        job_title: editingJob.job_title,
+        status: editingJob.status,
+        salary: editingJob.salary || "",
+        location: editingJob.location || "",
+        notes: editingJob.notes || "",
+      });
+    } else if (isOpen && !editingJob) {
+      setForm(BLANK);
+    }
+  }, [isOpen, editingJob]);
+
+  const handleChange = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm({ ...form, [key]: e.target.value });
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        throw new Error('No authenticated user');
+      }
+
+      const payload = {
+        ...form,
+        user_id: user.id,
+        salary: form.salary || null,
+        location: form.location || null
+      };
+
+      if (editingJob) {
+        await updateJob(editingJob.id, payload);
+      } else {
+        await createJob(payload);
+      }
+
+      setForm(BLANK);
+      onSaved();
+      onClose();
+    } catch (err) {
+      alert(editingJob ? "Error updating job" : "Error saving job");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (!isOpen) return null;
+
+  const selectedStatus = statusOptions.find(opt => opt.id === form.status);
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden animate-scale-in">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <Briefcase className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">
+                  {editingJob ? 'Edit Job Application' : 'New Job Application'}
+                </h2>
+                <p className="text-blue-100 text-sm">
+                  {editingJob ? 'Update your job details' : 'Add a new opportunity to track'}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] custom-scrollbar">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Company & Job Title Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="form-group">
+                <label className="form-label flex items-center space-x-2">
+                  <Building className="w-4 h-4 text-slate-500" />
+                  <span>Company Name *</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={form.company}
+                  onChange={handleChange('company')}
+                  className="input"
+                  placeholder="e.g., Google, Microsoft, Acme Corp"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label flex items-center space-x-2">
+                  <Briefcase className="w-4 h-4 text-slate-500" />
+                  <span>Job Title *</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={form.job_title}
+                  onChange={handleChange('job_title')}
+                  className="input"
+                  placeholder="e.g., Software Engineer, Product Manager"
+                />
+              </div>
+            </div>
+
+            {/* Status Selection */}
+            <div className="form-group">
+              <label className="form-label flex items-center space-x-2">
+                <Target className="w-4 h-4 text-slate-500" />
+                <span>Application Status</span>
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {statusOptions.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setForm({ ...form, status: option.id as any })}
+                    className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
+                      form.status === option.id
+                        ? `${option.bg} ${option.border} ${option.color} border-opacity-100 shadow-sm transform scale-105`
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="font-semibold text-sm">{option.title}</div>
+                    <div className="text-xs opacity-75 mt-1">{option.description}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Location & Salary Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="form-group">
+                <label className="form-label flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-slate-500" />
+                  <span>Location</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.location}
+                  onChange={handleChange('location')}
+                  className="input"
+                  placeholder="e.g., San Francisco, CA or Remote"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label flex items-center space-x-2">
+                  <DollarSign className="w-4 h-4 text-slate-500" />
+                  <span>Salary Range</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.salary}
+                  onChange={handleChange('salary')}
+                  className="input"
+                  placeholder="e.g., $90,000 - $120,000 or $100k+"
+                />
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div className="form-group">
+              <label className="form-label flex items-center space-x-2">
+                <FileText className="w-4 h-4 text-slate-500" />
+                <span>Notes & Details</span>
+              </label>
+              <textarea
+                value={form.notes}
+                onChange={handleChange('notes')}
+                className="input min-h-[120px] resize-none"
+                placeholder="Add any relevant details, requirements, or thoughts about this opportunity..."
+                rows={4}
+              />
+              <p className="form-help">
+                Include job requirements, company culture notes, or interview details
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 pt-6 border-t border-slate-200">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Saving...</span>
+                  </div>
+                ) : (
+                  editingJob ? "Update Job" : "Add Job"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
