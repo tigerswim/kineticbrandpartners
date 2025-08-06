@@ -2,7 +2,7 @@
 'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { downloadJobsCSV, downloadContactsCSV, downloadInteractionsCSV, parseCSV } from '@/lib/csvUtils'
+import { downloadJobsCSV, downloadContactsCSV, downloadInteractionsCSV, parseCSVForDataType, validateDateConversions } from '@/lib/csvUtils'
 import { 
   Download, 
   Upload, 
@@ -12,12 +12,25 @@ import {
   MessageCircle,
   AlertCircle,
   CheckCircle,
-  Loader
+  Loader,
+  Calendar,
+  Info
 } from 'lucide-react'
+
+interface UploadResult {
+  success: boolean
+  count: number
+  message: string
+  dateValidation?: {
+    validCount: number
+    invalidDates: Array<{row: number, field: string, originalValue: string}>
+    totalRows: number
+  }
+}
 
 export default function CSVManager() {
   const [uploading, setUploading] = useState<string | null>(null)
-  const [uploadResults, setUploadResults] = useState<{[key: string]: {success: boolean, count: number, message: string}} | null>(null)
+  const [uploadResults, setUploadResults] = useState<{[key: string]: UploadResult} | null>(null)
 
   const handleFileUpload = async (file: File, type: 'jobs' | 'contacts' | 'interactions') => {
     setUploading(type)
@@ -25,21 +38,33 @@ export default function CSVManager() {
     
     try {
       const text = await file.text()
-      const data = parseCSV(text)
+      const data = parseCSVForDataType(text, type)
       
       if (data.length === 0) {
         setUploadResults({
-          [type]: { success: false, count: 0, message: 'No valid data found in CSV file' }
+          [type]: { 
+            success: false, 
+            count: 0, 
+            message: 'No valid data found in CSV file' 
+          }
         })
         return
       }
+
+      // Validate date conversions
+      const dateValidation = validateDateConversions(data, type)
+      console.log(`Date validation results for ${type}:`, dateValidation)
 
       // Get current user
       const { data: { user }, error: userError } = await supabase.auth.getUser()
       
       if (userError || !user) {
         setUploadResults({
-          [type]: { success: false, count: 0, message: 'No authenticated user found' }
+          [type]: { 
+            success: false, 
+            count: 0, 
+            message: 'No authenticated user found' 
+          }
         })
         return
       }
@@ -64,17 +89,40 @@ export default function CSVManager() {
       if (error) {
         console.error(`Error uploading ${type}:`, error)
         setUploadResults({
-          [type]: { success: false, count: 0, message: `Error uploading: ${error.message}` }
+          [type]: { 
+            success: false, 
+            count: 0, 
+            message: `Error uploading: ${error.message}`,
+            dateValidation 
+          }
         })
       } else {
+        let message = `Successfully uploaded ${cleanedData.length} records`
+        
+        // Add date conversion info to success message
+        if (dateValidation.invalidDates.length > 0) {
+          message += ` (${dateValidation.invalidDates.length} dates could not be converted)`
+        } else if (dateValidation.validCount > 0) {
+          message += ` (${dateValidation.validCount} dates successfully converted)`
+        }
+        
         setUploadResults({
-          [type]: { success: true, count: cleanedData.length, message: `Successfully uploaded ${cleanedData.length} records` }
+          [type]: { 
+            success: true, 
+            count: cleanedData.length, 
+            message,
+            dateValidation 
+          }
         })
       }
     } catch (error) {
       console.error(`Error processing ${type} CSV:`, error)
       setUploadResults({
-        [type]: { success: false, count: 0, message: `Error processing CSV: ${error}` }
+        [type]: { 
+          success: false, 
+          count: 0, 
+          message: `Error processing CSV: ${error}` 
+        }
       })
     } finally {
       setUploading(null)
@@ -139,19 +187,56 @@ export default function CSVManager() {
 
       {/* Upload Results */}
       {uploadResults && (
-        <div className="space-y-2">
+        <div className="space-y-4">
           {Object.entries(uploadResults).map(([type, result]) => (
-            <div key={type} className={`p-4 rounded-lg border flex items-center space-x-3 ${
-              result.success 
-                ? 'bg-green-50 border-green-200 text-green-800' 
-                : 'bg-red-50 border-red-200 text-red-800'
-            }`}>
-              {result.success ? (
-                <CheckCircle className="w-5 h-5 text-green-600" />
-              ) : (
-                <AlertCircle className="w-5 h-5 text-red-600" />
+            <div key={type}>
+              {/* Main Result */}
+              <div className={`p-4 rounded-lg border flex items-center space-x-3 ${
+                result.success 
+                  ? 'bg-green-50 border-green-200 text-green-800' 
+                  : 'bg-red-50 border-red-200 text-red-800'
+              }`}>
+                {result.success ? (
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-red-600" />
+                )}
+                <span className="font-medium flex-1">{result.message}</span>
+              </div>
+
+              {/* Date Conversion Details */}
+              {result.dateValidation && result.success && (
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Calendar className="w-4 h-4 text-blue-600" />
+                    <span className="font-medium text-blue-800 text-sm">Date Conversion Summary</span>
+                  </div>
+                  
+                  {result.dateValidation.validCount > 0 && (
+                    <div className="text-sm text-blue-700 mb-1">
+                      ✅ {result.dateValidation.validCount} dates successfully converted to PostgreSQL format
+                    </div>
+                  )}
+                  
+                  {result.dateValidation.invalidDates.length > 0 && (
+                    <div className="space-y-1">
+                      <div className="text-sm text-amber-700 font-medium">
+                        ⚠️ {result.dateValidation.invalidDates.length} dates could not be converted:
+                      </div>
+                      <div className="max-h-24 overflow-y-auto text-xs text-amber-600 space-y-1">
+                        {result.dateValidation.invalidDates.slice(0, 5).map((invalid, idx) => (
+                          <div key={idx}>
+                            Row {invalid.row}, field "{invalid.field}": "{invalid.originalValue}"
+                          </div>
+                        ))}
+                        {result.dateValidation.invalidDates.length > 5 && (
+                          <div>... and {result.dateValidation.invalidDates.length - 5} more</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
-              <span className="font-medium">{result.message}</span>
             </div>
           ))}
         </div>
@@ -232,23 +317,48 @@ export default function CSVManager() {
         })}
       </div>
 
-      {/* Instructions */}
+      {/* Enhanced Instructions */}
       <div className="card p-6 bg-slate-50/50">
         <div className="flex items-start space-x-3">
           <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
             <FileText className="w-4 h-4 text-blue-600" />
           </div>
-          <div>
+          <div className="flex-1">
             <h3 className="font-semibold text-slate-800 mb-3">CSV Format Guidelines</h3>
-            <div className="space-y-3 text-sm text-slate-600">
+            <div className="space-y-4 text-sm text-slate-600">
               <div>
-                <p className="font-medium text-slate-700 mb-1">Best Practices:</p>
+                <p className="font-medium text-slate-700 mb-2">📋 Best Practices:</p>
                 <ul className="list-disc list-inside space-y-1 ml-2">
                   <li>Export your current data first to see the expected format</li>
                   <li>Use UTF-8 encoding for your CSV files</li>
                   <li>Avoid special characters in field names</li>
                   <li>Test with a small file first to ensure compatibility</li>
                 </ul>
+              </div>
+              
+              <div>
+                <p className="font-medium text-slate-700 mb-2 flex items-center space-x-1">
+                  <Calendar className="w-4 h-4" />
+                  <span>📅 Date Format Support:</span>
+                </p>
+                <div className="bg-white rounded-lg p-3 border border-slate-200">
+                  <p className="mb-2">Automatically converts these formats to PostgreSQL (YYYY-MM-DD):</p>
+                  <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                    <div>• MM/DD/YYYY</div>
+                    <div>• DD/MM/YYYY</div>
+                    <div>• MM-DD-YYYY</div>
+                    <div>• DD-MM-YYYY</div>
+                    <div>• YYYY/MM/DD</div>
+                    <div>• MM.DD.YYYY</div>
+                    <div>• YYYY-MM</div>
+                    <div>• Jan 2024</div>
+                    <div>• January 2024</div>
+                    <div>• ISO 8601</div>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Invalid dates will be skipped with warnings in the upload results.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

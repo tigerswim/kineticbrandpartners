@@ -29,7 +29,6 @@ export async function getContacts(): Promise<Contact[]> {
   }
 }
 
-// src/lib/contacts.ts - Fix the createContact function
 export async function createContact(contact: Omit<Contact, 'id' | 'created_at' | 'updated_at'>): Promise<Contact | null> {
   console.log('=== ENHANCED DEBUG: createContact started ===')
   
@@ -49,11 +48,11 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
     console.log('✅ User authenticated:', user.email)
 
-    // 2. Test basic table access (CORRECTED)
+    // 2. Test basic table access
     console.log('🔍 Testing table access...')
     const { data: testData, error: testError } = await supabase
       .from('contacts')
-      .select('id')  // ✅ Simple select instead of count
+      .select('id')
       .limit(1)
 
     if (testError) {
@@ -65,15 +64,18 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
     console.log('✅ Table access successful')
 
-    // 3. Prepare insert data
+    // 3. Prepare insert data with new fields
     const insertData = {
       name: contact.name,
       email: contact.email || null,
       phone: contact.phone || null,
       company: contact.company || null,
-      job_title: contact.job_title || null,  // Updated field name
+      job_title: contact.job_title || null,
       linkedin_url: contact.linkedin_url || null,
       notes: contact.notes || null,
+      experience: contact.experience || null,
+      education: contact.education || null,
+      mutual_connections: contact.mutual_connections || null,
       user_id: user.id
     }
 
@@ -106,9 +108,14 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
 export async function updateContact(id: string, contactData: Partial<Omit<Contact, 'id' | 'created_at' | 'updated_at' | 'user_id'>>): Promise<Contact | null> {
   try {
+    console.log('Updating contact with data:', contactData)
+
     const { data, error } = await supabase
       .from('contacts')
-      .update({ ...contactData, updated_at: new Date().toISOString() })
+      .update({ 
+        ...contactData, 
+        updated_at: new Date().toISOString() 
+      })
       .eq('id', id)
       .select()
       .single()
@@ -118,6 +125,7 @@ export async function updateContact(id: string, contactData: Partial<Omit<Contac
       return null
     }
 
+    console.log('Contact updated successfully:', data)
     return data
   } catch (error) {
     console.error('Exception in updateContact:', error)

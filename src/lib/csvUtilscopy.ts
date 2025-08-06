@@ -37,11 +37,8 @@ export async function downloadInteractionsCSV() {
 }
 
 // Enhanced CSV Upload Functions with Date Conversion
-export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
-  // Remove BOM character if present
-  const cleanedCsvText = csvText.replace(/^\uFEFF/, '');
-  
-  const lines = cleanedCsvText.split('\n').filter(line => line.trim())
+export function parseCSV(csvText: string): any[] {
+  const lines = csvText.split('\n').filter(line => line.trim())
   if (lines.length < 2) return []
 
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
@@ -56,6 +53,41 @@ export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contact
         
         // Check if this field is a date field and convert if necessary
         if (isDateField(header) && value && value.trim() !== '') {
+          const convertedDate = convertDateToPostgreSQL(value.trim())
+          if (convertedDate) {
+            value = convertedDate
+          } else {
+            console.warn(`Invalid date format for field "${header}": "${value}". Skipping conversion.`)
+          }
+        }
+        
+        row[header] = value
+      })
+      data.push(row)
+    }
+  }
+
+  return data
+}
+
+// Enhanced parseCSV with data type detection for better date conversion
+export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
+  const lines = csvText.split('\n').filter(line => line.trim())
+  if (lines.length < 2) return []
+
+  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
+  const data = []
+  const dateFields = DATE_FIELDS[dataType] || []
+
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i])
+    if (values.length === headers.length) {
+      const row: any = {}
+      headers.forEach((header, index) => {
+        let value = values[index]
+        
+        // Convert date fields for this specific data type
+        if (dateFields.includes(header) && value && value.trim() !== '') {
           const convertedDate = convertDateToPostgreSQL(value.trim())
           if (convertedDate) {
             value = convertedDate

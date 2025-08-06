@@ -1,22 +1,11 @@
-// src/lib/supabase.ts
+// src/lib/supabase.ts - Updated Contact interface and types
+
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export interface Job {
-  id: string
-  job_title: string
-  company: string
-  location?: string
-  salary?: string
-  notes?: string
-  status: 'interested' | 'applied' | 'interviewing' | 'onhold' | 'offered' | 'rejected'
-  applied_date?: string
-  user_id: string
-  created_at: string
-  updated_at: string
-}
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export interface Contact {
   id: string
@@ -27,21 +16,28 @@ export interface Contact {
   job_title?: string
   linkedin_url?: string
   notes?: string
+  experience?: ExperienceEntry[]
+  education?: EducationEntry[]
+  mutual_connections?: string[]
   user_id: string
   created_at: string
   updated_at: string
 }
 
-export interface Interaction {
+export interface ExperienceEntry {
   id: string
-  contact_id: string
-  type: 'email' | 'phone' | 'video_call' | 'linkedin' | 'meeting' | 'other'
-  date: string
-  notes?: string
-  summary: string   // FIXED: Added required summary field
-  user_id: string
-  created_at: string
-  updated_at: string
+  company: string
+  title: string
+  start_date: string // YYYY-MM format
+  end_date?: string // YYYY-MM format or null for current
+  is_current: boolean
+  description?: string
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export interface EducationEntry {
+  id: string
+  institution: string
+  degree_and_field: string // e.g., "Bachelor's in Computer Science", "MBA"
+  year: string // Can be graduation year or range like "2018-2022"
+  notes?: string
+}
