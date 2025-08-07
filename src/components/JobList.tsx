@@ -1,9 +1,10 @@
-// src/components/JobList.tsx
+// src/components/JobList.tsx - Enhanced with clickable contact names
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { Job } from '@/lib/supabase'
+import { Job, Contact } from '@/lib/supabase'
 import { fetchJobs, deleteJob } from '@/lib/jobs'
+import { getContacts } from '@/lib/contacts'
 import { 
   Users, 
   Plus, 
@@ -14,7 +15,8 @@ import {
   DollarSign,
   Edit,
   Trash2,
-  X
+  X,
+  User
 } from 'lucide-react'
 import JobForm from './JobForm'
 import JobFilter from './JobFilter'
@@ -22,27 +24,148 @@ import JobStatusFilter from './JobStatusFilter'
 import JobContactManager from './JobContactManager'
 import JobContactLinks from './JobContactLinks'
 
+// Contact Modal Component
+interface ContactModalProps {
+  contact: Contact
+  onClose: () => void
+}
+
+function ContactModal({ contact, onClose }: ContactModalProps) {
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden animate-scale-in">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <User className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">{contact.name}</h2>
+                <p className="text-blue-100 text-sm">Contact Details</p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 overflow-y-auto max-h-[calc(80vh-80px)]">
+          <div className="space-y-6">
+            {/* Current Role */}
+            {(contact.job_title || contact.company) && (
+              <div>
+                <h3 className="text-slate-700 font-semibold mb-2">Current Role</h3>
+                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                  <p className="font-medium">
+                    {contact.job_title && contact.company 
+                      ? `${contact.job_title} at ${contact.company}`
+                      : contact.job_title || contact.company
+                    }
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Contact Information */}
+            <div>
+              <h3 className="text-slate-700 font-semibold mb-2">Contact Information</h3>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
+                {contact.email && (
+                  <div className="text-sm">
+                    <span className="font-medium">Email: </span>{contact.email}
+                  </div>
+                )}
+                {contact.phone && (
+                  <div className="text-sm">
+                    <span className="font-medium">Phone: </span>{contact.phone}
+                  </div>
+                )}
+                {contact.linkedin_url && (
+                  <div className="text-sm">
+                    <span className="font-medium">LinkedIn: </span>
+                    <a 
+                      href={contact.linkedin_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      View Profile
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Mutual Connections */}
+            {contact.mutual_connections && contact.mutual_connections.length > 0 && (
+              <div>
+                <h3 className="text-slate-700 font-semibold mb-2">Mutual Connections</h3>
+                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                  <div className="flex flex-wrap gap-2">
+                    {contact.mutual_connections.map((connection, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+                      >
+                        {connection}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Notes */}
+            {contact.notes && (
+              <div>
+                <h3 className="text-slate-700 font-semibold mb-2">Notes</h3>
+                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                  <p className="text-sm text-slate-700 whitespace-pre-wrap">{contact.notes}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function JobList() {
   const [jobs, setJobs] = useState<Job[]>([])
+  const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingJob, setEditingJob] = useState<Job | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
   const [managingContactsForJob, setManagingContactsForJob] = useState<string | null>(null)
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
 
   useEffect(() => {
-    loadJobs()
+    loadData()
   }, [])
 
-  const loadJobs = async () => {
+  const loadData = async () => {
     try {
       setLoading(true)
-      const data = await fetchJobs()
-      setJobs(data || [])
+      const [jobsData, contactsData] = await Promise.all([
+        fetchJobs(),
+        getContacts()
+      ])
+      setJobs(jobsData || [])
+      setContacts(contactsData || [])
     } catch (error) {
-      console.error('Error loading jobs:', error)
+      console.error('Error loading data:', error)
       setJobs([])
+      setContacts([])
     } finally {
       setLoading(false)
     }
@@ -53,7 +176,7 @@ export default function JobList() {
       try {
         const success = await deleteJob(id)
         if (success) {
-          loadJobs()
+          loadData()
         }
       } catch (error) {
         console.error('Error deleting job:', error)
@@ -67,14 +190,23 @@ export default function JobList() {
   }
 
   const handleFormSaved = () => {
-    loadJobs()
+    loadData()
     setShowForm(false)
     setEditingJob(null)
   }
 
   const handleContactsUpdated = () => {
-    loadJobs()
+    loadData()
   }
+
+  // Create contact lookup map for quick access
+  const contactMap = useMemo(() => {
+    const map = new Map<string, Contact>()
+    contacts.forEach(contact => {
+      map.set(contact.id, contact)
+    })
+    return map
+  }, [contacts])
 
   // Filter jobs based on search term and selected status
   const filteredJobs = useMemo(() => {
@@ -142,6 +274,14 @@ export default function JobList() {
   return (
     <>
       <div className="space-y-6 animate-fade-in">
+        {/* Contact Modal */}
+        {selectedContact && (
+          <ContactModal
+            contact={selectedContact}
+            onClose={() => setSelectedContact(null)}
+          />
+        )}
+
         {/* Header with Add Button */}
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
@@ -261,9 +401,14 @@ export default function JobList() {
                         </div>
                       </div>
 
-                      {/* Linked Contacts */}
+                      {/* Linked Contacts with Clickable Names */}
                       <div className="mb-3">
-                        <JobContactLinks jobId={job.id} compact={true} />
+                        <JobContactLinks 
+                          jobId={job.id} 
+                          compact={true} 
+                          contactMap={contactMap}
+                          onContactClick={(contact) => setSelectedContact(contact)}
+                        />
                       </div>
 
                       {/* Notes */}

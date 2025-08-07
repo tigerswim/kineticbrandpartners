@@ -1,4 +1,4 @@
-// src/lib/supabase.ts - Updated Contact interface and types
+// src/lib/supabase.ts - Updated with job_description field
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -40,4 +40,31 @@ export interface EducationEntry {
   degree_and_field: string // e.g., "Bachelor's in Computer Science", "MBA"
   year: string // Can be graduation year or range like "2018-2022"
   notes?: string
+}
+
+export interface Job {
+  id: string
+  job_title: string
+  company: string
+  location?: string
+  salary?: string
+  status: 'interested' | 'applied' | 'interviewing' | 'onhold' | 'offered' | 'rejected'
+  applied_date?: string
+  job_description?: string
+  notes?: string
+  user_id: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Interaction {
+  id: string
+  contact_id: string
+  type: 'email' | 'phone' | 'video_call' | 'linkedin' | 'meeting' | 'other'
+  date: string
+  summary: string
+  notes?: string
+  user_id: string
+  created_at: string
+  updated_at: string
 }

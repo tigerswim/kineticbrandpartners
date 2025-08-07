@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target } from "lucide-react";
+import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList } from "lucide-react";
 import { createJob, updateJob, Job } from "@/lib/jobs";
 import { supabase } from "@/lib/supabase";
 
@@ -11,6 +11,7 @@ const BLANK = {
   status: "interested" as const,
   salary: "",
   location: "",
+  job_description: "",
   notes: "",
 };
 
@@ -85,6 +86,7 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         status: editingJob.status,
         salary: editingJob.salary || "",
         location: editingJob.location || "",
+        job_description: editingJob.job_description || "",
         notes: editingJob.notes || "",
       });
     } else if (isOpen && !editingJob) {
@@ -112,7 +114,8 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         ...form,
         user_id: user.id,
         salary: form.salary || null,
-        location: form.location || null
+        location: form.location || null,
+        job_description: form.job_description || null
       };
 
       if (editingJob) {
@@ -256,21 +259,39 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
               </div>
             </div>
 
+            {/* Job Description */}
+            <div className="form-group">
+              <label className="form-label flex items-center space-x-2">
+                <ClipboardList className="w-4 h-4 text-slate-500" />
+                <span>Job Description</span>
+              </label>
+              <textarea
+                value={form.job_description}
+                onChange={handleChange('job_description')}
+                className="input min-h-[120px] resize-none"
+                placeholder="Paste the job description, key requirements, or responsibilities..."
+                rows={5}
+              />
+              <p className="form-help">
+                Include the full job posting, requirements, or key details from the listing
+              </p>
+            </div>
+
             {/* Notes */}
             <div className="form-group">
               <label className="form-label flex items-center space-x-2">
                 <FileText className="w-4 h-4 text-slate-500" />
-                <span>Notes & Details</span>
+                <span>Personal Notes</span>
               </label>
               <textarea
                 value={form.notes}
                 onChange={handleChange('notes')}
-                className="input min-h-[120px] resize-none"
-                placeholder="Add any relevant details, requirements, or thoughts about this opportunity..."
+                className="input min-h-[100px] resize-none"
+                placeholder="Add your thoughts, research notes, or application strategy..."
                 rows={4}
               />
               <p className="form-help">
-                Include job requirements, company culture notes, or interview details
+                Include your research, application strategy, or interview preparation notes
               </p>
             </div>
 

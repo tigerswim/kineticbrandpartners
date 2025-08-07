@@ -1,9 +1,10 @@
-// src/components/ContactList.tsx
+// src/components/ContactList.tsx - Enhanced with job search and clickable contacts
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { Contact } from '@/lib/supabase'
 import { getContacts, deleteContact } from '@/lib/contacts'
+import { getContactJobs } from '@/lib/jobContacts'
 import { 
   Plus, 
   Search, 
@@ -400,7 +401,7 @@ export default function ContactList() {
     }
   }
 
-  // Filter contacts based on search term
+  // Enhanced filter contacts based on search term (including linked jobs)
   const filteredContacts = useMemo(() => {
     if (!searchTerm.trim()) {
       return contacts

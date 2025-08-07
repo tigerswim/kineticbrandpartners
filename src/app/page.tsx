@@ -1,4 +1,4 @@
-// src/app/page.tsx
+// src/app/page.tsx - Updated with Reporting section
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -6,6 +6,7 @@ import { User } from '@supabase/supabase-js'
 import JobList from '@/components/JobList'
 import ContactList from '@/components/ContactList'
 import CSVManager from '@/components/CSVManager'
+import Reporting from '@/components/Reporting'
 import LoginForm from '@/components/LoginForm'
 import { 
   Briefcase, 
@@ -16,7 +17,7 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'jobs' | 'contacts' | 'csv'>('jobs')
+  const [activeTab, setActiveTab] = useState<'jobs' | 'contacts' | 'reporting' | 'csv'>('jobs')
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -79,6 +80,13 @@ export default function Home() {
       gradient: 'from-slate-500 to-slate-600'
     },
     {
+      id: 'reporting',
+      label: 'Reporting',
+      icon: BarChart3,
+      description: 'Analytics & insights',
+      gradient: 'from-purple-500 to-purple-600'
+    },
+    {
       id: 'csv',
       label: 'Data Hub',
       icon: Upload,
@@ -86,9 +94,6 @@ export default function Home() {
       gradient: 'from-blue-400 to-blue-500'
     }
   ]
-
-  // Mock stats - you can replace these with real data
-
 
   // Show main app if authenticated
   return (
@@ -130,7 +135,7 @@ export default function Home() {
         {/* Navigation Tabs */}
         <div className="mb-8">
           <div className="bg-white/70 backdrop-blur-sm rounded-xl p-2 border border-slate-200/60 shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
               {navigationItems.map((item) => {
                 const Icon = item.icon
                 const isActive = activeTab === item.id
@@ -138,7 +143,7 @@ export default function Home() {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id as 'jobs' | 'contacts' | 'csv')}
+                    onClick={() => setActiveTab(item.id as 'jobs' | 'contacts' | 'reporting' | 'csv')}
                     className={`relative group p-4 rounded-lg transition-all duration-300 ${
                       isActive
                         ? 'bg-white shadow-lg border border-slate-200/80'
@@ -202,6 +207,7 @@ export default function Home() {
             <div className="space-y-6">
               {activeTab === 'jobs' && <JobList />}
               {activeTab === 'contacts' && <ContactList />}
+              {activeTab === 'reporting' && <Reporting />}
               {activeTab === 'csv' && <CSVManager />}
             </div>
           </div>
