@@ -32,7 +32,7 @@ export default function ContactFilter({ searchTerm, onSearchChange }: ContactFil
           type="text"
           value={localSearchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Search contacts by name, company, job title, education, connections, or notes..."
+          placeholder="Search contacts by name, company, etc."
           className="block w-full pl-12 pr-12 py-3 border border-slate-200 rounded-lg leading-5 bg-white/80 backdrop-blur-sm placeholder-slate-400 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 hover:bg-white hover:border-slate-300"
         />
         {localSearchTerm && (
@@ -47,13 +47,7 @@ export default function ContactFilter({ searchTerm, onSearchChange }: ContactFil
           </div>
         )}
       </div>
-      
-      {/* Enhanced Search Tips */}
-      <div className="mt-3 text-center">
-        <p className="text-xs text-slate-500">
-          Search across names, companies, job titles, education, mutual connections, work experience, and notes
-        </p>
-      </div>
+
     </div>
   )
 }

@@ -1,4 +1,4 @@
-// src/components/ContactList.tsx - Enhanced with job search and clickable contacts
+// src/components/ContactList.tsx - Enhanced with data-dense design and 3-column layout
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
@@ -250,7 +250,7 @@ function ContactModal({ contact, onClose, onEdit }: ContactModalProps) {
   )
 }
 
-// MutualConnections Component with expansion functionality
+// Compact MutualConnections Component
 interface MutualConnectionsProps {
   connections: string[]
   contactNameMap: Map<string, Contact>
@@ -260,7 +260,7 @@ interface MutualConnectionsProps {
 
 function MutualConnections({ connections, contactNameMap, onConnectionClick, stopPropagation = true }: MutualConnectionsProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const maxInitialDisplay = 3
+  const maxInitialDisplay = 2 // Reduced for more compact display
 
   if (!connections || connections.length === 0) return null
 
@@ -290,11 +290,7 @@ function MutualConnections({ connections, contactNameMap, onConnectionClick, sto
   }
 
   return (
-    <div>
-      <div className="flex items-center space-x-1 text-xs text-slate-500 mb-1">
-        <Network className="w-3 h-3" />
-        <span>Mutual connections:</span>
-      </div>
+    <div className="space-y-1">
       <div className="flex flex-wrap gap-1">
         {displayConnections.map((connection, idx) => {
           const existingContact = isContactInSystem(connection)
@@ -302,16 +298,16 @@ function MutualConnections({ connections, contactNameMap, onConnectionClick, sto
             <span
               key={idx}
               onClick={(e) => handleConnectionClick(e, connection)}
-              className={`px-2 py-1 rounded-full text-xs transition-all duration-200 ${
+              className={`px-1.5 py-0.5 rounded text-xs transition-all duration-200 ${
                 existingContact
-                  ? 'bg-blue-100 text-blue-700 border border-blue-300 cursor-pointer hover:bg-blue-200 hover:scale-105 font-medium'
+                  ? 'bg-blue-100 text-blue-700 border border-blue-300 cursor-pointer hover:bg-blue-200 font-medium'
                   : 'bg-slate-100 text-slate-600'
               }`}
               title={existingContact ? 'Click to view contact details' : connection}
             >
-              {connection}
+              {connection.length > 12 ? connection.substring(0, 12) + '...' : connection}
               {existingContact && (
-                <ExternalLink className="w-3 h-3 inline ml-1" />
+                <ExternalLink className="w-2 h-2 inline ml-0.5" />
               )}
             </span>
           )
@@ -321,17 +317,17 @@ function MutualConnections({ connections, contactNameMap, onConnectionClick, sto
         {remainingConnections.length > 0 && (
           <button
             onClick={handleExpandClick}
-            className="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-full text-xs transition-all duration-200 flex items-center space-x-1 font-medium"
+            className="px-1.5 py-0.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-xs transition-all duration-200 flex items-center space-x-1"
           >
             {isExpanded ? (
               <>
-                <ChevronUp className="w-3 h-3" />
-                <span>Show less</span>
+                <ChevronUp className="w-2 h-2" />
+                <span>less</span>
               </>
             ) : (
               <>
-                <span>+{remainingConnections.length} more</span>
-                <ChevronDown className="w-3 h-3" />
+                <span>+{remainingConnections.length}</span>
+                <ChevronDown className="w-2 h-2" />
               </>
             )}
           </button>
@@ -472,20 +468,20 @@ export default function ContactList() {
           <div className="h-10 bg-slate-200 rounded w-32"></div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="card p-4">
-                <div className="animate-pulse space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="col-span-full lg:col-span-2 xl:col-span-2 space-y-3">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="card p-3">
+                <div className="animate-pulse space-y-2">
                   <div className="flex justify-between">
-                    <div className="h-6 bg-slate-200 rounded w-32"></div>
-                    <div className="flex space-x-2">
-                      <div className="h-4 bg-slate-200 rounded w-12"></div>
-                      <div className="h-4 bg-slate-200 rounded w-12"></div>
+                    <div className="h-5 bg-slate-200 rounded w-32"></div>
+                    <div className="flex space-x-1">
+                      <div className="h-4 bg-slate-200 rounded w-8"></div>
+                      <div className="h-4 bg-slate-200 rounded w-8"></div>
                     </div>
                   </div>
-                  <div className="h-4 bg-slate-200 rounded w-48"></div>
-                  <div className="h-4 bg-slate-200 rounded w-full"></div>
+                  <div className="h-3 bg-slate-200 rounded w-48"></div>
+                  <div className="h-3 bg-slate-200 rounded w-full"></div>
                 </div>
               </div>
             ))}
@@ -509,7 +505,7 @@ export default function ContactList() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 animate-fade-in">
       {/* Contact Modal */}
       {modalContact && (
         <ContactModal
@@ -523,18 +519,18 @@ export default function ContactList() {
         />
       )}
 
-      {/* Header */}
+      {/* Header - More compact */}
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-          <h2 className="text-2xl font-bold text-slate-800">Professional Network</h2>
-          <div className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+          <div className="w-2 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+          <h2 className="text-xl font-bold text-slate-800">Professional Network</h2>
+          <div className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
             {contacts.length} contacts
           </div>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary flex items-center space-x-2"
+          className="btn-primary flex items-center space-x-2 px-3 py-2 text-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Add Contact</span>
@@ -547,32 +543,32 @@ export default function ContactList() {
         onSearchChange={setSearchTerm}
       />
 
-      {/* Results Summary */}
+      {/* Results Summary - More compact */}
       {searchTerm && (
-        <div className="flex items-center space-x-2 text-sm text-slate-600 bg-slate-50 px-4 py-2 rounded-lg">
-          <Search className="w-4 h-4" />
+        <div className="flex items-center space-x-2 text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg">
+          <Search className="w-3 h-3" />
           <span>
-            Showing {filteredContacts.length} of {contacts.length} contacts matching 
+            {filteredContacts.length} of {contacts.length} contacts matching 
             <span className="font-medium"> "{searchTerm}"</span>
           </span>
           <button
             onClick={() => setSearchTerm('')}
             className="ml-2 text-slate-400 hover:text-slate-600"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3 h-3" />
           </button>
         </div>
       )}
 
       {filteredContacts.length === 0 ? (
-        <div className="card text-center py-12">
-          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-slate-400" />
+        <div className="card text-center py-8">
+          <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <Users className="w-6 h-6 text-slate-400" />
           </div>
           <h3 className="text-lg font-medium text-slate-700 mb-2">
             {contacts.length === 0 ? "No contacts yet" : "No matching contacts"}
           </h3>
-          <p className="text-slate-500 mb-6">
+          <p className="text-slate-500 mb-4">
             {contacts.length === 0
               ? "Add your professional contacts to build your network!"
               : "Try adjusting your search terms."
@@ -589,149 +585,260 @@ export default function ContactList() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Contacts List */}
-          <div className="space-y-4">
-            {filteredContacts.map((contact, index) => (
-              <div
-                key={contact.id}
-                className={`card p-4 cursor-pointer transition-all duration-200 animate-slide-up ${
-                  selectedContactId === contact.id
-                    ? 'ring-2 ring-blue-500 border-blue-300 bg-blue-50/50'
-                    : 'hover:shadow-lg'
-                }`}
-                style={{ animationDelay: `${index * 50}ms` }}
-                onClick={() => setSelectedContactId(contact.id)}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-start space-x-3">
-                    {/* Avatar */}
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <User className="w-6 h-6 text-white" />
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-bold text-slate-800 truncate">{contact.name}</h3>
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+          {/* Contacts List - Now 3 columns on larger screens */}
+          <div className="xl:col-span-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+              {filteredContacts.map((contact, index) => (
+                <div
+                  key={contact.id}
+                  className={`card p-3 cursor-pointer transition-all duration-200 animate-slide-up relative ${
+                    selectedContactId === contact.id
+                      ? 'ring-2 ring-blue-500 border-blue-300 bg-blue-50/50'
+                      : 'hover:shadow-lg hover:scale-[1.02]'
+                  }`}
+                  style={{ animationDelay: `${index * 30}ms` }}
+                  onClick={() => setSelectedContactId(contact.id)}
+                >
+                  {/* Header with name and actions */}
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center space-x-2 flex-1 min-w-0">
+                      {/* Compact Avatar */}
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-white" />
+                      </div>
                       
-                      {/* Enhanced Role Display */}
-                      {contact.job_title && contact.company ? (
-                        <div className="flex items-center space-x-1 text-slate-600 mb-1">
-                          <Building className="w-4 h-4 flex-shrink-0" />
-                          <p className="text-sm truncate">
-                            {contact.job_title} at {contact.company}
-                          </p>
-                        </div>
-                      ) : (
-                        formatExperience(contact) && (
-                          <div className="flex items-center space-x-1 text-slate-600 mb-1">
-                            <Briefcase className="w-4 h-4 flex-shrink-0" />
-                            <p className="text-sm truncate">
-                              {formatExperience(contact)}
-                            </p>
-                          </div>
-                        )
-                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-bold text-slate-800 truncate">{contact.name}</h3>
+                      </div>
+                    </div>
 
-                      {/* Education Display */}
-                      {formatEducation(contact) && (
-                        <div className="flex items-center space-x-1 text-slate-500 text-xs mb-1">
-                          <GraduationCap className="w-3 h-3 flex-shrink-0" />
-                          <p className="truncate">{formatEducation(contact)}</p>
-                        </div>
-                      )}
+                    {/* Action Buttons */}
+                    <div className="flex gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setEditingContact(contact)
+                          setShowForm(true)
+                        }}
+                        className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
+                        title="Edit contact"
+                      >
+                        <Edit className="w-3 h-3" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDelete(contact.id)
+                        }}
+                        className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-all duration-200"
+                        title="Delete contact"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-1">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setEditingContact(contact)
-                        setShowForm(true)
-                      }}
-                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                      title="Edit contact"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(contact.id)
-                      }}
-                      className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
-                      title="Delete contact"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+                  {/* Role Information - Condensed */}
+                  {contact.job_title && contact.company ? (
+                    <div className="flex items-center space-x-1 text-slate-600 mb-1">
+                      <Building className="w-3 h-3 flex-shrink-0 text-slate-400" />
+                      <p className="text-xs truncate">
+                        {contact.job_title} at {contact.company}
+                      </p>
+                    </div>
+                  ) : (
+                    formatExperience(contact) && (
+                      <div className="flex items-center space-x-1 text-slate-600 mb-1">
+                        <Briefcase className="w-3 h-3 flex-shrink-0 text-slate-400" />
+                        <p className="text-xs truncate">
+                          {formatExperience(contact)}
+                        </p>
+                      </div>
+                    )
+                  )}
 
-                {/* Contact Details */}
-                <div className="space-y-2 mb-3">
-                  {contact.email && (
-                    <div className="flex items-center space-x-2 text-sm text-slate-600">
-                      <Mail className="w-4 h-4 text-slate-400" />
-                      <span className="truncate">{contact.email}</span>
+                  {/* Contact Details - Condensed */}
+                  <div className="space-y-1 mb-2">
+                    {contact.email && (
+                      <div className="flex items-center space-x-1 text-xs text-slate-500">
+                        <Mail className="w-3 h-3 text-slate-400" />
+                        <span className="truncate">{contact.email}</span>
+                      </div>
+                    )}
+                    {contact.phone && (
+                      <div className="flex items-center space-x-1 text-xs text-slate-500">
+                        <Phone className="w-3 h-3 text-slate-400" />
+                        <span>{contact.phone}</span>
+                      </div>
+                    )}
+                    {contact.linkedin_url && (
+                      <div className="flex items-center space-x-1 text-xs text-slate-500">
+                        <Linkedin className="w-3 h-3 text-slate-400" />
+                        <span className="truncate">LinkedIn</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Education - Condensed */}
+                  {formatEducation(contact) && (
+                    <div className="flex items-center space-x-1 text-xs text-slate-500 mb-2">
+                      <GraduationCap className="w-3 h-3 flex-shrink-0 text-slate-400" />
+                      <p className="truncate">{formatEducation(contact)}</p>
                     </div>
                   )}
-                  {contact.phone && (
-                    <div className="flex items-center space-x-2 text-sm text-slate-600">
-                      <Phone className="w-4 h-4 text-slate-400" />
-                      <span>{contact.phone}</span>
+
+                  {/* Mutual Connections - Ultra Compact */}
+                  {contact.mutual_connections && contact.mutual_connections.length > 0 && (
+                    <div className="mb-2">
+                      <div className="flex items-center space-x-1 mb-1">
+                        <Network className="w-3 h-3 text-slate-400" />
+                        <span className="text-xs text-slate-500">
+                          {contact.mutual_connections.length} mutual
+                        </span>
+                      </div>
+                      <MutualConnections
+                        connections={contact.mutual_connections}
+                        contactNameMap={contactNameMap}
+                        onConnectionClick={handleMutualConnectionClick}
+                      />
                     </div>
                   )}
-                  {contact.linkedin_url && (
-                    <div className="flex items-center space-x-2 text-sm text-slate-600">
-                      <Linkedin className="w-4 h-4 text-slate-400" />
-                      <span className="truncate">LinkedIn Profile</span>
+
+                  {/* Linked Jobs - Ultra Compact */}
+                  <div className="mb-2">
+                    <ContactJobLinks contactId={contact.id} compact={true} />
+                  </div>
+
+                  {/* Notes Preview - Condensed */}
+                  {contact.notes && (
+                    <div className="bg-slate-50 rounded p-2 border border-slate-100">
+                      <p className="text-xs text-slate-700 line-clamp-2">{contact.notes}</p>
                     </div>
                   )}
+
+                  {/* Selected Indicator */}
+                  {selectedContactId === contact.id && (
+                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full animate-pulse">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
+                    </div>
+                  )}
+
+                      {/* Selected Indicator */}
+                  {selectedContactId === contact.id && (
+                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full animate-pulse">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
+                    </div>
+                  )}
+
+                  {/* Quick View Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setModalContact(contact)
+                    }}
+                    className="absolute bottom-2 right-2 p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200 opacity-0 group-hover:opacity-100"
+                    title="View full details"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                  </button>
                 </div>
-
-                {/* Mutual Connections with Expandable Functionality */}
-                {contact.mutual_connections && contact.mutual_connections.length > 0 && (
-                  <div className="mb-3">
-                    <MutualConnections
-                      connections={contact.mutual_connections}
-                      contactNameMap={contactNameMap}
-                      onConnectionClick={handleMutualConnectionClick}
-                    />
-                  </div>
-                )}
-
-                {/* Linked Jobs */}
-                <div className="mb-3">
-                  <ContactJobLinks contactId={contact.id} compact={true} />
-                </div>
-
-                {/* Notes Preview */}
-                {contact.notes && (
-                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                    <p className="text-sm text-slate-700 line-clamp-2">{contact.notes}</p>
-                  </div>
-                )}
-
-                {/* Selected Indicator */}
-                {selectedContactId === contact.id && (
-                  <div className="absolute top-4 right-4 w-3 h-3 bg-blue-500 rounded-full animate-pulse">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute"></div>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Interaction Panel */}
+          {/* Right Sidebar - Interaction Panel */}
           {selectedContactId && (
-            <div className="lg:sticky lg:top-4 lg:h-fit">
-              <div className="card p-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <MessageCircle className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">Contact Interactions</h3>
+            <div className="xl:col-span-1">
+              <div className="sticky top-4 space-y-4">
+                {/* Selected Contact Info */}
+                {(() => {
+                  const selectedContact = contacts.find(c => c.id === selectedContactId)
+                  if (!selectedContact) return null
+
+                  return (
+                    <div className="card p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-bold text-slate-800">Quick Actions</h3>
+                        <button
+                          onClick={() => setSelectedContactId(null)}
+                          className="p-1 text-slate-400 hover:text-slate-600 rounded"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">{selectedContact.name}</p>
+                            <p className="text-xs text-slate-600">
+                              {selectedContact.job_title && selectedContact.company
+                                ? `${selectedContact.job_title} at ${selectedContact.company}`
+                                : formatExperience(selectedContact)
+                              }
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col space-y-2">
+                          {selectedContact.email && (
+                            <a
+                              href={`mailto:${selectedContact.email}`}
+                              className="flex items-center space-x-2 text-sm text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-all duration-200"
+                            >
+                              <Mail className="w-4 h-4" />
+                              <span>Send Email</span>
+                            </a>
+                          )}
+                          
+                          {selectedContact.phone && (
+                            <a
+                              href={`tel:${selectedContact.phone}`}
+                              className="flex items-center space-x-2 text-sm text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-all duration-200"
+                            >
+                              <Phone className="w-4 h-4" />
+                              <span>Call</span>
+                            </a>
+                          )}
+                          
+                          {selectedContact.linkedin_url && (
+                            <a
+                              href={selectedContact.linkedin_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center space-x-2 text-sm text-blue-700 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-all duration-200"
+                            >
+                              <Linkedin className="w-4 h-4" />
+                              <span>LinkedIn</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                          
+                          <button
+                            onClick={() => setModalContact(selectedContact)}
+                            className="flex items-center space-x-2 text-sm text-slate-600 hover:text-slate-800 p-2 rounded-lg hover:bg-slate-50 transition-all duration-200"
+                          >
+                            <User className="w-4 h-4" />
+                            <span>View Details</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })()}
+
+                {/* Interaction History */}
+                <div className="card p-4">
+                  <h4 className="font-bold text-slate-800 mb-3 flex items-center space-x-2">
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Recent Interactions</span>
+                  </h4>
+                  <InteractionList contactId={selectedContactId} />
                 </div>
-                <InteractionList contactId={selectedContactId} />
               </div>
             </div>
           )}
