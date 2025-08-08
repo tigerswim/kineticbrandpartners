@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList } from "lucide-react";
+import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList, ExternalLink } from "lucide-react";
 import { createJob, updateJob, Job } from "@/lib/jobs";
 import { supabase } from "@/lib/supabase";
 
@@ -11,6 +11,7 @@ const BLANK = {
   status: "interested" as const,
   salary: "",
   location: "",
+  job_url: "",
   job_description: "",
   notes: "",
 };
@@ -86,6 +87,7 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         status: editingJob.status,
         salary: editingJob.salary || "",
         location: editingJob.location || "",
+        job_url: editingJob.job_url || "",
         job_description: editingJob.job_description || "",
         notes: editingJob.notes || "",
       });
@@ -115,6 +117,7 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         user_id: user.id,
         salary: form.salary || null,
         location: form.location || null,
+        job_url: form.job_url || null,
         job_description: form.job_description || null
       };
 
@@ -257,6 +260,24 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
                   placeholder="e.g., $90,000 - $120,000 or $100k+"
                 />
               </div>
+            </div>
+
+            {/* Job URL */}
+            <div className="form-group">
+              <label className="form-label flex items-center space-x-2">
+                <ExternalLink className="w-4 h-4 text-slate-500" />
+                <span>Job Posting URL</span>
+              </label>
+              <input
+                type="url"
+                value={form.job_url}
+                onChange={handleChange('job_url')}
+                className="input"
+                placeholder="https://company.com/careers/job-posting or LinkedIn job link"
+              />
+              <p className="form-help">
+                Link to the original job posting for easy reference
+              </p>
             </div>
 
             {/* Job Description */}

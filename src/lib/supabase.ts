@@ -48,6 +48,7 @@ export interface Job {
   company: string
   location?: string
   salary?: string
+  job_url?: string
   status: 'interested' | 'applied' | 'interviewing' | 'onhold' | 'offered' | 'rejected'
   applied_date?: string
   job_description?: string

@@ -1,4 +1,4 @@
-// src/lib/csvUtils.ts
+// src/lib/csvUtils.ts - Enhanced with flattened fields
 import { Job, Contact, Interaction } from './supabase'
 import { fetchJobs } from './jobs'
 import { getContacts } from './contacts'
@@ -11,20 +11,97 @@ const DATE_FIELDS = {
   interactions: ['date', 'created_at', 'updated_at']
 }
 
-// CSV Download Functions
+// Enhanced CSV Download Functions with Flattened Fields
 export async function downloadJobsCSV() {
   const jobs = await fetchJobs()
   const csvContent = convertToCSV(jobs, [
-    'id', 'job_title', 'company', 'location', 'salary', 'status', 'applied_date', 'notes'
+    'id', 'job_title', 'company', 'location', 'salary', 'job_url', 'status', 'applied_date', 'job_description', 'notes'
   ])
   downloadCSV(csvContent, 'jobs.csv')
 }
 
 export async function downloadContactsCSV() {
   const contacts = await getContacts()
-  const csvContent = convertToCSV(contacts, [
+  
+  // Find the maximum number of experiences, education entries, and mutual connections
+  const maxExperiences = Math.max(...contacts.map(c => c.experience?.length || 0), 0)
+  const maxEducation = Math.max(...contacts.map(c => c.education?.length || 0), 0)
+  const maxMutualConnections = Math.max(...contacts.map(c => c.mutual_connections?.length || 0), 0)
+  
+  // Create base fields
+  const baseFields = [
     'id', 'name', 'email', 'phone', 'company', 'job_title', 'linkedin_url', 'notes'
-  ])
+  ]
+  
+  // Add flattened experience fields
+  const experienceFields: string[] = []
+  for (let i = 0; i < maxExperiences; i++) {
+    experienceFields.push(
+      `experience_${i + 1}_company`,
+      `experience_${i + 1}_title`,
+      `experience_${i + 1}_start_date`,
+      `experience_${i + 1}_end_date`,
+      `experience_${i + 1}_is_current`,
+      `experience_${i + 1}_description`
+    )
+  }
+  
+  // Add flattened education fields
+  const educationFields: string[] = []
+  for (let i = 0; i < maxEducation; i++) {
+    educationFields.push(
+      `education_${i + 1}_institution`,
+      `education_${i + 1}_degree_and_field`,
+      `education_${i + 1}_year`,
+      `education_${i + 1}_notes`
+    )
+  }
+  
+  // Add flattened mutual connection fields
+  const mutualConnectionFields: string[] = []
+  for (let i = 0; i < maxMutualConnections; i++) {
+    mutualConnectionFields.push(`mutual_connection_${i + 1}`)
+  }
+  
+  const allFields = [...baseFields, ...experienceFields, ...educationFields, ...mutualConnectionFields]
+  
+  // Transform contacts to include flattened fields
+  const flattenedContacts = contacts.map(contact => {
+    const flattened: any = { ...contact }
+    
+    // Flatten experiences
+    if (contact.experience) {
+      contact.experience.forEach((exp, index) => {
+        flattened[`experience_${index + 1}_company`] = exp.company
+        flattened[`experience_${index + 1}_title`] = exp.title
+        flattened[`experience_${index + 1}_start_date`] = exp.start_date
+        flattened[`experience_${index + 1}_end_date`] = exp.end_date || ''
+        flattened[`experience_${index + 1}_is_current`] = exp.is_current
+        flattened[`experience_${index + 1}_description`] = exp.description || ''
+      })
+    }
+    
+    // Flatten education
+    if (contact.education) {
+      contact.education.forEach((edu, index) => {
+        flattened[`education_${index + 1}_institution`] = edu.institution
+        flattened[`education_${index + 1}_degree_and_field`] = edu.degree_and_field
+        flattened[`education_${index + 1}_year`] = edu.year
+        flattened[`education_${index + 1}_notes`] = edu.notes || ''
+      })
+    }
+    
+    // Flatten mutual connections
+    if (contact.mutual_connections) {
+      contact.mutual_connections.forEach((conn, index) => {
+        flattened[`mutual_connection_${index + 1}`] = conn
+      })
+    }
+    
+    return flattened
+  })
+  
+  const csvContent = convertToCSV(flattenedContacts, allFields)
   downloadCSV(csvContent, 'contacts.csv')
 }
 
@@ -37,8 +114,11 @@ export async function downloadInteractionsCSV() {
 }
 
 // Enhanced CSV Upload Functions with Date Conversion
-export function parseCSV(csvText: string): any[] {
-  const lines = csvText.split('\n').filter(line => line.trim())
+export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
+  // Remove BOM character if present
+  const cleanedCsvText = csvText.replace(/^\uFEFF/, '');
+  
+  const lines = cleanedCsvText.split('\n').filter(line => line.trim())
   if (lines.length < 2) return []
 
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
@@ -47,7 +127,7 @@ export function parseCSV(csvText: string): any[] {
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i])
     if (values.length === headers.length) {
-      const row: any = {}
+      let row: any = {}
       headers.forEach((header, index) => {
         let value = values[index]
         
@@ -63,6 +143,12 @@ export function parseCSV(csvText: string): any[] {
         
         row[header] = value
       })
+      
+      // For contacts, reconstruct complex fields from flattened data
+      if (dataType === 'contacts') {
+        row = reconstructContactFromFlattenedData(row, headers)
+      }
+      
       data.push(row)
     }
   }
@@ -70,39 +156,74 @@ export function parseCSV(csvText: string): any[] {
   return data
 }
 
-// Enhanced parseCSV with data type detection for better date conversion
-export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
-  const lines = csvText.split('\n').filter(line => line.trim())
-  if (lines.length < 2) return []
-
-  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
-  const data = []
-  const dateFields = DATE_FIELDS[dataType] || []
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i])
-    if (values.length === headers.length) {
-      const row: any = {}
-      headers.forEach((header, index) => {
-        let value = values[index]
-        
-        // Convert date fields for this specific data type
-        if (dateFields.includes(header) && value && value.trim() !== '') {
-          const convertedDate = convertDateToPostgreSQL(value.trim())
-          if (convertedDate) {
-            value = convertedDate
-          } else {
-            console.warn(`Invalid date format for field "${header}": "${value}". Skipping conversion.`)
-          }
-        }
-        
-        row[header] = value
-      })
-      data.push(row)
-    }
+// Helper function to reconstruct contact from flattened CSV data
+function reconstructContactFromFlattenedData(row: any, headers: string[]) {
+  const contact: any = { ...row }
+  
+  // Reconstruct experiences
+  const experienceHeaders = headers.filter(h => h.startsWith('experience_'))
+  const experienceNumbers = [...new Set(experienceHeaders.map(h => h.split('_')[1]))]
+  
+  if (experienceNumbers.length > 0) {
+    contact.experience = experienceNumbers.map(num => {
+      const exp: any = {
+        id: `temp-${Date.now()}-${num}`,
+        company: row[`experience_${num}_company`] || '',
+        title: row[`experience_${num}_title`] || '',
+        start_date: row[`experience_${num}_start_date`] || '',
+        end_date: row[`experience_${num}_end_date`] || '',
+        is_current: row[`experience_${num}_is_current`] === 'true' || row[`experience_${num}_is_current`] === true,
+        description: row[`experience_${num}_description`] || ''
+      }
+      
+      // Remove empty experiences
+      if (exp.company || exp.title) {
+        return exp
+      }
+      return null
+    }).filter(Boolean)
+    
+    // Clean up flattened fields
+    experienceHeaders.forEach(header => delete contact[header])
   }
-
-  return data
+  
+  // Reconstruct education
+  const educationHeaders = headers.filter(h => h.startsWith('education_'))
+  const educationNumbers = [...new Set(educationHeaders.map(h => h.split('_')[1]))]
+  
+  if (educationNumbers.length > 0) {
+    contact.education = educationNumbers.map(num => {
+      const edu: any = {
+        id: `temp-${Date.now()}-${num}`,
+        institution: row[`education_${num}_institution`] || '',
+        degree_and_field: row[`education_${num}_degree_and_field`] || '',
+        year: row[`education_${num}_year`] || '',
+        notes: row[`education_${num}_notes`] || ''
+      }
+      
+      // Remove empty education entries
+      if (edu.institution || edu.degree_and_field) {
+        return edu
+      }
+      return null
+    }).filter(Boolean)
+    
+    // Clean up flattened fields
+    educationHeaders.forEach(header => delete contact[header])
+  }
+  
+  // Reconstruct mutual connections
+  const mutualConnectionHeaders = headers.filter(h => h.startsWith('mutual_connection_'))
+  if (mutualConnectionHeaders.length > 0) {
+    contact.mutual_connections = mutualConnectionHeaders
+      .map(header => row[header])
+      .filter(conn => conn && conn.trim() !== '')
+    
+    // Clean up flattened fields
+    mutualConnectionHeaders.forEach(header => delete contact[header])
+  }
+  
+  return contact
 }
 
 // Date Conversion Functions

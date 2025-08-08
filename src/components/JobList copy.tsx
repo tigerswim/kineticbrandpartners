@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from 'react'
 import { Job, Contact } from '@/lib/supabase'
 import { fetchJobs, deleteJob } from '@/lib/jobs'
 import { getContacts } from '@/lib/contacts'
-import { getJobContacts } from '@/lib/jobContacts'
 import { 
   Users, 
   Plus, 
@@ -146,129 +145,50 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
 // Contacts Count Badge Component
 interface ContactsBadgeProps {
   jobId: string
+  contactMap: Map<string, Contact>
   onManageContacts: () => void
-  onShowContacts: (contacts: Contact[]) => void
 }
 
-function ContactsBadge({ jobId, onManageContacts, onShowContacts }: ContactsBadgeProps) {
+function ContactsBadge({ jobId, contactMap, onManageContacts }: ContactsBadgeProps) {
   const [showTooltip, setShowTooltip] = useState(false)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [jobContacts, setJobContacts] = useState<Contact[]>([])
-  const [loading, setLoading] = useState(true)
   
-  useEffect(() => {
-    loadJobContacts()
-  }, [jobId])
-
-  const loadJobContacts = async () => {
-    try {
-      setLoading(true)
-      const contacts = await getJobContacts(jobId)
-      setJobContacts(contacts)
-    } catch (error) {
-      console.error('Error loading job contacts:', error)
-      setJobContacts([])
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Get job contacts from the contactMap (this assumes contacts have job associations)
+  // You may need to adjust this based on your actual data structure
+  const jobContacts = Array.from(contactMap.values()).filter(contact => 
+    // Assuming contacts have a job_ids array or similar - adjust as needed
+    contact.job_ids?.includes(jobId)
+  )
 
   const count = jobContacts.length
 
-  const handleBadgeClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (count > 0) {
-      setShowDropdown(!showDropdown)
-    } else {
-      onManageContacts()
-    }
-  }
-
-  if (loading) {
+  if (count === 0) {
     return (
-      <div className="inline-flex items-center space-x-1 px-2 py-1 bg-slate-100 rounded-full text-xs animate-pulse">
-        <Users className="w-3 h-3 text-slate-400" />
-        <div className="w-2 h-3 bg-slate-300 rounded"></div>
-      </div>
+      <button
+        onClick={onManageContacts}
+        className="text-xs text-slate-400 hover:text-blue-600 transition-colors"
+      >
+        Add contacts
+      </button>
     )
   }
 
   return (
     <div className="relative">
       <button
-        onClick={handleBadgeClick}
-        onMouseEnter={() => !showDropdown && setShowTooltip(true)}
+        onClick={onManageContacts}
+        onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
-          count === 0 
-            ? 'text-slate-400 hover:text-blue-600 hover:bg-blue-50' 
-            : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'
-        }`}
+        className="inline-flex items-center space-x-1 px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-medium hover:bg-blue-100 transition-colors"
       >
         <Users className="w-3 h-3" />
         <span>{count}</span>
       </button>
       
-      {/* Tooltip for quick preview */}
-      {showTooltip && count > 0 && !showDropdown && (
+      {showTooltip && jobContacts.length > 0 && (
         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-slate-800 text-white text-xs rounded-lg whitespace-nowrap z-10">
-          Click to see {count} contact{count !== 1 ? 's' : ''}
+          {jobContacts.slice(0, 3).map(contact => contact.name).join(', ')}
+          {jobContacts.length > 3 && ` +${jobContacts.length - 3} more`}
         </div>
-      )}
-
-      {/* Contact list dropdown */}
-      {showDropdown && count > 0 && (
-        <>
-          <div 
-            className="fixed inset-0 z-20" 
-            onClick={() => setShowDropdown(false)}
-          />
-          <div className="absolute left-0 top-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg py-2 z-30 min-w-[240px] max-w-[300px]">
-            <div className="px-3 py-1 text-xs font-semibold text-slate-600 border-b border-slate-100 mb-1">
-              Contacts ({count})
-            </div>
-            <div className="max-h-48 overflow-y-auto">
-              {jobContacts.map((contact) => (
-                <button
-                  key={contact.id}
-                  onClick={() => {
-                    onShowContacts([contact])
-                    setShowDropdown(false)
-                  }}
-                  className="w-full px-3 py-2 text-left hover:bg-slate-50 transition-colors"
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <User className="w-3 h-3 text-blue-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-slate-900 truncate">{contact.name}</div>
-                      {(contact.job_title || contact.company) && (
-                        <div className="text-xs text-slate-500 truncate">
-                          {contact.job_title && contact.company 
-                            ? `${contact.job_title} at ${contact.company}`
-                            : contact.job_title || contact.company
-                          }
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <div className="border-t border-slate-100 mt-1 pt-1">
-              <button
-                onClick={() => {
-                  onManageContacts()
-                  setShowDropdown(false)
-                }}
-                className="w-full px-3 py-2 text-left text-xs text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                + Manage contacts
-              </button>
-            </div>
-          </div>
-        </>
       )}
     </div>
   )
@@ -778,11 +698,11 @@ export default function JobList() {
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                          <ContactsBadge 
-                            jobId={job.id} 
-                            onManageContacts={() => setManagingContactsForJob(job.id)}
-                            onShowContacts={(contacts) => setSelectedContact(contacts[0])}
-                          />
+                            <ContactsBadge 
+                              jobId={job.id} 
+                              contactMap={contactMap}
+                              onManageContacts={() => setManagingContactsForJob(job.id)}
+                            />
                           </td>
                           <td className="px-4 py-3">
                             <NotesCell notes={job.notes} />

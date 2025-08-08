@@ -29,6 +29,63 @@ export async function getContacts(): Promise<Contact[]> {
   }
 }
 
+// Lightweight list query for faster Network tab: fetch only fields needed for the grid.
+export async function getContactsLite(): Promise<Pick<Contact,
+  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'linkedin_url' | 'notes' | 'created_at' | 'updated_at' | 'user_id'
+>[]> {
+  try {
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      console.error('Error getting user:', userError)
+      return []
+    }
+
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('id,name,company,job_title,email,phone,linkedin_url,notes,created_at,updated_at,user_id')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching contacts (lite):', error)
+      return []
+    }
+
+    return (data as any) || []
+  } catch (error) {
+    console.error('Exception in getContactsLite:', error)
+    return []
+  }
+}
+
+// Fetch full contact by id (used before editing to populate long fields)
+export async function getContactById(id: string): Promise<Contact | null> {
+  try {
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      console.error('Error getting user:', userError)
+      return null
+    }
+
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', user.id)
+      .single()
+
+    if (error) {
+      console.error('Error fetching contact by id:', error)
+      return null
+    }
+
+    return data as unknown as Contact
+  } catch (error) {
+    console.error('Exception in getContactById:', error)
+    return null
+  }
+}
+
 export async function createContact(contact: Omit<Contact, 'id' | 'created_at' | 'updated_at'>): Promise<Contact | null> {
   console.log('=== ENHANCED DEBUG: createContact started ===')
   

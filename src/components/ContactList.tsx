@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { Contact } from '@/lib/supabase'
-import { getContacts, deleteContact } from '@/lib/contacts'
-import { getContactJobs } from '@/lib/jobContacts'
+import { getContactsLite, getContactById, deleteContact } from '@/lib/contacts'
+import { getJobsForContacts } from '@/lib/jobContacts'
 import { 
   Plus, 
   Search, 
@@ -345,6 +345,7 @@ export default function ContactList() {
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [modalContact, setModalContact] = useState<Contact | null>(null)
+  const [contactIdToJobs, setContactIdToJobs] = useState<Record<string, any[]>>({})
 
   useEffect(() => {
     loadContacts()
@@ -352,8 +353,17 @@ export default function ContactList() {
 
   const loadContacts = async () => {
     setLoading(true)
-    const data = await getContacts()
-    setContacts(data)
+    // Fetch a lightweight list first for fast render
+    const data = await getContactsLite()
+    setContacts(data as unknown as Contact[])
+    // Batch fetch linked jobs for all contacts to avoid N+1 queries
+    try {
+      const map = await getJobsForContacts((data as any).map((c: any) => c.id))
+      setContactIdToJobs(map)
+    } catch (e) {
+      console.error('Error fetching jobs for contacts:', e)
+      setContactIdToJobs({})
+    }
     setLoading(false)
   }
 
@@ -390,10 +400,11 @@ export default function ContactList() {
   }
 
   // Handle clicking on mutual connection
-  const handleMutualConnectionClick = (connectionName: string) => {
+  const handleMutualConnectionClick = async (connectionName: string) => {
     const contact = isContactInSystem(connectionName)
     if (contact) {
-      setModalContact(contact)
+      const full = await getContactById(contact.id)
+      setModalContact(full || contact)
     }
   }
 
@@ -616,9 +627,10 @@ export default function ContactList() {
                     {/* Action Buttons */}
                     <div className="flex gap-1">
                       <button
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.stopPropagation()
-                          setEditingContact(contact)
+                          const full = await getContactById(contact.id)
+                          setEditingContact(full || contact)
                           setShowForm(true)
                         }}
                         className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
@@ -705,10 +717,15 @@ export default function ContactList() {
                     </div>
                   )}
 
-                  {/* Linked Jobs - Ultra Compact */}
-                  <div className="mb-2">
-                    <ContactJobLinks contactId={contact.id} compact={true} />
-                  </div>
+                  {/* Linked Jobs - Count Badge only (details load in modal) */}
+                  {contactIdToJobs[contact.id] && contactIdToJobs[contact.id].length > 0 && (
+                    <div className="mb-2">
+                      <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs border border-blue-200">
+                        <Briefcase className="w-3 h-3" />
+                        <span>{contactIdToJobs[contact.id].length} linked job{contactIdToJobs[contact.id].length > 1 ? 's' : ''}</span>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Notes Preview - Condensed */}
                   {contact.notes && (
@@ -723,121 +740,34 @@ export default function ContactList() {
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
                     </div>
                   )}
-
-                      {/* Selected Indicator */}
-                  {selectedContactId === contact.id && (
-                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full animate-pulse">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
-                    </div>
-                  )}
-
-                  {/* Quick View Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setModalContact(contact)
-                    }}
-                    className="absolute bottom-2 right-2 p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200 opacity-0 group-hover:opacity-100"
-                    title="View full details"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                  </button>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Sidebar - Interaction Panel */}
-          {selectedContactId && (
+          {/* Compact Interaction Panel */}
+          {selectedContactId ? (
             <div className="xl:col-span-1">
-              <div className="sticky top-4 space-y-4">
-                {/* Selected Contact Info */}
-                {(() => {
-                  const selectedContact = contacts.find(c => c.id === selectedContactId)
-                  if (!selectedContact) return null
-
-                  return (
-                    <div className="card p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-slate-800">Quick Actions</h3>
-                        <button
-                          onClick={() => setSelectedContactId(null)}
-                          className="p-1 text-slate-400 hover:text-slate-600 rounded"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-sm">{selectedContact.name}</p>
-                            <p className="text-xs text-slate-600">
-                              {selectedContact.job_title && selectedContact.company
-                                ? `${selectedContact.job_title} at ${selectedContact.company}`
-                                : formatExperience(selectedContact)
-                              }
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col space-y-2">
-                          {selectedContact.email && (
-                            <a
-                              href={`mailto:${selectedContact.email}`}
-                              className="flex items-center space-x-2 text-sm text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-all duration-200"
-                            >
-                              <Mail className="w-4 h-4" />
-                              <span>Send Email</span>
-                            </a>
-                          )}
-                          
-                          {selectedContact.phone && (
-                            <a
-                              href={`tel:${selectedContact.phone}`}
-                              className="flex items-center space-x-2 text-sm text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-all duration-200"
-                            >
-                              <Phone className="w-4 h-4" />
-                              <span>Call</span>
-                            </a>
-                          )}
-                          
-                          {selectedContact.linkedin_url && (
-                            <a
-                              href={selectedContact.linkedin_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center space-x-2 text-sm text-blue-700 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-all duration-200"
-                            >
-                              <Linkedin className="w-4 h-4" />
-                              <span>LinkedIn</span>
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          )}
-                          
-                          <button
-                            onClick={() => setModalContact(selectedContact)}
-                            className="flex items-center space-x-2 text-sm text-slate-600 hover:text-slate-800 p-2 rounded-lg hover:bg-slate-50 transition-all duration-200"
-                          >
-                            <User className="w-4 h-4" />
-                            <span>View Details</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })()}
-
-                {/* Interaction History */}
+              <div className="xl:sticky xl:top-4">
                 <div className="card p-4">
-                  <h4 className="font-bold text-slate-800 mb-3 flex items-center space-x-2">
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Recent Interactions</span>
-                  </h4>
-                  <InteractionList contactId={selectedContactId} />
+                  <div className="flex items-center space-x-2 mb-3">
+                    <MessageCircle className="w-4 h-4 text-blue-600" />
+                    <h3 className="text-sm font-semibold text-slate-800">Interactions</h3>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    <InteractionList contactId={selectedContactId} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="xl:col-span-1">
+              <div className="xl:sticky xl:top-4">
+                <div className="card p-4 text-center">
+                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <MessageCircle className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <p className="text-xs text-slate-500">Select a contact to view interactions</p>
                 </div>
               </div>
             </div>

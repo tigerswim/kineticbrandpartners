@@ -1,4 +1,4 @@
-// src/lib/csvUtils.ts - Enhanced with flattened fields
+// src/lib/csvUtils.ts - Enhanced with empty row filtering
 import { Job, Contact, Interaction } from './supabase'
 import { fetchJobs } from './jobs'
 import { getContacts } from './contacts'
@@ -15,7 +15,7 @@ const DATE_FIELDS = {
 export async function downloadJobsCSV() {
   const jobs = await fetchJobs()
   const csvContent = convertToCSV(jobs, [
-    'id', 'job_title', 'company', 'location', 'salary', 'status', 'applied_date', 'job_description', 'notes'
+    'id', 'job_title', 'company', 'location', 'salary', 'job_url', 'status', 'applied_date', 'job_description', 'notes'
   ])
   downloadCSV(csvContent, 'jobs.csv')
 }
@@ -113,12 +113,15 @@ export async function downloadInteractionsCSV() {
   downloadCSV(csvContent, 'interactions.csv')
 }
 
-// Enhanced CSV Upload Functions with Date Conversion
+// Enhanced CSV Upload Functions with Date Conversion and Empty Row Filtering
 export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
   // Remove BOM character if present
   const cleanedCsvText = csvText.replace(/^\uFEFF/, '');
   
-  const lines = cleanedCsvText.split('\n').filter(line => line.trim())
+  const lines = cleanedCsvText.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0) // Remove completely empty lines
+    
   if (lines.length < 2) return []
 
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
@@ -126,34 +129,75 @@ export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contact
 
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i])
-    if (values.length === headers.length) {
-      let row: any = {}
-      headers.forEach((header, index) => {
-        let value = values[index]
-        
-        // Check if this field is a date field and convert if necessary
-        if (isDateField(header) && value && value.trim() !== '') {
-          const convertedDate = convertDateToPostgreSQL(value.trim())
-          if (convertedDate) {
-            value = convertedDate
-          } else {
-            console.warn(`Invalid date format for field "${header}": "${value}". Skipping conversion.`)
-          }
-        }
-        
-        row[header] = value
-      })
+    
+    // Skip if line doesn't have enough values or if all values are empty
+    if (values.length !== headers.length) {
+      console.warn(`Row ${i + 1} has ${values.length} values but expected ${headers.length}. Skipping.`)
+      continue
+    }
+    
+    // Check if the row is empty (all values are empty or just whitespace)
+    const hasNonEmptyValue = values.some(value => value && value.trim() !== '')
+    if (!hasNonEmptyValue) {
+      console.log(`Skipping empty row ${i + 1}`)
+      continue
+    }
+    
+    let row: any = {}
+    headers.forEach((header, index) => {
+      let value = values[index]
       
+      // Check if this field is a date field and convert if necessary
+      if (isDateField(header) && value && value.trim() !== '') {
+        const convertedDate = convertDateToPostgreSQL(value.trim())
+        if (convertedDate) {
+          value = convertedDate
+        } else {
+          console.warn(`Invalid date format for field "${header}": "${value}". Skipping conversion.`)
+        }
+      }
+      
+      row[header] = value
+    })
+    
+    // Additional check: For specific data types, ensure required fields are present
+    if (isValidRowForDataType(row, dataType)) {
       // For contacts, reconstruct complex fields from flattened data
       if (dataType === 'contacts') {
         row = reconstructContactFromFlattenedData(row, headers)
       }
       
       data.push(row)
+    } else {
+      console.log(`Skipping row ${i + 1} - missing required fields for ${dataType}`)
     }
   }
 
   return data
+}
+
+// Helper function to validate if a row has required fields for the data type
+function isValidRowForDataType(row: any, dataType: 'jobs' | 'contacts' | 'interactions'): boolean {
+  switch (dataType) {
+    case 'jobs':
+      // Jobs require at least job_title or company
+      return (row.job_title && row.job_title.trim() !== '') || 
+             (row.company && row.company.trim() !== '')
+    
+    case 'contacts':
+      // Contacts require at least name, email, or company
+      return (row.name && row.name.trim() !== '') || 
+             (row.email && row.email.trim() !== '') || 
+             (row.company && row.company.trim() !== '')
+    
+    case 'interactions':
+      // Interactions require at least contact_id or type
+      return (row.contact_id && row.contact_id.toString().trim() !== '') || 
+             (row.type && row.type.trim() !== '')
+    
+    default:
+      return true
+  }
 }
 
 // Helper function to reconstruct contact from flattened CSV data

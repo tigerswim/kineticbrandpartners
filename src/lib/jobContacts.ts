@@ -10,6 +10,14 @@ export interface JobContact {
   updated_at: string
 }
 
+export interface LinkedJob {
+  id: string
+  job_title: string
+  company: string
+  status: string
+  location: string | null
+}
+
 export async function linkJobToContact(jobId: string, contactId: string): Promise<JobContact | null> {
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser()
@@ -135,5 +143,60 @@ export async function getContactJobs(contactId: string) {
   } catch (error) {
     console.error('Exception in getContactJobs:', error)
     return []
+  }
+}
+
+/**
+ * Batch fetch jobs linked to multiple contacts to avoid N+1 queries.
+ * Returns a map: contact_id -> LinkedJob[]
+ */
+export async function getJobsForContacts(
+  contactIds: string[]
+): Promise<Record<string, LinkedJob[]>> {
+  try {
+    if (!contactIds || contactIds.length === 0) {
+      return {}
+    }
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      console.error('Error getting user:', userError)
+      return {}
+    }
+
+    // Fetch all links for the provided contacts in a single query
+    const { data, error } = await supabase
+      .from('job_contacts')
+      .select(`
+        contact_id,
+        jobs (
+          id,
+          job_title,
+          company,
+          status,
+          location
+        )
+      `)
+      .in('contact_id', contactIds)
+      .eq('user_id', user.id)
+
+    if (error) {
+      console.error('Error fetching jobs for contacts:', error)
+      return {}
+    }
+
+    const map: Record<string, LinkedJob[]> = {}
+    for (const row of data || []) {
+      const cid = (row as any).contact_id as string
+      const job = (row as any).jobs as LinkedJob
+      if (!cid || !job) continue
+      if (!map[cid]) map[cid] = []
+      map[cid].push(job)
+    }
+
+    return map
+  } catch (error) {
+    console.error('Exception in getJobsForContacts:', error)
+    return {}
   }
 }
