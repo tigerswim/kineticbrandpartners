@@ -1,15 +1,16 @@
-// src/components/Reporting.tsx — Fast, RPC-backed, keeps your original look/feel
-
+// src/components/Reporting.tsx - Enhanced Data-Dense Version
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { Contact, Interaction } from '@/lib/supabase'
-import { supabase } from '@/lib/supabase'
-import {
-  BarChart3,
-  Users,
-  MessageCircle,
-  Search,
+import { getContacts } from '@/lib/contacts'
+import { getInteractions } from '@/lib/interactions'
+import { getContactJobs } from '@/lib/jobContacts'
+import { 
+  BarChart3, 
+  Users, 
+  MessageCircle, 
+  Search, 
   Filter,
   ArrowUpDown,
   ArrowUp,
@@ -32,8 +33,6 @@ import {
   Target,
   Eye
 } from 'lucide-react'
-
-/* ----------------------------- Types (unchanged) ---------------------------- */
 
 interface ContactWithJobs extends Contact {
   linkedJobsCount?: number
@@ -63,98 +62,8 @@ interface ContactStats {
 }
 
 type SortDirection = 'asc' | 'desc' | null
-type ContactSortField =
-  | 'name'
-  | 'company'
-  | 'job_title'
-  | 'mutual_connections_count'
-  | 'linkedJobsCount'
-  | 'lastInteraction'
+type ContactSortField = 'name' | 'company' | 'job_title' | 'mutual_connections_count' | 'linkedJobsCount' | 'lastInteraction'
 type InteractionSortField = 'date' | 'contact_name' | 'type' | 'summary'
-
-/* -------------------------- RPC result type shapes -------------------------- */
-
-type RPCContactRow = {
-  contact_id: string
-  name: string | null
-  company: string | null
-  job_title: string | null
-  linked_jobs_count: number
-  last_interaction_date: string | null
-  interaction_count: number
-  mutual_connections_count: number
-}
-
-type RPCRecentInteractionRow = {
-  interaction_id: string
-  date: string
-  type: string
-  summary: string | null
-  notes: string | null
-  contact_id: string
-  contact_name: string | null
-}
-
-type ReportingSort =
-  | 'name'
-  | 'company'
-  | 'job_title'
-  | 'linkedJobsCount'
-  | 'mutual_connections_count'
-  | 'last_interaction'
-type SortDir = 'asc' | 'desc'
-
-/* -------------------------- Minimal RPC call helpers ------------------------ */
-
-async function rpcReportingContacts(params: {
-  userId: string
-  search?: string | null
-  sort?: ReportingSort
-  dir?: SortDir
-  limit?: number
-  offset?: number
-}): Promise<RPCContactRow[]> {
-  const {
-    userId,
-    search = null,
-    sort = 'last_interaction',
-    dir = 'desc',
-    limit = 200, // large enough to keep your on-page sort/filter snappy
-    offset = 0
-  } = params
-
-  const { data, error } = await supabase.rpc('reporting_contacts', {
-    p_user_id: userId,
-    p_search: search,
-    p_sort: sort,
-    p_dir: dir,
-    p_limit: limit,
-    p_offset: offset
-  })
-  if (error) {
-    console.error('reporting_contacts RPC error:', error)
-    return []
-  }
-  return (data ?? []) as RPCContactRow[]
-}
-
-async function rpcReportingRecentInteractions(params: {
-  userId: string
-  limit?: number
-}): Promise<RPCRecentInteractionRow[]> {
-  const { userId, limit = 100 } = params
-  const { data, error } = await supabase.rpc('reporting_recent_interactions', {
-    p_user_id: userId,
-    p_limit: limit
-  })
-  if (error) {
-    console.error('reporting_recent_interactions RPC error:', error)
-    return []
-  }
-  return (data ?? []) as RPCRecentInteractionRow[]
-}
-
-/* --------------------------------- Modals ---------------------------------- */
 
 interface ContactModalProps {
   contact: Contact
@@ -189,6 +98,7 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
         {/* Content */}
         <div className="p-6 overflow-y-auto max-h-[calc(80vh-80px)]">
           <div className="space-y-6">
+            {/* Current Role */}
             {(contact.job_title || contact.company) && (
               <div>
                 <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
@@ -197,14 +107,16 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
                 </h3>
                 <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
                   <p className="font-medium">
-                    {contact.job_title && contact.company
+                    {contact.job_title && contact.company 
                       ? `${contact.job_title} at ${contact.company}`
-                      : contact.job_title || contact.company}
+                      : contact.job_title || contact.company
+                    }
                   </p>
                 </div>
               </div>
             )}
 
+            {/* Contact Information */}
             <div>
               <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
                 <Mail className="w-4 h-4" />
@@ -226,9 +138,9 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
                 {contact.linkedin_url && (
                   <div className="flex items-center space-x-2 text-sm">
                     <Linkedin className="w-4 h-4 text-slate-400" />
-                    <a
-                      href={contact.linkedin_url}
-                      target="_blank"
+                    <a 
+                      href={contact.linkedin_url} 
+                      target="_blank" 
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800 flex items-center space-x-1"
                     >
@@ -240,6 +152,7 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
               </div>
             </div>
 
+            {/* Mutual Connections */}
             {contact.mutual_connections && contact.mutual_connections.length > 0 && (
               <div>
                 <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
@@ -261,6 +174,7 @@ function ContactModal({ contact, onClose }: ContactModalProps) {
               </div>
             )}
 
+            {/* Notes */}
             {contact.notes && (
               <div>
                 <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
@@ -295,6 +209,7 @@ function InteractionModal({ interaction, onClose }: InteractionModalProps) {
       default: return MessageCircle
     }
   }
+
   const Icon = getInteractionIcon(interaction.type)
 
   return (
@@ -326,6 +241,7 @@ function InteractionModal({ interaction, onClose }: InteractionModalProps) {
         {/* Content */}
         <div className="p-6">
           <div className="space-y-6">
+            {/* Interaction Summary */}
             <div>
               <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
                 <MessageCircle className="w-4 h-4" />
@@ -336,6 +252,7 @@ function InteractionModal({ interaction, onClose }: InteractionModalProps) {
               </div>
             </div>
 
+            {/* Interaction Details */}
             <div>
               <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
                 <Clock className="w-4 h-4" />
@@ -355,6 +272,7 @@ function InteractionModal({ interaction, onClose }: InteractionModalProps) {
               </div>
             </div>
 
+            {/* Notes */}
             {interaction.notes && (
               <div>
                 <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
@@ -373,8 +291,7 @@ function InteractionModal({ interaction, onClose }: InteractionModalProps) {
   )
 }
 
-/* ------------------------------ Stats card UI ------------------------------ */
-
+// Enhanced Stats Card Component
 interface StatsCardProps {
   title: string
   value: string | number
@@ -392,11 +309,9 @@ function StatsCard({ title, value, subtitle, icon: Icon, trend, color }: StatsCa
           <Icon className="w-4 h-4 text-white" />
         </div>
         {trend && (
-          <div
-            className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
-              trend.isPositive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-            }`}
-          >
+          <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
+            trend.isPositive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+          }`}>
             <TrendingUp className={`w-3 h-3 ${trend.isPositive ? '' : 'rotate-180'}`} />
             <span>{Math.abs(trend.value)}%</span>
           </div>
@@ -411,8 +326,7 @@ function StatsCard({ title, value, subtitle, icon: Icon, trend, color }: StatsCa
   )
 }
 
-/* ------------------------------- Quick actions ------------------------------ */
-
+// Quick Actions Component
 function QuickActions() {
   return (
     <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm p-4">
@@ -435,205 +349,193 @@ function QuickActions() {
   )
 }
 
-/* ------------------------------- Main component ----------------------------- */
-
 export default function Reporting() {
   const [contacts, setContacts] = useState<ContactWithJobs[]>([])
   const [interactions, setInteractions] = useState<InteractionWithContact[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeSection, setActiveSection] =
-    useState<'overview' | 'contacts' | 'interactions'>('overview')
-
+  const [activeSection, setActiveSection] = useState<'overview' | 'contacts' | 'interactions'>('overview')
+  
   // Search and filter states
   const [contactSearch, setContactSearch] = useState('')
   const [interactionSearch, setInteractionSearch] = useState('')
-
+  
   // Sort states
-  const [contactSort, setContactSort] =
-    useState<{ field: ContactSortField; direction: SortDirection }>({
-      field: 'name',
-      direction: 'asc'
-    })
-  const [interactionSort, setInteractionSort] =
-    useState<{ field: InteractionSortField; direction: SortDirection }>({
-      field: 'date',
-      direction: 'desc'
-    })
-
+  const [contactSort, setContactSort] = useState<{ field: ContactSortField; direction: SortDirection }>({ field: 'name', direction: 'asc' })
+  const [interactionSort, setInteractionSort] = useState<{ field: InteractionSortField; direction: SortDirection }>({ field: 'date', direction: 'desc' })
+  
   // Modal states
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
-  const [selectedInteraction, setSelectedInteraction] =
-    useState<InteractionWithContact | null>(null)
+  const [selectedInteraction, setSelectedInteraction] = useState<InteractionWithContact | null>(null)
 
   // Stats
   const [contactStats, setContactStats] = useState<ContactStats | null>(null)
-  const [interactionStats, setInteractionStats] =
-    useState<InteractionStats | null>(null)
+  const [interactionStats, setInteractionStats] = useState<InteractionStats | null>(null)
 
-  // Load with RPCs (fast) but keep the same UI
   useEffect(() => {
-    let mounted = true
-    async function loadReportingData() {
-      setLoading(true)
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!mounted || !user) { setLoading(false); return }
+    loadReportingData()
+  }, [])
 
+  const loadReportingData = async () => {
+    setLoading(true)
+    try {
       const [contactsData, interactionsData] = await Promise.all([
-        rpcReportingContacts({
-          userId: user.id,
-          // initial view: last interaction desc
-          sort: 'last_interaction',
-          dir: 'desc',
-          limit: 400, // enough for UI sorting/filtering
-          offset: 0
-        }),
-        rpcReportingRecentInteractions({ userId: user.id, limit: 200 })
+        getContacts(),
+        getInteractions()
       ])
 
-      // Map to your existing shapes
-      const mappedContacts: ContactWithJobs[] = contactsData.map((r) => ({
-        id: r.contact_id,
-        name: r.name ?? '',
-        company: r.company ?? undefined,
-        job_title: r.job_title ?? undefined,
-        email: undefined,
-        phone: undefined,
-        linkedin_url: undefined,
-        notes: undefined,
-        experience: [],
-        education: [],
-        mutual_connections: [], // you show counts elsewhere
-        user_id: user.id,
-        created_at: '',
-        updated_at: '',
-        linkedJobsCount: r.linked_jobs_count,
-        lastInteractionDate: r.last_interaction_date ?? undefined,
-        interactionCount: r.interaction_count
-      }))
+      // Enhance contacts with job information and interaction data
+      const enhancedContacts = await Promise.all(
+        contactsData.map(async (contact) => {
+          const linkedJobs = await getContactJobs(contact.id)
+          const contactInteractions = interactionsData.filter(int => int.contact_id === contact.id)
+          const lastInteraction = contactInteractions.length > 0 
+            ? contactInteractions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0]
+            : null
 
-      const mappedInteractions: InteractionWithContact[] = interactionsData.map((r) => ({
-        id: r.interaction_id,
-        contact_id: r.contact_id,
-        type: r.type as Interaction['type'],
-        date: r.date,
-        summary: r.summary ?? '',
-        notes: r.notes ?? undefined,
-        user_id: user.id,
-        created_at: '',
-        updated_at: '',
-        contact: {
-          id: r.contact_id,
-          name: r.contact_name ?? 'Unknown Contact',
-          user_id: user.id,
-          created_at: '',
-          updated_at: '',
-          mutual_connections: [],
-          experience: [],
-          education: []
-        } as Contact
-      }))
+          return {
+            ...contact,
+            linkedJobs,
+            linkedJobsCount: linkedJobs.length,
+            lastInteractionDate: lastInteraction?.date,
+            interactionCount: contactInteractions.length
+          }
+        })
+      )
 
-      // Stats derived client-side (same visuals)
+      // Enhance interactions with contact information
+      const enhancedInteractions = interactionsData.map(interaction => {
+        const contact = contactsData.find(c => c.id === interaction.contact_id)
+        return {
+          ...interaction,
+          contact
+        }
+      })
+
+      // Calculate stats
       const now = new Date()
-      const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-      const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+      const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
       const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0)
 
-      const thisMonthCount = mappedInteractions.filter(i => new Date(i.date) >= thisMonthStart).length
-      const lastMonthCount = mappedInteractions.filter(i => {
-        const d = new Date(i.date)
-        return d >= lastMonthStart && d <= lastMonthEnd
-      }).length
+      const thisMonthInteractions = enhancedInteractions.filter(int => 
+        new Date(int.date) >= thisMonth
+      ).length
 
-      const byType = mappedInteractions.reduce((acc, i) => {
-        acc[i.type] = (acc[i.type] || 0) + 1
-        return acc
-      }, {} as Record<string, number>)
+      const lastMonthInteractions = enhancedInteractions.filter(int => 
+        new Date(int.date) >= lastMonth && new Date(int.date) <= lastMonthEnd
+      ).length
 
-      const companyCounts = mappedContacts.reduce((acc, c) => {
-        if (c.company) acc[c.company] = (acc[c.company] || 0) + 1
+      const interactionsByType = enhancedInteractions.reduce((acc, int) => {
+        acc[int.type] = (acc[int.type] || 0) + 1
         return acc
-      }, {} as Record<string, number>)
+      }, {} as { [key: string]: number })
+
+      const companyCounts = enhancedContacts.reduce((acc, contact) => {
+        if (contact.company) {
+          acc[contact.company] = (acc[contact.company] || 0) + 1
+        }
+        return acc
+      }, {} as { [key: string]: number })
 
       const topCompanies = Object.entries(companyCounts)
-        .sort((a, b) => b[1] - a[1])
+        .sort(([,a], [,b]) => b - a)
         .slice(0, 5)
         .map(([company, count]) => ({ company, count }))
 
       setContactStats({
-        totalContacts: mappedContacts.length,
-        withJobs: mappedContacts.filter(c => (c.linkedJobsCount || 0) > 0).length,
-        withMutualConnections: 0,
+        totalContacts: enhancedContacts.length,
+        withJobs: enhancedContacts.filter(c => (c.linkedJobsCount || 0) > 0).length,
+        withMutualConnections: enhancedContacts.filter(c => c.mutual_connections && c.mutual_connections.length > 0).length,
         topCompanies,
-        recentContacts: mappedContacts.slice(0, 5)
+        recentContacts: enhancedContacts
+          .filter(c => c.created_at)
+          .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())
+          .slice(0, 5)
       })
 
       setInteractionStats({
-        totalInteractions: mappedInteractions.length,
-        thisMonth: thisMonthCount,
-        lastMonth: lastMonthCount,
-        byType,
-        recentActivity: mappedInteractions
+        totalInteractions: enhancedInteractions.length,
+        thisMonth: thisMonthInteractions,
+        lastMonth: lastMonthInteractions,
+        byType: interactionsByType,
+        recentActivity: enhancedInteractions
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .slice(0, 8)
       })
 
-      if (mounted) {
-        setContacts(mappedContacts)
-        setInteractions(mappedInteractions)
-        setLoading(false)
-      }
+      setContacts(enhancedContacts)
+      setInteractions(enhancedInteractions)
+    } catch (error) {
+      console.error('Error loading reporting data:', error)
+    } finally {
+      setLoading(false)
     }
-    loadReportingData()
-    return () => { mounted = false }
-  }, [])
+  }
 
-  /* ---------------------- Filtering/sorting (unchanged) --------------------- */
-
+  // Contact filtering and sorting
   const filteredAndSortedContacts = useMemo(() => {
-    let filtered = [...contacts]
+    let filtered = contacts
+
     if (contactSearch.trim()) {
       const search = contactSearch.toLowerCase()
       filtered = filtered.filter(contact =>
         contact.name.toLowerCase().includes(search) ||
         (contact.company && contact.company.toLowerCase().includes(search)) ||
         (contact.job_title && contact.job_title.toLowerCase().includes(search)) ||
-        (contact.mutual_connections && contact.mutual_connections.some(conn =>
+        (contact.mutual_connections && contact.mutual_connections.some(conn => 
           conn.toLowerCase().includes(search)
         ))
       )
     }
+
+    // Sort contacts
     if (contactSort.field && contactSort.direction) {
       filtered.sort((a, b) => {
         let aValue: any
         let bValue: any
+
         switch (contactSort.field) {
           case 'name':
-            aValue = a.name.toLowerCase(); bValue = b.name.toLowerCase(); break
+            aValue = a.name.toLowerCase()
+            bValue = b.name.toLowerCase()
+            break
           case 'company':
-            aValue = (a.company || '').toLowerCase(); bValue = (b.company || '').toLowerCase(); break
+            aValue = (a.company || '').toLowerCase()
+            bValue = (b.company || '').toLowerCase()
+            break
           case 'job_title':
-            aValue = (a.job_title || '').toLowerCase(); bValue = (b.job_title || '').toLowerCase(); break
+            aValue = (a.job_title || '').toLowerCase()
+            bValue = (b.job_title || '').toLowerCase()
+            break
           case 'mutual_connections_count':
-            aValue = a.mutual_connections?.length || 0; bValue = b.mutual_connections?.length || 0; break
+            aValue = a.mutual_connections?.length || 0
+            bValue = b.mutual_connections?.length || 0
+            break
           case 'linkedJobsCount':
-            aValue = a.linkedJobsCount || 0; bValue = b.linkedJobsCount || 0; break
+            aValue = a.linkedJobsCount || 0
+            bValue = b.linkedJobsCount || 0
+            break
           case 'lastInteraction':
             aValue = a.lastInteractionDate ? new Date(a.lastInteractionDate) : new Date(0)
             bValue = b.lastInteractionDate ? new Date(b.lastInteractionDate) : new Date(0)
             break
-          default: return 0
+          default:
+            return 0
         }
+
         if (aValue < bValue) return contactSort.direction === 'asc' ? -1 : 1
         if (aValue > bValue) return contactSort.direction === 'asc' ? 1 : -1
         return 0
       })
     }
+
     return filtered
   }, [contacts, contactSearch, contactSort])
 
+  // Interaction filtering and sorting
   const filteredAndSortedInteractions = useMemo(() => {
-    let filtered = [...interactions]
+    let filtered = interactions
+
     if (interactionSearch.trim()) {
       const search = interactionSearch.toLowerCase()
       filtered = filtered.filter(interaction =>
@@ -643,23 +545,40 @@ export default function Reporting() {
         (interaction.notes && interaction.notes.toLowerCase().includes(search))
       )
     }
+
+    // Sort interactions
     if (interactionSort.field && interactionSort.direction) {
       filtered.sort((a, b) => {
         let aValue: any
         let bValue: any
+
         switch (interactionSort.field) {
-          case 'date': aValue = new Date(a.date); bValue = new Date(b.date); break
+          case 'date':
+            aValue = new Date(a.date)
+            bValue = new Date(b.date)
+            break
           case 'contact_name':
-            aValue = (a.contact?.name || '').toLowerCase(); bValue = (b.contact?.name || '').toLowerCase(); break
-          case 'type': aValue = a.type.toLowerCase(); bValue = b.type.toLowerCase(); break
-          case 'summary': aValue = a.summary.toLowerCase(); bValue = b.summary.toLowerCase(); break
-          default: return 0
+            aValue = (a.contact?.name || '').toLowerCase()
+            bValue = (b.contact?.name || '').toLowerCase()
+            break
+          case 'type':
+            aValue = a.type.toLowerCase()
+            bValue = b.type.toLowerCase()
+            break
+          case 'summary':
+            aValue = a.summary.toLowerCase()
+            bValue = b.summary.toLowerCase()
+            break
+          default:
+            return 0
         }
+
         if (aValue < bValue) return interactionSort.direction === 'asc' ? -1 : 1
         if (aValue > bValue) return interactionSort.direction === 'asc' ? 1 : -1
         return 0
       })
     }
+
     return filtered
   }, [interactions, interactionSearch, interactionSort])
 
@@ -669,16 +588,19 @@ export default function Reporting() {
       direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
     }))
   }
+
   const handleInteractionSort = (field: InteractionSortField) => {
     setInteractionSort(prev => ({
       field,
       direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
     }))
   }
+
   const getSortIcon = (field: string, currentSort: { field: string; direction: SortDirection }) => {
     if (currentSort.field !== field) return <ArrowUpDown className="w-4 h-4" />
     return currentSort.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
   }
+
   const getInteractionIcon = (type: string) => {
     switch (type) {
       case 'email': return <Mail className="w-4 h-4" />
@@ -689,6 +611,7 @@ export default function Reporting() {
       default: return <MessageCircle className="w-4 h-4" />
     }
   }
+
   const getInteractionTypeColor = (type: string) => {
     switch (type) {
       case 'email': return 'bg-blue-100 text-blue-700'
@@ -726,7 +649,6 @@ export default function Reporting() {
     )
   }
 
-  /* ----------------------------------- UI ---------------------------------- */
   return (
     <>
       <div className="space-y-4 animate-fade-in">
@@ -739,8 +661,8 @@ export default function Reporting() {
           <button
             onClick={() => setActiveSection('overview')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              activeSection === 'overview'
-                ? 'bg-purple-100 text-purple-700'
+              activeSection === 'overview' 
+                ? 'bg-purple-100 text-purple-700' 
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
@@ -749,7 +671,7 @@ export default function Reporting() {
           </button>
         </div>
 
-        {/* Section navigation */}
+        {/* Compact Section Navigation */}
         <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
           <div className="grid grid-cols-3 divide-x divide-slate-200/60">
             <button
@@ -805,10 +727,10 @@ export default function Reporting() {
           </div>
         </div>
 
-        {/* Overview */}
+        {/* Overview Section */}
         {activeSection === 'overview' && (
           <div className="space-y-4">
-            {/* KPIs */}
+            {/* Key Metrics Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <StatsCard
                 title="Total Contacts"
@@ -817,6 +739,7 @@ export default function Reporting() {
                 icon={Users}
                 color="from-blue-500 to-blue-600"
               />
+              
               <StatsCard
                 title="With Job Links"
                 value={contactStats?.withJobs || 0}
@@ -824,19 +747,20 @@ export default function Reporting() {
                 icon={Briefcase}
                 color="from-green-500 to-green-600"
               />
+              
               <StatsCard
                 title="This Month"
                 value={interactionStats?.thisMonth || 0}
                 subtitle="Interactions"
                 icon={Activity}
                 trend={{
-                  value: interactionStats?.lastMonth
-                    ? Math.round(((interactionStats.thisMonth - interactionStats.lastMonth) / interactionStats.lastMonth) * 100)
-                    : 0,
+                  value: interactionStats?.lastMonth ? 
+                    Math.round(((interactionStats.thisMonth - interactionStats.lastMonth) / interactionStats.lastMonth) * 100) : 0,
                   isPositive: (interactionStats?.thisMonth || 0) >= (interactionStats?.lastMonth || 0)
                 }}
                 color="from-purple-500 to-purple-600"
               />
+              
               <StatsCard
                 title="Connected"
                 value={contactStats?.withMutualConnections || 0}
@@ -846,9 +770,9 @@ export default function Reporting() {
               />
             </div>
 
-            {/* Dashboard grid */}
+            {/* Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {/* Recent Activity (unchanged) */}
+              {/* Recent Activity */}
               <div className="lg:col-span-2 bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
                 <div className="p-4 border-b border-slate-200/60">
                   <h3 className="font-semibold text-slate-800 flex items-center space-x-2">
@@ -866,9 +790,7 @@ export default function Reporting() {
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-3">
-                            <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center ${getInteractionTypeColor(interaction.type)}`}
-                            >
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${getInteractionTypeColor(interaction.type)}`}>
                               {getInteractionIcon(interaction.type)}
                             </div>
                             <div className="min-w-0 flex-1">
@@ -877,21 +799,17 @@ export default function Reporting() {
                                   {interaction.contact?.name || 'Unknown'}
                                 </span>
                                 <span className="text-xs text-slate-500">•</span>
-                                <span
-                                  className={`text-xs px-2 py-1 rounded-full font-medium ${getInteractionTypeColor(
-                                    interaction.type
-                                  )}`}
-                                >
+                                <span className={`text-xs px-2 py-1 rounded-full font-medium ${getInteractionTypeColor(interaction.type)}`}>
                                   {interaction.type.replace('_', ' ')}
                                 </span>
                               </div>
-                              <p className="text-sm text-slate-600 truncate mt-0.5">{interaction.summary}</p>
+                              <p className="text-sm text-slate-600 truncate mt-0.5">
+                                {interaction.summary}
+                              </p>
                             </div>
                           </div>
                           <div className="text-xs text-slate-500 text-right">
-                            <div>
-                              {new Date(interaction.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                            </div>
+                            <div>{new Date(interaction.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
                           </div>
                         </div>
                       </div>
@@ -900,7 +818,7 @@ export default function Reporting() {
                 </div>
               </div>
 
-              {/* Right column: Top Companies + Interaction Types (restored) */}
+              {/* Sidebar Stats */}
               <div className="space-y-4">
                 {/* Top Companies */}
                 <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm p-4">
@@ -909,29 +827,24 @@ export default function Reporting() {
                     <span>Top Companies</span>
                   </h3>
                   <div className="space-y-2">
-                    {(contactStats?.topCompanies || []).map((item) => (
+                    {contactStats?.topCompanies.map((item, idx) => (
                       <div key={item.company} className="flex items-center justify-between">
                         <span className="text-sm text-slate-700 truncate">{item.company}</span>
                         <div className="flex items-center space-x-2">
                           <div className="w-12 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                            <div
+                            <div 
                               className="h-full bg-blue-500 rounded-full transition-all duration-300"
-                              style={{
-                                width: `${(item.count / (contactStats?.totalContacts || 1)) * 100}%`
-                              }}
-                            />
+                              style={{ width: `${(item.count / (contactStats?.totalContacts || 1)) * 100}%` }}
+                            ></div>
                           </div>
                           <span className="text-xs font-medium text-slate-600 w-6 text-right">{item.count}</span>
                         </div>
                       </div>
                     ))}
-                    {(contactStats?.topCompanies?.length ?? 0) === 0 && (
-                      <div className="text-sm text-slate-500">No company data yet.</div>
-                    )}
                   </div>
                 </div>
 
-                {/* Interaction Types */}
+                {/* Interaction Types Breakdown */}
                 <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm p-4">
                   <h3 className="font-semibold text-slate-800 mb-3 flex items-center space-x-2">
                     <MessageSquare className="w-4 h-4" />
@@ -939,21 +852,22 @@ export default function Reporting() {
                   </h3>
                   <div className="space-y-2">
                     {Object.entries(interactionStats?.byType || {})
-                      .sort(([, a], [, b]) => (b as number) - (a as number))
+                      .sort(([,a], [,b]) => b - a)
                       .map(([type, count]) => (
                         <div key={type} className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             {getInteractionIcon(type)}
                             <span className="text-sm text-slate-700 capitalize">{type.replace('_', ' ')}</span>
                           </div>
-                          <span className="text-sm font-medium text-slate-600">{count as number}</span>
+                          <span className="text-sm font-medium text-slate-600">{count}</span>
                         </div>
-                      ))}
-                    {Object.keys(interactionStats?.byType || {}).length === 0 && (
-                      <div className="text-sm text-slate-500">No interactions yet.</div>
-                    )}
+                      ))
+                    }
                   </div>
                 </div>
+
+                {/* Quick Actions */}
+                <QuickActions />
               </div>
             </div>
           </div>
@@ -962,19 +876,19 @@ export default function Reporting() {
         {/* Contacts Section */}
         {activeSection === 'contacts' && (
           <div className="space-y-4">
-            {/* Search */}
+            {/* Search Filter */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search contacts by name, company, title, or mutual connections..."
+                placeholder="Search contacts by name, company, title, or connections..."
                 value={contactSearch}
                 onChange={(e) => setContactSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-white/70 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 text-sm"
               />
             </div>
 
-            {/* Table */}
+            {/* Contacts Table */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -985,7 +899,7 @@ export default function Reporting() {
                           onClick={() => handleContactSort('name')}
                           className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
                         >
-                          <span>Name</span>
+                          <span>Contact</span>
                           {getSortIcon('name', contactSort)}
                         </button>
                       </th>
@@ -994,8 +908,17 @@ export default function Reporting() {
                           onClick={() => handleContactSort('company')}
                           className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
                         >
-                          <span>Title • Company</span>
+                          <span>Role & Company</span>
                           {getSortIcon('company', contactSort)}
+                        </button>
+                      </th>
+                      <th className="px-4 py-3 text-left">
+                        <button
+                          onClick={() => handleContactSort('mutual_connections_count')}
+                          className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
+                        >
+                          <span>Network</span>
+                          {getSortIcon('mutual_connections_count', contactSort)}
                         </button>
                       </th>
                       <th className="px-4 py-3 text-left">
@@ -1003,7 +926,7 @@ export default function Reporting() {
                           onClick={() => handleContactSort('linkedJobsCount')}
                           className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
                         >
-                          <span>Linked jobs</span>
+                          <span>Jobs</span>
                           {getSortIcon('linkedJobsCount', contactSort)}
                         </button>
                       </th>
@@ -1012,77 +935,136 @@ export default function Reporting() {
                           onClick={() => handleContactSort('lastInteraction')}
                           className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
                         >
-                          <span>Last interaction</span>
+                          <span>Last Contact</span>
                           {getSortIcon('lastInteraction', contactSort)}
-                        </button>
-                      </th>
-                      <th className="px-4 py-3 text-left">
-                        <button
-                          onClick={() => handleContactSort('linkedJobsCount')}
-                          className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
-                        >
-                          <span>Interactions</span>
-                          {getSortIcon('linkedJobsCount', contactSort)}
                         </button>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     {filteredAndSortedContacts.map((contact) => (
-                      <tr
-                        key={contact.id}
+                      <tr 
+                        key={contact.id} 
                         className="hover:bg-slate-50/50 cursor-pointer transition-colors"
                         onClick={() => setSelectedContact(contact)}
                       >
                         <td className="px-4 py-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                              <User className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                              <div className="font-medium text-slate-900 hover:text-blue-600 transition-colors text-sm">
+                                {contact.name}
+                              </div>
+                              {contact.email && (
+                                <div className="text-xs text-slate-500 truncate max-w-[150px]">{contact.email}</div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
                           <div className="text-sm">
-                            <div className="font-medium text-slate-900 hover:text-blue-600 transition-colors">
-                              {contact.name || '—'}
-                            </div>
-                            <div className="text-xs text-slate-500">
-                              {contact.email || ''}
-                            </div>
+                            {contact.job_title && (
+                              <div className="font-medium text-slate-900 truncate">{contact.job_title}</div>
+                            )}
+                            {contact.company && (
+                              <div className="text-slate-600 truncate text-xs">{contact.company}</div>
+                            )}
+                            {!contact.job_title && !contact.company && (
+                              <span className="text-slate-400 text-xs">—</span>
+                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="text-sm text-slate-900">
-                            {contact.job_title && <span>{contact.job_title}</span>}
-                            {contact.job_title && contact.company && <span> • </span>}
-                            {contact.company && <span className="text-slate-700">{contact.company}</span>}
-                            {!contact.job_title && !contact.company && <span>—</span>}
+                          <div className="flex items-center space-x-2">
+                            <Network className="w-3 h-3 text-slate-400" />
+                            <span className="text-sm text-slate-600">
+                              {contact.mutual_connections?.length || 0}
+                            </span>
+                            {contact.mutual_connections && contact.mutual_connections.length > 0 && (
+                              <div className="flex -space-x-1">
+                                {contact.mutual_connections.slice(0, 2).map((conn, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="w-5 h-5 bg-blue-100 border border-white rounded-full flex items-center justify-center"
+                                    title={conn}
+                                  >
+                                    <span className="text-xs text-blue-700 font-medium">
+                                      {conn.charAt(0).toUpperCase()}
+                                    </span>
+                                  </div>
+                                ))}
+                                {contact.mutual_connections.length > 2 && (
+                                  <div className="w-5 h-5 bg-slate-100 border border-white rounded-full flex items-center justify-center">
+                                    <span className="text-xs text-slate-600">
+                                      +{contact.mutual_connections.length - 2}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="text-sm text-slate-900">{contact.linkedJobsCount ?? 0}</div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="text-sm text-slate-900">
-                            {contact.lastInteractionDate
-                              ? new Date(contact.lastInteractionDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                              : '—'}
+                          <div className="flex items-center space-x-2">
+                            <Briefcase className="w-3 h-3 text-slate-400" />
+                            <span className="text-sm text-slate-600">
+                              {contact.linkedJobsCount || 0}
+                            </span>
+                            {(contact.linkedJobsCount || 0) > 0 && (
+                              <div className="flex flex-wrap gap-1">
+                                {contact.linkedJobs?.slice(0, 2).map((job, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="inline-block px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-xs truncate max-w-[60px]"
+                                    title={job.company}
+                                  >
+                                    {job.company}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="text-sm text-slate-900">{contact.interactionCount ?? 0}</div>
+                          <div className="text-sm">
+                            {contact.lastInteractionDate ? (
+                              <div>
+                                <div className="text-slate-900 font-medium">
+                                  {new Date(contact.lastInteractionDate).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                  })}
+                                </div>
+                                <div className="text-xs text-slate-500">
+                                  {contact.interactionCount} interaction{(contact.interactionCount || 0) !== 1 ? 's' : ''}
+                                </div>
+                              </div>
+                            ) : (
+                              <span className="text-slate-400 text-xs">Never</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              {filteredAndSortedContacts.length === 0 && (
-                <div className="text-center py-8 text-slate-500">
-                  {contactSearch ? 'No contacts match your search.' : 'No contacts found.'}
-                </div>
-              )}
             </div>
+
+            {filteredAndSortedContacts.length === 0 && (
+              <div className="text-center py-8 text-slate-500">
+                {contactSearch ? 'No contacts match your search.' : 'No contacts found.'}
+              </div>
+            )}
           </div>
         )}
 
         {/* Interactions Section */}
         {activeSection === 'interactions' && (
           <div className="space-y-4">
-            {/* Search */}
+            {/* Search Filter */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <input
@@ -1094,7 +1076,7 @@ export default function Reporting() {
               />
             </div>
 
-            {/* Table */}
+            {/* Interactions Table */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -1140,21 +1122,21 @@ export default function Reporting() {
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     {filteredAndSortedInteractions.map((interaction) => (
-                      <tr
-                        key={interaction.id}
+                      <tr 
+                        key={interaction.id} 
                         className="hover:bg-slate-50/50 cursor-pointer transition-colors"
                         onClick={() => setSelectedInteraction(interaction)}
                       >
                         <td className="px-4 py-3">
                           <div className="text-sm">
                             <div className="font-medium text-slate-900">
-                              {new Date(interaction.date).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric'
+                              {new Date(interaction.date).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric' 
                               })}
                             </div>
                             <div className="text-xs text-slate-500">
-                              {new Date(interaction.date).toLocaleDateString('en-US', {
+                              {new Date(interaction.date).toLocaleDateString('en-US', { 
                                 weekday: 'short'
                               })}
                             </div>
@@ -1193,23 +1175,31 @@ export default function Reporting() {
                   </tbody>
                 </table>
               </div>
-
-              {filteredAndSortedInteractions.length === 0 && (
-                <div className="text-center py-8 text-slate-500">
-                  {interactionSearch ? 'No interactions match your search.' : 'No interactions found.'}
-                </div>
-              )}
             </div>
+
+            {filteredAndSortedInteractions.length === 0 && (
+              <div className="text-center py-8 text-slate-500">
+                {interactionSearch ? 'No interactions match your search.' : 'No interactions found.'}
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Modals */}
+      {/* Contact Modal */}
       {selectedContact && (
-        <ContactModal contact={selectedContact} onClose={() => setSelectedContact(null)} />
+        <ContactModal
+          contact={selectedContact}
+          onClose={() => setSelectedContact(null)}
+        />
       )}
+
+      {/* Interaction Modal */}
       {selectedInteraction && (
-        <InteractionModal interaction={selectedInteraction} onClose={() => setSelectedInteraction(null)} />
+        <InteractionModal
+          interaction={selectedInteraction}
+          onClose={() => setSelectedInteraction(null)}
+        />
       )}
     </>
   )
