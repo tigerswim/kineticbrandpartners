@@ -20,7 +20,6 @@ export async function downloadJobsCSV() {
   ])
   downloadCSV(csvContent, 'jobs.csv')
 }
-// Add these new functions to your csvUtils.ts file
 
 // Function to check for duplicate jobs
 async function checkJobDuplicates(newJobs: any[], userId: string): Promise<{
@@ -258,31 +257,21 @@ export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contact
   // Remove BOM character if present
   const cleanedCsvText = csvText.replace(/^\uFEFF/, '');
   
-  // Split into lines and clean up
-  const lines = cleanedCsvText.split(/\r?\n/)
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    
-  if (lines.length < 2) {
+  // Parse the CSV properly handling quoted multi-line fields
+  const parsedRows = parseCSVWithMultilineSupport(cleanedCsvText);
+  
+  if (parsedRows.length < 2) {
     console.warn('CSV has less than 2 lines (header + at least one data row)')
     return []
   }
 
-  // Parse header line with better error handling
-  const headerLine = lines[0]
-  console.log('Raw header line:', headerLine)
-  
-  let headers: string[]
-  try {
-    headers = parseCSVLine(headerLine).map(h => {
-      // Clean header: remove quotes, trim, convert to lowercase
-      let cleaned = h.trim().replace(/^["']|["']$/g, '').trim()
-      return cleaned.toLowerCase()
-    }).filter(h => h.length > 0) // Remove empty headers
-  } catch (error) {
-    console.error('Error parsing header line:', error)
-    return []
-  }
+  // Get headers and clean them
+  const rawHeaders = parsedRows[0];
+  const headers = rawHeaders.map(h => {
+    // Clean header: remove quotes, trim, convert to lowercase
+    let cleaned = h.trim().replace(/^["']|["']$/g, '').trim()
+    return cleaned.toLowerCase()
+  }).filter(h => h.length > 0) // Remove empty headers
   
   console.log(`Parsing ${dataType} CSV with ${headers.length} headers:`, headers)
   
@@ -290,146 +279,191 @@ export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contact
     console.error('No valid headers found')
     return []
   }
-  
-  const data = []
+
+  const data: any[] = []
   const validStatuses = getValidStatusValues(dataType)
 
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i]
-    if (!line.trim()) {
-      console.log(`Skipping empty line ${i + 1}`)
+  // Process data rows (skip header row)
+  for (let i = 1; i < parsedRows.length; i++) {
+    const values = parsedRows[i];
+    
+    // Skip if row doesn't have any values
+    if (values.length === 0 || values.every(v => !v || v.trim() === '')) {
+      console.log(`Skipping empty row ${i + 1}`)
       continue
     }
     
-    try {
-      const values = parseCSVLine(line)
-      
-      // Skip if line doesn't have any values
-      if (values.length === 0) {
-        console.warn(`Row ${i + 1} is empty, skipping`)
-        continue
+    // Adjust array length to match headers
+    if (values.length < headers.length) {
+      while (values.length < headers.length) {
+        values.push('')
       }
+    } else if (values.length > headers.length) {
+      values.splice(headers.length)
+    }
+    
+    // Parse the row
+    let row: any = {}
+    let hasValidData = false
+    let hasRequiredFields = false
+    
+    headers.forEach((header, index) => {
+      let value = values[index] ? values[index].trim() : ''
       
-      // Strict length check - skip rows that don't match header count closely
-      if (Math.abs(values.length - headers.length) > 2) {
-        console.warn(`Row ${i + 1} has ${values.length} values but expected ~${headers.length}. Likely malformed, skipping.`)
-        continue
-      }
-      
-      // Adjust array length to match headers
-      if (values.length < headers.length) {
-        while (values.length < headers.length) {
-          values.push('')
+      // Convert empty strings and null-like values to appropriate defaults
+      if (value === '' || value === 'null' || value === 'NULL' || value === 'undefined') {
+        // Handle required fields that can't be null
+        if (header === 'status' && dataType === 'jobs') {
+          value = 'Applied' // Default status for jobs
+        } else if (header === 'type' && dataType === 'interactions') {
+          value = 'other' // Default type for interactions
+        } else {
+          value = null
         }
-      } else if (values.length > headers.length) {
-        values.splice(headers.length)
-      }
-      
-      // Parse the row
-      let row: any = {}
-      let hasValidData = false
-      let hasRequiredFields = false
-      
-      headers.forEach((header, index) => {
-        let value = values[index] ? values[index].trim() : ''
+      } else {
+        hasValidData = true
         
-        // Remove surrounding quotes if present
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1).replace(/""/g, '"') // Handle escaped quotes
-        }
-        
-        // Convert empty strings and null-like values to appropriate defaults
-        if (value === '' || value === 'null' || value === 'NULL' || value === 'undefined') {
-          // Handle required fields that can't be null
-          if (header === 'status' && dataType === 'jobs') {
-            value = 'Applied' // Default status for jobs
-          } else if (header === 'type' && dataType === 'interactions') {
-            value = 'other' // Default type for interactions
+        // Validate status field specifically
+        if (header === 'status' && dataType === 'jobs') {
+          const normalizedStatus = value.trim().toLowerCase()
+          const validStatus = validStatuses.find(s => s.toLowerCase() === normalizedStatus)
+          if (validStatus) {
+            value = validStatus // Use the properly cased version
           } else {
+            console.warn(`Row ${i + 1}: Invalid status "${value}". Setting to default "Bookmarked". Valid options: ${validStatuses.join(', ')}`)
+            value = 'Bookmarked' // Set to default instead of null
+          }
+        }
+        
+        // Handle date fields
+        if (isDateField(header, dataType) && value) {
+          const convertedDate = convertDateToPostgreSQL(value)
+          if (convertedDate) {
+            value = convertedDate
+            console.log(`Converted date in field "${header}": "${values[index]}" -> "${convertedDate}"`)
+          } else {
+            console.warn(`Could not convert date format for field "${header}": "${value}". Setting to null.`)
             value = null
           }
-        } else {
-          hasValidData = true
-          
-          // Validate status field specifically
-          if (header === 'status' && dataType === 'jobs') {
-            const normalizedStatus = value.trim().toLowerCase()
-            const validStatus = validStatuses.find(s => s.toLowerCase() === normalizedStatus)
-            if (validStatus) {
-              value = validStatus // Use the properly cased version
-            } else {
-              console.warn(`Row ${i + 1}: Invalid status "${value}". Setting to default "Bookmarked". Valid options: ${validStatuses.join(', ')}`)
-              value = 'Bookmarked' // Set to default instead of null
-            }
-          }
-          
-          // Handle date fields
-          if (isDateField(header, dataType) && value) {
-            const convertedDate = convertDateToPostgreSQL(value)
-            if (convertedDate) {
-              value = convertedDate
-              console.log(`Converted date in field "${header}": "${values[index]}" -> "${convertedDate}"`)
-            } else {
-              console.warn(`Could not convert date format for field "${header}": "${value}". Setting to null.`)
-              value = null
-            }
-          }
-          
-          // Handle boolean fields
-          if (typeof value === 'string') {
-            const lowerValue = value.toLowerCase()
-            if (lowerValue === 'true' || lowerValue === 'false') {
-              value = lowerValue === 'true'
-            }
-          }
-          
-          // Check if this is a required field with valid data
-          if (isRequiredField(header, dataType) && value && value !== null) {
-            hasRequiredFields = true
+        }
+        
+        // Handle boolean fields
+        if (typeof value === 'string') {
+          const lowerValue = value.toLowerCase()
+          if (lowerValue === 'true' || lowerValue === 'false') {
+            value = lowerValue === 'true'
           }
         }
         
-        row[header] = value
-      })
+        // Check if this is a required field with valid data
+        if (isRequiredField(header, dataType) && value && value !== null) {
+          hasRequiredFields = true
+        }
+      }
       
-      // After parsing all fields, ensure required non-null fields have values
-      if (dataType === 'jobs') {
-        // Ensure status is never null for jobs
-        if (!row.status || row.status === null) {
-          row.status = 'Applied'
-          console.log(`Row ${i + 1}: Setting missing status to default "Applied"`)
-        }
-      } else if (dataType === 'interactions') {
-        // Ensure type is never null for interactions
-        if (!row.type || row.type === null) {
-          row.type = 'other'
-          console.log(`Row ${i + 1}: Setting missing interaction type to default "other"`)
-        }
+      row[header] = value
+    })
+    
+    // After parsing all fields, ensure required non-null fields have values
+    if (dataType === 'jobs') {
+      // Ensure status is never null for jobs
+      if (!row.status || row.status === null) {
+        row.status = 'Applied'
+        console.log(`Row ${i + 1}: Setting missing status to default "Applied"`)
       }
-      // Enhanced validation: must have valid data AND required fields
-      if (hasValidData && hasRequiredFields && isValidRowForDataType(row, dataType)) {
-        // For contacts, reconstruct complex fields from flattened data
-        if (dataType === 'contacts') {
-          row = reconstructContactFromFlattenedData(row, headers)
-        }
-        
-        // Clean up the row - remove any fields not expected for this data type
-        row = sanitizeRowForDataType(row, dataType)
-        
-        data.push(row)
-        console.log(`✅ Row ${i + 1} parsed successfully`)
-      } else {
-        console.log(`❌ Skipping row ${i + 1} - insufficient valid data for ${dataType}. HasValidData: ${hasValidData}, HasRequiredFields: ${hasRequiredFields}`)
-        console.log('Row data:', Object.fromEntries(Object.entries(row).slice(0, 3))) // Log first 3 fields for debugging
+    } else if (dataType === 'interactions') {
+      // Ensure type is never null for interactions
+      if (!row.type || row.type === null) {
+        row.type = 'other'
+        console.log(`Row ${i + 1}: Setting missing interaction type to default "other"`)
       }
-    } catch (error) {
-      console.error(`Error parsing row ${i + 1}:`, error)
-      continue
+    }
+
+    // Enhanced validation: must have valid data AND required fields
+    if (hasValidData && hasRequiredFields && isValidRowForDataType(row, dataType)) {
+      // For contacts, reconstruct complex fields from flattened data
+      if (dataType === 'contacts') {
+        row = reconstructContactFromFlattenedData(row, headers)
+      }
+      
+      // Clean up the row - remove any fields not expected for this data type
+      row = sanitizeRowForDataType(row, dataType)
+      
+      data.push(row)
+      console.log(`✅ Row ${i + 1} parsed successfully`)
+    } else {
+      console.log(`❌ Skipping row ${i + 1} - insufficient valid data for ${dataType}. HasValidData: ${hasValidData}, HasRequiredFields: ${hasRequiredFields}`)
+      console.log('Row data:', Object.fromEntries(Object.entries(row).slice(0, 3))) // Log first 3 fields for debugging
     }
   }
 
   console.log(`Successfully parsed ${data.length} valid rows for ${dataType}`)
   return data
+}
+
+// NEW - Add this new function after parseCSVForDataType
+function parseCSVWithMultilineSupport(csvText: string): string[][] {
+  const rows: string[][] = []
+  let currentRow: string[] = []
+  let currentField = ''
+  let inQuotes = false
+  let i = 0
+
+  while (i < csvText.length) {
+    const char = csvText[i]
+    const nextChar = i + 1 < csvText.length ? csvText[i + 1] : null
+
+    if (char === '"') {
+      if (inQuotes) {
+        // Check if this is an escaped quote (doubled quote)
+        if (nextChar === '"') {
+          currentField += '"'
+          i += 2 // Skip both quotes
+          continue
+        } else {
+          // End of quoted field
+          inQuotes = false
+        }
+      } else {
+        // Start of quoted field
+        inQuotes = true
+      }
+    } else if (char === ',' && !inQuotes) {
+      // Field separator outside of quotes
+      currentRow.push(currentField.trim())
+      currentField = ''
+    } else if ((char === '\n' || char === '\r') && !inQuotes) {
+      // End of row outside of quotes
+      currentRow.push(currentField.trim())
+      
+      // Only add non-empty rows
+      if (currentRow.length > 0 && !currentRow.every(field => field === '')) {
+        rows.push(currentRow)
+      }
+      
+      currentRow = []
+      currentField = ''
+      
+      // Handle \r\n line endings
+      if (char === '\r' && nextChar === '\n') {
+        i++ // Skip the \n
+      }
+    } else {
+      // Regular character (including newlines inside quotes)
+      currentField += char
+    }
+    
+    i++
+  }
+  
+  // Add the last field and row if we have data
+  currentRow.push(currentField.trim())
+  if (currentRow.length > 0 && !currentRow.every(field => field === '')) {
+    rows.push(currentRow)
+  }
+  
+  console.log(`Parsed CSV into ${rows.length} rows`)
+  return rows
 }
 
 // Get valid status values for each data type
@@ -471,6 +505,7 @@ function isRequiredField(fieldName: string, dataType: 'jobs' | 'contacts' | 'int
   const required = requiredFields[dataType] || []
   return required.includes(fieldName)
 }
+
 // Sanitize row data to only include expected fields for each data type
 function sanitizeRowForDataType(row: any, dataType: 'jobs' | 'contacts' | 'interactions'): any {
   const allowedFields = {
