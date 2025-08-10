@@ -1,12 +1,13 @@
-// src/lib/csvUtils.ts - Enhanced with empty row filtering
+// src/lib/csvUtils.ts - Enhanced with better empty field handling and validation
 import { Job, Contact, Interaction } from './supabase'
 import { fetchJobs } from './jobs'
 import { getContacts } from './contacts'
 import { getInteractions } from './interactions'
+import { supabase } from './supabase'
 
-// Date field mappings for different data types
+// Date field mappings for different data types - Updated to match actual database schema
 const DATE_FIELDS = {
-  jobs: ['applied_date', 'created_at', 'updated_at'],
+  jobs: ['applied_date', 'date_added', 'created_at', 'updated_at'],
   contacts: ['created_at', 'updated_at'],
   interactions: ['date', 'created_at', 'updated_at']
 }
@@ -19,6 +20,145 @@ export async function downloadJobsCSV() {
   ])
   downloadCSV(csvContent, 'jobs.csv')
 }
+// Add these new functions to your csvUtils.ts file
+
+// Function to check for duplicate jobs
+async function checkJobDuplicates(newJobs: any[], userId: string): Promise<{
+  toInsert: any[]
+  duplicates: any[]
+  duplicateDetails: Array<{job_title: string, company: string, status: string, reason: string}>
+}> {
+  const { data: existingJobs, error } = await supabase
+    .from('jobs')
+    .select('job_title, company, status')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Error fetching existing jobs:', error)
+    return { toInsert: newJobs, duplicates: [], duplicateDetails: [] }
+  }
+
+  const toInsert: any[] = []
+  const duplicates: any[] = []
+  const duplicateDetails: Array<{job_title: string, company: string, status: string, reason: string}> = []
+
+  newJobs.forEach(newJob => {
+    const isDuplicate = existingJobs?.some(existingJob => 
+      existingJob.job_title.toLowerCase().trim() === newJob.job_title.toLowerCase().trim() &&
+      existingJob.company.toLowerCase().trim() === newJob.company.toLowerCase().trim() &&
+      existingJob.status.toLowerCase().trim() === newJob.status.toLowerCase().trim()
+    )
+
+    if (isDuplicate) {
+      duplicates.push(newJob)
+      duplicateDetails.push({
+        job_title: newJob.job_title,
+        company: newJob.company,
+        status: newJob.status,
+        reason: 'Same job title, company, and status already exists'
+      })
+    } else {
+      toInsert.push(newJob)
+    }
+  })
+
+  return { toInsert, duplicates, duplicateDetails }
+}
+
+// Function to check for duplicate contacts
+async function checkContactDuplicates(newContacts: any[], userId: string): Promise<{
+  toInsert: any[]
+  duplicates: any[]
+  duplicateDetails: Array<{name: string, current_role: string, reason: string}>
+}> {
+  const { data: existingContacts, error } = await supabase
+    .from('contacts')
+    .select('name, job_title, company')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Error fetching existing contacts:', error)
+    return { toInsert: newContacts, duplicates: [], duplicateDetails: [] }
+  }
+
+  const toInsert: any[] = []
+  const duplicates: any[] = []
+  const duplicateDetails: Array<{name: string, current_role: string, reason: string}> = []
+
+  newContacts.forEach(newContact => {
+    const newCurrentRole = newContact.job_title && newContact.company 
+      ? `${newContact.job_title} at ${newContact.company}`
+      : newContact.job_title || newContact.company || ''
+
+    const isDuplicate = existingContacts?.some(existingContact => {
+      const existingCurrentRole = existingContact.job_title && existingContact.company
+        ? `${existingContact.job_title} at ${existingContact.company}`
+        : existingContact.job_title || existingContact.company || ''
+
+      return existingContact.name.toLowerCase().trim() === newContact.name.toLowerCase().trim() &&
+             existingCurrentRole.toLowerCase().trim() === newCurrentRole.toLowerCase().trim()
+    })
+
+    if (isDuplicate) {
+      duplicates.push(newContact)
+      duplicateDetails.push({
+        name: newContact.name,
+        current_role: newCurrentRole,
+        reason: 'Same name and current role already exists'
+      })
+    } else {
+      toInsert.push(newContact)
+    }
+  })
+
+  return { toInsert, duplicates, duplicateDetails }
+}
+
+// Function to check for duplicate interactions
+async function checkInteractionDuplicates(newInteractions: any[], userId: string): Promise<{
+  toInsert: any[]
+  duplicates: any[]
+  duplicateDetails: Array<{contact_id: string, date: string, type: string, reason: string}>
+}> {
+  const { data: existingInteractions, error } = await supabase
+    .from('interactions')
+    .select('contact_id, date, type')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Error fetching existing interactions:', error)
+    return { toInsert: newInteractions, duplicates: [], duplicateDetails: [] }
+  }
+
+  const toInsert: any[] = []
+  const duplicates: any[] = []
+  const duplicateDetails: Array<{contact_id: string, date: string, type: string, reason: string}> = []
+
+  newInteractions.forEach(newInteraction => {
+    const isDuplicate = existingInteractions?.some(existingInteraction => 
+      existingInteraction.contact_id === newInteraction.contact_id &&
+      existingInteraction.date === newInteraction.date &&
+      existingInteraction.type.toLowerCase().trim() === newInteraction.type.toLowerCase().trim()
+    )
+
+    if (isDuplicate) {
+      duplicates.push(newInteraction)
+      duplicateDetails.push({
+        contact_id: newInteraction.contact_id,
+        date: newInteraction.date,
+        type: newInteraction.type,
+        reason: 'Same contact, date, and type already exists'
+      })
+    } else {
+      toInsert.push(newInteraction)
+    }
+  })
+
+  return { toInsert, duplicates, duplicateDetails }
+}
+
+// Export the duplicate checking functions
+export { checkJobDuplicates, checkContactDuplicates, checkInteractionDuplicates }
 
 export async function downloadContactsCSV() {
   const contacts = await getContacts()
@@ -113,91 +253,494 @@ export async function downloadInteractionsCSV() {
   downloadCSV(csvContent, 'interactions.csv')
 }
 
-// Enhanced CSV Upload Functions with Date Conversion and Empty Row Filtering
+// Enhanced CSV Upload Functions with Better Empty Field Handling
 export function parseCSVForDataType(csvText: string, dataType: 'jobs' | 'contacts' | 'interactions'): any[] {
   // Remove BOM character if present
   const cleanedCsvText = csvText.replace(/^\uFEFF/, '');
   
-  const lines = cleanedCsvText.split('\n')
+  // Split into lines and clean up
+  const lines = cleanedCsvText.split(/\r?\n/)
     .map(line => line.trim())
-    .filter(line => line.length > 0) // Remove completely empty lines
+    .filter(line => line.length > 0)
     
-  if (lines.length < 2) return []
+  if (lines.length < 2) {
+    console.warn('CSV has less than 2 lines (header + at least one data row)')
+    return []
+  }
 
-  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
+  // Parse header line with better error handling
+  const headerLine = lines[0]
+  console.log('Raw header line:', headerLine)
+  
+  let headers: string[]
+  try {
+    headers = parseCSVLine(headerLine).map(h => {
+      // Clean header: remove quotes, trim, convert to lowercase
+      let cleaned = h.trim().replace(/^["']|["']$/g, '').trim()
+      return cleaned.toLowerCase()
+    }).filter(h => h.length > 0) // Remove empty headers
+  } catch (error) {
+    console.error('Error parsing header line:', error)
+    return []
+  }
+  
+  console.log(`Parsing ${dataType} CSV with ${headers.length} headers:`, headers)
+  
+  if (headers.length === 0) {
+    console.error('No valid headers found')
+    return []
+  }
+  
   const data = []
+  const validStatuses = getValidStatusValues(dataType)
 
   for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i])
-    
-    // Skip if line doesn't have enough values or if all values are empty
-    if (values.length !== headers.length) {
-      console.warn(`Row ${i + 1} has ${values.length} values but expected ${headers.length}. Skipping.`)
+    const line = lines[i]
+    if (!line.trim()) {
+      console.log(`Skipping empty line ${i + 1}`)
       continue
     }
     
-    // Check if the row is empty (all values are empty or just whitespace)
-    const hasNonEmptyValue = values.some(value => value && value.trim() !== '')
-    if (!hasNonEmptyValue) {
-      console.log(`Skipping empty row ${i + 1}`)
-      continue
-    }
-    
-    let row: any = {}
-    headers.forEach((header, index) => {
-      let value = values[index]
+    try {
+      const values = parseCSVLine(line)
       
-      // Check if this field is a date field and convert if necessary
-      if (isDateField(header) && value && value.trim() !== '') {
-        const convertedDate = convertDateToPostgreSQL(value.trim())
-        if (convertedDate) {
-          value = convertedDate
+      // Skip if line doesn't have any values
+      if (values.length === 0) {
+        console.warn(`Row ${i + 1} is empty, skipping`)
+        continue
+      }
+      
+      // Strict length check - skip rows that don't match header count closely
+      if (Math.abs(values.length - headers.length) > 2) {
+        console.warn(`Row ${i + 1} has ${values.length} values but expected ~${headers.length}. Likely malformed, skipping.`)
+        continue
+      }
+      
+      // Adjust array length to match headers
+      if (values.length < headers.length) {
+        while (values.length < headers.length) {
+          values.push('')
+        }
+      } else if (values.length > headers.length) {
+        values.splice(headers.length)
+      }
+      
+      // Parse the row
+      let row: any = {}
+      let hasValidData = false
+      let hasRequiredFields = false
+      
+      headers.forEach((header, index) => {
+        let value = values[index] ? values[index].trim() : ''
+        
+        // Remove surrounding quotes if present
+        if (value.startsWith('"') && value.endsWith('"')) {
+          value = value.slice(1, -1).replace(/""/g, '"') // Handle escaped quotes
+        }
+        
+        // Convert empty strings and null-like values to appropriate defaults
+        if (value === '' || value === 'null' || value === 'NULL' || value === 'undefined') {
+          // Handle required fields that can't be null
+          if (header === 'status' && dataType === 'jobs') {
+            value = 'Applied' // Default status for jobs
+          } else if (header === 'type' && dataType === 'interactions') {
+            value = 'other' // Default type for interactions
+          } else {
+            value = null
+          }
         } else {
-          console.warn(`Invalid date format for field "${header}": "${value}". Skipping conversion.`)
+          hasValidData = true
+          
+          // Validate status field specifically
+          if (header === 'status' && dataType === 'jobs') {
+            const normalizedStatus = value.trim().toLowerCase()
+            const validStatus = validStatuses.find(s => s.toLowerCase() === normalizedStatus)
+            if (validStatus) {
+              value = validStatus // Use the properly cased version
+            } else {
+              console.warn(`Row ${i + 1}: Invalid status "${value}". Setting to default "Bookmarked". Valid options: ${validStatuses.join(', ')}`)
+              value = 'Bookmarked' // Set to default instead of null
+            }
+          }
+          
+          // Handle date fields
+          if (isDateField(header, dataType) && value) {
+            const convertedDate = convertDateToPostgreSQL(value)
+            if (convertedDate) {
+              value = convertedDate
+              console.log(`Converted date in field "${header}": "${values[index]}" -> "${convertedDate}"`)
+            } else {
+              console.warn(`Could not convert date format for field "${header}": "${value}". Setting to null.`)
+              value = null
+            }
+          }
+          
+          // Handle boolean fields
+          if (typeof value === 'string') {
+            const lowerValue = value.toLowerCase()
+            if (lowerValue === 'true' || lowerValue === 'false') {
+              value = lowerValue === 'true'
+            }
+          }
+          
+          // Check if this is a required field with valid data
+          if (isRequiredField(header, dataType) && value && value !== null) {
+            hasRequiredFields = true
+          }
+        }
+        
+        row[header] = value
+      })
+      
+      // After parsing all fields, ensure required non-null fields have values
+      if (dataType === 'jobs') {
+        // Ensure status is never null for jobs
+        if (!row.status || row.status === null) {
+          row.status = 'Applied'
+          console.log(`Row ${i + 1}: Setting missing status to default "Applied"`)
+        }
+      } else if (dataType === 'interactions') {
+        // Ensure type is never null for interactions
+        if (!row.type || row.type === null) {
+          row.type = 'other'
+          console.log(`Row ${i + 1}: Setting missing interaction type to default "other"`)
         }
       }
-      
-      row[header] = value
-    })
-    
-    // Additional check: For specific data types, ensure required fields are present
-    if (isValidRowForDataType(row, dataType)) {
-      // For contacts, reconstruct complex fields from flattened data
-      if (dataType === 'contacts') {
-        row = reconstructContactFromFlattenedData(row, headers)
+      // Enhanced validation: must have valid data AND required fields
+      if (hasValidData && hasRequiredFields && isValidRowForDataType(row, dataType)) {
+        // For contacts, reconstruct complex fields from flattened data
+        if (dataType === 'contacts') {
+          row = reconstructContactFromFlattenedData(row, headers)
+        }
+        
+        // Clean up the row - remove any fields not expected for this data type
+        row = sanitizeRowForDataType(row, dataType)
+        
+        data.push(row)
+        console.log(`✅ Row ${i + 1} parsed successfully`)
+      } else {
+        console.log(`❌ Skipping row ${i + 1} - insufficient valid data for ${dataType}. HasValidData: ${hasValidData}, HasRequiredFields: ${hasRequiredFields}`)
+        console.log('Row data:', Object.fromEntries(Object.entries(row).slice(0, 3))) // Log first 3 fields for debugging
       }
-      
-      data.push(row)
-    } else {
-      console.log(`Skipping row ${i + 1} - missing required fields for ${dataType}`)
+    } catch (error) {
+      console.error(`Error parsing row ${i + 1}:`, error)
+      continue
     }
   }
 
+  console.log(`Successfully parsed ${data.length} valid rows for ${dataType}`)
   return data
 }
 
-// Helper function to validate if a row has required fields for the data type
+// Get valid status values for each data type
+function getValidStatusValues(dataType: 'jobs' | 'contacts' | 'interactions'): string[] {
+  switch (dataType) {
+    case 'jobs':
+      return [
+        'Applied',
+        'Interested', 
+        'Interviewing',
+        'Offer',
+        'Rejected',
+        'Bookmarked',
+        'Withdrawn',
+        'On Hold',
+      ]
+    case 'interactions':
+      return [
+        'email',
+        'phone', 
+        'video_call',
+        'linkedin',
+        'meeting',
+        'other'
+      ]
+    default:
+      return []
+  }
+}
+
+// Check if a field is required for the data type
+function isRequiredField(fieldName: string, dataType: 'jobs' | 'contacts' | 'interactions'): boolean {
+  const requiredFields = {
+    jobs: ['job_title', 'company'],
+    contacts: ['name', 'email'],
+    interactions: ['contact_id', 'type']
+  }
+  
+  const required = requiredFields[dataType] || []
+  return required.includes(fieldName)
+}
+// Sanitize row data to only include expected fields for each data type
+function sanitizeRowForDataType(row: any, dataType: 'jobs' | 'contacts' | 'interactions'): any {
+  const allowedFields = {
+    jobs: [
+      'job_title', 'company', 'location', 'salary', 'job_url', 'status', 
+      'applied_date', 'date_added', 'job_description', 'notes'
+    ],
+    contacts: [
+      'name', 'email', 'phone', 'company', 'job_title', 'linkedin_url', 
+      'notes', 'experience', 'education', 'mutual_connections'
+    ],
+    interactions: [
+      'contact_id', 'type', 'date', 'summary', 'notes'
+    ]
+  }
+  
+  const allowed = allowedFields[dataType] || []
+  const sanitized: any = {}
+  
+  // Only include allowed fields
+  allowed.forEach(field => {
+    if (row.hasOwnProperty(field)) {
+      sanitized[field] = row[field]
+    }
+  })
+  
+  return sanitized
+}
+
+// More robust validation function
 function isValidRowForDataType(row: any, dataType: 'jobs' | 'contacts' | 'interactions'): boolean {
   switch (dataType) {
     case 'jobs':
-      // Jobs require at least job_title or company
-      return (row.job_title && row.job_title.trim() !== '') || 
-             (row.company && row.company.trim() !== '')
+      // Jobs require at least job_title AND company (more strict validation)
+      return !!(row.job_title && row.company)
     
     case 'contacts':
-      // Contacts require at least name, email, or company
-      return (row.name && row.name.trim() !== '') || 
-             (row.email && row.email.trim() !== '') || 
-             (row.company && row.company.trim() !== '')
+      // Contacts require at least name OR email (one meaningful identifier)
+      return !!(row.name || row.email)
     
     case 'interactions':
-      // Interactions require at least contact_id or type
-      return (row.contact_id && row.contact_id.toString().trim() !== '') || 
-             (row.type && row.type.trim() !== '')
+      // Interactions require contact_id AND (type OR summary)
+      return !!(row.contact_id && (row.type || row.summary))
     
     default:
       return true
   }
+}
+
+// Helper function to check if a field is a date field
+function isDateField(fieldName: string, dataType: 'jobs' | 'contacts' | 'interactions'): boolean {
+  if (!fieldName) return false
+
+  const normalizedFieldName = fieldName.toLowerCase().trim()
+  const dateFields = DATE_FIELDS[dataType] || []
+  
+  return dateFields.some(field => field.toLowerCase() === normalizedFieldName)
+}
+
+// Enhanced date conversion with better error handling
+function convertDateToPostgreSQL(dateString: string): string | null {
+  if (!dateString || dateString.trim() === '') {
+    return null
+  }
+
+  const trimmedDate = dateString.trim()
+  
+  // If already in PostgreSQL format (YYYY-MM-DD or YYYY-MM-DD HH:MM:SS), validate and return
+  if (/^\d{4}-\d{2}-\d{2}($|\s\d{2}:\d{2}:\d{2})/.test(trimmedDate)) {
+    try {
+      const testDate = new Date(trimmedDate)
+      if (!isNaN(testDate.getTime())) {
+        return trimmedDate
+      }
+    } catch (e) {
+      // Fall through to other parsing methods
+    }
+  }
+
+  // Try to parse various date formats
+  let parsedDate: Date | null = null
+  
+  // Common date patterns to try (ordered by specificity and likelihood)
+  const datePatterns = [
+    // MM/DD/YYYY formats (American) - most common
+    {
+      regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
+      parser: (match: RegExpMatchArray) => {
+        const month = parseInt(match[1])
+        const day = parseInt(match[2])
+        const year = parseInt(match[3])
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // MM/DD/YY formats (American, 2-digit year)
+    {
+      regex: /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/,
+      parser: (match: RegExpMatchArray) => {
+        const month = parseInt(match[1])
+        const day = parseInt(match[2])
+        let year = parseInt(match[3])
+        
+        // Convert 2-digit year to 4-digit (assuming 20xx for years 00-30, 19xx for 31-99)
+        year = year <= 30 ? 2000 + year : 1900 + year
+        
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // DD/MM/YYYY formats (European) - only if day > 12 to avoid ambiguity
+    {
+      regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
+      parser: (match: RegExpMatchArray) => {
+        const first = parseInt(match[1])
+        const second = parseInt(match[2])
+        const year = parseInt(match[3])
+        
+        // Only interpret as DD/MM if first number > 12 (definitely not a month)
+        if (first > 12 && second >= 1 && second <= 12 && year >= 1900 && year <= 2100) {
+          return new Date(year, second - 1, first)
+        }
+        return null
+      }
+    },
+    // YYYY/MM/DD formats (ISO-like with slashes)
+    {
+      regex: /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/,
+      parser: (match: RegExpMatchArray) => {
+        const year = parseInt(match[1])
+        const month = parseInt(match[2])
+        const day = parseInt(match[3])
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // MM-DD-YYYY formats (with dashes)
+    {
+      regex: /^(\d{1,2})-(\d{1,2})-(\d{4})$/,
+      parser: (match: RegExpMatchArray) => {
+        const month = parseInt(match[1])
+        const day = parseInt(match[2])
+        const year = parseInt(match[3])
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // YYYY-MM-DD formats (ISO standard)
+    {
+      regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/,
+      parser: (match: RegExpMatchArray) => {
+        const year = parseInt(match[1])
+        const month = parseInt(match[2])
+        const day = parseInt(match[3])
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // MM.DD.YYYY formats (with dots)
+    {
+      regex: /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/,
+      parser: (match: RegExpMatchArray) => {
+        const month = parseInt(match[1])
+        const day = parseInt(match[2])
+        const year = parseInt(match[3])
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, day)
+        }
+        return null
+      }
+    },
+    // YYYY-MM formats (month only)
+    {
+      regex: /^(\d{4})-(\d{1,2})$/,
+      parser: (match: RegExpMatchArray) => {
+        const year = parseInt(match[1])
+        const month = parseInt(match[2])
+        if (month >= 1 && month <= 12 && year >= 1900 && year <= 2100) {
+          return new Date(year, month - 1, 1)
+        }
+        return null
+      }
+    },
+    // Month names formats like "Jan 2024", "January 2024"
+    {
+      regex: /^([A-Za-z]{3,9})\s+(\d{4})$/,
+      parser: (match: RegExpMatchArray) => {
+        const monthStr = match[1].toLowerCase()
+        const year = parseInt(match[2])
+        const monthIndex = getMonthIndex(monthStr)
+        
+        if (monthIndex !== -1 && year >= 1900 && year <= 2100) {
+          return new Date(year, monthIndex, 1)
+        }
+        return null
+      }
+    },
+    // ISO 8601 formats with time
+    {
+      regex: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{3}))?(?:Z|[+-]\d{2}:\d{2})?$/,
+      parser: (match: RegExpMatchArray) => {
+        try {
+          const date = new Date(match[0])
+          return !isNaN(date.getTime()) ? date : null
+        } catch {
+          return null
+        }
+      }
+    }
+  ]
+
+  // Try each pattern in order
+  for (const pattern of datePatterns) {
+    const match = trimmedDate.match(pattern.regex)
+    if (match) {
+      try {
+        parsedDate = pattern.parser(match)
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+          break
+        }
+      } catch (e) {
+        // Continue to next pattern
+        continue
+      }
+    }
+  }
+
+  // Convert to PostgreSQL format (YYYY-MM-DD)
+  if (parsedDate && !isNaN(parsedDate.getTime())) {
+    const year = parsedDate.getFullYear()
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0')
+    const day = parsedDate.getDate().toString().padStart(2, '0')
+    
+    // Final validation - make sure the date makes sense
+    if (year >= 1900 && year <= 2100) {
+      return `${year}-${month}-${day}`
+    }
+  }
+
+  return null
+}
+
+// Helper function to get month index from month name
+function getMonthIndex(monthStr: string): number {
+  const monthNames = [
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december'
+  ]
+  const shortMonthNames = [
+    'jan', 'feb', 'mar', 'apr', 'may', 'jun',
+    'jul', 'aug', 'sep', 'oct', 'nov', 'dec'
+  ]
+  
+  const lowerMonth = monthStr.toLowerCase()
+  let monthIndex = monthNames.indexOf(lowerMonth)
+  if (monthIndex === -1) {
+    monthIndex = shortMonthNames.indexOf(lowerMonth)
+  }
+  
+  return monthIndex
 }
 
 // Helper function to reconstruct contact from flattened CSV data
@@ -212,20 +755,25 @@ function reconstructContactFromFlattenedData(row: any, headers: string[]) {
     contact.experience = experienceNumbers.map(num => {
       const exp: any = {
         id: `temp-${Date.now()}-${num}`,
-        company: row[`experience_${num}_company`] || '',
-        title: row[`experience_${num}_title`] || '',
-        start_date: row[`experience_${num}_start_date`] || '',
-        end_date: row[`experience_${num}_end_date`] || '',
+        company: row[`experience_${num}_company`] || null,
+        title: row[`experience_${num}_title`] || null,
+        start_date: row[`experience_${num}_start_date`] || null,
+        end_date: row[`experience_${num}_end_date`] || null,
         is_current: row[`experience_${num}_is_current`] === 'true' || row[`experience_${num}_is_current`] === true,
-        description: row[`experience_${num}_description`] || ''
+        description: row[`experience_${num}_description`] || null
       }
       
-      // Remove empty experiences
+      // Remove empty experiences (only include if company or title exists)
       if (exp.company || exp.title) {
         return exp
       }
       return null
     }).filter(Boolean)
+    
+    // If no valid experiences, set to empty array
+    if (contact.experience.length === 0) {
+      contact.experience = []
+    }
     
     // Clean up flattened fields
     experienceHeaders.forEach(header => delete contact[header])
@@ -239,10 +787,10 @@ function reconstructContactFromFlattenedData(row: any, headers: string[]) {
     contact.education = educationNumbers.map(num => {
       const edu: any = {
         id: `temp-${Date.now()}-${num}`,
-        institution: row[`education_${num}_institution`] || '',
-        degree_and_field: row[`education_${num}_degree_and_field`] || '',
-        year: row[`education_${num}_year`] || '',
-        notes: row[`education_${num}_notes`] || ''
+        institution: row[`education_${num}_institution`] || null,
+        degree_and_field: row[`education_${num}_degree_and_field`] || null,
+        year: row[`education_${num}_year`] || null,
+        notes: row[`education_${num}_notes`] || null
       }
       
       // Remove empty education entries
@@ -251,6 +799,11 @@ function reconstructContactFromFlattenedData(row: any, headers: string[]) {
       }
       return null
     }).filter(Boolean)
+    
+    // If no valid education, set to empty array
+    if (contact.education.length === 0) {
+      contact.education = []
+    }
     
     // Clean up flattened fields
     educationHeaders.forEach(header => delete contact[header])
@@ -270,164 +823,6 @@ function reconstructContactFromFlattenedData(row: any, headers: string[]) {
   return contact
 }
 
-// Date Conversion Functions
-function isDateField(fieldName: string): boolean {
-  const commonDateFields = [
-    'date', 'created_at', 'updated_at', 'applied_date', 'start_date', 'end_date',
-    'birth_date', 'hire_date', 'termination_date', 'interview_date', 'offer_date',
-    'deadline', 'due_date', 'schedule_date', 'follow_up_date'
-  ]
-  
-  return commonDateFields.some(dateField => 
-    fieldName.toLowerCase().includes(dateField.toLowerCase()) ||
-    fieldName.toLowerCase().endsWith('_date') ||
-    fieldName.toLowerCase().endsWith('_at') ||
-    fieldName.toLowerCase() === 'date'
-  )
-}
-
-function convertDateToPostgreSQL(dateString: string): string | null {
-  if (!dateString || dateString.trim() === '') {
-    return null
-  }
-
-  const trimmedDate = dateString.trim()
-  
-  // If already in PostgreSQL format (YYYY-MM-DD or YYYY-MM-DD HH:MM:SS), return as is
-  if (/^\d{4}-\d{2}-\d{2}($|\s\d{2}:\d{2}:\d{2})/.test(trimmedDate)) {
-    return trimmedDate
-  }
-
-  // Try to parse various date formats
-  let parsedDate: Date | null = null
-  
-  // Common date patterns to try
-  const datePatterns = [
-    // MM/DD/YYYY formats
-    {
-      regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
-      parser: (match: RegExpMatchArray) => new Date(parseInt(match[3]), parseInt(match[1]) - 1, parseInt(match[2]))
-    },
-    // DD/MM/YYYY formats (European)
-    {
-      regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
-      parser: (match: RegExpMatchArray) => {
-        // Try DD/MM/YYYY if MM/DD/YYYY doesn't make sense
-        const day = parseInt(match[1])
-        const month = parseInt(match[2])
-        if (day > 12 && month <= 12) {
-          return new Date(parseInt(match[3]), month - 1, day)
-        }
-        return null
-      }
-    },
-    // MM-DD-YYYY formats
-    {
-      regex: /^(\d{1,2})-(\d{1,2})-(\d{4})$/,
-      parser: (match: RegExpMatchArray) => new Date(parseInt(match[3]), parseInt(match[1]) - 1, parseInt(match[2]))
-    },
-    // DD-MM-YYYY formats
-    {
-      regex: /^(\d{1,2})-(\d{1,2})-(\d{4})$/,
-      parser: (match: RegExpMatchArray) => {
-        const day = parseInt(match[1])
-        const month = parseInt(match[2])
-        if (day > 12 && month <= 12) {
-          return new Date(parseInt(match[3]), month - 1, day)
-        }
-        return null
-      }
-    },
-    // YYYY/MM/DD formats
-    {
-      regex: /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/,
-      parser: (match: RegExpMatchArray) => new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]))
-    },
-    // MM.DD.YYYY formats
-    {
-      regex: /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/,
-      parser: (match: RegExpMatchArray) => new Date(parseInt(match[3]), parseInt(match[1]) - 1, parseInt(match[2]))
-    },
-    // YYYY-MM formats (month only)
-    {
-      regex: /^(\d{4})-(\d{1,2})$/,
-      parser: (match: RegExpMatchArray) => new Date(parseInt(match[1]), parseInt(match[2]) - 1, 1)
-    },
-    // Month names formats like "Jan 2024", "January 2024"
-    {
-      regex: /^([A-Za-z]{3,9})\s+(\d{4})$/,
-      parser: (match: RegExpMatchArray) => {
-        const monthNames = [
-          'january', 'february', 'march', 'april', 'may', 'june',
-          'july', 'august', 'september', 'october', 'november', 'december'
-        ]
-        const shortMonthNames = [
-          'jan', 'feb', 'mar', 'apr', 'may', 'jun',
-          'jul', 'aug', 'sep', 'oct', 'nov', 'dec'
-        ]
-        
-        const monthStr = match[1].toLowerCase()
-        let monthIndex = monthNames.indexOf(monthStr)
-        if (monthIndex === -1) {
-          monthIndex = shortMonthNames.indexOf(monthStr)
-        }
-        
-        if (monthIndex !== -1) {
-          return new Date(parseInt(match[2]), monthIndex, 1)
-        }
-        return null
-      }
-    },
-    // ISO 8601 formats
-    {
-      regex: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{3}))?(?:Z|[+-]\d{2}:\d{2})?$/,
-      parser: (match: RegExpMatchArray) => new Date(match[0])
-    }
-  ]
-
-  // Try each pattern
-  for (const pattern of datePatterns) {
-    const match = trimmedDate.match(pattern.regex)
-    if (match) {
-      try {
-        parsedDate = pattern.parser(match)
-        if (parsedDate && !isNaN(parsedDate.getTime())) {
-          break
-        }
-      } catch (e) {
-        // Continue to next pattern
-        continue
-      }
-    }
-  }
-
-  // If no pattern matched, try native Date parsing as last resort
-  if (!parsedDate) {
-    try {
-      parsedDate = new Date(trimmedDate)
-      if (isNaN(parsedDate.getTime())) {
-        parsedDate = null
-      }
-    } catch (e) {
-      parsedDate = null
-    }
-  }
-
-  // Convert to PostgreSQL format (YYYY-MM-DD)
-  if (parsedDate && !isNaN(parsedDate.getTime())) {
-    const year = parsedDate.getFullYear()
-    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0')
-    const day = parsedDate.getDate().toString().padStart(2, '0')
-    
-    // Validate the date makes sense
-    if (year > 1900 && year < 2100 && month >= '01' && month <= '12' && day >= '01' && day <= '31') {
-      return `${year}-${month}-${day}`
-    }
-  }
-
-  return null
-}
-
 // Helper Functions
 function convertToCSV(data: any[], fields: string[]): string {
   if (data.length === 0) return ''
@@ -443,30 +838,46 @@ function convertToCSV(data: any[], fields: string[]): string {
   return [headers, ...rows].join('\n')
 }
 
+// Enhanced CSV line parsing with better quote handling
 function parseCSVLine(line: string): string[] {
-  const result = []
+  const result: string[] = []
   let current = ''
   let inQuotes = false
+  let i = 0
 
-  for (let i = 0; i < line.length; i++) {
+  while (i < line.length) {
     const char = line[i]
     
     if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"'
-        i++
+      if (inQuotes) {
+        // Check if this is an escaped quote (doubled quote)
+        if (i + 1 < line.length && line[i + 1] === '"') {
+          current += '"'
+          i += 2 // Skip both quotes
+          continue
+        } else {
+          // End of quoted field
+          inQuotes = false
+        }
       } else {
-        inQuotes = !inQuotes
+        // Start of quoted field
+        inQuotes = true
       }
     } else if (char === ',' && !inQuotes) {
+      // Field separator outside of quotes
       result.push(current.trim())
       current = ''
     } else {
+      // Regular character
       current += char
     }
+    
+    i++
   }
   
+  // Add the last field
   result.push(current.trim())
+  
   return result
 }
 
@@ -503,7 +914,7 @@ export function validateDateConversions(data: any[], dataType: 'jobs' | 'contact
           validCount++
         } else {
           invalidDates.push({
-            row: index + 1,
+            row: index + 2, // +2 because we skip header row and index is 0-based
             field: field,
             originalValue: row[field]
           })

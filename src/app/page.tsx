@@ -21,32 +21,52 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // src/app/page.tsx (only the auth effect section shown)
+  // Fixed useEffect with proper async handling
   useEffect(() => {
     let mounted = true
 
-    async function loadSession() {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!mounted) return
-      setUser(session?.user ?? null)
-      setLoading(false)
+    async function initializeAuth() {
+      try {
+        // Get initial session
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!mounted) return
+        
+        setUser(session?.user ?? null)
+        setLoading(false)
+
+        // Set up auth state listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          (_event, session) => {
+            if (!mounted) return
+            setUser(session?.user ?? null)
+          }
+        )
+
+        // Return cleanup function
+        return () => {
+          subscription.unsubscribe()
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error)
+        if (mounted) {
+          setLoading(false)
+        }
+      }
     }
 
-    loadSession()
+    let cleanup: (() => void) | undefined
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (!mounted) return
-        setUser(session?.user ?? null)
-      }
-    )
+    initializeAuth().then((cleanupFn) => {
+      cleanup = cleanupFn
+    })
 
     return () => {
       mounted = false
-      subscription.unsubscribe()
+      if (cleanup) {
+        cleanup()
+      }
     }
   }, [])
-
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

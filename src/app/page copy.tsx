@@ -21,25 +21,32 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // src/app/page.tsx (only the auth effect section shown)
   useEffect(() => {
-    // Check current session
-    const getSession = async () => {
+    let mounted = true
+
+    async function loadSession() {
       const { data: { session } } = await supabase.auth.getSession()
+      if (!mounted) return
       setUser(session?.user ?? null)
       setLoading(false)
     }
 
-    getSession()
+    loadSession()
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        if (!mounted) return
         setUser(session?.user ?? null)
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
   }, [])
+
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

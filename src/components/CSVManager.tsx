@@ -2,7 +2,16 @@
 'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { downloadJobsCSV, downloadContactsCSV, downloadInteractionsCSV, parseCSVForDataType, validateDateConversions } from '@/lib/csvUtils'
+import { 
+  downloadJobsCSV, 
+  downloadContactsCSV, 
+  downloadInteractionsCSV, 
+  parseCSVForDataType, 
+  validateDateConversions,
+  checkJobDuplicates,
+  checkContactDuplicates, 
+  checkInteractionDuplicates
+} from '@/lib/csvUtils'
 import { 
   Download, 
   Upload, 
@@ -21,6 +30,8 @@ interface UploadResult {
   success: boolean
   count: number
   message: string
+  skippedCount?: number
+  duplicateDetails?: Array<{[key: string]: string}>
   dateValidation?: {
     validCount: number
     invalidDates: Array<{row: number, field: string, originalValue: string}>
@@ -32,72 +43,138 @@ export default function CSVManager() {
   const [uploading, setUploading] = useState<string | null>(null)
   const [uploadResults, setUploadResults] = useState<{[key: string]: UploadResult} | null>(null)
 
-  const handleFileUpload = async (file: File, type: 'jobs' | 'contacts' | 'interactions') => {
-    setUploading(type)
-    setUploadResults(null)
-    
-    try {
-      const text = await file.text()
-      const data = parseCSVForDataType(text, type)
-      
-      if (data.length === 0) {
-        setUploadResults({
-          [type]: { 
-            success: false, 
-            count: 0, 
-            message: 'No valid data found in CSV file' 
-          }
-        })
-        return
-      }
+const handleFileUpload = async (file: File, type: 'jobs' | 'contacts' | 'interactions') => {
+  setUploading(type)
+  setUploadResults(null)
 
-      // Validate date conversions
-      const dateValidation = validateDateConversions(data, type)
-      console.log(`Date validation results for ${type}:`, dateValidation)
+  try {
+    const text = await file.text()
+    const data = parseCSVForDataType(text, type)
 
-      // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser()
-      
-      if (userError || !user) {
-        setUploadResults({
-          [type]: { 
-            success: false, 
-            count: 0, 
-            message: 'No authenticated user found' 
-          }
-        })
-        return
-      }
-
-      // Clean and prepare data for upload
-      const cleanedData = data.map(item => {
-        // Remove id, created_at, updated_at fields for new records
-        const { id, created_at, updated_at, ...cleanItem } = item
-        
-        // Add user_id to each record
-        return {
-          ...cleanItem,
-          user_id: user.id
+    if (data.length === 0) {
+      setUploadResults({
+        [type]: {
+          success: false,
+          count: 0,
+          message: 'No valid data found in CSV file'
         }
       })
+      return
+    }
 
-      // Upload to Supabase
-      const { error } = await supabase
+    // Validate date conversions
+    const dateValidation = validateDateConversions(data, type)
+    console.log(`Date validation results for ${type}:`, dateValidation)
+
+    // Get current user with better error handling
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    
+    if (userError) {
+      console.error('Authentication error:', userError)
+      setUploadResults({
+        [type]: {
+          success: false,
+          count: 0,
+          message: `Authentication error: ${userError.message}`
+        }
+      })
+      return
+    }
+    
+    if (!user) {
+      setUploadResults({
+        [type]: {
+          success: false,
+          count: 0,
+          message: 'No authenticated user found. Please log in and try again.'
+        }
+      })
+      return
+    }
+
+    // Clean and prepare data for upload with column mapping
+    const cleanedData = data.map(item => {
+      // Remove id, created_at, updated_at fields for new records
+      const { id, created_at, updated_at, ...cleanItem } = item
+      
+      // Handle column mapping for jobs table
+      if (type === 'jobs') {
+        // Map applied_date to date_added if it exists
+        if (cleanItem.applied_date && !cleanItem.date_added) {
+          cleanItem.date_added = cleanItem.applied_date
+          delete cleanItem.applied_date
+        }
+      }
+      
+      // Add user_id to each record
+      return {
+        ...cleanItem,
+        user_id: user.id
+      }
+    })
+
+    console.log(`Processing ${type} CSV with ${data.length} rows`)
+
+    // Check for duplicates before inserting
+    let duplicateCheckResult: {
+      toInsert: any[]
+      duplicates: any[]
+      duplicateDetails: any[]
+    }
+
+    if (type === 'jobs') {
+      duplicateCheckResult = await checkJobDuplicates(cleanedData, user.id)
+    } else if (type === 'contacts') {
+      duplicateCheckResult = await checkContactDuplicates(cleanedData, user.id)
+    } else if (type === 'interactions') {
+      duplicateCheckResult = await checkInteractionDuplicates(cleanedData, user.id)
+    } else {
+      duplicateCheckResult = { toInsert: cleanedData, duplicates: [], duplicateDetails: [] }
+    }
+
+    const { toInsert, duplicates, duplicateDetails } = duplicateCheckResult
+    console.log(`Found ${duplicates.length} duplicates, inserting ${toInsert.length} new records`)
+
+    if (toInsert.length === 0 && duplicates.length > 0) {
+      // All records were duplicates
+      setUploadResults({
+        [type]: {
+          success: true,
+          count: 0,
+          skippedCount: duplicates.length,
+          message: `All ${duplicates.length} records were duplicates and skipped`,
+          duplicateDetails,
+          dateValidation
+        }
+      })
+      return
+    }
+
+    // Insert only non-duplicate records
+    if (toInsert.length > 0) {
+      const { data: insertedData, error } = await supabase
         .from(type)
-        .upsert(cleanedData)
+        .insert(toInsert) // Use insert instead of upsert to prevent overwrites
 
       if (error) {
-        console.error(`Error uploading ${type}:`, error)
+        console.error(`Error uploading ${type}:`)
+        console.error('Full error object:', JSON.stringify(error, null, 2))
+        console.error('Sample of data being uploaded:', JSON.stringify(toInsert.slice(0, 2), null, 2))
+        
         setUploadResults({
-          [type]: { 
-            success: false, 
-            count: 0, 
-            message: `Error uploading: ${error.message}`,
-            dateValidation 
+          [type]: {
+            success: false,
+            count: 0,
+            message: `Error uploading: ${error.message}${error.details ? ` - ${error.details}` : ''}${error.hint ? ` (${error.hint})` : ''}`,
+            dateValidation
           }
         })
       } else {
-        let message = `Successfully uploaded ${cleanedData.length} records`
+        let message = `Successfully uploaded ${toInsert.length} new records`
+        
+        if (duplicates.length > 0) {
+          message += `, skipped ${duplicates.length} duplicates`
+        }
         
         // Add date conversion info to success message
         if (dateValidation.invalidDates.length > 0) {
@@ -105,29 +182,122 @@ export default function CSVManager() {
         } else if (dateValidation.validCount > 0) {
           message += ` (${dateValidation.validCount} dates successfully converted)`
         }
-        
+
         setUploadResults({
-          [type]: { 
-            success: true, 
-            count: cleanedData.length, 
+          [type]: {
+            success: true,
+            count: toInsert.length,
+            skippedCount: duplicates.length,
             message,
-            dateValidation 
+            duplicateDetails: duplicateDetails.slice(0, 10), // Limit to first 10 for display
+            dateValidation
           }
         })
       }
-    } catch (error) {
-      console.error(`Error processing ${type} CSV:`, error)
-      setUploadResults({
-        [type]: { 
-          success: false, 
-          count: 0, 
-          message: `Error processing CSV: ${error}` 
-        }
-      })
-    } finally {
-      setUploading(null)
     }
+
+  } catch (error) {
+    console.error(`Error processing ${type} CSV:`, error)
+    setUploadResults({
+      [type]: {
+        success: false,
+        count: 0,
+        message: `Error processing CSV: ${error instanceof Error ? error.message : String(error)}`
+      }
+    })
+  } finally {
+    setUploading(null)
   }
+}
+const UploadResultsDisplay = ({ uploadResults }: { uploadResults: {[key: string]: UploadResult} }) => {
+  return (
+    <div className="space-y-4">
+      {Object.entries(uploadResults).map(([type, result]) => (
+        <div key={type}>
+          {/* Main Result */}
+          <div className={`p-4 rounded-lg border flex items-center space-x-3 ${
+            result.success 
+              ? 'bg-green-50 border-green-200 text-green-800' 
+              : 'bg-red-50 border-red-200 text-red-800'
+          }`}>
+            {result.success ? (
+              <CheckCircle className="w-5 h-5 text-green-600" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-red-600" />
+            )}
+            <span className="font-medium flex-1">{result.message}</span>
+          </div>
+
+          {/* Duplicate Details */}
+          {result.duplicateDetails && result.duplicateDetails.length > 0 && (
+            <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <div className="flex items-center space-x-2 mb-2">
+                <Info className="w-4 h-4 text-amber-600" />
+                <span className="font-medium text-amber-800 text-sm">Skipped Duplicates</span>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="text-sm text-amber-700 mb-2">
+                  ⚠️ {result.skippedCount} records were skipped as duplicates:
+                </div>
+                <div className="max-h-32 overflow-y-auto text-xs text-amber-600 space-y-1">
+                  {result.duplicateDetails.slice(0, 5).map((duplicate, idx) => (
+                    <div key={idx} className="bg-amber-100 rounded px-2 py-1">
+                      <div className="font-mono">
+                        {Object.entries(duplicate)
+                          .filter(([key]) => key !== 'reason')
+                          .map(([key, value]) => `${key}: "${value}"`)
+                          .join(', ')}
+                      </div>
+                      <div className="text-amber-500 mt-1">{duplicate.reason}</div>
+                    </div>
+                  ))}
+                  {result.duplicateDetails.length > 5 && (
+                    <div>... and {result.duplicateDetails.length - 5} more</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Date Conversion Details */}
+          {result.dateValidation && result.success && (
+            <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center space-x-2 mb-2">
+                <Calendar className="w-4 h-4 text-blue-600" />
+                <span className="font-medium text-blue-800 text-sm">Date Conversion Summary</span>
+              </div>
+              
+              {result.dateValidation.validCount > 0 && (
+                <div className="text-sm text-blue-700 mb-1">
+                  ✅ {result.dateValidation.validCount} dates successfully converted to PostgreSQL format
+                </div>
+              )}
+              
+              {result.dateValidation.invalidDates.length > 0 && (
+                <div className="space-y-1">
+                  <div className="text-sm text-amber-700 font-medium">
+                    ⚠️ {result.dateValidation.invalidDates.length} dates could not be converted:
+                  </div>
+                  <div className="max-h-24 overflow-y-auto text-xs text-amber-600 space-y-1">
+                    {result.dateValidation.invalidDates.slice(0, 5).map((invalid, idx) => (
+                      <div key={idx}>
+                        Row {invalid.row}, field "{invalid.field}": "{invalid.originalValue}"
+                      </div>
+                    ))}
+                    {result.dateValidation.invalidDates.length > 5 && (
+                      <div>... and {result.dateValidation.invalidDates.length - 5} more</div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
 
   const dataTypes = [
     {
@@ -137,7 +307,7 @@ export default function CSVManager() {
       icon: Briefcase,
       color: 'blue',
       downloadFn: downloadJobsCSV,
-      fields: ['job_title', 'company', 'location', 'salary', 'status', 'applied_date', 'notes']
+      fields: ['job_title', 'company', 'location', 'salary', 'status', 'date_added', 'notes']
     },
     {
       id: 'contacts',

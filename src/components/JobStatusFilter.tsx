@@ -11,8 +11,9 @@ interface JobStatusFilterProps {
 
 const statusOptions = [
   { 
-    id: 'interested', 
-    title: 'Interested', 
+    id: 'Bookmarked',
+    title: 'Bookmarked', 
+    aliases: 'Interested',
     color: 'text-slate-600',
     bg: 'bg-slate-50',
     border: 'border-slate-200',
@@ -22,7 +23,7 @@ const statusOptions = [
     dot: 'bg-slate-400'
   },
   { 
-    id: 'applied', 
+    id: 'Applied', 
     title: 'Applied', 
     color: 'text-blue-600',
     bg: 'bg-blue-50',
@@ -33,7 +34,7 @@ const statusOptions = [
     dot: 'bg-blue-500'
   },
   { 
-    id: 'interviewing', 
+    id: 'Interviewing', 
     title: 'Interviewing', 
     color: 'text-blue-700',
     bg: 'bg-blue-100',
@@ -44,7 +45,7 @@ const statusOptions = [
     dot: 'bg-blue-600'
   },
   { 
-    id: 'onhold', 
+    id: 'Onhold', 
     title: 'On Hold', 
     color: 'text-slate-500',
     bg: 'bg-slate-100',
@@ -55,7 +56,7 @@ const statusOptions = [
     dot: 'bg-slate-500'
   },
   { 
-    id: 'offered', 
+    id: 'Offered', 
     title: 'Offered', 
     color: 'text-blue-600',
     bg: 'bg-blue-50',
@@ -66,7 +67,7 @@ const statusOptions = [
     dot: 'bg-blue-500'
   },
   { 
-    id: 'rejected', 
+    id: 'Rejected', 
     title: 'Rejected', 
     color: 'text-slate-500',
     bg: 'bg-slate-50',

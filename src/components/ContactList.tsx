@@ -1,7 +1,7 @@
-// src/components/ContactList.tsx - Enhanced with data-dense design and 3-column layout
+// src/components/ContactList.tsx - Performance Optimized Version
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { Contact } from '@/lib/supabase'
 import { getContactsLite, getContactById, deleteContact } from '@/lib/contacts'
 import { getJobsForContacts } from '@/lib/jobContacts'
@@ -27,39 +27,228 @@ import {
   ChevronDown
 } from 'lucide-react'
 import ContactForm from './ContactForm'
-import InteractionList from './InteractionList'
 import ContactJobLinks from './ContactJobLinks'
 import ContactFilter from './ContactFilter'
 
-// Contact Modal Component
+// Lazy-loaded InteractionList to avoid loading it until needed
+import { lazy, Suspense } from 'react'
+const InteractionList = lazy(() => import('./InteractionList'))
+
+// Constants for performance
+const CONTACTS_PER_PAGE = 50
+const DEBOUNCE_DELAY = 300
+
+// Memoized Contact Card Component
+const ContactCard = memo(({ 
+  contact, 
+  index, 
+  isSelected, 
+  contactIdToJobs, 
+  contactNameMap, 
+  onClick, 
+  onEdit, 
+  onDelete,
+  onMutualConnectionClick 
+}: {
+  contact: Contact
+  index: number
+  isSelected: boolean
+  contactIdToJobs: Record<string, any[]>
+  contactNameMap: Map<string, Contact>
+  onClick: (id: string) => void
+  onEdit: (contact: Contact) => void
+  onDelete: (id: string) => void
+  onMutualConnectionClick: (connectionName: string) => void
+}) => {
+  const formatExperience = useCallback((contact: Contact) => {
+    if (!contact.experience || contact.experience.length === 0) return null
+    const currentRole = contact.experience.find(exp => exp.is_current)
+    const mostRecentRole = contact.experience[0]
+    const displayRole = currentRole || mostRecentRole
+    if (displayRole) {
+      return `${displayRole.title} at ${displayRole.company}`
+    }
+    return null
+  }, [])
+
+  const formatEducation = useCallback((contact: Contact) => {
+    if (!contact.education || contact.education.length === 0) return null
+    const recentEducation = contact.education[0]
+    return `${recentEducation.degree_and_field}, ${recentEducation.institution}`
+  }, [])
+
+  return (
+    <div
+      className={`card p-3 cursor-pointer transition-all duration-200 animate-slide-up relative ${
+        isSelected
+          ? 'ring-2 ring-blue-500 border-blue-300 bg-blue-50/50'
+          : 'hover:shadow-lg hover:scale-[1.02]'
+      }`}
+      style={{ animationDelay: `${index * 30}ms` }}
+      onClick={() => onClick(contact.id)}
+    >
+      {/* Header with name and actions */}
+      <div className="flex justify-between items-start mb-2">
+        <div className="flex items-center space-x-2 flex-1 min-w-0">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-white" />
+          </div>
+          
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-bold text-slate-800 truncate">{contact.name}</h3>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-1">
+          <button
+            onClick={async (e) => {
+              e.stopPropagation()
+              onEdit(contact)
+            }}
+            className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
+            title="Edit contact"
+          >
+            <Edit className="w-3 h-3" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete(contact.id)
+            }}
+            className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-all duration-200"
+            title="Delete contact"
+          >
+            <Trash2 className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+
+      {/* Company - Condensed */}
+      {contact.company && (
+        <div className="flex items-center space-x-1 text-slate-600 mb-1">
+          <Building className="w-3 h-3 flex-shrink-0 text-slate-400" />
+          <p className="text-xs truncate">{contact.company}</p>
+        </div>
+      )}
+
+      {/* Job Title - Condensed */}
+      {contact.job_title && (
+        <div className="flex items-center space-x-1 text-slate-600 mb-1">
+          <Briefcase className="w-3 h-3 flex-shrink-0 text-slate-400" />
+          <p className="text-xs truncate">{contact.job_title}</p>
+        </div>
+      )}
+
+      {/* LinkedIn - Clickable if populated */}
+      {contact.linkedin_url && (
+        <div className="flex items-center space-x-1 text-xs text-slate-500 mb-1">
+          <Linkedin className="w-3 h-3 text-slate-400" />
+          <a 
+            href={contact.linkedin_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-blue-600 hover:text-blue-800 hover:underline truncate"
+          >
+            LinkedIn Profile
+          </a>
+        </div>
+      )}
+
+      {/* Notes Preview - Condensed */}
+      {contact.notes && (
+        <div className="bg-slate-50 rounded p-2 border border-slate-100 mb-2">
+          <p className="text-xs text-slate-700 line-clamp-2">{contact.notes}</p>
+        </div>
+      )}
+
+      {/* Contact Details - Condensed */}
+      <div className="space-y-1 mb-2">
+        {contact.email && (
+          <div className="flex items-center space-x-1 text-xs text-slate-500">
+            <Mail className="w-3 h-3 text-slate-400" />
+            <span className="truncate">{contact.email}</span>
+          </div>
+        )}
+        {contact.phone && (
+          <div className="flex items-center space-x-1 text-xs text-slate-500">
+            <Phone className="w-3 h-3 text-slate-400" />
+            <span>{contact.phone}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Education - Condensed */}
+      {formatEducation(contact) && (
+        <div className="flex items-center space-x-1 text-xs text-slate-500 mb-2">
+          <GraduationCap className="w-3 h-3 flex-shrink-0 text-slate-400" />
+          <p className="truncate">{formatEducation(contact)}</p>
+        </div>
+      )}
+
+      {/* Mutual Connections - Ultra Compact */}
+      {contact.mutual_connections && contact.mutual_connections.length > 0 && (
+        <div className="mb-2">
+          <div className="flex items-center space-x-1 mb-1">
+            <Network className="w-3 h-3 text-slate-400" />
+            <span className="text-xs text-slate-500">
+              {contact.mutual_connections.length} mutual
+            </span>
+          </div>
+          <MutualConnections
+            connections={contact.mutual_connections}
+            contactNameMap={contactNameMap}
+            onConnectionClick={onMutualConnectionClick}
+          />
+        </div>
+      )}
+
+      {/* Linked Jobs - Count Badge only */}
+      {contactIdToJobs[contact.id] && contactIdToJobs[contact.id].length > 0 && (
+        <div className="mb-2">
+          <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs border border-blue-200">
+            <Briefcase className="w-3 h-3" />
+            <span>{contactIdToJobs[contact.id].length} linked job{contactIdToJobs[contact.id].length > 1 ? 's' : ''}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Selected Indicator */}
+      {isSelected && (
+        <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full animate-pulse">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
+        </div>
+      )}
+    </div>
+  )
+})
+ContactCard.displayName = 'ContactCard'
+
+// Contact Modal Component (unchanged but memoized)
 interface ContactModalProps {
   contact: Contact
   onClose: () => void
   onEdit: (contact: Contact) => void
 }
 
-function ContactModal({ contact, onClose, onEdit }: ContactModalProps) {
-  const formatExperience = (contact: Contact) => {
+const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
+  const formatExperience = useCallback((contact: Contact) => {
     if (!contact.experience || contact.experience.length === 0) return null
-    
-    // Show current role or most recent role
     const currentRole = contact.experience.find(exp => exp.is_current)
-    const mostRecentRole = contact.experience[0] // Assuming sorted by recency
+    const mostRecentRole = contact.experience[0]
     const displayRole = currentRole || mostRecentRole
-    
     if (displayRole) {
       return `${displayRole.title} at ${displayRole.company}`
     }
     return null
-  }
+  }, [])
 
-  const formatEducation = (contact: Contact) => {
+  const formatEducation = useCallback((contact: Contact) => {
     if (!contact.education || contact.education.length === 0) return null
-    
-    // Show most recent or highest degree
-    const recentEducation = contact.education[0] // Assuming sorted by recency
+    const recentEducation = contact.education[0]
     return `${recentEducation.degree_and_field}, ${recentEducation.institution}`
-  }
+  }, [])
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -248,9 +437,10 @@ function ContactModal({ contact, onClose, onEdit }: ContactModalProps) {
       </div>
     </div>
   )
-}
+})
+ContactModal.displayName = 'ContactModal'
 
-// Compact MutualConnections Component
+// Compact MutualConnections Component (memoized)
 interface MutualConnectionsProps {
   connections: string[]
   contactNameMap: Map<string, Contact>
@@ -258,21 +448,15 @@ interface MutualConnectionsProps {
   stopPropagation?: boolean
 }
 
-function MutualConnections({ connections, contactNameMap, onConnectionClick, stopPropagation = true }: MutualConnectionsProps) {
+const MutualConnections = memo(({ connections, contactNameMap, onConnectionClick, stopPropagation = true }: MutualConnectionsProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const maxInitialDisplay = 2 // Reduced for more compact display
+  const maxInitialDisplay = 2
 
-  if (!connections || connections.length === 0) return null
-
-  const initialConnections = connections.slice(0, maxInitialDisplay)
-  const remainingConnections = connections.slice(maxInitialDisplay)
-  const displayConnections = isExpanded ? connections : initialConnections
-
-  const isContactInSystem = (connectionName: string): Contact | null => {
+  const isContactInSystem = useCallback((connectionName: string): Contact | null => {
     return contactNameMap.get(connectionName.toLowerCase().trim()) || null
-  }
+  }, [contactNameMap])
 
-  const handleConnectionClick = (e: React.MouseEvent, connectionName: string) => {
+  const handleConnectionClick = useCallback((e: React.MouseEvent, connectionName: string) => {
     if (stopPropagation) {
       e.stopPropagation()
     }
@@ -280,14 +464,20 @@ function MutualConnections({ connections, contactNameMap, onConnectionClick, sto
     if (existingContact) {
       onConnectionClick(connectionName)
     }
-  }
+  }, [stopPropagation, isContactInSystem, onConnectionClick])
 
-  const handleExpandClick = (e: React.MouseEvent) => {
+  const handleExpandClick = useCallback((e: React.MouseEvent) => {
     if (stopPropagation) {
       e.stopPropagation()
     }
     setIsExpanded(!isExpanded)
-  }
+  }, [stopPropagation, isExpanded])
+
+  if (!connections || connections.length === 0) return null
+
+  const initialConnections = connections.slice(0, maxInitialDisplay)
+  const remainingConnections = connections.slice(maxInitialDisplay)
+  const displayConnections = isExpanded ? connections : initialConnections
 
   return (
     <div className="space-y-1">
@@ -335,6 +525,24 @@ function MutualConnections({ connections, contactNameMap, onConnectionClick, sto
       </div>
     </div>
   )
+})
+MutualConnections.displayName = 'MutualConnections'
+
+// Custom hook for debounced search
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
 }
 
 export default function ContactList() {
@@ -346,28 +554,40 @@ export default function ContactList() {
   const [searchTerm, setSearchTerm] = useState('')
   const [modalContact, setModalContact] = useState<Contact | null>(null)
   const [contactIdToJobs, setContactIdToJobs] = useState<Record<string, any[]>>({})
+  const [displayedContactsCount, setDisplayedContactsCount] = useState(CONTACTS_PER_PAGE)
+
+  // Debounced search term for performance
+  const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY)
 
   useEffect(() => {
     loadContacts()
   }, [])
 
-  const loadContacts = async () => {
+  const loadContacts = useCallback(async () => {
     setLoading(true)
-    // Fetch a lightweight list first for fast render
-    const data = await getContactsLite()
-    setContacts(data as unknown as Contact[])
-    // Batch fetch linked jobs for all contacts to avoid N+1 queries
     try {
-      const map = await getJobsForContacts((data as any).map((c: any) => c.id))
-      setContactIdToJobs(map)
-    } catch (e) {
-      console.error('Error fetching jobs for contacts:', e)
-      setContactIdToJobs({})
+      // Fetch lightweight list first for fast render
+      const data = await getContactsLite()
+      setContacts(data as unknown as Contact[])
+      
+      // Batch fetch linked jobs for all contacts to avoid N+1 queries
+      if (data.length > 0) {
+        try {
+          const map = await getJobsForContacts((data as any).map((c: any) => c.id))
+          setContactIdToJobs(map)
+        } catch (e) {
+          console.error('Error fetching jobs for contacts:', e)
+          setContactIdToJobs({})
+        }
+      }
+    } catch (error) {
+      console.error('Error loading contacts:', error)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
-  }
+  }, [])
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (confirm('Are you sure you want to delete this contact?')) {
       const success = await deleteContact(id)
       if (success) {
@@ -377,15 +597,22 @@ export default function ContactList() {
         }
       }
     }
-  }
+  }, [selectedContactId, loadContacts])
 
-  const handleFormSuccess = () => {
+  const handleFormSuccess = useCallback(() => {
     setShowForm(false)
     setEditingContact(null)
     loadContacts()
-  }
+  }, [loadContacts])
 
-  // Create a map for quick contact lookup by name
+  const handleEditContact = useCallback(async (contact: Contact) => {
+    // Load full contact data for editing
+    const fullContact = await getContactById(contact.id)
+    setEditingContact(fullContact || contact)
+    setShowForm(true)
+  }, [])
+
+  // Create a map for quick contact lookup by name (memoized)
   const contactNameMap = useMemo(() => {
     const map = new Map<string, Contact>()
     contacts.forEach(contact => {
@@ -394,27 +621,22 @@ export default function ContactList() {
     return map
   }, [contacts])
 
-  // Helper function to check if a mutual connection exists as a contact
-  const isContactInSystem = (connectionName: string): Contact | null => {
-    return contactNameMap.get(connectionName.toLowerCase().trim()) || null
-  }
-
   // Handle clicking on mutual connection
-  const handleMutualConnectionClick = async (connectionName: string) => {
-    const contact = isContactInSystem(connectionName)
+  const handleMutualConnectionClick = useCallback(async (connectionName: string) => {
+    const contact = contactNameMap.get(connectionName.toLowerCase().trim())
     if (contact) {
       const full = await getContactById(contact.id)
       setModalContact(full || contact)
     }
-  }
+  }, [contactNameMap])
 
-  // Enhanced filter contacts based on search term (including linked jobs)
+  // Enhanced filter contacts based on debounced search term (memoized)
   const filteredContacts = useMemo(() => {
-    if (!searchTerm.trim()) {
+    if (!debouncedSearchTerm.trim()) {
       return contacts
     }
 
-    const term = searchTerm.toLowerCase()
+    const term = debouncedSearchTerm.toLowerCase()
     return contacts.filter(contact => {
       // Basic fields
       const basicMatch = contact.name.toLowerCase().includes(term) ||
@@ -444,29 +666,23 @@ export default function ContactList() {
 
       return basicMatch || experienceMatch || educationMatch || connectionMatch
     })
-  }, [contacts, searchTerm])
+  }, [contacts, debouncedSearchTerm])
 
-  const formatExperience = (contact: Contact) => {
-    if (!contact.experience || contact.experience.length === 0) return null
-    
-    // Show current role or most recent role
-    const currentRole = contact.experience.find(exp => exp.is_current)
-    const mostRecentRole = contact.experience[0] // Assuming sorted by recency
-    const displayRole = currentRole || mostRecentRole
-    
-    if (displayRole) {
-      return `${displayRole.title} at ${displayRole.company}`
-    }
-    return null
-  }
+  // Paginated contacts for better performance with large lists
+  const displayedContacts = useMemo(() => {
+    return filteredContacts.slice(0, displayedContactsCount)
+  }, [filteredContacts, displayedContactsCount])
 
-  const formatEducation = (contact: Contact) => {
-    if (!contact.education || contact.education.length === 0) return null
-    
-    // Show most recent or highest degree
-    const recentEducation = contact.education[0] // Assuming sorted by recency
-    return `${recentEducation.degree_and_field}, ${recentEducation.institution}`
-  }
+  const hasMoreContacts = filteredContacts.length > displayedContactsCount
+
+  const loadMoreContacts = useCallback(() => {
+    setDisplayedContactsCount(prev => prev + CONTACTS_PER_PAGE)
+  }, [])
+
+  // Reset pagination when search changes
+  useEffect(() => {
+    setDisplayedContactsCount(CONTACTS_PER_PAGE)
+  }, [debouncedSearchTerm])
 
   if (loading) {
     return (
@@ -502,277 +718,191 @@ export default function ContactList() {
     )
   }
 
-  if (showForm) {
-    return (
-      <ContactForm
-        contact={editingContact}
-        onSuccess={handleFormSuccess}
-        onCancel={() => {
-          setShowForm(false)
-          setEditingContact(null)
-        }}
-      />
-    )
-  }
-
   return (
     <div className="space-y-4 animate-fade-in">
-      {/* Contact Modal */}
-      {modalContact && (
-        <ContactModal
-          contact={modalContact}
-          onClose={() => setModalContact(null)}
-          onEdit={(contact) => {
-            setModalContact(null)
-            setEditingContact(contact)
-            setShowForm(true)
-          }}
-        />
-      )}
-
-      {/* Header - More compact */}
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <div className="w-2 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-          <h2 className="text-xl font-bold text-slate-800">Professional Network</h2>
-          <div className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
-            {contacts.length} contacts
-          </div>
+          <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center space-x-2">
+            <Users className="w-6 h-6" />
+            <span>Contacts</span>
+          </h1>
+          <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+            {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
+          </span>
         </div>
+        
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary flex items-center space-x-2 px-3 py-2 text-sm"
+          className="btn-primary flex items-center space-x-2"
         >
           <Plus className="w-4 h-4" />
           <span>Add Contact</span>
         </button>
       </div>
 
-      {/* Search Filter */}
-      <ContactFilter
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-      />
-
-      {/* Results Summary - More compact */}
-      {searchTerm && (
-        <div className="flex items-center space-x-2 text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg">
-          <Search className="w-3 h-3" />
-          <span>
-            {filteredContacts.length} of {contacts.length} contacts matching 
-            <span className="font-medium"> "{searchTerm}"</span>
-          </span>
+      {/* Search Bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+        <input
+          type="text"
+          placeholder="Search contacts by name, company, email, experience, education, or connections..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="input pl-10 w-full"
+        />
+        {searchTerm && (
           <button
             onClick={() => setSearchTerm('')}
-            className="ml-2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
           >
-            <X className="w-3 h-3" />
+            <X className="w-4 h-4" />
           </button>
+        )}
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Contact List - Three Column Grid */}
+        <div className="lg:col-span-3">
+          {displayedContacts.length === 0 ? (
+            <div className="text-center py-12">
+              <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-slate-500 mb-2">
+                {searchTerm ? 'No contacts found' : 'No contacts yet'}
+              </h3>
+              <p className="text-slate-400 mb-6">
+                {searchTerm 
+                  ? 'Try adjusting your search terms or clear the search to see all contacts.'
+                  : 'Start building your professional network by adding your first contact.'
+                }
+              </p>
+              {!searchTerm && (
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="btn-primary"
+                >
+                  Add Your First Contact
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Contact Cards in Grid Layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {displayedContacts.map((contact, index) => (
+                  <ContactCard
+                    key={contact.id}
+                    contact={contact}
+                    index={index}
+                    isSelected={selectedContactId === contact.id}
+                    contactIdToJobs={contactIdToJobs}
+                    contactNameMap={contactNameMap}
+                    onClick={setSelectedContactId}
+                    onEdit={handleEditContact}
+                    onDelete={handleDelete}
+                    onMutualConnectionClick={handleMutualConnectionClick}
+                  />
+                ))}
+              </div>
+
+              {/* Load More Button */}
+              {hasMoreContacts && (
+                <div className="text-center py-6">
+                  <button
+                    onClick={loadMoreContacts}
+                    className="btn-secondary"
+                  >
+                    Load More Contacts ({filteredContacts.length - displayedContactsCount} remaining)
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1">
+          {selectedContactId ? (
+            <div className="card p-6">
+              <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center space-x-2">
+                <MessageCircle className="w-5 h-5" />
+                <span>Interactions</span>
+              </h3>
+              <Suspense fallback={
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+                      <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
+                      <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+                    </div>
+                  ))}
+                </div>
+              }>
+                <InteractionList contactId={selectedContactId} />
+              </Suspense>
+            </div>
+          ) : (
+            <div className="card p-6 text-center">
+              <User className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+              <h3 className="text-sm font-medium text-slate-500 mb-2">No Contact Selected</h3>
+              <p className="text-xs text-slate-400">
+                Click on a contact to view their interaction history
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Contact Form Modal */}
+      {showForm && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          style={{ overflow: 'auto' }}
+        >
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white sticky top-0">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">
+                  {editingContact ? 'Edit Contact' : 'Add New Contact'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setShowForm(false)
+                    setEditingContact(null)
+                  }}
+                  className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <ContactForm
+                contact={editingContact}
+                onSuccess={handleFormSuccess}
+                onCancel={() => {
+                  setShowForm(false)
+                  setEditingContact(null)
+                }}
+              />
+            </div>
+          </div>
         </div>
       )}
 
-      {filteredContacts.length === 0 ? (
-        <div className="card text-center py-8">
-          <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Users className="w-6 h-6 text-slate-400" />
-          </div>
-          <h3 className="text-lg font-medium text-slate-700 mb-2">
-            {contacts.length === 0 ? "No contacts yet" : "No matching contacts"}
-          </h3>
-          <p className="text-slate-500 mb-4">
-            {contacts.length === 0
-              ? "Add your professional contacts to build your network!"
-              : "Try adjusting your search terms."
-            }
-          </p>
-          {contacts.length === 0 && (
-            <button
-              onClick={() => setShowForm(true)}
-              className="btn-primary"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Contact
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
-          {/* Contacts List - Now 3 columns on larger screens */}
-          <div className="xl:col-span-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-              {filteredContacts.map((contact, index) => (
-                <div
-                  key={contact.id}
-                  className={`card p-3 cursor-pointer transition-all duration-200 animate-slide-up relative ${
-                    selectedContactId === contact.id
-                      ? 'ring-2 ring-blue-500 border-blue-300 bg-blue-50/50'
-                      : 'hover:shadow-lg hover:scale-[1.02]'
-                  }`}
-                  style={{ animationDelay: `${index * 30}ms` }}
-                  onClick={() => setSelectedContactId(contact.id)}
-                >
-                  {/* Header with name and actions */}
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center space-x-2 flex-1 min-w-0">
-                      {/* Compact Avatar */}
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <User className="w-4 h-4 text-white" />
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold text-slate-800 truncate">{contact.name}</h3>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-1">
-                      <button
-                        onClick={async (e) => {
-                          e.stopPropagation()
-                          const full = await getContactById(contact.id)
-                          setEditingContact(full || contact)
-                          setShowForm(true)
-                        }}
-                        className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
-                        title="Edit contact"
-                      >
-                        <Edit className="w-3 h-3" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDelete(contact.id)
-                        }}
-                        className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-all duration-200"
-                        title="Delete contact"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Role Information - Condensed */}
-                  {contact.job_title && contact.company ? (
-                    <div className="flex items-center space-x-1 text-slate-600 mb-1">
-                      <Building className="w-3 h-3 flex-shrink-0 text-slate-400" />
-                      <p className="text-xs truncate">
-                        {contact.job_title} at {contact.company}
-                      </p>
-                    </div>
-                  ) : (
-                    formatExperience(contact) && (
-                      <div className="flex items-center space-x-1 text-slate-600 mb-1">
-                        <Briefcase className="w-3 h-3 flex-shrink-0 text-slate-400" />
-                        <p className="text-xs truncate">
-                          {formatExperience(contact)}
-                        </p>
-                      </div>
-                    )
-                  )}
-
-                  {/* Contact Details - Condensed */}
-                  <div className="space-y-1 mb-2">
-                    {contact.email && (
-                      <div className="flex items-center space-x-1 text-xs text-slate-500">
-                        <Mail className="w-3 h-3 text-slate-400" />
-                        <span className="truncate">{contact.email}</span>
-                      </div>
-                    )}
-                    {contact.phone && (
-                      <div className="flex items-center space-x-1 text-xs text-slate-500">
-                        <Phone className="w-3 h-3 text-slate-400" />
-                        <span>{contact.phone}</span>
-                      </div>
-                    )}
-                    {contact.linkedin_url && (
-                      <div className="flex items-center space-x-1 text-xs text-slate-500">
-                        <Linkedin className="w-3 h-3 text-slate-400" />
-                        <span className="truncate">LinkedIn</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Education - Condensed */}
-                  {formatEducation(contact) && (
-                    <div className="flex items-center space-x-1 text-xs text-slate-500 mb-2">
-                      <GraduationCap className="w-3 h-3 flex-shrink-0 text-slate-400" />
-                      <p className="truncate">{formatEducation(contact)}</p>
-                    </div>
-                  )}
-
-                  {/* Mutual Connections - Ultra Compact */}
-                  {contact.mutual_connections && contact.mutual_connections.length > 0 && (
-                    <div className="mb-2">
-                      <div className="flex items-center space-x-1 mb-1">
-                        <Network className="w-3 h-3 text-slate-400" />
-                        <span className="text-xs text-slate-500">
-                          {contact.mutual_connections.length} mutual
-                        </span>
-                      </div>
-                      <MutualConnections
-                        connections={contact.mutual_connections}
-                        contactNameMap={contactNameMap}
-                        onConnectionClick={handleMutualConnectionClick}
-                      />
-                    </div>
-                  )}
-
-                  {/* Linked Jobs - Count Badge only (details load in modal) */}
-                  {contactIdToJobs[contact.id] && contactIdToJobs[contact.id].length > 0 && (
-                    <div className="mb-2">
-                      <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs border border-blue-200">
-                        <Briefcase className="w-3 h-3" />
-                        <span>{contactIdToJobs[contact.id].length} linked job{contactIdToJobs[contact.id].length > 1 ? 's' : ''}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Notes Preview - Condensed */}
-                  {contact.notes && (
-                    <div className="bg-slate-50 rounded p-2 border border-slate-100">
-                      <p className="text-xs text-slate-700 line-clamp-2">{contact.notes}</p>
-                    </div>
-                  )}
-
-                  {/* Selected Indicator */}
-                  {selectedContactId === contact.id && (
-                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full animate-pulse">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping absolute"></div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Compact Interaction Panel */}
-          {selectedContactId ? (
-            <div className="xl:col-span-1">
-              <div className="xl:sticky xl:top-4">
-                <div className="card p-4">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <MessageCircle className="w-4 h-4 text-blue-600" />
-                    <h3 className="text-sm font-semibold text-slate-800">Interactions</h3>
-                  </div>
-                  <div className="max-h-96 overflow-y-auto">
-                    <InteractionList contactId={selectedContactId} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="xl:col-span-1">
-              <div className="xl:sticky xl:top-4">
-                <div className="card p-4 text-center">
-                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <MessageCircle className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <p className="text-xs text-slate-500">Select a contact to view interactions</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Contact Detail Modal */}
+      {modalContact && (
+        <ContactModal
+          contact={modalContact}
+          onClose={() => setModalContact(null)}
+          onEdit={(contact) => {
+            setModalContact(null)
+            handleEditContact(contact)
+          }}
+        />
       )}
     </div>
   )
