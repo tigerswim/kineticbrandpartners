@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList, ExternalLink } from "lucide-react";
+import { Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList, ExternalLink } from "lucide-react";
 import { createJob, updateJob, Job } from "@/lib/jobs";
 import { supabase } from "@/lib/supabase";
 
@@ -67,20 +67,21 @@ const statusOptions = [
   }
 ];
 
+// Updated interface to match JobList expectations
 interface JobFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSaved: () => void;
-  editingJob?: Job | null;
+  job?: Job | null;
+  onJobAdded: (job: Job) => void;
+  onCancel: () => void;
 }
 
-export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFormProps) {
+export default function JobForm({ job: editingJob, onJobAdded, onCancel }: JobFormProps) {
   const [form, setForm] = useState(BLANK);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Reset form when modal opens/closes or editing job changes
+  // Reset form when editing job changes
   useEffect(() => {
-    if (isOpen && editingJob) {
+    if (editingJob) {
       setForm({
         company: editingJob.company,
         job_title: editingJob.job_title,
@@ -91,17 +92,22 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         job_description: editingJob.job_description || "",
         notes: editingJob.notes || "",
       });
-    } else if (isOpen && !editingJob) {
+    } else {
       setForm(BLANK);
     }
-  }, [isOpen, editingJob]);
+    setError(null);
+  }, [editingJob]);
 
-  const handleChange = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+  const handleChange = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [key]: e.target.value });
+    // Clear error when user starts typing
+    if (error) setError(null);
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const {
@@ -118,231 +124,215 @@ export default function JobForm({ isOpen, onClose, onSaved, editingJob }: JobFor
         salary: form.salary || null,
         location: form.location || null,
         job_url: form.job_url || null,
-        job_description: form.job_description || null
+        job_description: form.job_description || null,
+        notes: form.notes || null,
       };
 
+      let result: Job | null = null;
+
       if (editingJob) {
-        await updateJob(editingJob.id, payload);
+        result = await updateJob(editingJob.id, payload);
       } else {
-        await createJob(payload);
+        result = await createJob(payload);
       }
 
-      setForm(BLANK);
-      onSaved();
-      onClose();
+      if (!result) {
+        throw new Error(editingJob ? 'Failed to update job' : 'Failed to create job');
+      }
+
+      console.log('Job saved successfully:', result);
+      onJobAdded(result);
     } catch (err) {
-      alert(editingJob ? "Error updating job" : "Error saving job");
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      console.error('Error saving job:', errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   }
 
-  if (!isOpen) return null;
-
-  const selectedStatus = statusOptions.find(opt => opt.id === form.status);
-
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden animate-scale-in">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold">
-                  {editingJob ? 'Edit Job Application' : 'New Job Application'}
-                </h2>
-                <p className="text-blue-100 text-sm">
-                  {editingJob ? 'Update your job details' : 'Add a new opportunity to track'}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
-            >
-              <X className="w-5 h-5" />
-            </button>
+    <div className="space-y-6">
+      {/* Error Display */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="flex items-center">
+            <span className="font-medium">Error:</span>
+            <span className="ml-2">{error}</span>
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Company & Job Title Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2">
+              <Building className="w-4 h-4 text-slate-500" />
+              <span>Company Name *</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={form.company}
+              onChange={handleChange('company')}
+              className="input"
+              placeholder="e.g., Google, Microsoft, Acme Corp"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2">
+              <Briefcase className="w-4 h-4 text-slate-500" />
+              <span>Job Title *</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={form.job_title}
+              onChange={handleChange('job_title')}
+              className="input"
+              placeholder="e.g., Software Engineer, Product Manager"
+            />
           </div>
         </div>
 
-        {/* Form Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] custom-scrollbar">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Company & Job Title Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="form-group">
-                <label className="form-label flex items-center space-x-2">
-                  <Building className="w-4 h-4 text-slate-500" />
-                  <span>Company Name *</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={form.company}
-                  onChange={handleChange('company')}
-                  className="input"
-                  placeholder="e.g., Google, Microsoft, Acme Corp"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label flex items-center space-x-2">
-                  <Briefcase className="w-4 h-4 text-slate-500" />
-                  <span>Job Title *</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={form.job_title}
-                  onChange={handleChange('job_title')}
-                  className="input"
-                  placeholder="e.g., Software Engineer, Product Manager"
-                />
-              </div>
-            </div>
-
-            {/* Status Selection */}
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2">
-                <Target className="w-4 h-4 text-slate-500" />
-                <span>Application Status</span>
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {statusOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => setForm({ ...form, status: option.id as any })}
-                    className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
-                      form.status === option.id
-                        ? `${option.bg} ${option.border} ${option.color} border-opacity-100 shadow-sm transform scale-105`
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="font-semibold text-sm">{option.title}</div>
-                    <div className="text-xs opacity-75 mt-1">{option.description}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Location & Salary Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="form-group">
-                <label className="form-label flex items-center space-x-2">
-                  <MapPin className="w-4 h-4 text-slate-500" />
-                  <span>Location</span>
-                </label>
-                <input
-                  type="text"
-                  value={form.location}
-                  onChange={handleChange('location')}
-                  className="input"
-                  placeholder="e.g., San Francisco, CA or Remote"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label flex items-center space-x-2">
-                  <DollarSign className="w-4 h-4 text-slate-500" />
-                  <span>Salary Range</span>
-                </label>
-                <input
-                  type="text"
-                  value={form.salary}
-                  onChange={handleChange('salary')}
-                  className="input"
-                  placeholder="e.g., $90,000 - $120,000 or $100k+"
-                />
-              </div>
-            </div>
-
-            {/* Job URL */}
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2">
-                <ExternalLink className="w-4 h-4 text-slate-500" />
-                <span>Job Posting URL</span>
-              </label>
-              <input
-                type="url"
-                value={form.job_url}
-                onChange={handleChange('job_url')}
-                className="input"
-                placeholder="https://company.com/careers/job-posting or LinkedIn job link"
-              />
-              <p className="form-help">
-                Link to the original job posting for easy reference
-              </p>
-            </div>
-
-            {/* Job Description */}
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2">
-                <ClipboardList className="w-4 h-4 text-slate-500" />
-                <span>Job Description</span>
-              </label>
-              <textarea
-                value={form.job_description}
-                onChange={handleChange('job_description')}
-                className="input min-h-[120px] resize-none"
-                placeholder="Paste the job description, key requirements, or responsibilities..."
-                rows={5}
-              />
-              <p className="form-help">
-                Include the full job posting, requirements, or key details from the listing
-              </p>
-            </div>
-
-            {/* Notes */}
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2">
-                <FileText className="w-4 h-4 text-slate-500" />
-                <span>Personal Notes</span>
-              </label>
-              <textarea
-                value={form.notes}
-                onChange={handleChange('notes')}
-                className="input min-h-[100px] resize-none"
-                placeholder="Add your thoughts, research notes, or application strategy..."
-                rows={4}
-              />
-              <p className="form-help">
-                Include your research, application strategy, or interview preparation notes
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4 pt-6 border-t border-slate-200">
+        {/* Status Selection */}
+        <div className="form-group">
+          <label className="form-label flex items-center space-x-2">
+            <Target className="w-4 h-4 text-slate-500" />
+            <span>Application Status</span>
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {statusOptions.map((option) => (
               <button
+                key={option.id}
                 type="button"
-                onClick={onClose}
-                className="flex-1 btn-secondary"
+                onClick={() => setForm({ ...form, status: option.id as any })}
+                className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
+                  form.status === option.id
+                    ? `${option.bg} ${option.border} ${option.color} border-opacity-100 shadow-sm transform scale-105`
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                }`}
               >
-                Cancel
+                <div className="font-semibold text-sm">{option.title}</div>
+                <div className="text-xs opacity-75 mt-1">{option.description}</div>
               </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Saving...</span>
-                  </div>
-                ) : (
-                  editingJob ? "Update Job" : "Add Job"
-                )}
-              </button>
-            </div>
-          </form>
+            ))}
+          </div>
         </div>
-      </div>
+
+        {/* Location & Salary Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2">
+              <MapPin className="w-4 h-4 text-slate-500" />
+              <span>Location</span>
+            </label>
+            <input
+              type="text"
+              value={form.location}
+              onChange={handleChange('location')}
+              className="input"
+              placeholder="e.g., San Francisco, CA or Remote"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2">
+              <DollarSign className="w-4 h-4 text-slate-500" />
+              <span>Salary Range</span>
+            </label>
+            <input
+              type="text"
+              value={form.salary}
+              onChange={handleChange('salary')}
+              className="input"
+              placeholder="e.g., $90,000 - $120,000 or $100k+"
+            />
+          </div>
+        </div>
+
+        {/* Job URL */}
+        <div className="form-group">
+          <label className="form-label flex items-center space-x-2">
+            <ExternalLink className="w-4 h-4 text-slate-500" />
+            <span>Job Posting URL</span>
+          </label>
+          <input
+            type="url"
+            value={form.job_url}
+            onChange={handleChange('job_url')}
+            className="input"
+            placeholder="https://company.com/careers/job-posting or LinkedIn job link"
+          />
+          <p className="form-help">
+            Link to the original job posting for easy reference
+          </p>
+        </div>
+
+        {/* Job Description */}
+        <div className="form-group">
+          <label className="form-label flex items-center space-x-2">
+            <ClipboardList className="w-4 h-4 text-slate-500" />
+            <span>Job Description</span>
+          </label>
+          <textarea
+            value={form.job_description}
+            onChange={handleChange('job_description')}
+            className="input min-h-[120px] resize-none"
+            placeholder="Paste the job description, key requirements, or responsibilities..."
+            rows={5}
+          />
+          <p className="form-help">
+            Include the full job posting, requirements, or key details from the listing
+          </p>
+        </div>
+
+        {/* Notes */}
+        <div className="form-group">
+          <label className="form-label flex items-center space-x-2">
+            <FileText className="w-4 h-4 text-slate-500" />
+            <span>Personal Notes</span>
+          </label>
+          <textarea
+            value={form.notes}
+            onChange={handleChange('notes')}
+            className="input min-h-[100px] resize-none"
+            placeholder="Add your thoughts, research notes, or application strategy..."
+            rows={4}
+          />
+          <p className="form-help">
+            Include your research, application strategy, or interview preparation notes
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="modal-footer">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn-secondary"
+            disabled={loading}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading || !form.company.trim() || !form.job_title.trim()}
+            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Saving...</span>
+              </div>
+            ) : (
+              editingJob ? "Update Job" : "Add Job"
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

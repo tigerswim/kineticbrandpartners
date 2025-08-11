@@ -18,6 +18,20 @@ interface JobListState {
   error: string | null
 }
 
+// Status configuration for tabs
+const statusConfig = {
+  all: { label: 'All Jobs', color: 'bg-blue-600 text-white', icon: '📋' },
+  bookmarked: { label: 'Bookmarked', color: 'bg-slate-600 text-white', icon: '📌' },
+  interested: { label: 'Interested', color: 'bg-slate-500 text-white', icon: '👀' },
+  applied: { label: 'Applied', color: 'bg-blue-500 text-white', icon: '📤' },
+  interviewing: { label: 'Interviewing', color: 'bg-blue-600 text-white', icon: '🎯' },
+  onhold: { label: 'On Hold', color: 'bg-slate-400 text-white', icon: '⏸️' },
+  offered: { label: 'Offered', color: 'bg-blue-500 text-white', icon: '🎉' },
+  rejected: { label: 'Rejected', color: 'bg-slate-600 text-white', icon: '❌' },
+  withdrawn: { label: 'Withdrawn', color: 'bg-slate-500 text-white', icon: '↩️' },
+  noresponse: { label: 'No Response', color: 'bg-slate-500 text-white', icon: '🔇' }
+}
+
 // Memoized Contact Modal Component
 const ContactModal = memo(({ contact, onClose }: { contact: Contact; onClose: () => void }) => {
   return (
@@ -261,28 +275,7 @@ export default function JobList() {
     loadJobs()
   }, [loadJobs])
 
-  // Memoized status counts - dynamic approach based on actual data
-  const statusCounts = useMemo(() => {
-    if (!state.jobs || !Array.isArray(state.jobs)) {
-      return { all: 0 }
-    }
-    
-    const counts: Record<string, number> = { all: state.jobs.length }
-    
-    state.jobs.forEach(job => {
-      if (job && job.status) {
-        // Use the exact status from the job (no normalization)
-        counts[job.status] = (counts[job.status] || 0) + 1
-      }
-    })
-    
-    console.log('Status counts:', counts)
-    console.log('Available statuses in jobs:', [...new Set(state.jobs.map(job => job.status).filter(Boolean))])
-    
-    return counts
-  }, [state.jobs])
-
-  // Memoized filtered jobs - use exact status matching
+  // Memoized filtered jobs
   const filteredJobs = useMemo(() => {
     if (!state.jobs || !Array.isArray(state.jobs) || state.jobs.length === 0) {
       return []
@@ -301,12 +294,25 @@ export default function JobList() {
         job.location?.toLowerCase().includes(searchLower)
       )
       
-      // Status filter - use exact matching
+      // Status filter
       const matchesStatus = statusFilter === 'all' || job.status === statusFilter
       
       return matchesSearch && matchesStatus
     })
   }, [state.jobs, searchTerm, statusFilter])
+
+  // Memoized status counts
+  const statusCounts = useMemo(() => {
+    if (!state.jobs || !Array.isArray(state.jobs)) return {}
+    
+    const counts: Record<string, number> = { all: state.jobs.length }
+    state.jobs.forEach(job => {
+      if (job && job.status) {
+        counts[job.status] = (counts[job.status] || 0) + 1
+      }
+    })
+    return counts
+  }, [state.jobs])
 
   // ESC key handling
   useEffect(() => {
@@ -425,58 +431,30 @@ export default function JobList() {
         </div>
       </div>
 
-      {/* Status Filter Tabs - Dynamic based on actual job data */}
-      <div className="flex flex-wrap gap-2 bg-white/50 p-2 rounded-lg">
-        {/* Always show All Jobs first */}
-        <button
-          onClick={() => handleStatusFilterChange('all')}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-            statusFilter === 'all'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          All Jobs
-          <span className={`text-xs px-2 py-0.5 rounded-full ${
-            statusFilter === 'all'
-              ? 'bg-white/20 text-white'
-              : 'bg-gray-200 text-gray-600'
-          }`}>
-            {statusCounts.all || 0}
-          </span>
-        </button>
-
-        {/* Dynamic status buttons based on actual data */}
-        {Object.entries(statusCounts)
-          .filter(([status, count]) => status !== 'all' && count > 0)
-          .sort(([a], [b]) => a.localeCompare(b)) // Sort alphabetically
-          .map(([status, count]) => {
-            const isActive = statusFilter === status
-            
-            return (
-              <button
-                key={status}
-                onClick={() => handleStatusFilterChange(status)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {/* Capitalize first letter for display */}
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  isActive
-                    ? 'bg-white/20 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            )
-          })}
+      {/* Status Filter Tabs */}
+      <div className="flex flex-wrap gap-2">
+        {Object.entries(statusConfig).map(([status, config]) => {
+          const count = statusCounts[status] || 0
+          if (status !== 'all' && count === 0) return null
+          
+          const isActive = statusFilter === status
+          const displayCount = status === 'all' ? statusCounts.all || 0 : count
+          
+          return (
+            <button
+              key={status}
+              onClick={() => handleStatusFilterChange(status)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                isActive 
+                  ? config.color
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {config.label} {displayCount}
+            </button>
+          )
+        })}
       </div>
-
 
       {/* Jobs Table */}
       {filteredJobs.length === 0 ? (

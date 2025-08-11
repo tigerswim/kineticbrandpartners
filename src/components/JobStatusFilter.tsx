@@ -1,159 +1,67 @@
-// src/components/JobStatusFilter.tsx
+// src/components/JobStatusFilter.tsx - Updated for optimized JobList
 'use client'
 
+import { memo, useMemo } from 'react'
 import { Job } from '@/lib/supabase'
+import { Filter } from 'lucide-react'
 
 interface JobStatusFilterProps {
-  jobs: Job[]
+  jobs?: Job[]
   selectedStatus: string | null
   onStatusChange: (status: string | null) => void
 }
 
-const statusOptions = [
-  { 
-    id: 'Bookmarked',
-    title: 'Bookmarked', 
-    aliases: 'Interested',
-    color: 'text-slate-600',
-    bg: 'bg-slate-50',
-    border: 'border-slate-200',
-    hoverBg: 'hover:bg-slate-100',
-    activeBg: 'bg-slate-600',
-    activeText: 'text-white',
-    dot: 'bg-slate-400'
-  },
-  { 
-    id: 'Applied', 
-    title: 'Applied', 
-    color: 'text-blue-600',
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    hoverBg: 'hover:bg-blue-100',
-    activeBg: 'bg-blue-600',
-    activeText: 'text-white',
-    dot: 'bg-blue-500'
-  },
-  { 
-    id: 'Interviewing', 
-    title: 'Interviewing', 
-    color: 'text-blue-700',
-    bg: 'bg-blue-100',
-    border: 'border-blue-300',
-    hoverBg: 'hover:bg-blue-200',
-    activeBg: 'bg-blue-700',
-    activeText: 'text-white',
-    dot: 'bg-blue-600'
-  },
-  { 
-    id: 'Onhold', 
-    title: 'On Hold', 
-    color: 'text-slate-500',
-    bg: 'bg-slate-100',
-    border: 'border-slate-300',
-    hoverBg: 'hover:bg-slate-200',
-    activeBg: 'bg-slate-500',
-    activeText: 'text-white',
-    dot: 'bg-slate-500'
-  },
-  { 
-    id: 'Offered', 
-    title: 'Offered', 
-    color: 'text-blue-600',
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    hoverBg: 'hover:bg-blue-100',
-    activeBg: 'bg-blue-600',
-    activeText: 'text-white',
-    dot: 'bg-blue-500'
-  },
-  { 
-    id: 'Rejected', 
-    title: 'Rejected', 
-    color: 'text-slate-500',
-    bg: 'bg-slate-50',
-    border: 'border-slate-200',
-    hoverBg: 'hover:bg-slate-100',
-    activeBg: 'bg-slate-500',
-    activeText: 'text-white',
-    dot: 'bg-slate-400'
-  }
-]
+// Status configuration for tabs - Updated to match database values
+const statusConfig = {
+  all: { label: 'All Jobs', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  interested: { label: 'Interested', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  applied: { label: 'Applied', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  interviewing: { label: 'Interviewing', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  onhold: { label: 'On Hold', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  offered: { label: 'Offered', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  rejected: { label: 'Rejected', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  bookmarked: { label: 'Bookmarked', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  withdrawn: { label: 'Withdrawn', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' },
+  noresponse: { label: 'No Response', activeColor: 'bg-blue-600 text-white', inactiveColor: 'bg-gray-100 text-gray-600 hover:bg-gray-200' }
+}
 
-export default function JobStatusFilter({ jobs, selectedStatus, onStatusChange }: JobStatusFilterProps) {
-  const getStatusCount = (statusId: string) => {
-    return jobs.filter(job => job.status === statusId).length
-  }
-
-  const totalJobs = jobs.length
+const JobStatusFilter = memo(({ jobs = [], selectedStatus, onStatusChange }: JobStatusFilterProps) => {
+  // Memoize status counts to avoid recalculating on every render
+  const statusCounts = useMemo(() => {
+    if (!jobs || !Array.isArray(jobs)) return {}
+    
+    const counts: Record<string, number> = {}
+    jobs.forEach(job => {
+      if (job && job.status) {
+        counts[job.status] = (counts[job.status] || 0) + 1
+      }
+    })
+    return counts
+  }, [jobs])
 
   return (
-    <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-slate-200/60">
-      <div className="flex flex-wrap gap-2">
-        {/* All Jobs Filter */}
-        <button
-          onClick={() => onStatusChange(null)}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-            selectedStatus === null
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform -translate-y-0.5'
-              : 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 hover:border-slate-300 hover:shadow-sm'
-          }`}
-        >
-          <div className="w-2 h-2 rounded-full bg-current opacity-70"></div>
-          <span>All Jobs</span>
-          <div className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-            selectedStatus === null 
-              ? 'bg-white/20 text-white' 
-              : 'bg-slate-200 text-slate-600'
-          }`}>
-            {totalJobs}
-          </div>
-        </button>
-
-        {/* Status-specific filters */}
-        {statusOptions.map((status) => {
-          const count = getStatusCount(status.id)
-          const isSelected = selectedStatus === status.id
-          
+    <div className="flex items-center space-x-2">
+      <Filter className="w-4 h-4 text-gray-400" />
+      <select
+        value={selectedStatus || 'all'}
+        onChange={(e) => onStatusChange(e.target.value === 'all' ? null : e.target.value)}
+        className="input min-w-32"
+      >
+        <option value="all">All Status ({jobs?.length || 0})</option>
+        {Object.entries(statusConfig).map(([status, config]) => {
+          const count = statusCounts[status] || 0
+          if (count === 0) return null
           return (
-            <button
-              key={status.id}
-              onClick={() => onStatusChange(status.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 border ${
-                isSelected
-                  ? `${status.activeBg} ${status.activeText} shadow-lg transform -translate-y-0.5 border-transparent`
-                  : `${status.bg} ${status.color} ${status.border} ${status.hoverBg} hover:shadow-sm`
-              }`}
-            >
-              <div className={`w-2 h-2 rounded-full ${
-                isSelected ? 'bg-white/70' : status.dot
-              }`}></div>
-              <span>{status.title}</span>
-              <div className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                isSelected 
-                  ? 'bg-white/20 text-white' 
-                  : 'bg-white/60 text-current'
-              }`}>
-                {count}
-              </div>
-            </button>
+            <option key={status} value={status}>
+              {config.label} ({count})
+            </option>
           )
         })}
-      </div>
-      
-      {/* Active Filters Indicator */}
-      {selectedStatus && (
-        <div className="mt-3 pt-3 border-t border-slate-200/60">
-          <div className="flex items-center justify-between text-sm text-slate-600">
-            <span>Active filter applied</span>
-            <button
-              onClick={() => onStatusChange(null)}
-              className="text-blue-600 hover:text-blue-800 font-medium"
-            >
-              Clear filter
-            </button>
-          </div>
-        </div>
-      )}
+      </select>
     </div>
   )
-}
+})
+
+JobStatusFilter.displayName = 'JobStatusFilter'
+
+export default JobStatusFilter

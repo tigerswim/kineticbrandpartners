@@ -109,12 +109,14 @@ body {
   @apply px-3 py-1 rounded-full text-xs font-medium;
 }
 
-.status-interested { @apply bg-blue-50 text-blue-700 border border-blue-100; }
-.status-applied { @apply bg-slate-50 text-slate-700 border border-slate-100; }
-.status-interviewing { @apply bg-blue-100 text-blue-800 border border-blue-200; }
+.status-bookmarked { @apply bg-blue-50 text-blue-700 border border-blue-100; }
+.status-applied { @apply bg-blue-50 text-slate-700 border border-blue-100; }
+.status-interviewing { @apply bg-green-100 text-green-800 border border-green-200; }
 .status-onhold { @apply bg-slate-100 text-slate-600 border border-slate-200; }
 .status-offered { @apply bg-blue-50 text-blue-700 border border-blue-100; }
-.status-rejected { @apply bg-slate-50 text-slate-500 border border-slate-100; }
+.status-rejected { @apply bg-red-50 text-red-500 border border-red-100; }
+.status-withdrawn { @apply bg-red-50 text-red-500 border border-red-100; }
+.status-noresponse { @apply bg-red-50 text-red-500 border border-red-100; }
 
 /* Glass morphism utilities */
 .glass {
@@ -231,5 +233,255 @@ body {
   
   .btn-primary, .btn-secondary {
     @apply px-4 py-2 text-sm;
+  }
+}
+
+/* FIXED Modal Components - Enhanced for better visibility and positioning */
+
+/* Modal overlay that covers the entire viewport */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+/* Modal container centered in viewport */
+.modal-container {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 100%;
+  max-width: 700px; /* Increased for form width */
+  overflow: hidden; /* Changed from overflow-y: auto to prevent scroll issues */
+  transform: scale(1);
+  opacity: 1;
+  animation: modalAppear 0.3s ease-out;
+}
+
+/* Animation for modal appearance */
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Ensure modal content is visible and scrollable */
+.modal-content {
+  padding: 2rem;
+  max-height: calc(90vh - 2rem);
+  overflow-y: auto;
+  color: var(--foreground);
+  background: white;
+  position: relative;
+}
+
+/* Close button positioning - FIXED */
+.modal-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 1001;
+  color: #475569;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.modal-close-button:hover {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: #334155;
+  transform: scale(1.05);
+}
+
+.modal-close-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Modal responsive enhancements */
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .modal-container {
+    max-width: 95vw;
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+    max-height: calc(95vh - 1rem);
+  }
+  
+  .modal-close-button {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Additional modal utilities */
+.modal-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.modal-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.modal-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Ensure form elements are visible in modal */
+.modal-content .input,
+.modal-content .btn-primary,
+.modal-content .btn-secondary,
+.modal-content .btn-ghost {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix any potential text color issues */
+.modal-content * {
+  color: inherit;
+}
+
+/* Add this to your globals.css file for the status tabs to match the first screenshot */
+
+/* Status tab styling to match the design */
+.status-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+
+.status-tab.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.status-tab.inactive {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.status-tab.inactive:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+/* Compact table styling */
+.compact-table {
+  font-size: 0.875rem;
+}
+
+.compact-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.compact-table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+/* Status badge adjustments for compact design */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Action buttons in compact table */
+.action-button {
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+}
+
+.action-button:hover {
+  transform: scale(1.05);
+}
+
+/* Search input styling to match header */
+.header-search {
+  min-width: 20rem;
+}
+
+@media (max-width: 768px) {
+  .header-search {
+    min-width: 16rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-search {
+    min-width: 12rem;
   }
 }

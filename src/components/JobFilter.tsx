@@ -1,14 +1,24 @@
-// src/components/JobFilter.tsx
+// src/components/JobFilter.tsx - Updated to work with optimized JobList
 'use client'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 interface JobFilterProps {
   searchTerm: string
   onSearchChange: (term: string) => void
+  // Add new props for location filtering if needed
+  locationOptions?: string[]
+  selectedLocation?: string
+  onLocationChange?: (location: string) => void
 }
 
-export default function JobFilter({ searchTerm, onSearchChange }: JobFilterProps) {
+const JobFilter = memo(({ 
+  searchTerm, 
+  onSearchChange,
+  locationOptions = [],
+  selectedLocation = 'all',
+  onLocationChange
+}: JobFilterProps) => {
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm)
 
   const handleSearchChange = (value: string) => {
@@ -22,8 +32,9 @@ export default function JobFilter({ searchTerm, onSearchChange }: JobFilterProps
   }
 
   return (
-    <div className="mb-4">
-      <div className="relative">
+    <div className="flex items-center space-x-4">
+      {/* Search Input */}
+      <div className="relative flex-1 min-w-64">
         <input
           type="text"
           placeholder="Search jobs by company, title, or notes..."
@@ -40,6 +51,26 @@ export default function JobFilter({ searchTerm, onSearchChange }: JobFilterProps
           </button>
         )}
       </div>
+
+      {/* Location Filter (if provided) */}
+      {locationOptions && locationOptions.length > 0 && onLocationChange && (
+        <select
+          value={selectedLocation}
+          onChange={(e) => onLocationChange(e.target.value)}
+          className="input min-w-32"
+        >
+          <option value="all">All Locations</option>
+          {locationOptions.map(location => (
+            <option key={location} value={location}>
+              {location}
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   )
-}
+})
+
+JobFilter.displayName = 'JobFilter'
+
+export default JobFilter

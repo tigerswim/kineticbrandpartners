@@ -1,4 +1,5 @@
-// src/lib/jobContacts.ts
+// src/lib/jobContacts.ts - Enhanced with better error details
+
 import { supabase } from './supabase'
 
 export interface JobContact {
@@ -18,12 +19,32 @@ export interface LinkedJob {
   location: string | null
 }
 
-export async function linkJobToContact(jobId: string, contactId: string): Promise<JobContact | null> {
+export async function linkJobToContact(jobId: string, contactId: string): Promise<JobContact> {
   try {
+    if (!jobId || !contactId) {
+      throw new Error('Job ID and Contact ID are required')
+    }
+
     const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return null
+    if (userError) {
+      throw new Error(`Authentication error: ${userError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('No authenticated user found')
+    }
+
+    // Check if link already exists
+    const { data: existing } = await supabase
+      .from('job_contacts')
+      .select('id')
+      .eq('job_id', jobId)
+      .eq('contact_id', contactId)
+      .eq('user_id', user.id)
+      .single()
+
+    if (existing) {
+      throw new Error('Contact is already linked to this job')
     }
 
     const { data, error } = await supabase
@@ -37,23 +58,34 @@ export async function linkJobToContact(jobId: string, contactId: string): Promis
       .single()
 
     if (error) {
-      console.error('Error linking job to contact:', error)
-      return null
+      throw new Error(`Database error: ${error.message}`)
     }
 
     return data
   } catch (error) {
-    console.error('Exception in linkJobToContact:', error)
-    return null
+    console.error('Error in linkJobToContact:', {
+      error: error instanceof Error ? error.message : String(error),
+      jobId,
+      contactId,
+      timestamp: new Date().toISOString()
+    })
+    throw error // Re-throw to let calling function handle
   }
 }
 
 export async function unlinkJobFromContact(jobId: string, contactId: string): Promise<boolean> {
   try {
+    if (!jobId || !contactId) {
+      throw new Error('Job ID and Contact ID are required')
+    }
+
     const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return false
+    if (userError) {
+      throw new Error(`Authentication error: ${userError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('No authenticated user found')
     }
 
     const { error } = await supabase
@@ -64,23 +96,34 @@ export async function unlinkJobFromContact(jobId: string, contactId: string): Pr
       .eq('user_id', user.id)
 
     if (error) {
-      console.error('Error unlinking job from contact:', error)
-      return false
+      throw new Error(`Database error: ${error.message}`)
     }
 
     return true
   } catch (error) {
-    console.error('Exception in unlinkJobFromContact:', error)
-    return false
+    console.error('Error in unlinkJobFromContact:', {
+      error: error instanceof Error ? error.message : String(error),
+      jobId,
+      contactId,
+      timestamp: new Date().toISOString()
+    })
+    throw error // Re-throw to let calling function handle
   }
 }
 
 export async function getJobContacts(jobId: string) {
   try {
+    if (!jobId || jobId.trim() === '') {
+      throw new Error('Job ID is required')
+    }
+
     const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return []
+    if (userError) {
+      throw new Error(`Authentication error: ${userError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('No authenticated user found')
     }
 
     const { data, error } = await supabase
@@ -100,23 +143,33 @@ export async function getJobContacts(jobId: string) {
       .eq('user_id', user.id)
 
     if (error) {
-      console.error('Error fetching job contacts:', error)
-      return []
+      throw new Error(`Database error: ${error.message}`)
     }
 
-    return data?.map(item => item.contacts) || []
+    return data?.map(item => item.contacts).filter(contact => contact !== null) || []
   } catch (error) {
-    console.error('Exception in getJobContacts:', error)
-    return []
+    console.error('Error in getJobContacts:', {
+      error: error instanceof Error ? error.message : String(error),
+      jobId: jobId || 'undefined',
+      timestamp: new Date().toISOString()
+    })
+    throw error // Re-throw to let calling function handle
   }
 }
 
 export async function getContactJobs(contactId: string) {
   try {
+    if (!contactId || contactId.trim() === '') {
+      throw new Error('Contact ID is required')
+    }
+
     const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return []
+    if (userError) {
+      throw new Error(`Authentication error: ${userError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('No authenticated user found')
     }
 
     const { data, error } = await supabase
@@ -135,14 +188,17 @@ export async function getContactJobs(contactId: string) {
       .eq('user_id', user.id)
 
     if (error) {
-      console.error('Error fetching contact jobs:', error)
-      return []
+      throw new Error(`Database error: ${error.message}`)
     }
 
-    return data?.map(item => item.jobs) || []
+    return data?.map(item => item.jobs).filter(job => job !== null) || []
   } catch (error) {
-    console.error('Exception in getContactJobs:', error)
-    return []
+    console.error('Error in getContactJobs:', {
+      error: error instanceof Error ? error.message : String(error),
+      contactId: contactId || 'undefined',
+      timestamp: new Date().toISOString()
+    })
+    throw error // Re-throw to let calling function handle
   }
 }
 
@@ -158,10 +214,19 @@ export async function getJobsForContacts(
       return {}
     }
 
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
+    // Filter out any undefined or empty contact IDs
+    const validContactIds = contactIds.filter(id => id && id.trim() !== '')
+    if (validContactIds.length === 0) {
       return {}
+    }
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError) {
+      throw new Error(`Authentication error: ${userError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('No authenticated user found')
     }
 
     // Fetch all links for the provided contacts in a single query
@@ -177,12 +242,11 @@ export async function getJobsForContacts(
           location
         )
       `)
-      .in('contact_id', contactIds)
+      .in('contact_id', validContactIds)
       .eq('user_id', user.id)
 
     if (error) {
-      console.error('Error fetching jobs for contacts:', error)
-      return {}
+      throw new Error(`Database error: ${error.message}`)
     }
 
     const map: Record<string, LinkedJob[]> = {}
@@ -196,7 +260,11 @@ export async function getJobsForContacts(
 
     return map
   } catch (error) {
-    console.error('Exception in getJobsForContacts:', error)
-    return {}
+    console.error('Error in getJobsForContacts:', {
+      error: error instanceof Error ? error.message : String(error),
+      contactIds: contactIds?.length || 0,
+      timestamp: new Date().toISOString()
+    })
+    throw error // Re-throw to let calling function handle
   }
 }

@@ -1,12 +1,12 @@
-// src/components/JobContactManager.tsx - Enhanced with search functionality
+// src/components/JobContactManager.tsx - Enhanced with comprehensive error handling
 
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Contact } from '@/lib/supabase'
 import { getContacts } from '@/lib/contacts'
 import { getJobContacts, linkJobToContact, unlinkJobFromContact } from '@/lib/jobContacts'
-import { X, Plus, Users, AlertCircle, RefreshCw, Search } from 'lucide-react'
+import { X, Plus, Users, AlertCircle, RefreshCw } from 'lucide-react'
 
 interface JobContactManagerProps {
   jobId: string
@@ -19,7 +19,6 @@ export default function JobContactManager({ jobId, onClose }: JobContactManagerP
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [linking, setLinking] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     loadData()
@@ -119,36 +118,9 @@ export default function JobContactManager({ jobId, onClose }: JobContactManagerP
     }
   }
 
-  // Filter available contacts based on search query
-  const filteredAvailableContacts = useMemo(() => {
-    const availableContacts = allContacts.filter(
-      contact => !linkedContacts.some(linked => linked.id === contact.id)
-    )
-
-    if (!searchQuery.trim()) {
-      return availableContacts
-    }
-
-    const query = searchQuery.toLowerCase().trim()
-    
-    return availableContacts.filter(contact => {
-      const name = contact.name?.toLowerCase() || ''
-      const company = contact.company?.toLowerCase() || ''
-      const jobTitle = contact.job_title?.toLowerCase() || ''
-      
-      return name.includes(query) || 
-             company.includes(query) || 
-             jobTitle.includes(query)
-    })
-  }, [allContacts, linkedContacts, searchQuery])
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value)
-  }
-
-  const clearSearch = () => {
-    setSearchQuery('')
-  }
+  const availableContacts = allContacts.filter(
+    contact => !linkedContacts.some(linked => linked.id === contact.id)
+  )
 
   if (loading) {
     return (
@@ -233,75 +205,20 @@ export default function JobContactManager({ jobId, onClose }: JobContactManagerP
             )}
           </div>
 
-          {/* Available Contacts with Search */}
+          {/* Available Contacts */}
           <div>
             <h3 className="font-medium text-slate-700 mb-3">
-              Available Contacts ({allContacts.length - linkedContacts.length})
+              Available Contacts ({availableContacts.length})
             </h3>
             
-            {/* Search Bar */}
-            {(allContacts.length - linkedContacts.length) > 0 && (
-              <div className="relative mb-4">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search contacts by name, company, or title..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="block w-full pl-10 pr-10 py-2 border border-slate-300 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={clearSearch}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    <X className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* Search Results Info */}
-            {searchQuery && (
-              <div className="mb-3 text-sm text-slate-600">
-                {filteredAvailableContacts.length === 0 ? (
-                  <span>No contacts found matching "{searchQuery}"</span>
-                ) : (
-                  <span>
-                    {filteredAvailableContacts.length} contact{filteredAvailableContacts.length !== 1 ? 's' : ''} found matching "{searchQuery}"
-                  </span>
-                )}
-              </div>
-            )}
-            
-            {(allContacts.length - linkedContacts.length) === 0 ? (
+            {availableContacts.length === 0 ? (
               <div className="text-center py-4 text-slate-500 bg-slate-50 rounded-lg">
                 <Users className="w-8 h-8 mx-auto mb-2 text-slate-300" />
                 <p className="text-sm">All contacts are already linked or no contacts exist.</p>
               </div>
-            ) : filteredAvailableContacts.length === 0 ? (
-              <div className="text-center py-4 text-slate-500 bg-slate-50 rounded-lg">
-                <Search className="w-8 h-8 mx-auto mb-2 text-slate-300" />
-                <p className="text-sm">
-                  {searchQuery ? 
-                    `No contacts found matching "${searchQuery}"` : 
-                    'No available contacts'
-                  }
-                </p>
-                {searchQuery && (
-                  <button
-                    onClick={clearSearch}
-                    className="mt-2 text-sm text-blue-600 hover:text-blue-800 underline"
-                  >
-                    Clear search
-                  </button>
-                )}
-              </div>
             ) : (
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {filteredAvailableContacts.map((contact) => (
+                {availableContacts.map((contact) => (
                   <div
                     key={contact.id}
                     className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-lg"
