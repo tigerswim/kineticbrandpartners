@@ -18,6 +18,14 @@ const BLANK = {
 
 const statusOptions = [
   { 
+    id: 'bookmarked', 
+    title: 'Bookmarked',
+    description: 'Review in more detail',
+    color: 'text-slate-600',
+    bg: 'bg-slate-50',
+    border: 'border-slate-200'
+  },
+  { 
     id: 'interested', 
     title: 'Interested',
     description: 'Job looks promising',
@@ -42,14 +50,6 @@ const statusOptions = [
     border: 'border-blue-300'
   },
   { 
-    id: 'onhold', 
-    title: 'On Hold',
-    description: 'Waiting for response',
-    color: 'text-slate-500',
-    bg: 'bg-slate-100',
-    border: 'border-slate-300'
-  },
-  { 
     id: 'offered', 
     title: 'Offered',
     description: 'Received job offer',
@@ -58,9 +58,33 @@ const statusOptions = [
     border: 'border-blue-200'
   },
   { 
+    id: 'onhold', 
+    title: 'On Hold',
+    description: 'Waiting for response',
+    color: 'text-slate-500',
+    bg: 'bg-slate-100',
+    border: 'border-slate-300'
+  },
+    { 
+    id: 'withdrawn', 
+    title: 'Withdrawn',
+    description: 'Waiting for response',
+    color: 'text-slate-500',
+    bg: 'bg-slate-100',
+    border: 'border-slate-300'
+  },
+  { 
     id: 'rejected', 
     title: 'Rejected',
     description: 'Application declined',
+    color: 'text-slate-500',
+    bg: 'bg-slate-50',
+    border: 'border-slate-200'
+  },
+  { 
+    id: 'noresponse', 
+    title: 'No Response',
+    description: 'Ghosted',
     color: 'text-slate-500',
     bg: 'bg-slate-50',
     border: 'border-slate-200'
@@ -203,7 +227,7 @@ export default function JobForm({ job: editingJob, onJobAdded, onCancel }: JobFo
             <Target className="w-4 h-4 text-slate-500" />
             <span>Application Status</span>
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-3 gap-3">
             {statusOptions.map((option) => (
               <button
                 key={option.id}
