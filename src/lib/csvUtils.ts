@@ -479,6 +479,7 @@ function getValidStatusValues(dataType: 'jobs' | 'contacts' | 'interactions'): s
         'Bookmarked',
         'Withdrawn',
         'On Hold',
+        'No Response'
       ]
     case 'interactions':
       return [

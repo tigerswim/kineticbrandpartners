@@ -572,14 +572,53 @@ export default function JobList() {
 
       {/* Job Form Modal */}
       {showJobForm && (
-        <JobForm
-          job={selectedJob}
-          onJobAdded={handleJobFormSubmit}
-          onCancel={() => {
-            setShowJobForm(false)
-            setSelectedJob(null)
+        <div
+          className="modal-overlay animate-fade-in"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowJobForm(false)
+              setSelectedJob(null)
+            }
           }}
-        />
+        >
+          <div
+            ref={modalRef}
+            className="modal-container animate-scale-in"
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal-close-button"
+              onClick={() => {
+                setShowJobForm(false)
+                setSelectedJob(null)
+              }}
+              aria-label="Close modal"
+            >
+              <X size={20} />
+            </button>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h2 id="modal-title" className="modal-title">
+                  {selectedJob ? 'Edit Job Application' : 'Add New Job Application'}
+                </h2>
+              </div>
+              <div className="modal-body">
+                <JobForm
+                  job={selectedJob}
+                  onJobAdded={handleJobFormSubmit}
+                  onCancel={() => {
+                    setShowJobForm(false)
+                    setSelectedJob(null)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

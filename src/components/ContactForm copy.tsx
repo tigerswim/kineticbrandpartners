@@ -167,7 +167,7 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 z-50" style={{ paddingTop: '2rem' }}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
@@ -185,45 +185,18 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                form="contact-form"
-                disabled={loading}
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Saving...</span>
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" />
-                    <span>{contact ? 'Update Contact' : 'Save Contact'}</span>
-                  </>
-                )}
-              </button>
-              <button
-                onClick={onCancel}
-                className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+            <button
+              onClick={onCancel}
+              className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
         {/* Form Content */}
         <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] custom-scrollbar">
-          <form id="contact-form" onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <div className="space-y-6">
               <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-2">
@@ -612,6 +585,34 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                 </div>
               </div>
             )}
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 pt-6 border-t border-slate-200">
+              <button
+                type="button"
+                onClick={onCancel}
+                className="flex-1 btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Saving...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Save className="w-4 h-4" />
+                    <span>{contact ? 'Update Contact' : 'Save Contact'}</span>
+                  </div>
+                )}
+              </button>
+            </div>
           </form>
         </div>
       </div>

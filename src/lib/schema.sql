@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   id SERIAL PRIMARY KEY,
   company VARCHAR(255) NOT NULL,
   position VARCHAR(255) NOT NULL,
-  status VARCHAR(50) NOT NULL DEFAULT 'interested',
+  status VARCHAR(50) NOT NULL DEFAULT 'bookmarked',
   salary VARCHAR(100),
   location VARCHAR(255),
   job_url TEXT,

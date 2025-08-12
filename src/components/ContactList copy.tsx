@@ -858,14 +858,39 @@ export default function ContactList() {
 
       {/* Contact Form Modal */}
       {showForm && (
-        <ContactForm
-          contact={editingContact}
-          onSuccess={handleFormSuccess}
-          onCancel={() => {
-            setShowForm(false)
-            setEditingContact(null)
-          }}
-        />
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          style={{ overflow: 'auto' }}
+        >
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white sticky top-0">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">
+                  {editingContact ? 'Edit Contact' : 'Add New Contact'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setShowForm(false)
+                    setEditingContact(null)
+                  }}
+                  className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <ContactForm
+                contact={editingContact}
+                onSuccess={handleFormSuccess}
+                onCancel={() => {
+                  setShowForm(false)
+                  setEditingContact(null)
+                }}
+              />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Contact Detail Modal */}
