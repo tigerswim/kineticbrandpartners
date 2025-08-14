@@ -27,61 +27,55 @@ interface InteractionFormProps {
 const INTERACTION_TYPES = [
   { 
     value: 'email' as const, 
-    label: 'Email', 
     icon: Mail,
-    description: 'Email conversation',
+    description: 'Email',
     color: 'text-blue-600',
     bg: 'bg-blue-50',
     border: 'border-blue-200'
   },
   { 
     value: 'phone' as const, 
-    label: 'Phone Call', 
     icon: Phone,
-    description: 'Phone conversation',
+    description: 'Phone',
     color: 'text-green-600',
     bg: 'bg-green-50',
     border: 'border-green-200'
   },
   { 
     value: 'video_call' as const, 
-    label: 'Video Call', 
     icon: Video,
-    description: 'Video meeting',
+    description: 'Video',
     color: 'text-purple-600',
     bg: 'bg-purple-50',
     border: 'border-purple-200'
   },
   { 
     value: 'linkedin' as const, 
-    label: 'LinkedIn Message', 
     icon: Linkedin,
-    description: 'LinkedIn interaction',
+    description: 'LinkedIn',
     color: 'text-blue-700',
     bg: 'bg-blue-50',
     border: 'border-blue-300'
   },
   { 
     value: 'meeting' as const, 
-    label: 'In-Person Meeting', 
     icon: Calendar,
-    description: 'Face-to-face meeting',
+    description: 'In Person',
     color: 'text-orange-600',
     bg: 'bg-orange-50',
     border: 'border-orange-200'
   },
   { 
     value: 'other' as const, 
-    label: 'Other', 
     icon: MessageSquare,
-    description: 'Other interaction type',
+    description: 'Other',
     color: 'text-slate-600',
     bg: 'bg-slate-50',
     border: 'border-slate-200'
   }
 ] as const
 
-// Memoized type selector component - FIXED sizing and text overflow
+// Memoized type selector component - FIXED sizing and text overflow, changed to 2 columns x 3 rows
 const TypeSelector = memo(({ 
   selectedType, 
   onTypeChange 
@@ -89,7 +83,7 @@ const TypeSelector = memo(({
   selectedType: string
   onTypeChange: (type: string) => void 
 }) => (
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+  <div className="grid grid-cols-2 gap-3">
     {INTERACTION_TYPES.map((type) => {
       const Icon = type.icon
       const isSelected = selectedType === type.value
@@ -99,7 +93,7 @@ const TypeSelector = memo(({
           key={type.value}
           type="button"
           onClick={() => onTypeChange(type.value)}
-          className={`p-3 rounded-lg border-2 text-left transition-all duration-200 min-h-[80px] flex flex-col justify-center ${
+          className={`p-3 rounded-lg border-2 text-left transition-all duration-200 min-h-[60px] flex flex-col justify-center ${
             isSelected
               ? `${type.bg} ${type.border} ${type.color} border-opacity-100 shadow-sm transform scale-105`
               : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
@@ -240,36 +234,35 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
             />
           </div>
 
-          {/* Date and Summary Row - FIXED font sizes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
-                <Clock className="w-3 h-3 text-slate-500" />
-                <span>Date *</span>
-              </label>
-              <input
-                type="date"
-                required
-                value={formData.date}
-                onChange={handleDateChange}
-                className="input text-xs py-2 px-3"
-              />
-            </div>
+          {/* Date Row */}
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
+              <Clock className="w-3 h-3 text-slate-500" />
+              <span>Date *</span>
+            </label>
+            <input
+              type="date"
+              required
+              value={formData.date}
+              onChange={handleDateChange}
+              className="input text-xs py-2 px-3"
+            />
+          </div>
 
-            <div className="form-group">
-              <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
-                <FileText className="w-3 h-3 text-slate-500" />
-                <span>Summary *</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.summary}
-                onChange={handleSummaryChange}
-                placeholder="Brief summary of the interaction"
-                className="input text-xs py-2 px-3"
-              />
-            </div>
+          {/* Summary Row */}
+          <div className="form-group">
+            <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
+              <FileText className="w-3 h-3 text-slate-500" />
+              <span>Summary *</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.summary}
+              onChange={handleSummaryChange}
+              placeholder="Brief summary of the interaction"
+              className="input text-xs py-2 px-3"
+            />
           </div>
 
           {/* Notes - FIXED font size */}
