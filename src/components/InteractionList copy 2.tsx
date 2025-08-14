@@ -1,17 +1,15 @@
-// src/components/InteractionList.tsx - Fixed icon positioning, button size, and text sizing
-
+// src/components/InteractionList.tsx - Optimized version
 'use client'
-
 import { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { Interaction } from '@/lib/supabase'
 import { getInteractions, deleteInteraction, clearInteractionsCache } from '@/lib/interactions'
-import {
-  Plus,
-  Mail,
-  Phone,
-  Video,
-  Linkedin,
-  Calendar,
+import { 
+  Plus, 
+  Mail, 
+  Phone, 
+  Video, 
+  Linkedin, 
+  Calendar, 
   MessageSquare,
   Edit,
   Trash2,
@@ -25,45 +23,45 @@ interface InteractionListProps {
 
 // Memoized constants to prevent recreation on every render
 const INTERACTION_TYPE_CONFIG = {
-  email: {
-    icon: Mail,
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
+  email: { 
+    icon: Mail, 
+    bg: 'bg-blue-50', 
+    text: 'text-blue-700', 
     border: 'border-blue-200',
     dot: 'bg-blue-500'
   },
-  phone: {
-    icon: Phone,
-    bg: 'bg-green-50',
-    text: 'text-green-700',
+  phone: { 
+    icon: Phone, 
+    bg: 'bg-green-50', 
+    text: 'text-green-700', 
     border: 'border-green-200',
     dot: 'bg-green-500'
   },
-  video_call: {
-    icon: Video,
-    bg: 'bg-purple-50',
-    text: 'text-purple-700',
+  video_call: { 
+    icon: Video, 
+    bg: 'bg-purple-50', 
+    text: 'text-purple-700', 
     border: 'border-purple-200',
     dot: 'bg-purple-500'
   },
-  linkedin: {
-    icon: Linkedin,
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
+  linkedin: { 
+    icon: Linkedin, 
+    bg: 'bg-blue-50', 
+    text: 'text-blue-700', 
     border: 'border-blue-200',
     dot: 'bg-blue-600'
   },
-  meeting: {
-    icon: Calendar,
-    bg: 'bg-orange-50',
-    text: 'text-orange-700',
+  meeting: { 
+    icon: Calendar, 
+    bg: 'bg-orange-50', 
+    text: 'text-orange-700', 
     border: 'border-orange-200',
     dot: 'bg-orange-500'
   },
-  other: {
-    icon: MessageSquare,
-    bg: 'bg-slate-50',
-    text: 'text-slate-700',
+  other: { 
+    icon: MessageSquare, 
+    bg: 'bg-slate-50', 
+    text: 'text-slate-700', 
     border: 'border-slate-200',
     dot: 'bg-slate-500'
   }
@@ -84,12 +82,13 @@ const getInteractionTypeConfig = (type: string) => {
 }
 
 const getInteractionTypeLabel = (type: string) => {
-  return INTERACTION_TYPE_LABELS[type as keyof typeof INTERACTION_TYPE_LABELS] ||
+  return INTERACTION_TYPE_LABELS[type as keyof typeof INTERACTION_TYPE_LABELS] || 
     (type.charAt(0).toUpperCase() + type.slice(1))
 }
 
 // Memoized date formatter with caching
-const dateFormatCache = new Map()
+const dateFormatCache = new Map<string, string>()
+
 const formatDate = (dateString: string): string => {
   if (dateFormatCache.has(dateString)) {
     return dateFormatCache.get(dateString)!
@@ -98,15 +97,16 @@ const formatDate = (dateString: string): string => {
   // Fix: Parse the date as local date instead of UTC
   const [year, month, day] = dateString.split('-').map(Number)
   const date = new Date(year, month - 1, day) // month is 0-indexed
+  
   const today = new Date()
   const yesterday = new Date(today)
   yesterday.setDate(yesterday.getDate() - 1)
-
+  
   let formatted: string
   if (date.toDateString() === today.toDateString()) {
     formatted = 'Today'
   } else if (date.toDateString() === yesterday.toDateString()) {
-    formatted = 'Yesterday'
+    formatted = 'Yesterday'  
   } else {
     formatted = date.toLocaleDateString('en-US', {
       month: 'short',
@@ -114,17 +114,18 @@ const formatDate = (dateString: string): string => {
       year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
     })
   }
-
+  
   dateFormatCache.set(dateString, formatted)
   return formatted
 }
 
-// Memoized individual interaction item component - FIXED positioning and text sizing
-const InteractionItem = memo(({
-  interaction,
-  index,
-  onEdit,
-  onDelete
+
+// Memoized individual interaction item component
+const InteractionItem = memo(({ 
+  interaction, 
+  index, 
+  onEdit, 
+  onDelete 
 }: {
   interaction: Interaction
   index: number
@@ -134,6 +135,7 @@ const InteractionItem = memo(({
   const config = useMemo(() => getInteractionTypeConfig(interaction.type), [interaction.type])
   const typeLabel = useMemo(() => getInteractionTypeLabel(interaction.type), [interaction.type])
   const formattedDate = useMemo(() => formatDate(interaction.date), [interaction.date])
+  
   const Icon = config.icon
 
   const handleEdit = useCallback(() => {
@@ -145,56 +147,56 @@ const InteractionItem = memo(({
   }, [interaction.id, onDelete])
 
   return (
-    <div className={`card relative p-4 pt-12 ${config.bg} ${config.border} border-l-4 mb-3 group hover:shadow-md transition-all duration-200`}>
-      {/* Action buttons - FIXED: positioned at top with proper spacing, always visible, smaller icons */}
-      <div className="absolute top-3 right-3 flex gap-1">
-        <button
-          onClick={handleEdit}
-          className="btn-ghost p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
-          title="Edit interaction"
-        >
-          <Edit size={14} />
-        </button>
-        <button
-          onClick={handleDelete}
-          className="btn-ghost p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
-          title="Delete interaction"
-        >
-          <Trash2 size={14} />
-        </button>
-      </div>
-
-      {/* Header with type and date - content pushed down from top */}
-      <div className="flex items-center gap-3 mb-2">
-        <div className={`p-2 rounded-lg ${config.bg} ${config.border} border`}>
-          <Icon size={16} className={config.text} />
-        </div>
+  <div 
+    className={`${config.bg} border ${config.border} p-4 rounded-lg transition-all duration-200 hover:shadow-sm animate-slide-up relative`}
+    style={{ animationDelay: `${index * 50}ms` }}
+  >
+      <div className="flex justify-between items-start">
         <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <span className={`font-medium text-sm ${config.text}`}>
-              {typeLabel}
-            </span>
-            <div className="flex items-center gap-1 text-slate-500 text-xs">
-              <Clock size={12} />
-              {formattedDate}
+          {/* Header with type and date */}
+          <div className="flex items-center space-x-3 mb-2">
+            <div className={`p-1.5 ${config.bg} border ${config.border} rounded-lg`}>
+              <Icon className={`w-4 h-4 ${config.text}`} />
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className={`text-sm font-semibold ${config.text} capitalize`}>
+                {typeLabel}
+              </span>
+              <div className={`w-1 h-1 rounded-full ${config.dot}`}></div>
+              <div className="flex items-center space-x-1 text-slate-500">
+                <Clock className="w-3 h-3" />
+                <span className="text-xs">{formattedDate}</span>
+              </div>
             </div>
           </div>
+
+          {/* Summary */}
+          <h5 className="font-semibold text-slate-800 mb-1">{interaction.summary}</h5>
+          
+          {/* Notes */}
+          {interaction.notes && (
+            <p className="text-sm text-slate-700 leading-relaxed">{interaction.notes}</p>
+          )}
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex space-x-1 ml-4 flex-shrink-0">
+          <button
+            onClick={handleEdit}
+            className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+            title="Edit interaction"
+          >
+            <Edit className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
+            title="Delete interaction"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
         </div>
       </div>
-
-      {/* Summary - FIXED: changed to text-xs to match contact card text */}
-      <div className="mb-2">
-        <p className="text-slate-800 font-medium text-xs line-clamp-2">
-          {interaction.summary}
-        </p>
-      </div>
-
-      {/* Notes - FIXED: changed to text-xs to match contact card text */}
-      {interaction.notes && (
-        <div className="text-slate-600 text-xs bg-white/60 rounded-lg p-3 border border-slate-200/60">
-          <p className="line-clamp-3">{interaction.notes}</p>
-        </div>
-      )}
     </div>
   )
 })
@@ -203,18 +205,20 @@ InteractionItem.displayName = 'InteractionItem'
 
 // Memoized loading skeleton
 const LoadingSkeleton = memo(() => (
-  <div className="space-y-3">
+  <div className="space-y-4">
+    <div className="flex justify-between items-center">
+      <div className="h-6 bg-slate-200 rounded w-24"></div>
+      <div className="h-8 bg-slate-200 rounded w-32"></div>
+    </div>
     {[...Array(2)].map((_, i) => (
-      <div key={i} className="card p-4 animate-pulse">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-8 h-8 bg-slate-200 rounded-lg loading-skeleton"></div>
-          <div className="flex-1">
-            <div className="h-4 bg-slate-200 rounded loading-skeleton mb-1"></div>
-            <div className="h-3 bg-slate-200 rounded loading-skeleton w-20"></div>
-          </div>
+      <div key={i} className="bg-slate-50 p-4 rounded-lg animate-pulse">
+        <div className="flex items-center space-x-2 mb-2">
+          <div className="w-6 h-6 bg-slate-200 rounded"></div>
+          <div className="h-4 bg-slate-200 rounded w-20"></div>
+          <div className="h-4 bg-slate-200 rounded w-16"></div>
         </div>
-        <div className="h-4 bg-slate-200 rounded loading-skeleton mb-2"></div>
-        <div className="h-16 bg-slate-200 rounded loading-skeleton"></div>
+        <div className="h-4 bg-slate-200 rounded w-full mb-2"></div>
+        <div className="h-3 bg-slate-200 rounded w-3/4"></div>
       </div>
     ))}
   </div>
@@ -224,12 +228,16 @@ LoadingSkeleton.displayName = 'LoadingSkeleton'
 
 // Memoized empty state
 const EmptyState = memo(({ onAddInteraction }: { onAddInteraction: () => void }) => (
-  <div className="text-center py-12">
-    <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-      <MessageSquare size={32} className="text-slate-400" />
+  <div className="text-center py-8 bg-slate-50 rounded-lg border border-slate-200">
+    <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+      <MessageSquare className="w-6 h-6 text-slate-400" />
     </div>
-    <p className="text-slate-500 mb-4">No interactions recorded yet</p>
-    <button onClick={onAddInteraction} className="btn-primary">
+    <p className="text-slate-500 text-sm mb-4">No interactions recorded yet</p>
+    <button
+      onClick={onAddInteraction}
+      className="btn-primary text-sm"
+    >
+      <Plus className="w-4 h-4 mr-1" />
       Add First Interaction
     </button>
   </div>
@@ -251,7 +259,7 @@ export default function InteractionList({ contactId }: InteractionListProps) {
   // Optimized load function with better error handling
   const loadInteractions = useCallback(async () => {
     if (!contactId) return
-
+    
     setLoading(true)
     try {
       const data = await getInteractions(contactId)
@@ -309,7 +317,7 @@ export default function InteractionList({ contactId }: InteractionListProps) {
     return (
       <InteractionForm
         contactId={contactId}
-        interaction={editingInteraction}
+        interaction={editingInteraction || undefined}
         onSuccess={handleFormSuccess}
         onCancel={handleCancel}
       />
@@ -318,17 +326,20 @@ export default function InteractionList({ contactId }: InteractionListProps) {
 
   return (
     <div className="space-y-4">
-      {/* Header - FIXED: made Add button more compact */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-slate-800">Recent Activity</h3>
-          <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">
+      {/* Header - memoized to prevent re-renders */}
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <h4 className="font-semibold text-slate-800">Recent Activity</h4>
+          <div className="px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">
             {interactions.length}
-          </span>
+          </div>
         </div>
-        <button onClick={handleShowForm} className="btn-primary flex items-center gap-2 px-3 py-1.5 text-sm">
-          <Plus size={14} />
-          Add
+        <button
+          onClick={handleShowForm}
+          className="flex items-center space-x-1 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add</span>
         </button>
       </div>
 

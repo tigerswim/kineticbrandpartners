@@ -110,99 +110,35 @@ export async function getInteractionCounts(contactIds: string[]): Promise<Record
   }
 }
 
-// Replace your createInteraction function in interactions.ts with this debug version
-
-// Add this at the very start of your createInteraction function
 export async function createInteraction(
   interactionData: Omit<Interaction, 'id' | 'created_at' | 'updated_at'>
 ): Promise<Interaction | null> {
-  console.log('=== ENVIRONMENT DEBUG ===')
-  console.log('NODE_ENV:', process.env.NODE_ENV)
-  console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 50) + '...')
-  console.log('Supabase Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-  console.log('Function called with data:', JSON.stringify(interactionData, null, 2))
-  console.log('Supabase client exists:', !!supabase)
-  console.log('Supabase client URL:', (supabase as any).supabaseUrl?.substring(0, 50) + '...')
-  
   try {
-    // Rest of your existing function...
-    console.log('=== CREATE INTERACTION DEBUG ===')
-    
-    // Check current user
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-    console.log('Current user:', user?.id, user?.email)
-    if (userError) console.error('User error:', userError)
-    
-    if (!user) {
-      console.error('No authenticated user')
-      return null
-    }
-
-    // Check if the contact belongs to this user
-    console.log('Checking contact ownership for contact_id:', interactionData.contact_id)
-    const { data: contactCheck, error: contactError } = await supabase
-      .from('contacts')
-      .select('id, name, user_id')
-      .eq('id', interactionData.contact_id)
-      .single()
-    
-    console.log('Contact check result:', contactCheck)
-    if (contactError) console.error('Contact check error:', contactError)
-    
-    if (!contactCheck) {
-      console.error('Contact not found')
-      return null
-    }
-    
-    if (contactCheck.user_id !== user.id) {
-      console.error('Contact does not belong to current user')
-      console.error('Contact user_id:', contactCheck.user_id)
-      console.error('Current user id:', user.id)
-      return null
-    }
-
-    console.log('✅ Contact ownership verified')
-
     // Validate required fields
     if (!interactionData.contact_id || !interactionData.type || !interactionData.date || !interactionData.summary) {
       console.error('Missing required fields for interaction creation')
-      console.error('Data:', interactionData)
       return null
     }
 
-    console.log('✅ Required fields validated')
-
-    // **ADD USER_ID TO THE DATA**
-    const dataWithUserId = {
-      ...interactionData,
-      user_id: user.id
-    }
-    
-    console.log('Final data to insert:', JSON.stringify(dataWithUserId, null, 2))
+    console.log('Creating interaction with data:', interactionData)
 
     const { data, error } = await supabase
       .from('interactions')
-      .insert([dataWithUserId])  // Use the data with user_id
+      .insert([interactionData])
       .select()
       .single()
 
     if (error) {
-      console.error('❌ Error creating interaction:', error)
-      console.error('Error code:', error.code)
-      console.error('Error message:', error.message)
-      console.error('Error details:', error.details)
-      console.error('Error hint:', error.hint)
+      console.error('Error creating interaction:', error)
       return null
     }
 
-    console.log('✅ Interaction created successfully:', data)
-    
     // Clear cache for this contact after successful creation
     clearInteractionsCache(interactionData.contact_id)
     
     return data
   } catch (error) {
-    console.error('❌ Exception in createInteraction:', error)
+    console.error('Exception in createInteraction:', error)
     return null
   }
 }

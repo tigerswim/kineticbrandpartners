@@ -1,4 +1,4 @@
-// src/components/JobList.tsx - Updated for compact layout matching first screenshot
+// src/components/JobList.tsx - Complete optimized version
 'use client'
 
 import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
@@ -20,12 +20,29 @@ interface JobListState {
 
 // Memoized Contact Modal Component
 const ContactModal = memo(({ contact, onClose }: { contact: Contact; onClose: () => void }) => {
+  // Memoized close handler
+  const handleClose = useCallback(() => {
+    onClose()
+  }, [onClose])
+
+  // ESC key handler
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleClose()
+    }
+  }, [handleClose])
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold">Contact Details</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
             <X size={20} />
           </button>
         </div>
@@ -65,7 +82,7 @@ const ContactModal = memo(({ contact, onClose }: { contact: Contact; onClose: ()
 
 ContactModal.displayName = 'ContactModal'
 
-// Memoized Job Table Row - Compact version
+// Memoized Job Table Row - Compact version with optimized callbacks
 const JobTableRow = memo(({ 
   job, 
   onEdit, 
@@ -79,6 +96,19 @@ const JobTableRow = memo(({
   onManageContacts: (job: Job) => void
   onContactClick: (contact: Contact) => void
 }) => {
+  // Memoize callbacks to prevent child re-renders
+  const handleEdit = useCallback(() => {
+    onEdit(job)
+  }, [job, onEdit])
+
+  const handleDelete = useCallback(() => {
+    onDelete(job.id)
+  }, [job.id, onDelete])
+
+  const handleManageContacts = useCallback(() => {
+    onManageContacts(job)
+  }, [job, onManageContacts])
+
   return (
     <tr className="hover:bg-slate-50/50">
       <td className="px-4 py-3 text-sm font-medium text-gray-900">
@@ -113,21 +143,21 @@ const JobTableRow = memo(({
       <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end space-x-1">
           <button
-            onClick={() => onManageContacts(job)}
+            onClick={handleManageContacts}
             className="p-1 text-green-600 hover:text-green-800 hover:bg-green-50 rounded"
             title="Manage contacts"
           >
             <Users className="w-4 h-4" />
           </button>
           <button
-            onClick={() => onEdit(job)}
+            onClick={handleEdit}
             className="p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded"
             title="Edit job"
           >
             <Edit className="w-4 h-4" />
           </button>
           <button
-            onClick={() => onDelete(job.id)}
+            onClick={handleDelete}
             className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
             title="Delete job"
           >
@@ -140,6 +170,160 @@ const JobTableRow = memo(({
 })
 
 JobTableRow.displayName = 'JobTableRow'
+
+// Memoized loading skeleton
+const LoadingSkeleton = memo(() => (
+  <div className="space-y-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <Briefcase className="h-8 w-8 text-blue-600" />
+        <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
+      </div>
+    </div>
+    <div className="glass rounded-xl p-8 text-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+      <p className="text-gray-500 mt-4">Loading jobs...</p>
+    </div>
+  </div>
+))
+
+LoadingSkeleton.displayName = 'LoadingSkeleton'
+
+// Memoized error state
+const ErrorState = memo(({ 
+  error, 
+  onRetry, 
+  onClearCacheRetry 
+}: { 
+  error: string
+  onRetry: () => void
+  onClearCacheRetry: () => void 
+}) => (
+  <div className="space-y-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <Briefcase className="h-8 w-8 text-blue-600" />
+        <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
+      </div>
+    </div>
+    <div className="glass rounded-xl p-8 text-center">
+      <p className="text-red-500 mb-4">{error}</p>
+      <div className="space-x-4">
+        <button 
+          onClick={onRetry}
+          className="btn-primary"
+        >
+          Retry
+        </button>
+        <button 
+          onClick={onClearCacheRetry}
+          className="btn-secondary"
+        >
+          Clear Cache & Retry
+        </button>
+      </div>
+    </div>
+  </div>
+))
+
+ErrorState.displayName = 'ErrorState'
+
+// Memoized empty state
+const EmptyState = memo(({ 
+  hasJobs, 
+  onAddJob 
+}: { 
+  hasJobs: boolean
+  onAddJob: () => void 
+}) => (
+  <div className="text-center py-12 glass rounded-xl">
+    <Briefcase className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+    <h3 className="text-lg font-medium text-gray-900 mb-2">
+      {!hasJobs ? 'No jobs yet' : 'No matching jobs'}
+    </h3>
+    <p className="text-gray-500 mb-6">
+      {!hasJobs 
+        ? "Add your first job application to get started!" 
+        : "Try adjusting your search terms or status filter."
+      }
+    </p>
+    {!hasJobs && (
+      <button
+        onClick={onAddJob}
+        className="btn-primary"
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Add Your First Job
+      </button>
+    )}
+  </div>
+))
+
+EmptyState.displayName = 'EmptyState'
+
+// Memoized status filter component
+const StatusFilter = memo(({ 
+  statusCounts, 
+  statusFilter, 
+  onStatusChange 
+}: {
+  statusCounts: Record<string, number>
+  statusFilter: string
+  onStatusChange: (status: string) => void
+}) => (
+  <div className="flex flex-wrap gap-2 bg-white/50 p-2 rounded-lg">
+    {/* Always show All Jobs first */}
+    <button
+      onClick={() => onStatusChange('all')}
+      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+        statusFilter === 'all'
+          ? 'bg-blue-600 text-white'
+          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      }`}
+    >
+      All Jobs
+      <span className={`text-xs px-2 py-0.5 rounded-full ${
+        statusFilter === 'all'
+          ? 'bg-white/20 text-white'
+          : 'bg-gray-200 text-gray-600'
+      }`}>
+        {statusCounts.all || 0}
+      </span>
+    </button>
+
+    {/* Dynamic status buttons based on actual data */}
+    {Object.entries(statusCounts)
+      .filter(([status, count]) => status !== 'all' && count > 0)
+      .sort(([a], [b]) => a.localeCompare(b)) // Sort alphabetically
+      .map(([status, count]) => {
+        const isActive = statusFilter === status
+        
+        return (
+          <button
+            key={status}
+            onClick={() => onStatusChange(status)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+              isActive
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            {/* Capitalize first letter for display */}
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+            <span className={`text-xs px-2 py-0.5 rounded-full ${
+              isActive
+                ? 'bg-white/20 text-white'
+                : 'bg-gray-200 text-gray-600'
+            }`}>
+              {count}
+            </span>
+          </button>
+        )
+      })}
+  </div>
+))
+
+StatusFilter.displayName = 'StatusFilter'
 
 export default function JobList() {
   // State management
@@ -156,11 +340,13 @@ export default function JobList() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [showContactManager, setShowContactManager] = useState(false)
 
-  const modalRef = useRef<HTMLDivElement>(null)
-
   // Memoized callbacks to prevent unnecessary re-renders
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
+  }, [])
+
+  const handleSearchClear = useCallback(() => {
+    setSearchTerm('')
   }, [])
 
   const handleStatusFilterChange = useCallback((status: string) => {
@@ -181,6 +367,7 @@ export default function JobList() {
       const success = await deleteJob(jobId)
       
       if (success) {
+        // Optimistic update
         setState(prev => ({
           ...prev,
           jobs: prev.jobs.filter(job => job.id !== jobId)
@@ -231,6 +418,19 @@ export default function JobList() {
     setSelectedJob(null)
   }, [selectedJob])
 
+  const handleAddJob = useCallback(() => {
+    setShowJobForm(true)
+  }, [])
+
+  const handleCancelJobForm = useCallback(() => {
+    setShowJobForm(false)
+    setSelectedJob(null)
+  }, [])
+
+  const handleCloseContactModal = useCallback(() => {
+    setSelectedContact(null)
+  }, [])
+
   // Simplified data loading function
   const loadJobs = useCallback(async () => {
     console.log('Loading jobs...')
@@ -256,6 +456,15 @@ export default function JobList() {
     }
   }, [])
 
+  const handleRetry = useCallback(() => {
+    loadJobs()
+  }, [loadJobs])
+
+  const handleClearCacheRetry = useCallback(() => {
+    clearJobsCache()
+    loadJobs()
+  }, [loadJobs])
+
   // Load data on component mount
   useEffect(() => {
     loadJobs()
@@ -276,13 +485,10 @@ export default function JobList() {
       }
     })
     
-    console.log('Status counts:', counts)
-    console.log('Available statuses in jobs:', [...new Set(state.jobs.map(job => job.status).filter(Boolean))])
-    
     return counts
   }, [state.jobs])
 
-  // Memoized filtered jobs - use exact status matching
+  // Memoized filtered jobs - use exact status matching with optimized search
   const filteredJobs = useMemo(() => {
     if (!state.jobs || !Array.isArray(state.jobs) || state.jobs.length === 0) {
       return []
@@ -293,18 +499,22 @@ export default function JobList() {
     return state.jobs.filter(job => {
       if (!job) return false
       
-      // Search filter
-      const matchesSearch = !searchLower || (
-        job.company?.toLowerCase().includes(searchLower) ||
-        job.job_title?.toLowerCase().includes(searchLower) ||
-        job.notes?.toLowerCase().includes(searchLower) ||
-        job.location?.toLowerCase().includes(searchLower)
-      )
+      // Status filter - use exact matching (most selective filter first)
+      if (statusFilter !== 'all' && job.status !== statusFilter) {
+        return false
+      }
       
-      // Status filter - use exact matching
-      const matchesStatus = statusFilter === 'all' || job.status === statusFilter
+      // Search filter (only if there's a search term)
+      if (searchLower) {
+        return (
+          job.company?.toLowerCase().includes(searchLower) ||
+          job.job_title?.toLowerCase().includes(searchLower) ||
+          job.notes?.toLowerCase().includes(searchLower) ||
+          job.location?.toLowerCase().includes(searchLower)
+        )
+      }
       
-      return matchesSearch && matchesStatus
+      return true
     })
   }, [state.jobs, searchTerm, statusFilter])
 
@@ -332,53 +542,17 @@ export default function JobList() {
 
   // Loading state
   if (state.loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Briefcase className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
-          </div>
-        </div>
-        <div className="glass rounded-xl p-8 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-gray-500 mt-4">Loading jobs...</p>
-        </div>
-      </div>
-    )
+    return <LoadingSkeleton />
   }
 
   // Error state with retry option
   if (state.error) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Briefcase className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
-          </div>
-        </div>
-        <div className="glass rounded-xl p-8 text-center">
-          <p className="text-red-500 mb-4">{state.error}</p>
-          <div className="space-x-4">
-            <button 
-              onClick={loadJobs}
-              className="btn-primary"
-            >
-              Retry
-            </button>
-            <button 
-              onClick={() => {
-                clearJobsCache()
-                loadJobs()
-              }}
-              className="btn-secondary"
-            >
-              Clear Cache & Retry
-            </button>
-          </div>
-        </div>
-      </div>
+      <ErrorState 
+        error={state.error}
+        onRetry={handleRetry}
+        onClearCacheRetry={handleClearCacheRetry}
+      />
     )
   }
 
@@ -407,7 +581,7 @@ export default function JobList() {
             />
             {searchTerm && (
               <button
-                onClick={() => setSearchTerm('')}
+                onClick={handleSearchClear}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 <X className="w-4 h-4" />
@@ -416,7 +590,7 @@ export default function JobList() {
           </div>
           
           <button
-            onClick={() => setShowJobForm(true)}
+            onClick={handleAddJob}
             className="btn-primary flex items-center"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -426,81 +600,18 @@ export default function JobList() {
       </div>
 
       {/* Status Filter Tabs - Dynamic based on actual job data */}
-      <div className="flex flex-wrap gap-2 bg-white/50 p-2 rounded-lg">
-        {/* Always show All Jobs first */}
-        <button
-          onClick={() => handleStatusFilterChange('all')}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-            statusFilter === 'all'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          All Jobs
-          <span className={`text-xs px-2 py-0.5 rounded-full ${
-            statusFilter === 'all'
-              ? 'bg-white/20 text-white'
-              : 'bg-gray-200 text-gray-600'
-          }`}>
-            {statusCounts.all || 0}
-          </span>
-        </button>
-
-        {/* Dynamic status buttons based on actual data */}
-        {Object.entries(statusCounts)
-          .filter(([status, count]) => status !== 'all' && count > 0)
-          .sort(([a], [b]) => a.localeCompare(b)) // Sort alphabetically
-          .map(([status, count]) => {
-            const isActive = statusFilter === status
-            
-            return (
-              <button
-                key={status}
-                onClick={() => handleStatusFilterChange(status)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {/* Capitalize first letter for display */}
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  isActive
-                    ? 'bg-white/20 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            )
-          })}
-      </div>
-
+      <StatusFilter 
+        statusCounts={statusCounts}
+        statusFilter={statusFilter}
+        onStatusChange={handleStatusFilterChange}
+      />
 
       {/* Jobs Table */}
       {filteredJobs.length === 0 ? (
-        <div className="text-center py-12 glass rounded-xl">
-          <Briefcase className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            {state.jobs.length === 0 ? 'No jobs yet' : 'No matching jobs'}
-          </h3>
-          <p className="text-gray-500 mb-6">
-            {state.jobs.length === 0 
-              ? "Add your first job application to get started!" 
-              : "Try adjusting your search terms or status filter."
-            }
-          </p>
-          {state.jobs.length === 0 && (
-            <button
-              onClick={() => setShowJobForm(true)}
-              className="btn-primary"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Job
-            </button>
-          )}
-        </div>
+        <EmptyState 
+          hasJobs={state.jobs.length > 0}
+          onAddJob={handleAddJob}
+        />
       ) : (
         <div className="glass rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
@@ -554,7 +665,7 @@ export default function JobList() {
       {selectedContact && (
         <ContactModal
           contact={selectedContact}
-          onClose={() => setSelectedContact(null)}
+          onClose={handleCloseContactModal}
         />
       )}
 
@@ -575,10 +686,7 @@ export default function JobList() {
         <JobForm
           job={selectedJob}
           onJobAdded={handleJobFormSubmit}
-          onCancel={() => {
-            setShowJobForm(false)
-            setSelectedJob(null)
-          }}
+          onCancel={handleCancelJobForm}
         />
       )}
     </div>
