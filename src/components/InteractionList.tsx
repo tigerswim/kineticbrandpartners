@@ -321,12 +321,12 @@ export default function InteractionList({ contactId }: InteractionListProps) {
       {/* Header - FIXED: made Add button more compact */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-slate-800">Recent Activity</h3>
+          <h3 className="text-sm font-semibold text-slate-800">Recent Activity</h3>
           <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">
             {interactions.length}
           </span>
         </div>
-        <button onClick={handleShowForm} className="btn-primary flex items-center gap-2 px-3 py-1.5 text-sm">
+        <button onClick={handleShowForm} className="btn-primary flex items-center gap-2 px-3 py-1.5 text-sm ml-6">
           <Plus size={14} />
           Add
         </button>

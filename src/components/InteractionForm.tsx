@@ -129,12 +129,9 @@ const FormHeader = memo(({
           <Icon className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="text-lg font-bold">
+          <h3 className="text-md font-bold">
             {isEditing ? 'Edit Interaction' : 'New Interaction'}
           </h3>
-          <p className="text-blue-100 text-sm">
-            {isEditing ? 'Update interaction details' : 'Record a new contact interaction'}
-          </p>
         </div>
       </div>
       <button
@@ -281,7 +278,7 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
           </div>
 
           {/* Action Buttons - FIXED sizing to be more compact */}
-          <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+          <div className="flex justify-center space-x-2 pt-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onCancel}
@@ -302,7 +299,7 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
               ) : (
                 <div className="flex items-center space-x-1">
                   <Save className="w-3 h-3" />
-                  <span>{interaction ? 'Update' : 'Save'} Interaction</span>
+                  <span>{interaction ? 'Update' : 'Save'} </span>
                 </div>
               )}
             </button>
