@@ -1,4 +1,4 @@
-// src/components/InteractionForm.tsx - Optimized version with sizing fixes
+// src/components/InteractionForm.tsx - Optimized version
 'use client'
 import { useState, useCallback, useMemo, memo } from 'react'
 import { Interaction } from '@/lib/supabase'
@@ -81,7 +81,7 @@ const INTERACTION_TYPES = [
   }
 ] as const
 
-// Memoized type selector component - FIXED sizing and text overflow
+// Memoized type selector component
 const TypeSelector = memo(({ 
   selectedType, 
   onTypeChange 
@@ -89,7 +89,7 @@ const TypeSelector = memo(({
   selectedType: string
   onTypeChange: (type: string) => void 
 }) => (
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
     {INTERACTION_TYPES.map((type) => {
       const Icon = type.icon
       const isSelected = selectedType === type.value
@@ -99,17 +99,17 @@ const TypeSelector = memo(({
           key={type.value}
           type="button"
           onClick={() => onTypeChange(type.value)}
-          className={`p-3 rounded-lg border-2 text-left transition-all duration-200 min-h-[80px] flex flex-col justify-center ${
+          className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
             isSelected
               ? `${type.bg} ${type.border} ${type.color} border-opacity-100 shadow-sm transform scale-105`
               : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
           }`}
         >
           <div className="flex items-center space-x-2 mb-1">
-            <Icon className="w-4 h-4 flex-shrink-0" />
-            <span className="font-medium text-xs truncate">{type.label}</span>
+            <Icon className="w-4 h-4" />
+            <span className="font-semibold text-sm">{type.label}</span>
           </div>
-          <div className="text-xs opacity-75 line-clamp-2 leading-tight">{type.description}</div>
+          <div className="text-xs opacity-75">{type.description}</div>
         </button>
       )
     })}
@@ -233,18 +233,18 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Interaction Type Selection */}
           <div className="form-group">
-            <label className="form-label text-xs font-medium text-slate-700 mb-2 block">Interaction Type</label>
+            <label className="form-label">Interaction Type</label>
             <TypeSelector
               selectedType={formData.type}
               onTypeChange={handleTypeChange}
             />
           </div>
 
-          {/* Date and Summary Row - FIXED font sizes */}
+          {/* Date and Summary Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="form-group">
-              <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
-                <Clock className="w-3 h-3 text-slate-500" />
+              <label className="form-label flex items-center space-x-2">
+                <Clock className="w-4 h-4 text-slate-500" />
                 <span>Date *</span>
               </label>
               <input
@@ -252,13 +252,13 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
                 required
                 value={formData.date}
                 onChange={handleDateChange}
-                className="input text-xs py-2 px-3"
+                className="input"
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label flex items-center space-x-2 text-xs font-medium text-slate-700 mb-1">
-                <FileText className="w-3 h-3 text-slate-500" />
+              <label className="form-label flex items-center space-x-2">
+                <FileText className="w-4 h-4 text-slate-500" />
                 <span>Summary *</span>
               </label>
               <input
@@ -267,48 +267,48 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
                 value={formData.summary}
                 onChange={handleSummaryChange}
                 placeholder="Brief summary of the interaction"
-                className="input text-xs py-2 px-3"
+                className="input"
               />
             </div>
           </div>
 
-          {/* Notes - FIXED font size */}
+          {/* Notes */}
           <div className="form-group">
-            <label className="form-label text-xs font-medium text-slate-700 mb-1">Detailed Notes</label>
+            <label className="form-label">Detailed Notes</label>
             <textarea
               rows={4}
               value={formData.notes}
               onChange={handleNotesChange}
               placeholder="Add detailed notes about the conversation, outcomes, next steps, etc..."
-              className="input min-h-[120px] resize-none text-xs py-2 px-3 leading-relaxed"
+              className="input min-h-[120px] resize-none"
             />
-            <p className="form-help text-xs text-slate-500 mt-1">
+            <p className="form-help">
               Include key discussion points, decisions made, or follow-up actions needed
             </p>
           </div>
 
-          {/* Action Buttons - FIXED sizing to be more compact */}
-          <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
             <button
               type="button"
               onClick={onCancel}
-              className="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200"
+              className="btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !isFormValid}
-              className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all duration-200"
+              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <div className="flex items-center space-x-1">
-                  <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span>Saving...</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-1">
-                  <Save className="w-3 h-3" />
+                <div className="flex items-center space-x-2">
+                  <Save className="w-4 h-4" />
                   <span>{interaction ? 'Update' : 'Save'} Interaction</span>
                 </div>
               )}
