@@ -60,7 +60,7 @@ const statusOptions = [
   { 
     id: 'onhold', 
     title: 'On Hold',
-    description: 'Waiting for response',
+    description: 'Position on hold',
     color: 'text-slate-500',
     bg: 'bg-slate-100',
     border: 'border-slate-300'
@@ -68,7 +68,7 @@ const statusOptions = [
     { 
     id: 'withdrawn', 
     title: 'Withdrawn',
-    description: 'Waiting for response',
+    description: 'Removed myself',
     color: 'text-slate-500',
     bg: 'bg-slate-100',
     border: 'border-slate-300'
@@ -76,7 +76,7 @@ const statusOptions = [
   { 
     id: 'rejected', 
     title: 'Rejected',
-    description: 'Application declined',
+    description: 'Candidacy declined',
     color: 'text-slate-500',
     bg: 'bg-slate-50',
     border: 'border-slate-200'

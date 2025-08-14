@@ -1,11 +1,11 @@
-// src/components/JobList.tsx - Complete optimized version
+// src/components/JobList.tsx - Complete optimized version with sortable columns
 'use client'
 
 import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
 import { Job, Contact } from '@/lib/supabase'
 import { fetchJobsWithContacts, deleteJob, JobWithContacts, clearJobsCache } from '@/lib/jobs'
 import {
-  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText
+  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText, ChevronUp, ArrowUpDown
 } from 'lucide-react'
 import JobForm from './JobForm'
 import JobContactManager from './JobContactManager'
@@ -16,6 +16,14 @@ interface JobListState {
   jobs: JobWithContacts[]
   loading: boolean
   error: string | null
+}
+
+type SortField = 'job_title' | 'company' | 'status' | 'location' | 'salary' | 'created_at' | 'updated_at'
+type SortDirection = 'asc' | 'desc'
+
+interface SortConfig {
+  field: SortField | null
+  direction: SortDirection
 }
 
 // Memoized Contact Modal Component
@@ -81,6 +89,50 @@ const ContactModal = memo(({ contact, onClose }: { contact: Contact; onClose: ()
 })
 
 ContactModal.displayName = 'ContactModal'
+
+// Sortable header component
+const SortableHeader = memo(({ 
+  field, 
+  label, 
+  sortConfig, 
+  onSort, 
+  className = "" 
+}: {
+  field: SortField
+  label: string
+  sortConfig: SortConfig
+  onSort: (field: SortField) => void
+  className?: string
+}) => {
+  const isActive = sortConfig.field === field
+  const direction = isActive ? sortConfig.direction : null
+
+  const handleClick = useCallback(() => {
+    onSort(field)
+  }, [field, onSort])
+
+  return (
+    <th 
+      className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100/50 transition-colors select-none ${className}`}
+      onClick={handleClick}
+    >
+      <div className="flex items-center space-x-1 group">
+        <span>{label}</span>
+        <div className="flex flex-col">
+          {direction === 'asc' ? (
+            <ChevronUp className="w-3 h-3 text-blue-600" />
+          ) : direction === 'desc' ? (
+            <ChevronDown className="w-3 h-3 text-blue-600" />
+          ) : (
+            <ArrowUpDown className="w-3 h-3 text-gray-300 group-hover:text-gray-400" />
+          )}
+        </div>
+      </div>
+    </th>
+  )
+})
+
+SortableHeader.displayName = 'SortableHeader'
 
 // Memoized Job Table Row - Compact version with optimized callbacks
 const JobTableRow = memo(({ 
@@ -335,10 +387,90 @@ export default function JobList() {
   
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ 
+    field: 'created_at', direction: 'desc' })
   const [showJobForm, setShowJobForm] = useState(false)
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [showContactManager, setShowContactManager] = useState(false)
+
+  // Sorting function
+  const sortJobs = useCallback((jobs: JobWithContacts[], config: SortConfig): JobWithContacts[] => {
+    if (!config.field) return jobs
+
+    return [...jobs].sort((a, b) => {
+      let aValue: any
+      let bValue: any
+
+      switch (config.field) {
+        case 'job_title':
+          aValue = a.job_title?.toLowerCase() || ''
+          bValue = b.job_title?.toLowerCase() || ''
+          break
+        case 'company':
+          aValue = a.company?.toLowerCase() || ''
+          bValue = b.company?.toLowerCase() || ''
+          break
+        case 'status':
+          // Custom sort order for status
+          const statusOrder = {
+            'bookmarked': 0,
+            'interested': 1,
+            'applied': 2,
+            'interviewing': 3,
+            'offered': 4,
+            'onhold': 5,
+            'withdrawn': 6,
+            'rejected': 7,
+            'noresponse': 8
+          }
+          aValue = statusOrder[a.status as keyof typeof statusOrder] ?? 999
+          bValue = statusOrder[b.status as keyof typeof statusOrder] ?? 999
+          break
+        case 'location':
+          aValue = a.location?.toLowerCase() || ''
+          bValue = b.location?.toLowerCase() || ''
+          break
+        case 'salary':
+          // Extract numeric value from salary string for proper sorting
+          const extractSalaryNumber = (salary: string | null) => {
+            if (!salary) return 0
+            const match = salary.match(/[\d,]+/)
+            if (!match) return 0
+            return parseInt(match[0].replace(/,/g, ''), 10)
+          }
+          aValue = extractSalaryNumber(a.salary)
+          bValue = extractSalaryNumber(b.salary)
+          break
+        case 'created_at':
+          aValue = new Date(a.created_at || '').getTime()
+          bValue = new Date(b.created_at || '').getTime()
+          break
+        case 'updated_at':
+          aValue = new Date(a.updated_at || '').getTime()
+          bValue = new Date(b.updated_at || '').getTime()
+          break
+        default:
+          return 0
+      }
+
+      if (aValue < bValue) {
+        return config.direction === 'asc' ? -1 : 1
+      }
+      if (aValue > bValue) {
+        return config.direction === 'asc' ? 1 : -1
+      }
+      return 0
+    })
+  }, [])
+
+  // Handle sorting
+  const handleSort = useCallback((field: SortField) => {
+    setSortConfig(prev => ({
+      field,
+      direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
+    }))
+  }, [])
 
   // Memoized callbacks to prevent unnecessary re-renders
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -488,15 +620,16 @@ export default function JobList() {
     return counts
   }, [state.jobs])
 
-  // Memoized filtered jobs - use exact status matching with optimized search
-  const filteredJobs = useMemo(() => {
+  // Memoized filtered and sorted jobs
+  const processedJobs = useMemo(() => {
     if (!state.jobs || !Array.isArray(state.jobs) || state.jobs.length === 0) {
       return []
     }
     
     const searchLower = searchTerm.toLowerCase().trim()
     
-    return state.jobs.filter(job => {
+    // First filter
+    const filteredJobs = state.jobs.filter(job => {
       if (!job) return false
       
       // Status filter - use exact matching (most selective filter first)
@@ -516,7 +649,10 @@ export default function JobList() {
       
       return true
     })
-  }, [state.jobs, searchTerm, statusFilter])
+
+    // Then sort
+    return sortJobs(filteredJobs, sortConfig)
+  }, [state.jobs, searchTerm, statusFilter, sortConfig, sortJobs])
 
   // ESC key handling
   useEffect(() => {
@@ -564,7 +700,7 @@ export default function JobList() {
           <Briefcase className="h-8 w-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
           <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-            {filteredJobs.length} applications
+            {processedJobs.length} applications
           </span>
         </div>
         
@@ -607,7 +743,7 @@ export default function JobList() {
       />
 
       {/* Jobs Table */}
-      {filteredJobs.length === 0 ? (
+      {processedJobs.length === 0 ? (
         <EmptyState 
           hasJobs={state.jobs.length > 0}
           onAddJob={handleAddJob}
@@ -618,21 +754,36 @@ export default function JobList() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-slate-50/50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Job Title
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Company
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Location
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Salary
-                  </th>
+                  <SortableHeader
+                    field="job_title"
+                    label="Job Title"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
+                    field="company"
+                    label="Company"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
+                    field="status"
+                    label="Status"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
+                    field="location"
+                    label="Location"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
+                    field="salary"
+                    label="Salary"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Contacts
                   </th>
@@ -645,7 +796,7 @@ export default function JobList() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredJobs.map((job) => (
+                {processedJobs.map((job) => (
                   <JobTableRow
                     key={job.id}
                     job={job}
@@ -671,14 +822,10 @@ export default function JobList() {
 
       {/* Contact Manager Modal */}
       {showContactManager && selectedJob && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto">
-            <JobContactManager
-              jobId={selectedJob.id}
-              onClose={handleCloseContactManager}
-            />
-          </div>
-        </div>
+        <JobContactManager
+          jobId={selectedJob.id}
+          onClose={handleCloseContactManager}
+        />
       )}
 
       {/* Job Form Modal */}
