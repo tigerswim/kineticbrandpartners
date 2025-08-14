@@ -1,4 +1,4 @@
-// src/components/Reporting.tsx – Fast, RPC-backed, keeps your original look/feel
+// src/components/Reporting.tsx — Fast, RPC-backed, keeps your original look/feel
 
 'use client'
 
@@ -703,6 +703,10 @@ export default function Reporting() {
   if (loading) {
     return (
       <div className="space-y-6 animate-fade-in">
+        <div className="flex items-center space-x-3">
+          <div className="w-2 h-8 bg-slate-200 rounded-full animate-pulse"></div>
+          <div className="h-8 bg-slate-200 rounded w-40 animate-pulse"></div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="card p-6 animate-pulse">
@@ -726,6 +730,25 @@ export default function Reporting() {
   return (
     <>
       <div className="space-y-4 animate-fade-in">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+            <h2 className="text-2xl font-bold text-slate-800">Reports & Analytics</h2>
+          </div>
+          <button
+            onClick={() => setActiveSection('overview')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeSection === 'overview'
+                ? 'bg-purple-100 text-purple-700'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <Eye className="w-4 h-4 inline mr-2" />
+            Overview
+          </button>
+        </div>
+
         {/* Section navigation */}
         <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
           <div className="grid grid-cols-3 divide-x divide-slate-200/60">

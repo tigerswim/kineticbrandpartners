@@ -350,10 +350,7 @@ const UploadResultsDisplay = ({ uploadResults }: { uploadResults: {[key: string]
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center space-x-3">
-        <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-        <h2 className="text-2xl font-bold text-slate-800">Data Import & Export</h2>
-      </div>
+
 
       {/* Upload Results */}
       {uploadResults && (

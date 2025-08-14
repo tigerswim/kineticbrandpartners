@@ -226,12 +226,6 @@ JobTableRow.displayName = 'JobTableRow'
 // Memoized loading skeleton
 const LoadingSkeleton = memo(() => (
   <div className="space-y-6">
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-3">
-        <Briefcase className="h-8 w-8 text-blue-600" />
-        <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
-      </div>
-    </div>
     <div className="glass rounded-xl p-8 text-center">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
       <p className="text-gray-500 mt-4">Loading jobs...</p>
@@ -252,12 +246,6 @@ const ErrorState = memo(({
   onClearCacheRetry: () => void 
 }) => (
   <div className="space-y-6">
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-3">
-        <Briefcase className="h-8 w-8 text-blue-600" />
-        <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
-      </div>
-    </div>
     <div className="glass rounded-xl p-8 text-center">
       <p className="text-red-500 mb-4">{error}</p>
       <div className="space-x-4">
@@ -694,43 +682,39 @@ export default function JobList() {
 
   return (
     <div className="space-y-6">
-      {/* Header with inline search and Add Job button */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center space-x-3">
-          <Briefcase className="h-8 w-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900">Job Pipeline</h1>
-          <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-            {processedJobs.length} applications
-          </span>
+{/* Header with inline search and Add Job button */}
+      <div className="flex justify-between items-center gap-4">
+        {/* Search Bar - Wider like Network page */}
+        <div className="relative flex-1 max-w-2xl">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <input
+            type="text"
+            placeholder="Search jobs by company, title, or notes..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="input pl-10 w-full"
+          />
+          {searchTerm && (
+            <button
+              onClick={handleSearchClear}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
-        
-        <div className="flex items-center space-x-4">
-          {/* Search bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search jobs by company, title, or notes..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="input pl-10 w-80"
-            />
-            {searchTerm && (
-              <button
-                onClick={handleSearchClear}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
+
+        <div className="flex items-center space-x-3">
+          <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+            {processedJobs.length} application{processedJobs.length !== 1 ? 's' : ''}
+          </span>
           
           <button
             onClick={handleAddJob}
-            className="btn-primary flex items-center"
+            className="btn-primary flex items-center space-x-2"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Job
+            <Plus className="w-4 h-4" />
+            <span>Add Job</span>
           </button>
         </div>
       </div>

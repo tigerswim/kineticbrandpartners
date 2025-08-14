@@ -209,26 +209,7 @@ export default function Home() {
         {/* Main Content Area */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm min-h-[600px]">
           <div className="p-6">
-            {/* Content Header */}
-            <div className="mb-6 pb-4 border-b border-slate-200/60">
-              <div className="flex items-center space-x-3">
-                {(() => {
-                  const currentTab = navigationItems.find(item => item.id === activeTab)
-                  const Icon = currentTab?.icon || Briefcase
-                  return (
-                    <>
-                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${currentTab?.gradient} flex items-center justify-center`}>
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-slate-800">{currentTab?.label}</h2>
-                        <p className="text-sm text-slate-500">{currentTab?.description}</p>
-                      </div>
-                    </>
-                  )
-                })()}
-              </div>
-            </div>
+
 
             {/* Tab Content */}
             <div className="space-y-6">

@@ -688,10 +688,6 @@ export default function ContactList() {
     return (
       <div className="space-y-4 animate-fade-in">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <div className="w-2 h-8 bg-slate-200 rounded-full"></div>
-            <div className="h-8 bg-slate-200 rounded w-32"></div>
-          </div>
           <div className="h-10 bg-slate-200 rounded w-32"></div>
         </div>
         
@@ -720,46 +716,41 @@ export default function ContactList() {
 
   return (
     <div className="space-y-4 animate-fade-in">
-      {/* Header */}
-      <div className="flex justify-between items-center">
+      {/* Header with search and Add Contact button */}
+      <div className="flex justify-between items-center gap-4">
+        {/* Search Bar */}
+        <div className="relative flex-1 max-w-2xl">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+          <input
+            type="text"
+            placeholder="Search contacts by name, company, email, experience, education, or connections..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="input pl-10 w-full"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
         <div className="flex items-center space-x-3">
-          <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-          <h1 className="text-2xl font-bold text-slate-800 flex items-center space-x-2">
-            <Users className="w-6 h-6" />
-            <span>Contacts</span>
-          </h1>
           <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
             {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
           </span>
-        </div>
-        
-        <button
-          onClick={() => setShowForm(true)}
-          className="btn-primary flex items-center space-x-2"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add Contact</span>
-        </button>
-      </div>
-
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-        <input
-          type="text"
-          placeholder="Search contacts by name, company, email, experience, education, or connections..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="input pl-10 w-full"
-        />
-        {searchTerm && (
+          
           <button
-            onClick={() => setSearchTerm('')}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            onClick={() => setShowForm(true)}
+            className="btn-primary flex items-center space-x-2"
           >
-            <X className="w-4 h-4" />
+            <Plus className="w-4 h-4" />
+            <span>Add Contact</span>
           </button>
-        )}
+        </div>
       </div>
 
       {/* Main Content Grid */}
