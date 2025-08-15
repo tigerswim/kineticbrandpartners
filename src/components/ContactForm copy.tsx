@@ -1,7 +1,7 @@
 // src/components/ContactForm.tsx
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { Contact, ExperienceEntry, EducationEntry } from '@/lib/supabase'
 import { createContact, updateContact } from '@/lib/contacts'
 import { 
@@ -58,42 +58,19 @@ const getYearOptions = () => {
   return years.reverse() // Most recent years first
 }
 
-// Date helper functions
-const parseDate = (dateString: string | undefined | null): { month: string; year: string } => {
-  if (!dateString || typeof dateString !== 'string') {
+// Helper function to parse YYYY-MM format into month and year
+const parseDateString = (dateString: string) => {
+  if (!dateString || !dateString.includes('-')) {
     return { month: '', year: '' }
   }
-  
-  // Handle partial dates like "2020-" or "-04"
-  if (dateString.includes('-')) {
-    const parts = dateString.split('-')
-    return { 
-      year: parts[0] || '', 
-      month: parts[1] || '' 
-    }
-  }
-  
-  return { month: '', year: '' }
+  const [year, month] = dateString.split('-')
+  return { month: month || '', year: year || '' }
 }
 
-const combineDate = (month: string, year: string): string => {
-  // If both are empty, return empty
-  if (!month && !year) return ''
-  
-  // If one is missing, still create a partial date string
-  const paddedMonth = month ? month.padStart(2, '0') : ''
-  const yearPart = year || ''
-  
-  // Return in YYYY-MM format, even if one part is empty
-  if (yearPart && paddedMonth) {
-    return `${yearPart}-${paddedMonth}`
-  } else if (yearPart) {
-    return `${yearPart}-`
-  } else if (paddedMonth) {
-    return `-${paddedMonth}`
-  }
-  
-  return ''
+// Helper function to combine month and year into YYYY-MM format
+const combineDateParts = (month: string, year: string) => {
+  if (!month || !year) return '' // Both must be provided or return empty
+  return `${year}-${month}`
 }
 
 export default function ContactForm({ contact, onSuccess, onCancel }: ContactFormProps) {
@@ -123,11 +100,6 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
   const [loading, setLoading] = useState(false)
   const [jobLinksKey, setJobLinksKey] = useState(0)
 
-  // Debug function to log current state
-  const debugLog = (message: string, data?: any) => {
-    console.log(`[ContactForm Debug] ${message}`, data)
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -139,8 +111,6 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
         education,
         mutual_connections: mutualConnections
       }
-
-      debugLog('Submitting contact data:', contactData)
 
       let result
       if (contact) {
@@ -170,7 +140,7 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
   }
 
   // Experience handlers
-  const addExperience = useCallback(() => {
+  const addExperience = () => {
     const newExp: ExperienceEntry = {
       id: `temp-${Date.now()}`,
       company: '',
@@ -180,61 +150,32 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
       is_current: false,
       description: ''
     }
-    setExperience(prev => [...prev, newExp])
-    debugLog('Added new experience entry', newExp)
-  }, [])
+    setExperience([...experience, newExp])
+  }
 
-  const removeExperience = useCallback((index: number) => {
-    setExperience(prev => {
-      const updated = prev.filter((_, i) => i !== index)
-      debugLog(`Removed experience at index ${index}`, updated)
-      return updated
-    })
-  }, [])
+  const removeExperience = (index: number) => {
+    setExperience(experience.filter((_, i) => i !== index))
+  }
 
-  const updateExperience = useCallback((index: number, field: keyof ExperienceEntry, value: string | boolean) => {
-    setExperience(prev => {
-      const updated = prev.map((exp, i) => 
-        i === index ? { ...exp, [field]: value } : exp
-      )
-      debugLog(`Updated experience[${index}].${field} to:`, value)
-      debugLog('Full updated experience array:', updated)
-      return updated
-    })
-  }, [])
+  const updateExperience = (index: number, field: keyof ExperienceEntry, value: string | boolean) => {
+    const updated = experience.map((exp, i) => 
+      i === index ? { ...exp, [field]: value } : exp
+    )
+    setExperience(updated)
+  }
 
-  // Specific date update handlers for experience
-  const updateExperienceDate = useCallback((
-    index: number, 
-    dateField: 'start_date' | 'end_date', 
-    dateType: 'month' | 'year', 
-    newValue: string
-  ) => {
-    setExperience(prev => {
-      const updated = prev.map((exp, i) => {
-        if (i !== index) return exp
-        
-        const currentDate = parseDate(exp[dateField])
-        debugLog(`Current ${dateField} for exp[${index}]:`, currentDate)
-        
-        const updatedDate = {
-          month: dateType === 'month' ? newValue : currentDate.month,
-          year: dateType === 'year' ? newValue : currentDate.year
-        }
-        
-        const newDateString = combineDate(updatedDate.month, updatedDate.year)
-        debugLog(`New ${dateField} for exp[${index}]:`, newDateString)
-        
-        return { ...exp, [dateField]: newDateString }
-      })
-      
-      debugLog('Updated experience array:', updated)
-      return updated
-    })
-  }, [])
+  // Helper function to update experience date parts
+  const updateExperienceDate = (index: number, dateType: 'start_date' | 'end_date', month: string, year: string) => {
+    const dateString = combineDateParts(month, year)
+    console.log(`Updating ${dateType} for experience ${index}: month=${month}, year=${year}, dateString=${dateString}`)
+    const updated = experience.map((exp, i) => 
+      i === index ? { ...exp, [dateType]: dateString } : exp
+    )
+    setExperience(updated)
+  }
 
   // Education handlers
-  const addEducation = useCallback(() => {
+  const addEducation = () => {
     const newEdu: EducationEntry = {
       id: `temp-${Date.now()}`,
       institution: '',
@@ -242,51 +183,29 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
       year: '',
       notes: ''
     }
-    setEducation(prev => [...prev, newEdu])
-    debugLog('Added new education entry', newEdu)
-  }, [])
+    setEducation([...education, newEdu])
+  }
 
-  const removeEducation = useCallback((index: number) => {
-    setEducation(prev => {
-      const updated = prev.filter((_, i) => i !== index)
-      debugLog(`Removed education at index ${index}`, updated)
-      return updated
-    })
-  }, [])
+  const removeEducation = (index: number) => {
+    setEducation(education.filter((_, i) => i !== index))
+  }
 
-  const updateEducation = useCallback((index: number, field: keyof EducationEntry, value: string) => {
-    setEducation(prev => {
-      const updated = prev.map((edu, i) => 
-        i === index ? { ...edu, [field]: value } : edu
-      )
-      debugLog(`Updated education[${index}].${field} to:`, value)
-      return updated
-    })
-  }, [])
+  const updateEducation = (index: number, field: keyof EducationEntry, value: string) => {
+    const updated = education.map((edu, i) => 
+      i === index ? { ...edu, [field]: value } : edu
+    )
+    setEducation(updated)
+  }
 
-  const updateEducationDate = useCallback((index: number, dateType: 'month' | 'year', newValue: string) => {
-    setEducation(prev => {
-      const updated = prev.map((edu, i) => {
-        if (i !== index) return edu
-        
-        const currentDate = parseDate(edu.year)
-        debugLog(`Current year for edu[${index}]:`, currentDate)
-        
-        const updatedDate = {
-          month: dateType === 'month' ? newValue : currentDate.month,
-          year: dateType === 'year' ? newValue : currentDate.year
-        }
-        
-        const newDateString = combineDate(updatedDate.month, updatedDate.year)
-        debugLog(`New year for edu[${index}]:`, newDateString)
-        
-        return { ...edu, year: newDateString }
-      })
-      
-      debugLog('Updated education array:', updated)
-      return updated
-    })
-  }, [])
+  // Helper function to update education year from month/year dropdowns
+  const updateEducationDate = (index: number, month: string, year: string) => {
+    const dateString = combineDateParts(month, year)
+    console.log(`Updating education ${index}: month=${month}, year=${year}, dateString=${dateString}`)
+    const updated = education.map((edu, i) => 
+      i === index ? { ...edu, year: dateString } : edu
+    )
+    setEducation(updated)
+  }
 
   // Mutual connections handlers
   const addMutualConnection = () => {
@@ -501,10 +420,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
               </div>
 
               {experience.map((exp, index) => {
-                const startDate = parseDate(exp.start_date)
-                const endDate = parseDate(exp.end_date)
-                
-                debugLog(`Rendering experience ${index}:`, { exp, startDate, endDate })
+                const startDate = parseDateString(exp.start_date)
+                const endDate = parseDateString(exp.end_date || '')
                 
                 return (
                   <div key={exp.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-4">
@@ -548,8 +465,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                           <select
                             value={startDate.month}
                             onChange={(e) => {
-                              debugLog(`Changing start month for exp[${index}] to:`, e.target.value)
-                              updateExperienceDate(index, 'start_date', 'month', e.target.value)
+                              const currentStartDate = parseDateString(exp.start_date)
+                              updateExperienceDate(index, 'start_date', e.target.value, currentStartDate.year)
                             }}
                             className="input flex-1"
                           >
@@ -563,8 +480,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                           <select
                             value={startDate.year}
                             onChange={(e) => {
-                              debugLog(`Changing start year for exp[${index}] to:`, e.target.value)
-                              updateExperienceDate(index, 'start_date', 'year', e.target.value)
+                              const currentStartDate = parseDateString(exp.start_date)
+                              updateExperienceDate(index, 'start_date', currentStartDate.month, e.target.value)
                             }}
                             className="input flex-1"
                           >
@@ -585,8 +502,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                             <select
                               value={endDate.month}
                               onChange={(e) => {
-                                debugLog(`Changing end month for exp[${index}] to:`, e.target.value)
-                                updateExperienceDate(index, 'end_date', 'month', e.target.value)
+                                const currentEndDate = parseDateString(exp.end_date || '')
+                                updateExperienceDate(index, 'end_date', e.target.value, currentEndDate.year)
                               }}
                               className="input flex-1"
                               disabled={exp.is_current}
@@ -601,8 +518,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                             <select
                               value={endDate.year}
                               onChange={(e) => {
-                                debugLog(`Changing end year for exp[${index}] to:`, e.target.value)
-                                updateExperienceDate(index, 'end_date', 'year', e.target.value)
+                                const currentEndDate = parseDateString(exp.end_date || '')
+                                updateExperienceDate(index, 'end_date', currentEndDate.month, e.target.value)
                               }}
                               className="input flex-1"
                               disabled={exp.is_current}
@@ -665,9 +582,7 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
               </div>
 
               {education.map((edu, index) => {
-                const eduDate = parseDate(edu.year)
-                
-                debugLog(`Rendering education ${index}:`, { edu, eduDate })
+                const eduDate = parseDateString(edu.year)
                 
                 return (
                   <div key={edu.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-4">
@@ -711,8 +626,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                           <select
                             value={eduDate.month}
                             onChange={(e) => {
-                              debugLog(`Changing education month for edu[${index}] to:`, e.target.value)
-                              updateEducationDate(index, 'month', e.target.value)
+                              const currentEduDate = parseDateString(edu.year)
+                              updateEducationDate(index, e.target.value, currentEduDate.year)
                             }}
                             className="input flex-1"
                           >
@@ -726,8 +641,8 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                           <select
                             value={eduDate.year}
                             onChange={(e) => {
-                              debugLog(`Changing education year for edu[${index}] to:`, e.target.value)
-                              updateEducationDate(index, 'year', e.target.value)
+                              const currentEduDate = parseDateString(edu.year)
+                              updateEducationDate(index, currentEduDate.month, e.target.value)
                             }}
                             className="input flex-1"
                           >
