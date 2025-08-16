@@ -1,4 +1,4 @@
-// src/components/Reporting.tsx – Fast, RPC-backed, keeps your original look/feel
+// src/components/Reporting.tsx — Fixed data calculations and display
 
 'use client'
 
@@ -40,6 +40,7 @@ interface ContactWithJobs extends Contact {
   linkedJobs?: any[]
   lastInteractionDate?: string
   interactionCount?: number
+  mutual_connections_count?: number // Add this field
 }
 
 interface InteractionWithContact extends Interaction {
@@ -83,6 +84,11 @@ type RPCContactRow = {
   last_interaction_date: string | null
   interaction_count: number
   mutual_connections_count: number
+  mutual_connections: string[] | null // Add this field
+  email: string | null
+  phone: string | null
+  linkedin_url: string | null
+  notes: string | null
 }
 
 type RPCRecentInteractionRow = {
@@ -119,7 +125,7 @@ async function rpcReportingContacts(params: {
     search = null,
     sort = 'last_interaction',
     dir = 'desc',
-    limit = 200, // large enough to keep your on-page sort/filter snappy
+    limit = 10000, // Very high limit to get all contacts
     offset = 0
   } = params
 
@@ -481,34 +487,45 @@ export default function Reporting() {
       const [contactsData, interactionsData] = await Promise.all([
         rpcReportingContacts({
           userId: user.id,
-          // initial view: last interaction desc
           sort: 'last_interaction',
           dir: 'desc',
-          limit: 400, // enough for UI sorting/filtering
+          limit: 10000, // Very high limit to get all contacts
           offset: 0
         }),
-        rpcReportingRecentInteractions({ userId: user.id, limit: 200 })
+        rpcReportingRecentInteractions({ userId: user.id, limit: 500 })
       ])
 
-      // Map to your existing shapes
+      // Debug logging
+      console.log('RPC returned contacts:', contactsData.length)
+      console.log('RPC returned interactions:', interactionsData.length)
+      
+      // Debug mutual connections data
+      console.log('Sample contact data:', contactsData.slice(0, 3))
+      console.log('Contacts with mutual_connections field:', contactsData.filter(c => c.mutual_connections).length)
+      console.log('Contacts with mutual_connections_count > 0:', contactsData.filter(c => c.mutual_connections_count > 0).length)
+
+      // Map to your existing shapes with ALL fields properly populated
       const mappedContacts: ContactWithJobs[] = contactsData.map((r) => ({
         id: r.contact_id,
         name: r.name ?? '',
         company: r.company ?? undefined,
         job_title: r.job_title ?? undefined,
-        email: undefined,
-        phone: undefined,
-        linkedin_url: undefined,
-        notes: undefined,
+        email: r.email ?? undefined,
+        phone: r.phone ?? undefined,
+        linkedin_url: r.linkedin_url ?? undefined,
+        notes: r.notes ?? undefined,
         experience: [],
         education: [],
-        mutual_connections: [], // you show counts elsewhere
+        // Use the count from RPC, but fallback to array length if available
+        mutual_connections: r.mutual_connections ?? [],
         user_id: user.id,
         created_at: '',
         updated_at: '',
         linkedJobsCount: r.linked_jobs_count,
         lastInteractionDate: r.last_interaction_date ?? undefined,
-        interactionCount: r.interaction_count
+        interactionCount: r.interaction_count,
+        // Store the mutual connections count for easy access
+        mutual_connections_count: r.mutual_connections_count || 0
       }))
 
       const mappedInteractions: InteractionWithContact[] = interactionsData.map((r) => ({
@@ -533,7 +550,7 @@ export default function Reporting() {
         } as Contact
       }))
 
-      // Stats derived client-side (same visuals)
+      // FIXED: Stats derived client-side with correct calculations
       const now = new Date()
       const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)
       const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
@@ -550,8 +567,11 @@ export default function Reporting() {
         return acc
       }, {} as Record<string, number>)
 
+      // FIXED: Only count companies that actually exist
       const companyCounts = mappedContacts.reduce((acc, c) => {
-        if (c.company) acc[c.company] = (acc[c.company] || 0) + 1
+        if (c.company && c.company.trim()) {
+          acc[c.company] = (acc[c.company] || 0) + 1
+        }
         return acc
       }, {} as Record<string, number>)
 
@@ -560,12 +580,28 @@ export default function Reporting() {
         .slice(0, 5)
         .map(([company, count]) => ({ company, count }))
 
+      // FIXED: Correct mutual connections count using the count field from RPC
+      const withMutualConnections = contactsData.filter(c => 
+        (c.mutual_connections_count || 0) > 0
+      ).length
+      
+      // Debug the calculation
+      console.log('Contacts with mutual_connections_count > 0:', withMutualConnections)
+      console.log('Sample mutual_connections_count values:', contactsData.slice(0, 10).map(c => c.mutual_connections_count))
+
       setContactStats({
         totalContacts: mappedContacts.length,
         withJobs: mappedContacts.filter(c => (c.linkedJobsCount || 0) > 0).length,
-        withMutualConnections: 0,
+        withMutualConnections, // Now correctly calculated
         topCompanies,
-        recentContacts: mappedContacts.slice(0, 5)
+        recentContacts: mappedContacts
+          .filter(c => c.lastInteractionDate) // Only contacts with interactions
+          .sort((a, b) => {
+            const dateA = a.lastInteractionDate ? new Date(a.lastInteractionDate) : new Date(0)
+            const dateB = b.lastInteractionDate ? new Date(b.lastInteractionDate) : new Date(0)
+            return dateB.getTime() - dateA.getTime()
+          })
+          .slice(0, 5)
       })
 
       setInteractionStats({
@@ -795,9 +831,9 @@ export default function Reporting() {
                 color="from-blue-500 to-blue-600"
               />
               <StatsCard
-                title="With Job Links"
+                title="Jobs with Linked Contacts"
                 value={contactStats?.withJobs || 0}
-                subtitle={`${((contactStats?.withJobs || 0) / (contactStats?.totalContacts || 1) * 100).toFixed(0)}% of contacts`}
+                subtitle={`${((contactStats?.withJobs || 0) / Math.max(contactStats?.totalContacts || 1, 1) * 100).toFixed(0)}% of jobs`}
                 icon={Briefcase}
                 color="from-green-500 to-green-600"
               />
@@ -806,18 +842,20 @@ export default function Reporting() {
                 value={interactionStats?.thisMonth || 0}
                 subtitle="Interactions"
                 icon={Activity}
-                trend={{
-                  value: interactionStats?.lastMonth
-                    ? Math.round(((interactionStats.thisMonth - interactionStats.lastMonth) / interactionStats.lastMonth) * 100)
-                    : 0,
-                  isPositive: (interactionStats?.thisMonth || 0) >= (interactionStats?.lastMonth || 0)
-                }}
+                trend={
+                  interactionStats?.lastMonth && interactionStats.lastMonth > 0
+                    ? {
+                        value: Math.round(((interactionStats.thisMonth - interactionStats.lastMonth) / interactionStats.lastMonth) * 100),
+                        isPositive: (interactionStats?.thisMonth || 0) >= (interactionStats?.lastMonth || 0)
+                      }
+                    : undefined
+                }
                 color="from-purple-500 to-purple-600"
               />
               <StatsCard
-                title="Connected"
+                title="Contacts with Mutual Connections"
                 value={contactStats?.withMutualConnections || 0}
-                subtitle="Mutual connections"
+                subtitle={`${((contactStats?.withMutualConnections || 0) / Math.max(contactStats?.totalContacts || 1, 1) * 100).toFixed(0)}% of contacts`}
                 icon={Network}
                 color="from-orange-500 to-orange-600"
               />
@@ -825,7 +863,7 @@ export default function Reporting() {
 
             {/* Dashboard grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {/* Recent Activity (unchanged) */}
+              {/* Recent Activity */}
               <div className="lg:col-span-2 bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
                 <div className="p-4 border-b border-slate-200/60">
                   <h3 className="font-semibold text-slate-800 flex items-center space-x-2">
@@ -873,11 +911,17 @@ export default function Reporting() {
                         </div>
                       </div>
                     ))}
+                    {(!interactionStats?.recentActivity || interactionStats.recentActivity.length === 0) && (
+                      <div className="p-8 text-center text-slate-500">
+                        <Activity className="w-8 h-8 mx-auto mb-2 text-slate-300" />
+                        <p>No recent activity</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Right column: Top Companies + Interaction Types (restored) */}
+              {/* Right column: Top Companies + Interaction Types */}
               <div className="space-y-4">
                 {/* Top Companies */}
                 <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm p-4">
@@ -894,7 +938,7 @@ export default function Reporting() {
                             <div
                               className="h-full bg-blue-500 rounded-full transition-all duration-300"
                               style={{
-                                width: `${(item.count / (contactStats?.totalContacts || 1)) * 100}%`
+                                width: `${Math.max((item.count / Math.max(contactStats?.totalContacts || 1, 1)) * 100, 5)}%`
                               }}
                             />
                           </div>
@@ -903,7 +947,10 @@ export default function Reporting() {
                       </div>
                     ))}
                     {(contactStats?.topCompanies?.length ?? 0) === 0 && (
-                      <div className="text-sm text-slate-500">No company data yet.</div>
+                      <div className="text-sm text-slate-500 text-center py-4">
+                        <Building className="w-6 h-6 mx-auto mb-1 text-slate-300" />
+                        <p>No company data yet</p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -927,7 +974,10 @@ export default function Reporting() {
                         </div>
                       ))}
                     {Object.keys(interactionStats?.byType || {}).length === 0 && (
-                      <div className="text-sm text-slate-500">No interactions yet.</div>
+                      <div className="text-sm text-slate-500 text-center py-4">
+                        <MessageSquare className="w-6 h-6 mx-auto mb-1 text-slate-300" />
+                        <p>No interactions yet</p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -995,11 +1045,11 @@ export default function Reporting() {
                       </th>
                       <th className="px-4 py-3 text-left">
                         <button
-                          onClick={() => handleContactSort('linkedJobsCount')}
+                          onClick={() => handleContactSort('mutual_connections_count')}
                           className="flex items-center space-x-2 font-semibold text-slate-700 hover:text-slate-900 transition-colors text-sm"
                         >
-                          <span>Interactions</span>
-                          {getSortIcon('linkedJobsCount', contactSort)}
+                          <span>Mutual connections</span>
+                          {getSortIcon('mutual_connections_count', contactSort)}
                         </button>
                       </th>
                     </tr>
@@ -1035,12 +1085,14 @@ export default function Reporting() {
                         <td className="px-4 py-3">
                           <div className="text-sm text-slate-900">
                             {contact.lastInteractionDate
-                              ? new Date(contact.lastInteractionDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                              ? new Date(contact.lastInteractionDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                               : '—'}
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="text-sm text-slate-900">{contact.interactionCount ?? 0}</div>
+                          <div className="text-sm text-slate-900">
+                            {contact.mutual_connections_count ?? contact.mutual_connections?.length ?? 0}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -1127,7 +1179,8 @@ export default function Reporting() {
                             <div className="font-medium text-slate-900">
                               {new Date(interaction.date).toLocaleDateString('en-US', {
                                 month: 'short',
-                                day: 'numeric'
+                                day: 'numeric',
+                                year: 'numeric'
                               })}
                             </div>
                             <div className="text-xs text-slate-500">
