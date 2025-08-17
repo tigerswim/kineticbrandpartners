@@ -683,41 +683,41 @@ export default function JobList() {
   return (
     <div className="space-y-6">
 {/* Header with inline search and Add Job button */}
-      <div className="flex justify-between items-center gap-4">
-        {/* Search Bar - Wider like Network page */}
-        <div className="relative flex-1 max-w-2xl">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input
-            type="text"
-            placeholder="Search jobs by company, title, or notes..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="input pl-10 w-full"
-          />
-          {searchTerm && (
-            <button
-              onClick={handleSearchClear}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
+<div className="flex justify-between items-center gap-4">
+  {/* Search Bar - Wider like Network page */}
+  <div className="relative flex-1 max-w-2xl">
+    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+    <input
+      type="text"
+      placeholder="Search jobs by company, title, or notes..."
+      value={searchTerm}
+      onChange={handleSearchChange}
+      className="input pl-10 w-full"
+    />
+    {searchTerm && (
+      <button
+        onClick={handleSearchClear}
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    )}
+  </div>
 
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-            {processedJobs.length} application{processedJobs.length !== 1 ? 's' : ''}
-          </span>
-          
-          <button
-            onClick={handleAddJob}
-            className="btn-primary flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Job</span>
-          </button>
-        </div>
-      </div>
+  <div className="flex items-center space-x-3">
+    <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+      {processedJobs.length} application{processedJobs.length !== 1 ? 's' : ''}
+    </span>
+    
+    <button
+      onClick={handleAddJob}
+      className="btn-primary flex items-center space-x-2"
+    >
+      <Plus className="w-4 h-4" />
+      <span>Add Job</span>
+    </button>
+  </div>
+</div>
 
       {/* Status Filter Tabs - Dynamic based on actual job data */}
       <StatusFilter 
