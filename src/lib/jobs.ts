@@ -1,9 +1,21 @@
-// src/lib/jobs.ts - Simplified and optimized version
+// src/lib/jobs.ts - Fixed version with better error handling
 import { supabase, Job, Contact } from './supabase'
 
 // Extended Job interface with contacts
 export interface JobWithContacts extends Job {
   contacts: Contact[]
+}
+
+// Helper function to safely log errors
+function logError(message: string, error: any) {
+  console.error(message)
+  if (error) {
+    if (error.message) console.error('Error message:', error.message)
+    if (error.details) console.error('Error details:', error.details)
+    if (error.hint) console.error('Error hint:', error.hint)
+    if (error.code) console.error('Error code:', error.code)
+    console.error('Full error:', JSON.stringify(error, null, 2))
+  }
 }
 
 // Simplified function to fetch jobs with their contacts
@@ -14,8 +26,13 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
     // Get current user first
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
+    if (userError) {
+      logError('Error getting user:', userError)
+      return []
+    }
+
+    if (!user) {
+      console.log('No authenticated user found')
       return []
     }
 
@@ -29,8 +46,8 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
       .order('created_at', { ascending: false })
 
     if (jobsError) {
-      console.error('Error fetching jobs:', jobsError)
-      return []
+      logError('Error fetching jobs:', jobsError)
+      throw new Error(`Failed to fetch jobs: ${jobsError.message || 'Unknown error'}`)
     }
 
     if (!jobs || jobs.length === 0) {
@@ -66,7 +83,7 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
       .in('job_id', jobIds)
 
     if (contactsError) {
-      console.warn('Error fetching job contacts, continuing without contacts:', contactsError)
+      logError('Error fetching job contacts, continuing without contacts:', contactsError)
       // Return jobs without contacts rather than failing completely
       return jobs.map(job => ({ ...job, contacts: [] }))
     }
@@ -97,14 +114,16 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
     return jobsWithContacts
 
   } catch (error) {
-    console.error('Error in fetchJobsWithContacts:', error)
+    logError('Error in fetchJobsWithContacts:', error)
+    
     // Final fallback - return jobs without contacts
     try {
+      console.log('Attempting fallback to simple jobs fetch...')
       const jobs = await fetchJobs()
       return jobs.map(job => ({ ...job, contacts: [] }))
     } catch (fallbackError) {
-      console.error('Fallback also failed:', fallbackError)
-      return []
+      logError('Fallback also failed:', fallbackError)
+      throw new Error('Failed to fetch jobs data')
     }
   }
 }
@@ -151,8 +170,13 @@ export async function fetchJobs(): Promise<Job[]> {
     
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (userError || !user) {
-      console.error('Error getting user:', userError)
+    if (userError) {
+      logError('Error getting user:', userError)
+      throw new Error(`Authentication error: ${userError.message || 'Unknown error'}`)
+    }
+
+    if (!user) {
+      console.log('No authenticated user found')
       return []
     }
 
@@ -163,15 +187,15 @@ export async function fetchJobs(): Promise<Job[]> {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching jobs:', error)
-      return []
+      logError('Error fetching jobs:', error)
+      throw new Error(`Failed to fetch jobs: ${error.message || 'Unknown error'}`)
     }
 
     console.log(`Fetched ${data?.length || 0} jobs`)
     return data || []
   } catch (error) {
-    console.error('Error in fetchJobs:', error)
-    return []
+    logError('Error in fetchJobs:', error)
+    throw error
   }
 }
 
@@ -180,8 +204,13 @@ export async function createJob(jobData: Omit<Job, 'id' | 'created_at' | 'update
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (userError || !user) {
-      console.error('No authenticated user:', userError)
+    if (userError) {
+      logError('No authenticated user:', userError)
+      return null
+    }
+
+    if (!user) {
+      console.log('No authenticated user found')
       return null
     }
 
@@ -199,7 +228,7 @@ export async function createJob(jobData: Omit<Job, 'id' | 'created_at' | 'update
       .single()
 
     if (error) {
-      console.error('Error creating job:', error)
+      logError('Error creating job:', error)
       return null
     }
 
@@ -208,7 +237,7 @@ export async function createJob(jobData: Omit<Job, 'id' | 'created_at' | 'update
     
     return data
   } catch (error) {
-    console.error('Exception in createJob:', error)
+    logError('Exception in createJob:', error)
     return null
   }
 }
@@ -223,7 +252,7 @@ export async function updateJob(id: string, jobData: Partial<Omit<Job, 'id' | 'c
       .single()
 
     if (error) {
-      console.error('Error updating job:', error)
+      logError('Error updating job:', error)
       return null
     }
 
@@ -235,7 +264,7 @@ export async function updateJob(id: string, jobData: Partial<Omit<Job, 'id' | 'c
 
     return data
   } catch (error) {
-    console.error('Exception in updateJob:', error)
+    logError('Exception in updateJob:', error)
     return null
   }
 }
@@ -248,7 +277,7 @@ export async function deleteJob(id: string): Promise<boolean> {
       .eq('id', id)
 
     if (error) {
-      console.error('Error deleting job:', error)
+      logError('Error deleting job:', error)
       return false
     }
 
@@ -260,7 +289,7 @@ export async function deleteJob(id: string): Promise<boolean> {
 
     return true
   } catch (error) {
-    console.error('Exception in deleteJob:', error)
+    logError('Exception in deleteJob:', error)
     return false
   }
 }
@@ -285,7 +314,7 @@ export async function getJobStats(): Promise<{
       .eq('user_id', user.id)
 
     if (error || !jobs) {
-      console.error('Error getting job stats:', error)
+      logError('Error getting job stats:', error)
       return { total: 0, byStatus: {}, recentActivity: 0 }
     }
 
@@ -304,7 +333,7 @@ export async function getJobStats(): Promise<{
 
     return { total, byStatus, recentActivity }
   } catch (error) {
-    console.error('Error getting job stats:', error)
+    logError('Error getting job stats:', error)
     return { total: 0, byStatus: {}, recentActivity: 0 }
   }
 }

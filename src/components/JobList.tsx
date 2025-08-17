@@ -682,42 +682,87 @@ export default function JobList() {
 
   return (
     <div className="space-y-6">
-{/* Header with inline search and Add Job button */}
-<div className="flex justify-between items-center gap-4">
-  {/* Search Bar - Wider like Network page */}
-  <div className="relative flex-1 max-w-2xl">
-    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-    <input
-      type="text"
-      placeholder="Search jobs by company, title, or notes..."
-      value={searchTerm}
-      onChange={handleSearchChange}
-      className="input pl-10 w-full"
-    />
-    {searchTerm && (
-      <button
-        onClick={handleSearchClear}
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-      >
-        <X className="w-4 h-4" />
-      </button>
-    )}
-  </div>
+      {/* Header with inline search and Add Job button - More robust mobile responsive */}
+      <div className="space-y-4 lg:space-y-0">
+        {/* Desktop and Tablet: Single row with search and actions (1024px and up) */}
+        <div className="hidden lg:flex justify-between items-center gap-4">
+          {/* Search Bar - Wider like Network page */}
+          <div className="relative flex-1 max-w-2xl">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search jobs by company, title, or notes..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="input pl-10 w-full"
+            />
+            {searchTerm && (
+              <button
+                onClick={handleSearchClear}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
 
-  <div className="flex items-center space-x-3">
-    <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-      {processedJobs.length} application{processedJobs.length !== 1 ? 's' : ''}
-    </span>
-    
-    <button
-      onClick={handleAddJob}
-      className="btn-primary flex items-center space-x-2"
-    >
-      <Plus className="w-4 h-4" />
-      <span>Add Job</span>
-    </button>
-  </div>
-</div>
+          <div className="flex items-center space-x-3">
+            <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+              {processedJobs.length} application{processedJobs.length !== 1 ? 's' : ''}
+            </span>
+            
+            <button
+              onClick={handleAddJob}
+              className="btn-primary flex items-center space-x-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Job</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile and Small Tablet: Stacked layout (below 1024px) */}
+        <div className="lg:hidden">
+          {/* Action buttons row */}
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-semibold text-slate-800">Jobs</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                {processedJobs.length}
+              </span>
+              
+              <button
+                onClick={handleAddJob}
+                className="btn-primary flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Job</span>
+                <span className="sm:hidden">Add</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Search Bar - Full width on mobile */}
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search jobs..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="input pl-10 w-full"
+            />
+            {searchTerm && (
+              <button
+                onClick={handleSearchClear}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Status Filter Tabs - Dynamic based on actual job data */}
       <StatusFilter 

@@ -96,14 +96,14 @@ export default function Home() {
       id: 'jobs',
       label: 'Job Pipeline',
       icon: Briefcase,
-      description: 'Track applications & opportunities',
+      description: 'Track job apps',
       gradient: 'from-blue-500 to-blue-600'
     },
     {
       id: 'contacts',
       label: 'Network',
       icon: Users,
-      description: 'Manage professional contacts',
+      description: 'Manage contacts',
       gradient: 'from-slate-500 to-slate-600'
     },
     {

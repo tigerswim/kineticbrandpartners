@@ -715,41 +715,86 @@ export default function ContactList() {
   }
 
   return (
-    <div className="space-y-4 animate-fade-in">
-      {/* Header with search and Add Contact button */}
-      <div className="flex justify-between items-center gap-4">
-        {/* Search Bar */}
-        <div className="relative flex-1 max-w-2xl">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-          <input
-            type="text"
-            placeholder="Search contacts by name, company, email, experience, education, or connections..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="input pl-10 w-full"
-          />
-          {searchTerm && (
+    <div className="space-y-6">
+      {/* Header with search and Add Contact button - More robust mobile responsive */}
+      <div className="space-y-4 lg:space-y-0">
+        {/* Desktop and Tablet: Single row with search and actions (768px and up) */}
+        <div className="hidden lg:flex justify-between items-center gap-4">
+          {/* Search Bar */}
+          <div className="relative flex-1 max-w-2xl">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search contacts by name, company, email, experience, education, or connections..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input pl-10 w-full"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+              {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
+            </span>
+            
             <button
-              onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              onClick={() => setShowForm(true)}
+              className="btn-primary flex items-center space-x-2"
             >
-              <X className="w-4 h-4" />
+              <Plus className="w-4 h-4" />
+              <span>Add Contact</span>
             </button>
-          )}
+          </div>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-            {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
-          </span>
-          
-          <button
-            onClick={() => setShowForm(true)}
-            className="btn-primary flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Contact</span>
-          </button>
+        {/* Mobile and Small Tablet: Stacked layout (below 1024px) */}
+        <div className="lg:hidden">
+          {/* Action buttons row */}
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-semibold text-slate-800">Contacts</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                {filteredContacts.length}
+              </span>
+              
+              <button
+                onClick={() => setShowForm(true)}
+                className="btn-primary flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Contact</span>
+                <span className="sm:hidden">Add</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Search Bar - Full width on mobile */}
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search contacts..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input pl-10 w-full"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
