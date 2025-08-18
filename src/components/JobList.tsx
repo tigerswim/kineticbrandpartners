@@ -425,7 +425,7 @@ const JobTableRow = memo(({
           onContactClick={onContactClick}
         />
       </td>
-      <td className="px-4 py-3 text-right w-32">
+      <td className="px-4 py-3 text-right w-32 sticky right-0 bg-white">
         <div className="flex items-center justify-end space-x-1">
           <button
             onClick={handleManageContacts}
