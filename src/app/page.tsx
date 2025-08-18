@@ -1,6 +1,7 @@
 // src/app/page.tsx - Updated with Reporting section
 'use client'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
 import JobList from '@/components/JobList'
@@ -96,7 +97,7 @@ export default function Home() {
       id: 'jobs',
       label: 'Job Pipeline',
       icon: Briefcase,
-      description: 'Track job apps',
+      description: 'Track job applications',
       gradient: 'from-blue-500 to-blue-600'
     },
     {
@@ -131,12 +132,17 @@ export default function Home() {
           <div className="flex items-center justify-between h-16 px-6">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-white" />
-              </div>
+              {/* Replace CareerTracker text/icon with logo image */}
+              <Image
+                src="/Job Tracker Rocket.png"
+                alt="Job Tracker Rocket"
+                width={30}
+                height={30}
+                className="object-contain"
+              />
               <div>
-                <h1 className="text-xl font-bold text-slate-800">CareerTracker</h1>
-                <p className="text-xs text-slate-500 -mt-1">Professional Dashboard</p>
+                <h1 className="text-xl font-bold text-slate-800">Job Tracker</h1>
+                <p className="text-xs text-slate-500 -mt-1">Launch Into a New Role</p>
               </div>
             </div>
 

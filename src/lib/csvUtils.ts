@@ -1,4 +1,4 @@
-// src/lib/csvUtils.ts - Enhanced with better empty field handling and validation
+// src/lib/csvUtils.ts - Enhanced with better empty field handling and validation + current_location
 import { Job, Contact, Interaction } from './supabase'
 import { fetchJobs } from './jobs'
 import { getContacts } from './contacts'
@@ -167,9 +167,9 @@ export async function downloadContactsCSV() {
   const maxEducation = Math.max(...contacts.map(c => c.education?.length || 0), 0)
   const maxMutualConnections = Math.max(...contacts.map(c => c.mutual_connections?.length || 0), 0)
   
-  // Create base fields
+  // Create base fields - Updated to include current_location
   const baseFields = [
-    'id', 'name', 'email', 'phone', 'company', 'job_title', 'linkedin_url', 'notes'
+    'id', 'name', 'email', 'phone', 'current_location', 'company', 'job_title', 'linkedin_url', 'notes'
   ]
   
   // Add flattened experience fields
@@ -515,7 +515,7 @@ function sanitizeRowForDataType(row: any, dataType: 'jobs' | 'contacts' | 'inter
       'applied_date', 'date_added', 'job_description', 'notes'
     ],
     contacts: [
-      'name', 'email', 'phone', 'company', 'job_title', 'linkedin_url', 
+      'name', 'email', 'phone', 'current_location', 'company', 'job_title', 'linkedin_url', 
       'notes', 'experience', 'education', 'mutual_connections'
     ],
     interactions: [

@@ -1,4 +1,4 @@
-// src/components/CSVManager.tsx
+// src/components/CSVManager.tsx - Updated with current_location field
 'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -316,7 +316,7 @@ const UploadResultsDisplay = ({ uploadResults }: { uploadResults: {[key: string]
       icon: Users,
       color: 'green',
       downloadFn: downloadContactsCSV,
-      fields: ['name', 'email', 'phone', 'company', 'job_title', 'linkedin_url', 'notes']
+      fields: ['name', 'email', 'phone', 'current_location', 'company', 'job_title', 'linkedin_url', 'notes']
     },
     {
       id: 'interactions',

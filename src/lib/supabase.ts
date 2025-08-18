@@ -1,4 +1,4 @@
-// src/lib/supabase.ts - Updated with job_description field
+// src/lib/supabase.ts - Updated with current_location field
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -12,6 +12,7 @@ export interface Contact {
   name: string
   email?: string
   phone?: string
+  current_location?: string
   company?: string
   job_title?: string
   linkedin_url?: string

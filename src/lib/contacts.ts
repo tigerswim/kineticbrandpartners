@@ -1,4 +1,4 @@
-// src/lib/contacts.ts - Performance Optimized Version
+// src/lib/contacts.ts - Performance Optimized Version with current_location
 import { supabase, Contact } from './supabase'
 
 export interface ContactsResponse {
@@ -45,7 +45,7 @@ export async function getContacts(): Promise<Contact[]> {
 
 // Lightweight list query for faster Network tab: fetch only fields needed for the grid.
 export async function getContactsLite(): Promise<Pick<Contact,
-  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'linkedin_url' | 'notes' | 'created_at' | 'updated_at' | 'user_id'
+  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'current_location' | 'linkedin_url' | 'notes' | 'created_at' | 'updated_at' | 'user_id'
 >[]> {
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser()
@@ -56,7 +56,7 @@ export async function getContactsLite(): Promise<Pick<Contact,
 
     const { data, error } = await supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,linkedin_url,notes,created_at,updated_at,user_id')
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
@@ -94,7 +94,7 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
 
     let query = supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
       .eq('user_id', user.id)
 
     // Add search filtering if search term provided
@@ -102,12 +102,13 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
       const term = searchTerm.trim()
       
       // Use Supabase's full-text search capabilities
-      // This searches across name, company, job_title, email, and notes
+      // This searches across name, company, job_title, email, current_location, and notes
       query = query.or(`
         name.ilike.%${term}%,
         company.ilike.%${term}%,
         job_title.ilike.%${term}%,
         email.ilike.%${term}%,
+        current_location.ilike.%${term}%,
         notes.ilike.%${term}%
       `)
     }
@@ -150,7 +151,7 @@ export async function getContactsBatch(offset: number = 0, limit: number = 50): 
 
     const { data, error, count } = await supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
@@ -274,6 +275,7 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
       name: contact.name,
       email: contact.email || null,
       phone: contact.phone || null,
+      current_location: contact.current_location || null,
       company: contact.company || null,
       job_title: contact.job_title || null,
       linkedin_url: contact.linkedin_url || null,
@@ -366,13 +368,14 @@ export async function getContactStats(): Promise<{
   withEmail: number
   withPhone: number
   withLinkedIn: number
+  withLocation: number
   withJobs: number
 }> {
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
-      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withJobs: 0 }
+      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
     }
 
     // Use a single query with conditional counting
@@ -382,13 +385,14 @@ export async function getContactStats(): Promise<{
         id,
         email,
         phone,
+        current_location,
         linkedin_url
       `)
       .eq('user_id', user.id)
 
     if (error) {
       console.error('Error fetching contact stats:', error)
-      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withJobs: 0 }
+      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
     }
 
     const contacts = data || []
@@ -398,10 +402,11 @@ export async function getContactStats(): Promise<{
       withEmail: contacts.filter(c => c.email).length,
       withPhone: contacts.filter(c => c.phone).length,
       withLinkedIn: contacts.filter(c => c.linkedin_url).length,
+      withLocation: contacts.filter(c => c.current_location).length,
       withJobs: 0 // This would require a join query - implement if needed
     }
   } catch (error) {
     console.error('Exception in getContactStats:', error)
-    return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withJobs: 0 }
+    return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
   }
 }

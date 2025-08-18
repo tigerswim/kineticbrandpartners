@@ -19,7 +19,8 @@ import {
   Minus,
   GraduationCap,
   Network,
-  Calendar
+  Calendar,
+  MapPin
 } from 'lucide-react'
 import ContactJobLinks from './ContactJobLinks'
 
@@ -101,6 +102,7 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
     name: contact?.name || '',
     email: contact?.email || '',
     phone: contact?.phone || '',
+    current_location: contact?.current_location || '',
     company: contact?.company || '',
     job_title: contact?.job_title || '',
     linkedin_url: contact?.linkedin_url || '',
@@ -423,6 +425,21 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
                     onChange={handleChange}
                     className="input"
                     placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label flex items-center space-x-2">
+                    <MapPin className="w-4 h-4 text-slate-500" />
+                    <span>Current Location</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="current_location"
+                    value={formData.current_location}
+                    onChange={handleChange}
+                    className="input"
+                    placeholder="e.g., San Francisco, CA"
                   />
                 </div>
 
