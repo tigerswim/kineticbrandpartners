@@ -407,18 +407,18 @@ const JobTableRow = memo(({
       <td className="px-4 py-3 text-sm text-gray-600">
         {job.company}
       </td>
-      <td className="px-4 py-3">
+      <td className="px-4 py-3 hidden sm:table-cell">
         <span className={`status-badge status-${job.status?.toLowerCase()?.replace(/\s+/g, '-')}`}>
           {job.status?.replace('_', ' ')}
         </span>
       </td>
-      <td className="px-4 py-3 text-sm text-gray-500">
+      <td className="px-4 py-3 text-sm text-gray-500 hidden md:table-cell">
         {job.location || '—'}
       </td>
-      <td className="px-4 py-3 text-sm text-gray-500">
+      <td className="px-4 py-3 text-sm text-gray-500 hidden lg:table-cell">
         {job.salary || '—'}
       </td>
-      <td className="px-4 py-3 hidden lg:table-cell">
+      <td className="px-4 py-3 hidden xl:table-cell">
         <JobContactLinks 
           jobId={job.id}
           contacts={job.contacts || []}
@@ -1021,40 +1021,40 @@ export default function JobList() {
                     label="Job Title"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[20%]"
+                    className="w-[25%] min-w-[120px]"
                   />
                   <SortableHeader
                     field="company"
                     label="Company"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[18%]"
+                    className="w-[20%] min-w-[100px]"
                   />
                   <SortableHeader
                     field="status"
                     label="Status"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
+                    className="w-[18%] min-w-[80px] hidden sm:table-cell"
                   />
                   <SortableHeader
                     field="location"
                     label="Location"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
+                    className="w-[14%] min-w-[80px] hidden md:table-cell"
                   />
                   <SortableHeader
                     field="salary"
                     label="Salary"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[12%]"
+                    className="w-[12%] min-w-[80px] hidden lg:table-cell"
                   />
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell w-[17%]">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[16%] min-w-[120px] hidden xl:table-cell">
                     Contacts
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%] min-w-[120px] sticky right-0 bg-slate-50/50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%] min-w-[120px] sticky right-0 bg-slate-50/50">
                     Actions
                   </th>
                 </tr>
