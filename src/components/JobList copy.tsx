@@ -1,17 +1,15 @@
-// src/components/JobList.tsx - Fixed Actions column display issue
+// src/components/JobList.tsx - Complete optimized version with sortable columns
 'use client'
 
 import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
 import { Job, Contact } from '@/lib/supabase'
 import { fetchJobsWithContacts, deleteJob, JobWithContacts, clearJobsCache } from '@/lib/jobs'
 import {
-  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText, ChevronUp, ArrowUpDown, Mail, Phone, Linkedin, ExternalLink, GraduationCap
+  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText, ChevronUp, ArrowUpDown
 } from 'lucide-react'
 import JobForm from './JobForm'
 import JobContactManager from './JobContactManager'
 import JobContactLinks from './JobContactLinks'
-import ContactForm from './ContactForm'
-import ContactJobLinks from './ContactJobLinks'
 
 // Types
 interface JobListState {
@@ -28,38 +26,16 @@ interface SortConfig {
   direction: SortDirection
 }
 
-// Enhanced Contact Modal Component - matches JobContactManager styling
-const ContactModal = memo(({ 
-  contact, 
-  onClose, 
-  onEdit 
-}: { 
-  contact: Contact
-  onClose: () => void
-  onEdit?: (contact: Contact) => void
-}) => {
+// Memoized Contact Modal Component
+const ContactModal = memo(({ contact, onClose }: { contact: Contact; onClose: () => void }) => {
   // Memoized close handler
   const handleClose = useCallback(() => {
     onClose()
   }, [onClose])
 
-  // Edit handler
-  const handleEdit = useCallback(() => {
-    if (onEdit) {
-      onEdit(contact)
-    }
-  }, [onEdit, contact])
-
   // ESC key handler
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-      handleClose()
-    }
-  }, [handleClose])
-
-  // Click outside to close
-  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
       handleClose()
     }
   }, [handleClose])
@@ -69,257 +45,43 @@ const ContactModal = memo(({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
-  // Helper function to format experience dates
-  const formatExperienceDate = (dateString: string | undefined | null) => {
-    if (!dateString) return ''
-    
-    const parts = dateString.split('-')
-    if (parts.length === 2) {
-      const year = parts[0]
-      const month = parts[1]
-      
-      if (year && month) {
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const monthIndex = parseInt(month) - 1
-        return `${monthNames[monthIndex]} ${year}`
-      } else if (year) {
-        return year
-      }
-    }
-    return dateString
-  }
-
-  // Helper function to format education date
-  const formatEducationDate = (dateString: string | undefined | null) => {
-    return formatExperienceDate(dateString)
-  }
-
   return (
-    <div 
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 z-50"
-      style={{ paddingTop: '2rem' }}
-      onClick={handleBackdropClick}
-    >
-      <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden animate-scale-in">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <User className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold">{contact.name}</h2>
-                <p className="text-blue-100 text-sm">
-                  {contact.job_title && contact.company 
-                    ? `${contact.job_title} at ${contact.company}` 
-                    : contact.job_title || contact.company || 'Professional Contact'
-                  }
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              {onEdit && (
-                <button
-                  type="button"
-                  onClick={handleEdit}
-                  className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-200 flex items-center space-x-2"
-                >
-                  <Edit className="w-4 h-4" />
-                  <span>Edit Contact</span>
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={handleClose}
-                className="px-4 py-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
-              >
-                Close
-              </button>
-              <button
-                onClick={handleClose}
-                className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold">Contact Details</h3>
+          <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
+            <X size={20} />
+          </button>
         </div>
-
-        {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] custom-scrollbar">
-          <div className="space-y-8">
-            
-            {/* Contact Information */}
-            <div>
-              <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                <User className="w-5 h-5" />
-                <h3 className="font-semibold">Contact Information</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {contact.email && (
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Mail className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">Email</span>
-                    </div>
-                    <a 
-                      href={`mailto:${contact.email}`}
-                      className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium"
-                    >
-                      {contact.email}
-                    </a>
-                  </div>
-                )}
-
-                {contact.phone && (
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Phone className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">Phone</span>
-                    </div>
-                    <a 
-                      href={`tel:${contact.phone}`}
-                      className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium"
-                    >
-                      {contact.phone}
-                    </a>
-                  </div>
-                )}
-
-                {contact.linkedin_url && (
-                  <div className="bg-slate-50 rounded-lg p-4 md:col-span-2">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Linkedin className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">LinkedIn</span>
-                    </div>
-                    <a 
-                      href={contact.linkedin_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium flex items-center space-x-1"
-                    >
-                      <span>{contact.linkedin_url}</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Work Experience */}
-            {contact.experience && contact.experience.length > 0 && (
-              <div>
-                <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                  <Briefcase className="w-5 h-5" />
-                  <h3 className="font-semibold">Work Experience</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {contact.experience.map((exp, index) => (
-                    <div key={exp.id || index} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h4 className="font-semibold text-slate-900">{exp.title}</h4>
-                          <p className="text-slate-700">{exp.company}</p>
-                        </div>
-                        <div className="text-right text-sm text-slate-600">
-                          {formatExperienceDate(exp.start_date)} - {
-                            exp.is_current ? 'Present' : formatExperienceDate(exp.end_date) || 'Unknown'
-                          }
-                        </div>
-                      </div>
-                      {exp.description && (
-                        <p className="text-slate-600 text-sm mt-2 whitespace-pre-wrap">{exp.description}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Education */}
-            {contact.education && contact.education.length > 0 && (
-              <div>
-                <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                  <GraduationCap className="w-5 h-5" />
-                  <h3 className="font-semibold">Education</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {contact.education.map((edu, index) => (
-                    <div key={edu.id || index} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h4 className="font-semibold text-slate-900">{edu.degree_and_field}</h4>
-                          <p className="text-slate-700">{edu.institution}</p>
-                        </div>
-                        <div className="text-right text-sm text-slate-600">
-                          {formatEducationDate(edu.year)}
-                        </div>
-                      </div>
-                      {edu.notes && (
-                        <p className="text-slate-600 text-sm mt-2">{edu.notes}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Mutual Connections */}
-            {contact.mutual_connections && contact.mutual_connections.length > 0 && (
-              <div>
-                <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                  <Users className="w-5 h-5" />
-                  <h3 className="font-semibold">Mutual Connections</h3>
-                </div>
-                
-                <div className="flex flex-wrap gap-2">
-                  {contact.mutual_connections.map((connection, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm border border-blue-200"
-                    >
-                      <Users className="w-3 h-3 mr-1" />
-                      {connection}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Associated Jobs */}
-            <div>
-              <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                <Briefcase className="w-5 h-5" />
-                <h3 className="font-semibold">Associated Job Applications</h3>
-              </div>
-              
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <ContactJobLinks
-                  contactId={contact.id}
-                  compact={false}
-                />
-              </div>
-            </div>
-
-            {/* Notes */}
-            {contact.notes && (
-              <div>
-                <div className="flex items-center space-x-2 text-slate-700 border-b border-slate-200 pb-3 mb-4">
-                  <FileText className="w-5 h-5" />
-                  <h3 className="font-semibold">Notes</h3>
-                </div>
-                
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                  <p className="text-slate-900 whitespace-pre-wrap">{contact.notes}</p>
-                </div>
-              </div>
-            )}
+        <div className="space-y-3">
+          <div>
+            <p className="font-medium">{contact.name}</p>
+            <p className="text-sm text-gray-600">
+              {contact.job_title && contact.company 
+                ? `${contact.job_title} at ${contact.company}` 
+                : contact.job_title || contact.company
+              }
+            </p>
           </div>
+          {contact.email && (
+            <div>
+              <p className="text-sm font-medium">Email</p>
+              <p className="text-sm text-gray-600">{contact.email}</p>
+            </div>
+          )}
+          {contact.phone && (
+            <div>
+              <p className="text-sm font-medium">Phone</p>
+              <p className="text-sm text-gray-600">{contact.phone}</p>
+            </div>
+          )}
+          {contact.notes && (
+            <div>
+              <p className="text-sm font-medium">Notes</p>
+              <p className="text-sm text-gray-600">{contact.notes}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -425,7 +187,12 @@ const JobTableRow = memo(({
           onContactClick={onContactClick}
         />
       </td>
-      <td className="px-4 py-3 text-right w-32">
+      <td className="px-4 py-3 hidden xl:table-cell">
+        <div className="max-w-xs truncate text-sm text-gray-500">
+          {job.notes || '—'}
+        </div>
+      </td>
+      <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end space-x-1">
           <button
             onClick={handleManageContacts}
@@ -1013,7 +780,7 @@ export default function JobList() {
       ) : (
         <div className="glass rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 table-fixed">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-slate-50/50">
                 <tr>
                   <SortableHeader
@@ -1021,40 +788,38 @@ export default function JobList() {
                     label="Job Title"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[20%]"
                   />
                   <SortableHeader
                     field="company"
                     label="Company"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[18%]"
                   />
                   <SortableHeader
                     field="status"
                     label="Status"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
                   />
                   <SortableHeader
                     field="location"
                     label="Location"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
                   />
                   <SortableHeader
                     field="salary"
                     label="Salary"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[12%]"
                   />
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell w-[17%]">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Contacts
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%] min-w-[120px] sticky right-0 bg-slate-50/50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                    Notes
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>

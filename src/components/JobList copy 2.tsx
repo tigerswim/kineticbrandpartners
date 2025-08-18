@@ -1,4 +1,4 @@
-// src/components/JobList.tsx - Fixed Actions column display issue
+// src/components/JobList.tsx - Complete optimized version with sortable columns
 'use client'
 
 import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
@@ -425,7 +425,12 @@ const JobTableRow = memo(({
           onContactClick={onContactClick}
         />
       </td>
-      <td className="px-4 py-3 text-right w-32">
+      <td className="px-4 py-3 hidden xl:table-cell">
+        <div className="max-w-xs truncate text-sm text-gray-500">
+          {job.notes || '—'}
+        </div>
+      </td>
+      <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end space-x-1">
           <button
             onClick={handleManageContacts}
@@ -1013,7 +1018,7 @@ export default function JobList() {
       ) : (
         <div className="glass rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 table-fixed">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-slate-50/50">
                 <tr>
                   <SortableHeader
@@ -1021,40 +1026,38 @@ export default function JobList() {
                     label="Job Title"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[20%]"
                   />
                   <SortableHeader
                     field="company"
                     label="Company"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[18%]"
                   />
                   <SortableHeader
                     field="status"
                     label="Status"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
                   />
                   <SortableHeader
                     field="location"
                     label="Location"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[14%]"
                   />
                   <SortableHeader
                     field="salary"
                     label="Salary"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[12%]"
                   />
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell w-[17%]">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Contacts
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%] min-w-[120px] sticky right-0 bg-slate-50/50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                    Notes
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
