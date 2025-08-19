@@ -134,7 +134,7 @@ export default function Home() {
             <div className="flex items-center space-x-3">
               {/* Replace CareerTracker text/icon with logo image */}
               <Image
-                src="/Job_Tracker_Rocket.png"
+                src="/job-tracker-rocket.png"
                 alt="Job Tracker Rocket"
                 width={30}
                 height={30}
