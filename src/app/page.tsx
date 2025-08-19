@@ -138,6 +138,7 @@ export default function Home() {
                 alt="Job Tracker Rocket"
                 width={30}
                 height={30}
+                unoptimized={true}
                 className="object-contain"
               />
               <div>
