@@ -1,11 +1,15 @@
-// src/lib/supabase.ts - Updated with current_location field
-
+// src/lib/supabase.ts - Updated with proper client setup
 import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+// Basic client for general use
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Client-side auth helper for React components
+export const createSupabaseClient = () => createClientComponentClient()
 
 export interface Contact {
   id: string

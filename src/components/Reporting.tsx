@@ -1,10 +1,10 @@
-// src/components/Reporting.tsx — Fixed data calculations and display
+// src/components/Reporting.tsx – Updated with Reminders integration
 
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { Contact, Interaction } from '@/lib/supabase'
-import { supabase } from '@/lib/supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import {
   BarChart3,
   Users,
@@ -30,17 +30,44 @@ import {
   UserPlus,
   MessageSquare,
   Target,
-  Eye
+  Eye,
+  Bell // Added Bell icon for Reminders
 } from 'lucide-react'
+import dynamic from 'next/dynamic'
 
-/* ----------------------------- Types (unchanged) ---------------------------- */
+const RemindersManagement = dynamic(
+  () => import('./RemindersManagement'),
+  { ssr: false }
+)
+
+export function ReportingPage() {
+  return (
+    <div>
+      <RemindersManagement />
+    </div>
+  )
+}
+// Add these imports after your existing imports
+import type { 
+  ContactWithJobs, 
+  InteractionWithContact, 
+  ContactSortField, 
+  InteractionSortField, 
+  SortDirection, 
+  ContactStats, 
+  InteractionStats,
+  ReportingSection 
+} from '@/lib/types'
+
+
+/* ----------------------------- Types ---------------------------- */
 
 interface ContactWithJobs extends Contact {
   linkedJobsCount?: number
   linkedJobs?: any[]
   lastInteractionDate?: string
   interactionCount?: number
-  mutual_connections_count?: number // Add this field
+  mutual_connections_count?: number
 }
 
 interface InteractionWithContact extends Interaction {
@@ -73,6 +100,9 @@ type ContactSortField =
   | 'lastInteraction'
 type InteractionSortField = 'date' | 'contact_name' | 'type' | 'summary'
 
+// Updated to include reminders section type
+type ReportingSection = 'overview' | 'contacts' | 'interactions' | 'reminders'
+
 /* -------------------------- RPC result type shapes -------------------------- */
 
 type RPCContactRow = {
@@ -84,7 +114,7 @@ type RPCContactRow = {
   last_interaction_date: string | null
   interaction_count: number
   mutual_connections_count: number
-  mutual_connections: string[] | null // Add this field
+  mutual_connections: string[] | null
   email: string | null
   phone: string | null
   linkedin_url: string | null
@@ -125,10 +155,12 @@ async function rpcReportingContacts(params: {
     search = null,
     sort = 'last_interaction',
     dir = 'desc',
-    limit = 10000, // Very high limit to get all contacts
+    limit = 10000,
     offset = 0
   } = params
 
+  const supabase = createClientComponentClient()
+  console.log('RPC reporting_contacts: Calling with user ID:', userId)
   const { data, error } = await supabase.rpc('reporting_contacts', {
     p_user_id: userId,
     p_search: search,
@@ -141,6 +173,7 @@ async function rpcReportingContacts(params: {
     console.error('reporting_contacts RPC error:', error)
     return []
   }
+  console.log('RPC reporting_contacts: Retrieved', data?.length || 0, 'contacts')
   return (data ?? []) as RPCContactRow[]
 }
 
@@ -149,6 +182,8 @@ async function rpcReportingRecentInteractions(params: {
   limit?: number
 }): Promise<RPCRecentInteractionRow[]> {
   const { userId, limit = 100 } = params
+  const supabase = createClientComponentClient()
+  console.log('RPC reporting_recent_interactions: Calling with user ID:', userId)
   const { data, error } = await supabase.rpc('reporting_recent_interactions', {
     p_user_id: userId,
     p_limit: limit
@@ -157,6 +192,7 @@ async function rpcReportingRecentInteractions(params: {
     console.error('reporting_recent_interactions RPC error:', error)
     return []
   }
+  console.log('RPC reporting_recent_interactions: Retrieved', data?.length || 0, 'interactions')
   return (data ?? []) as RPCRecentInteractionRow[]
 }
 
@@ -447,8 +483,8 @@ export default function Reporting() {
   const [contacts, setContacts] = useState<ContactWithJobs[]>([])
   const [interactions, setInteractions] = useState<InteractionWithContact[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeSection, setActiveSection] =
-    useState<'overview' | 'contacts' | 'interactions'>('overview')
+  // Updated to include reminders in the active section type
+  const [activeSection, setActiveSection] = useState<ReportingSection>('overview')
 
   // Search and filter states
   const [contactSearch, setContactSearch] = useState('')
@@ -481,7 +517,9 @@ export default function Reporting() {
     let mounted = true
     async function loadReportingData() {
       setLoading(true)
+      const supabase = createClientComponentClient()
       const { data: { user } } = await supabase.auth.getUser()
+      console.log('Reporting: Loading data for user:', user?.id, 'email:', user?.email)
       if (!mounted || !user) { setLoading(false); return }
 
       const [contactsData, interactionsData] = await Promise.all([
@@ -489,7 +527,7 @@ export default function Reporting() {
           userId: user.id,
           sort: 'last_interaction',
           dir: 'desc',
-          limit: 10000, // Very high limit to get all contacts
+          limit: 10000,
           offset: 0
         }),
         rpcReportingRecentInteractions({ userId: user.id, limit: 500 })
@@ -592,10 +630,10 @@ export default function Reporting() {
       setContactStats({
         totalContacts: mappedContacts.length,
         withJobs: mappedContacts.filter(c => (c.linkedJobsCount || 0) > 0).length,
-        withMutualConnections, // Now correctly calculated
+        withMutualConnections,
         topCompanies,
         recentContacts: mappedContacts
-          .filter(c => c.lastInteractionDate) // Only contacts with interactions
+          .filter(c => c.lastInteractionDate)
           .sort((a, b) => {
             const dateA = a.lastInteractionDate ? new Date(a.lastInteractionDate) : new Date(0)
             const dateB = b.lastInteractionDate ? new Date(b.lastInteractionDate) : new Date(0)
@@ -762,9 +800,9 @@ export default function Reporting() {
   return (
     <>
       <div className="space-y-4 animate-fade-in">
-        {/* Section navigation */}
+        {/* Updated Section navigation to include reminders */}
         <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
-          <div className="grid grid-cols-3 divide-x divide-slate-200/60">
+          <div className="grid grid-cols-4 divide-x divide-slate-200/60">
             <button
               onClick={() => setActiveSection('overview')}
               className={`p-3 text-center transition-all duration-200 ${
@@ -805,13 +843,31 @@ export default function Reporting() {
                 activeSection === 'interactions'
                   ? 'bg-white/80 text-green-700 font-medium'
                   : 'text-slate-600 hover:bg-white/40'
-              } ${activeSection === 'interactions' ? 'rounded-r-xl' : ''}`}
+              }`}
             >
               <div className="flex items-center justify-center space-x-2">
                 <MessageCircle className="w-4 h-4" />
                 <span className="text-sm">Interactions</span>
                 <span className="hidden sm:inline text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
                   {filteredAndSortedInteractions.length}
+                </span>
+              </div>
+            </button>
+
+            {/* New Reminders tab */}
+            <button
+              onClick={() => setActiveSection('reminders')}
+              className={`p-3 text-center transition-all duration-200 ${
+                activeSection === 'reminders'
+                  ? 'bg-white/80 text-purple-700 font-medium'
+                  : 'text-slate-600 hover:bg-white/40'
+              } ${activeSection === 'reminders' ? 'rounded-r-xl' : ''}`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <Bell className="w-4 h-4" />
+                <span className="text-sm">Reminders</span>
+                <span className="hidden sm:inline text-xs text-slate-500">
+                  Email follow-ups
                 </span>
               </div>
             </button>
@@ -1231,6 +1287,11 @@ export default function Reporting() {
               )}
             </div>
           </div>
+        )}
+
+        {/* New Reminders Section */}
+        {activeSection === 'reminders' && (
+          <RemindersManagement />
         )}
       </div>
 

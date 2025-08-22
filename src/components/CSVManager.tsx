@@ -37,18 +37,18 @@ interface UploadResult {
     invalidDates: Array<{row: number, field: string, originalValue: string}>
     totalRows: number
   }
-}
+};
 
 export default function CSVManager() {
-  const [uploading, setUploading] = useState<string | null>(null)
-  const [uploadResults, setUploadResults] = useState<{[key: string]: UploadResult} | null>(null)
+  const [uploading, setUploading] = useState<string | null>(null);
+  const [uploadResults, setUploadResults] = useState<{[key: string]: UploadResult} | null>(null);
 
 const handleFileUpload = async (file: File, type: 'jobs' | 'contacts' | 'interactions') => {
   setUploading(type)
   setUploadResults(null)
 
   try {
-    const text = await file.text()
+    const text = await file.text();
     const data = parseCSVForDataType(text, type)
 
     if (data.length === 0) {

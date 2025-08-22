@@ -1,5 +1,6 @@
 // src/lib/contacts.ts - Performance Optimized Version with current_location
-import { supabase, Contact } from './supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Contact } from './supabase'
 
 export interface ContactsResponse {
   contacts: Contact[]
@@ -18,12 +19,15 @@ export interface ContactSearchOptions {
 export async function getContacts(): Promise<Contact[]> {
   try {
     // Get current user first
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError || !user) {
       console.error('Error getting user:', userError)
       return []
     }
+
+    console.log('getContacts: Fetching contacts for user ID:', user.id, 'email:', user.email)
 
     const { data, error } = await supabase
       .from('contacts')
@@ -36,6 +40,8 @@ export async function getContacts(): Promise<Contact[]> {
       return []
     }
 
+    console.log('getContacts: Found', data?.length || 0, 'contacts for user:', user.id)
+    console.log('getContacts: Sample contact data:', data?.[0] ? { id: data[0].id, name: data[0].name, user_id: data[0].user_id } : 'No contacts')
     return data || []
   } catch (error) {
     console.error('Exception in getContacts:', error)
@@ -45,24 +51,37 @@ export async function getContacts(): Promise<Contact[]> {
 
 // Lightweight list query for faster Network tab: fetch only fields needed for the grid.
 export async function getContactsLite(): Promise<Pick<Contact,
-  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'current_location' | 'linkedin_url' | 'notes' | 'created_at' | 'updated_at' | 'user_id'
+  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'current_location' | 'linkedin_url' | 'notes' | 'mutual_connections' | 'experience' | 'education' | 'created_at' | 'updated_at' | 'user_id'
 >[]> {
   try {
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
       return []
     }
 
+    console.log('getContactsLite: Fetching contacts with mutual_connections for user:', user.id)
+
     const { data, error } = await supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id')
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) {
       console.error('Error fetching contacts (lite):', error)
       return []
+    }
+
+    console.log('getContactsLite: Found', data?.length || 0, 'contacts')
+    if (data && data.length > 0) {
+      console.log('getContactsLite: Sample contact:', {
+        id: data[0].id,
+        name: data[0].name,
+        mutual_connections: data[0].mutual_connections,
+        mutual_connections_length: data[0].mutual_connections?.length || 0
+      })
     }
 
     return (data as any) || []
@@ -86,6 +105,7 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
       sortOrder = 'desc'
     } = options
 
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
@@ -94,7 +114,7 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
 
     let query = supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id', { count: 'exact' })
       .eq('user_id', user.id)
 
     // Add search filtering if search term provided
@@ -151,7 +171,7 @@ export async function getContactsBatch(offset: number = 0, limit: number = 50): 
 
     const { data, error, count } = await supabase
       .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,created_at,updated_at,user_id', { count: 'exact' })
+      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id', { count: 'exact' })
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)

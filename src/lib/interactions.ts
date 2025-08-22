@@ -1,5 +1,6 @@
 // src/lib/interactions.ts - Optimized with caching and batch operations
-import { supabase, Interaction } from './supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Interaction } from './supabase'
 
 // Cache implementation for interactions
 const CACHE_DURATION = 2 * 60 * 1000 // 2 minutes
@@ -29,6 +30,7 @@ export async function getInteractions(contactId: string): Promise<Interaction[]>
     console.log('Fetching fresh interactions for contact:', contactId)
     
     // Use select with specific fields to reduce data transfer
+    const supabase = createClientComponentClient()
     const { data, error } = await supabase
       .from('interactions')
       .select('id, type, date, summary, notes, contact_id, created_at, updated_at')
@@ -41,6 +43,11 @@ export async function getInteractions(contactId: string): Promise<Interaction[]>
     }
 
     const interactions = data || []
+    
+    console.log(`getInteractions: Found ${interactions.length} interactions for contact ${contactId}`)
+    if (interactions.length > 0) {
+      console.log('Sample interaction:', interactions[0])
+    }
     
     // Cache the result
     interactionsCache.set(contactId, { 
@@ -129,6 +136,7 @@ export async function createInteraction(
     console.log('=== CREATE INTERACTION DEBUG ===')
     
     // Check current user
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     console.log('Current user:', user?.id, user?.email)
     if (userError) console.error('User error:', userError)
@@ -287,6 +295,7 @@ export async function deleteInteractions(ids: string[]): Promise<boolean> {
   if (!ids.length) return true
 
   try {
+    const supabase = createClientComponentClient()
     // First get all contact_ids for cache clearing
     const { data: interactions } = await supabase
       .from('interactions')
@@ -321,6 +330,7 @@ export async function deleteInteractions(ids: string[]): Promise<boolean> {
 // Get recent interactions across all contacts (for dashboard)
 export async function getRecentInteractions(limit: number = 10): Promise<Interaction[]> {
   try {
+    const supabase = createClientComponentClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return []
 

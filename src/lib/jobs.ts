@@ -1,5 +1,6 @@
 // src/lib/jobs.ts - Fixed version with better error handling
-import { supabase, Job, Contact } from './supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Job, Contact } from './supabase'
 
 // Extended Job interface with contacts
 export interface JobWithContacts extends Job {
@@ -24,6 +25,7 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
     console.log('Starting fetchJobsWithContacts...')
     
     // Get current user first
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError) {
@@ -36,7 +38,7 @@ export async function fetchJobsWithContacts(): Promise<JobWithContacts[]> {
       return []
     }
 
-    console.log('User found, fetching jobs...')
+    console.log('User found, fetching jobs for user ID:', user.id, 'email:', user.email)
 
     // Step 1: Fetch all jobs for the user (simple query first)
     const { data: jobs, error: jobsError } = await supabase
@@ -133,6 +135,7 @@ const CACHE_DURATION = 2 * 60 * 1000 // 2 minutes (reduced from 5)
 const jobsCache = new Map<string, { data: JobWithContacts[], timestamp: number }>()
 
 export async function fetchJobsWithContactsCached(): Promise<JobWithContacts[]> {
+  const supabase = createClientComponentClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return []
   
@@ -168,6 +171,7 @@ export async function fetchJobs(): Promise<Job[]> {
   try {
     console.log('Fetching jobs (simple query)...')
     
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError) {
@@ -202,6 +206,7 @@ export async function fetchJobs(): Promise<Job[]> {
 // Create job function with cache clearing
 export async function createJob(jobData: Omit<Job, 'id' | 'created_at' | 'updated_at'>): Promise<Job | null> {
   try {
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError) {
@@ -257,6 +262,7 @@ export async function updateJob(id: string, jobData: Partial<Omit<Job, 'id' | 'c
     }
 
     // Clear cache after successful update
+    const supabase = createClientComponentClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       clearJobsCache(user.id)
@@ -282,6 +288,7 @@ export async function deleteJob(id: string): Promise<boolean> {
     }
 
     // Clear cache after successful deletion
+    const supabase = createClientComponentClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       clearJobsCache(user.id)
@@ -301,6 +308,7 @@ export async function getJobStats(): Promise<{
   recentActivity: number
 }> {
   try {
+    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError || !user) {

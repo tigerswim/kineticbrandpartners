@@ -2,7 +2,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { supabase } from '@/lib/supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { User } from '@supabase/supabase-js'
 import JobList from '@/components/JobList'
 import ContactList from '@/components/ContactList'
@@ -21,6 +21,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'jobs' | 'contacts' | 'reporting' | 'csv'>('jobs')
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // Initialize Supabase client using createClientComponentClient
+  const supabase = createClientComponentClient()
 
   // Fixed useEffect with proper async handling
   useEffect(() => {
@@ -67,10 +70,34 @@ export default function Home() {
         cleanup()
       }
     }
-  }, [])
+  }, [supabase])
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    try {
+      // Sign out from Supabase
+      await supabase.auth.signOut()
+      
+      // Clear any stored Google OAuth state
+      if (typeof window !== 'undefined') {
+        // Clear any Google OAuth related localStorage
+        localStorage.removeItem('supabase.auth.token')
+        localStorage.removeItem('supabase.auth.expires_at')
+        
+        // Force Google to show account picker on next sign-in
+        // by clearing any cached OAuth state
+        sessionStorage.clear()
+        
+        // Optional: Clear other auth-related storage
+        localStorage.removeItem('supabase.auth.refresh_token')
+      }
+      
+      // Force a page reload to ensure clean state
+      window.location.reload()
+    } catch (error) {
+      console.error('Error during sign out:', error)
+      // Fallback: force reload anyway
+      window.location.reload()
+    }
   }
 
   if (loading) {
@@ -154,7 +181,11 @@ export default function Home() {
                 <p className="text-xs text-slate-500">{user.email}</p>
               </div>
               <button
-                onClick={handleSignOut}
+                onClick={() => {
+                  if (confirm('Are you sure you want to sign out? You will need to sign in again to access your data.')) {
+                    handleSignOut()
+                  }
+                }}
                 className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200 hover:shadow-sm"
               >
                 <LogOut className="w-4 h-4" />

@@ -1,7 +1,7 @@
 // src/components/LoginForm.tsx
 'use client'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export default function LoginForm() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -9,6 +9,9 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  // Initialize Supabase client using createClientComponentClient
+  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,12 +46,24 @@ export default function LoginForm() {
     setMessage('')
     
     try {
+      // Clear any existing OAuth state to force account selection
+      if (typeof window !== 'undefined') {
+        sessionStorage.clear()
+        localStorage.removeItem('supabase.auth.token')
+        localStorage.removeItem('supabase.auth.expires_at')
+        localStorage.removeItem('supabase.auth.refresh_token')
+      }
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: process.env.NODE_ENV === 'production' 
             ? 'https://your-domain.com' 
-            : 'http://localhost:3000'
+            : 'http://localhost:3000',
+          // Force Google to show account picker
+          queryParams: {
+            prompt: 'select_account'
+          }
         }
       })
       
@@ -86,6 +101,9 @@ export default function LoginForm() {
             </svg>
             <span>{loading ? 'Loading...' : 'Continue with Google'}</span>
           </button>
+          <p className="text-xs text-gray-500 text-center mb-4">
+            You'll be prompted to choose your Google account
+          </p>
 
           {/* Divider */}
           <div className="relative mb-6">

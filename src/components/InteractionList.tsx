@@ -252,9 +252,11 @@ export default function InteractionList({ contactId }: InteractionListProps) {
   const loadInteractions = useCallback(async () => {
     if (!contactId) return
 
+    console.log('InteractionList: Loading interactions for contact:', contactId)
     setLoading(true)
     try {
       const data = await getInteractions(contactId)
+      console.log('InteractionList: Received interactions:', data?.length || 0, 'for contact:', contactId)
       setInteractions(data)
     } catch (error) {
       console.error('Error loading interactions:', error)
