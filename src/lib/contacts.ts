@@ -1,4 +1,4 @@
-// src/lib/contacts.ts - Performance Optimized Version with current_location
+// src/lib/contacts.ts - Fixed Version with Consistent Client Usage
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Contact } from './supabase'
 
@@ -18,7 +18,7 @@ export interface ContactSearchOptions {
 
 export async function getContacts(): Promise<Contact[]> {
   try {
-    // Get current user first
+    // Use the same client pattern throughout
     const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
@@ -32,7 +32,7 @@ export async function getContacts(): Promise<Contact[]> {
     const { data, error } = await supabase
       .from('contacts')
       .select('*')
-      .eq('user_id', user.id)  // Filter by user_id
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -41,7 +41,6 @@ export async function getContacts(): Promise<Contact[]> {
     }
 
     console.log('getContacts: Found', data?.length || 0, 'contacts for user:', user.id)
-    console.log('getContacts: Sample contact data:', data?.[0] ? { id: data[0].id, name: data[0].name, user_id: data[0].user_id } : 'No contacts')
     return data || []
   } catch (error) {
     console.error('Exception in getContacts:', error)
@@ -49,7 +48,6 @@ export async function getContacts(): Promise<Contact[]> {
   }
 }
 
-// Lightweight list query for faster Network tab: fetch only fields needed for the grid.
 export async function getContactsLite(): Promise<Pick<Contact,
   'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'current_location' | 'linkedin_url' | 'notes' | 'mutual_connections' | 'experience' | 'education' | 'created_at' | 'updated_at' | 'user_id'
 >[]> {
@@ -60,8 +58,6 @@ export async function getContactsLite(): Promise<Pick<Contact,
       console.error('Error getting user:', userError)
       return []
     }
-
-    console.log('getContactsLite: Fetching contacts with mutual_connections for user:', user.id)
 
     const { data, error } = await supabase
       .from('contacts')
@@ -74,16 +70,6 @@ export async function getContactsLite(): Promise<Pick<Contact,
       return []
     }
 
-    console.log('getContactsLite: Found', data?.length || 0, 'contacts')
-    if (data && data.length > 0) {
-      console.log('getContactsLite: Sample contact:', {
-        id: data[0].id,
-        name: data[0].name,
-        mutual_connections: data[0].mutual_connections,
-        mutual_connections_length: data[0].mutual_connections?.length || 0
-      })
-    }
-
     return (data as any) || []
   } catch (error) {
     console.error('Exception in getContactsLite:', error)
@@ -91,10 +77,6 @@ export async function getContactsLite(): Promise<Pick<Contact,
   }
 }
 
-/**
- * SERVER-SIDE SEARCH: Optimized search with pagination and server-side filtering
- * This is much faster than client-side filtering for large datasets
- */
 export async function searchContacts(options: ContactSearchOptions = {}): Promise<ContactsResponse> {
   try {
     const {
@@ -117,12 +99,8 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
       .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id', { count: 'exact' })
       .eq('user_id', user.id)
 
-    // Add search filtering if search term provided
     if (searchTerm.trim()) {
       const term = searchTerm.trim()
-      
-      // Use Supabase's full-text search capabilities
-      // This searches across name, company, job_title, email, current_location, and notes
       query = query.or(`
         name.ilike.%${term}%,
         company.ilike.%${term}%,
@@ -133,10 +111,7 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
       `)
     }
 
-    // Add sorting
     query = query.order(sortBy, { ascending: sortOrder === 'asc' })
-
-    // Add pagination
     const { data, error, count } = await query.range(offset, offset + limit - 1)
 
     if (error) {
@@ -158,11 +133,9 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
   }
 }
 
-/**
- * BATCH CONTACT LOADING: Load contacts in batches for better UX
- */
 export async function getContactsBatch(offset: number = 0, limit: number = 50): Promise<ContactsResponse> {
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
@@ -195,9 +168,9 @@ export async function getContactsBatch(offset: number = 0, limit: number = 50): 
   }
 }
 
-// Fetch full contact by id (used before editing to populate long fields)
 export async function getContactById(id: string): Promise<Contact | null> {
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
@@ -223,14 +196,11 @@ export async function getContactById(id: string): Promise<Contact | null> {
   }
 }
 
-/**
- * OPTIMIZED BATCH CONTACT FETCH BY IDs
- * Useful for loading full contact details for multiple contacts at once
- */
 export async function getContactsByIds(ids: string[]): Promise<Contact[]> {
   try {
     if (!ids || ids.length === 0) return []
 
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
@@ -259,6 +229,8 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
   console.log('=== ENHANCED DEBUG: createContact started ===')
   
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
+    
     // 1. Check user authentication
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
@@ -283,14 +255,12 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
     if (testError) {
       console.error('❌ Table access error:', testError.message)
-      console.error('Code:', testError.code)
-      console.error('Details:', testError.details)
       return null
     }
 
     console.log('✅ Table access successful')
 
-    // 3. Prepare insert data with new fields
+    // 3. Prepare insert data
     const insertData = {
       name: contact.name,
       email: contact.email || null,
@@ -309,7 +279,6 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
     console.log('🔧 Prepared insert data:', insertData)
 
     // 4. Attempt the insert
-    console.log('💾 Attempting insert...')
     const { data, error } = await supabase
       .from('contacts')
       .insert([insertData])
@@ -318,9 +287,6 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
     if (error) {
       console.error('❌ Insert failed:', error.message)
-      console.error('Code:', error.code)
-      console.error('Details:', error.details)
-      console.error('Hint:', error.hint)
       return null
     }
 
@@ -335,6 +301,7 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
 
 export async function updateContact(id: string, contactData: Partial<Omit<Contact, 'id' | 'created_at' | 'updated_at' | 'user_id'>>): Promise<Contact | null> {
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     console.log('Updating contact with data:', contactData)
 
     const { data, error } = await supabase
@@ -362,6 +329,7 @@ export async function updateContact(id: string, contactData: Partial<Omit<Contac
 
 export async function deleteContact(id: string): Promise<boolean> {
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     const { error } = await supabase
       .from('contacts')
       .delete()
@@ -379,10 +347,6 @@ export async function deleteContact(id: string): Promise<boolean> {
   }
 }
 
-/**
- * OPTIMIZED CONTACT STATISTICS
- * Get contact counts and stats without loading all data
- */
 export async function getContactStats(): Promise<{
   total: number
   withEmail: number
@@ -392,13 +356,13 @@ export async function getContactStats(): Promise<{
   withJobs: number
 }> {
   try {
+    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       console.error('Error getting user:', userError)
       return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
     }
 
-    // Use a single query with conditional counting
     const { data, error } = await supabase
       .from('contacts')
       .select(`
@@ -423,7 +387,7 @@ export async function getContactStats(): Promise<{
       withPhone: contacts.filter(c => c.phone).length,
       withLinkedIn: contacts.filter(c => c.linkedin_url).length,
       withLocation: contacts.filter(c => c.current_location).length,
-      withJobs: 0 // This would require a join query - implement if needed
+      withJobs: 0
     }
   } catch (error) {
     console.error('Exception in getContactStats:', error)

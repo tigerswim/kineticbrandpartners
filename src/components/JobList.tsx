@@ -814,7 +814,6 @@ export default function JobList() {
   }, [loadJobs])
 
   const handleClearCacheRetry = useCallback(() => {
-    clearJobsCache()
     loadJobs()
   }, [loadJobs])
 

@@ -1,4 +1,4 @@
-// src/lib/interactions.ts - Optimized with caching and batch operations
+// src/lib/interactions.ts - Fixed version with proper supabase client initialization
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Interaction } from './supabase'
 
@@ -67,6 +67,7 @@ export async function getInteractionCount(contactId: string): Promise<number> {
   if (!contactId) return 0
 
   try {
+    const supabase = createClientComponentClient()
     // Use count query which is more efficient than fetching all data
     const { count, error } = await supabase
       .from('interactions')
@@ -90,6 +91,7 @@ export async function getInteractionCounts(contactIds: string[]): Promise<Record
   if (!contactIds.length) return {}
 
   try {
+    const supabase = createClientComponentClient()
     const { data, error } = await supabase
       .from('interactions')
       .select('contact_id')
@@ -117,33 +119,29 @@ export async function getInteractionCounts(contactIds: string[]): Promise<Record
   }
 }
 
-// Replace your createInteraction function in interactions.ts with this debug version
-
-// Add this at the very start of your createInteraction function
+// Fixed createInteraction function with proper supabase client initialization
 export async function createInteraction(
   interactionData: Omit<Interaction, 'id' | 'created_at' | 'updated_at'>
 ): Promise<Interaction | null> {
-  console.log('=== ENVIRONMENT DEBUG ===')
+  console.log('=== CREATE INTERACTION DEBUG ===')
   console.log('NODE_ENV:', process.env.NODE_ENV)
   console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 50) + '...')
   console.log('Supabase Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
   console.log('Function called with data:', JSON.stringify(interactionData, null, 2))
-  console.log('Supabase client exists:', !!supabase)
-  console.log('Supabase client URL:', (supabase as any).supabaseUrl?.substring(0, 50) + '...')
   
   try {
-    // Rest of your existing function...
-    console.log('=== CREATE INTERACTION DEBUG ===')
+    // Initialize supabase client properly
+    const supabase = createClientComponentClient()
+    console.log('Supabase client initialized successfully')
     
     // Check current user
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     console.log('Current user:', user?.id, user?.email)
     if (userError) console.error('User error:', userError)
     
     if (!user) {
-      console.error('No authenticated user')
-      return null
+      console.error('Auth session missing!')
+      throw new Error('Auth session missing!')
     }
 
     // Check if the contact belongs to this user
@@ -227,6 +225,7 @@ export async function updateInteraction(
 
     console.log('Updating interaction:', id, interactionData)
 
+    const supabase = createClientComponentClient()
     const { data, error } = await supabase
       .from('interactions')
       .update({ 
@@ -261,6 +260,7 @@ export async function deleteInteraction(id: string): Promise<boolean> {
       return false
     }
 
+    const supabase = createClientComponentClient()
     // First get the contact_id for cache clearing
     const { data: interaction } = await supabase
       .from('interactions')
@@ -387,3 +387,4 @@ export async function getInteractionStats(contactId: string): Promise<{
     return { total: 0, byType: {} }
   }
 }
+

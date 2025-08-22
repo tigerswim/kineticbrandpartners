@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Briefcase, Building, MapPin, DollarSign, FileText, Target, ClipboardList, ExternalLink, X } from "lucide-react";
 import { createJob, updateJob, Job } from "@/lib/jobs";
-import { supabase } from "@/lib/supabase";
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'; // Changed this import
 
 const BLANK = {
   company: "",
@@ -133,18 +133,37 @@ export default function JobForm({ job: editingJob, onJobAdded, onCancel }: JobFo
     setLoading(true);
     setError(null);
 
+    console.log('=== JobForm handleSubmit started ===');
+    console.log('Editing job:', editingJob?.id);
+    console.log('Form data:', form);
+
     try {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
+      // Use the same Supabase client as jobs.ts
+      const supabase = createClientComponentClient();
+      
+      console.log('Getting user authentication...');
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (userError) {
+        console.error('User authentication error:', userError);
+        throw new Error(`Authentication failed: ${userError.message}`);
+      }
 
       if (!user) {
-        throw new Error('No authenticated user');
+        console.error('No authenticated user found');
+        // Try getting session as backup
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        console.log('Session check:', { session: !!session, user: !!session?.user, error: sessionError });
+        
+        if (!session?.user) {
+          throw new Error('No authenticated user');
+        }
       }
+
+      console.log('User authenticated successfully:', user?.id || 'from session');
 
       const payload = {
         ...form,
-        user_id: user.id,
         salary: form.salary || null,
         location: form.location || null,
         job_url: form.job_url || null,
@@ -152,11 +171,15 @@ export default function JobForm({ job: editingJob, onJobAdded, onCancel }: JobFo
         notes: form.notes || null,
       };
 
+      console.log('Calling job operation with payload:', payload);
+
       let result: Job | null = null;
 
       if (editingJob) {
+        console.log('Updating existing job:', editingJob.id);
         result = await updateJob(editingJob.id, payload);
       } else {
+        console.log('Creating new job');
         result = await createJob(payload);
       }
 
@@ -164,11 +187,12 @@ export default function JobForm({ job: editingJob, onJobAdded, onCancel }: JobFo
         throw new Error(editingJob ? 'Failed to update job' : 'Failed to create job');
       }
 
-      console.log('Job saved successfully:', result);
+      console.log('Job operation successful:', result);
       onJobAdded(result);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
-      console.error('Error saving job:', errorMessage);
+      console.error('Error in JobForm handleSubmit:', errorMessage);
+      console.error('Full error:', err);
       setError(errorMessage);
     } finally {
       setLoading(false);

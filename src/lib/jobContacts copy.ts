@@ -1,6 +1,6 @@
-// src/lib/jobContacts.ts - Fixed version with proper error handling
+// src/lib/jobContacts.ts - Enhanced with better error details
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from './supabase'
 
 export interface JobContact {
   id: string
@@ -25,14 +25,13 @@ export async function linkJobToContact(jobId: string, contactId: string): Promis
       throw new Error('Job ID and Contact ID are required')
     }
 
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError) {
       throw new Error(`Authentication error: ${userError.message}`)
     }
 
     if (!user) {
-      throw new Error('Auth session missing!')
+      throw new Error('No authenticated user found')
     }
 
     // Check if link already exists
@@ -80,14 +79,13 @@ export async function unlinkJobFromContact(jobId: string, contactId: string): Pr
       throw new Error('Job ID and Contact ID are required')
     }
 
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError) {
       throw new Error(`Authentication error: ${userError.message}`)
     }
 
     if (!user) {
-      throw new Error('Auth session missing!')
+      throw new Error('No authenticated user found')
     }
 
     const { error } = await supabase
@@ -119,14 +117,13 @@ export async function getJobContacts(jobId: string) {
       throw new Error('Job ID is required')
     }
 
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError) {
       throw new Error(`Authentication error: ${userError.message}`)
     }
 
     if (!user) {
-      throw new Error('Auth session missing!')
+      throw new Error('No authenticated user found')
     }
 
     const { data, error } = await supabase
@@ -166,14 +163,13 @@ export async function getContactJobs(contactId: string) {
       throw new Error('Contact ID is required')
     }
 
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError) {
       throw new Error(`Authentication error: ${userError.message}`)
     }
 
     if (!user) {
-      throw new Error('Auth session missing!')
+      throw new Error('No authenticated user found')
     }
 
     const { data, error } = await supabase
@@ -224,14 +220,13 @@ export async function getJobsForContacts(
       return {}
     }
 
-    const supabase = createClientComponentClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError) {
       throw new Error(`Authentication error: ${userError.message}`)
     }
 
     if (!user) {
-      throw new Error('Auth session missing!')
+      throw new Error('No authenticated user found')
     }
 
     // Fetch all links for the provided contacts in a single query
@@ -273,4 +268,3 @@ export async function getJobsForContacts(
     throw error // Re-throw to let calling function handle
   }
 }
-
