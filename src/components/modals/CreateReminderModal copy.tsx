@@ -2,14 +2,13 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { X, Calendar, Clock, User, Briefcase, Mail, MessageSquare, AlertCircle, Check, Search } from 'lucide-react'
+import { X, Calendar, Clock, User, Briefcase, Mail, MessageSquare, AlertCircle, Check } from 'lucide-react'
 import { Contact, Job } from '@/lib/supabase'
 import { 
   ReminderFormData, 
   COMMON_TIMEZONES, 
   REMINDER_VALIDATION,
-  CreateReminderRequest, 
-  Reminder,
+  CreateReminderRequest 
 } from '@/lib/types/reminders'
 
 interface CreateReminderModalProps {
@@ -20,8 +19,6 @@ interface CreateReminderModalProps {
   job?: Job | null
   contacts?: Contact[]
   jobs?: Job[]
-  editingReminder?: Reminder | null // Fixed prop name to match usage
-  isEditing?: boolean // Add this prop to indicate edit mode
 }
 
 export default function CreateReminderModal({
@@ -31,9 +28,7 @@ export default function CreateReminderModal({
   contact,
   job,
   contacts = [],
-  jobs = [],
-  editingReminder,
-  isEditing = false
+  jobs = []
 }: CreateReminderModalProps) {
   const [formData, setFormData] = useState<ReminderFormData>({
     type: 'contact',
@@ -49,51 +44,10 @@ export default function CreateReminderModal({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [showSuccess, setShowSuccess] = useState(false)
-  
-  // Fix: Define isEditing based on editingReminder prop
-  const isEditingMode = !!editingReminder || isEditing
-
-  // Search dropdown states
-  const [contactSearchTerm, setContactSearchTerm] = useState('')
-  const [jobSearchTerm, setJobSearchTerm] = useState('')
-  const [showContactDropdown, setShowContactDropdown] = useState(false)
-  const [showJobDropdown, setShowJobDropdown] = useState(false)
 
   // Initialize form data based on props
   useEffect(() => {
-    if (editingReminder) {
-      // Parse the scheduled_time to get date and time components
-      const scheduledDateTime = new Date(editingReminder.scheduled_time)
-      const dateStr = scheduledDateTime.toISOString().split('T')[0]
-      const timeStr = scheduledDateTime.toTimeString().slice(0, 5)
-
-      setFormData({
-        type: editingReminder.type || 'contact',
-        contact_id: editingReminder.contact_id || '',
-        job_id: editingReminder.job_id || '',
-        scheduled_date: dateStr,
-        scheduled_time: timeStr,
-        user_timezone: editingReminder.user_timezone || 'America/New_York',
-        email_subject: editingReminder.email_subject || '',
-        user_message: editingReminder.user_message || ''
-      })
-
-      // Set search terms for display
-      if (editingReminder.contact_id && contacts.length > 0) {
-        const reminderContact = contacts.find(c => c.id === editingReminder.contact_id)
-        if (reminderContact) {
-          setContactSearchTerm(reminderContact.name)
-        }
-      }
-
-      if (editingReminder.job_id && jobs.length > 0) {
-        const reminderJob = jobs.find(j => j.id === editingReminder.job_id)
-        if (reminderJob) {
-          setJobSearchTerm(`${reminderJob.job_title} at ${reminderJob.company}`)
-        }
-      }
-    } else if (contact) {
-      // Handle new reminder with contact
+    if (contact) {
       setFormData(prev => ({
         ...prev,
         type: 'contact',
@@ -102,9 +56,7 @@ export default function CreateReminderModal({
         email_subject: `Follow up with ${contact.name}${contact.company ? ` at ${contact.company}` : ''}`,
         user_message: `Hi ${contact.name},\n\nI wanted to follow up on our previous conversation. I'm very interested in ${contact.company ? `opportunities at ${contact.company}` : 'working together'} and would love to discuss next steps.\n\nThanks for your time!\n\nBest regards`
       }))
-      setContactSearchTerm(contact.name)
     } else if (job) {
-      // Handle new reminder with job
       setFormData(prev => ({
         ...prev,
         type: 'job',
@@ -113,110 +65,30 @@ export default function CreateReminderModal({
         email_subject: `Follow up on ${job.job_title} position at ${job.company}`,
         user_message: `Hi,\n\nI wanted to follow up on my application for the ${job.job_title} position at ${job.company}. I'm very excited about this opportunity and would appreciate any updates on the hiring process.\n\nThank you for your time and consideration.\n\nBest regards`
       }))
-      setJobSearchTerm(`${job.job_title} at ${job.company}`)
     }
-  }, [editingReminder, contact, job, contacts, jobs])
+  }, [contact, job])
 
-  // Reset form when modal closes
-  useEffect(() => {
-    if (!isOpen) {
-      setFormData({
-        type: 'contact',
-        contact_id: contact?.id || '',
-        job_id: job?.id || '',
-        scheduled_date: '',
-        scheduled_time: '',
-        user_timezone: 'America/New_York',
-        email_subject: '',
-        user_message: ''
-      })
-      setShowSuccess(false)
-      setErrors({})
-      setContactSearchTerm('')
-      setJobSearchTerm('')
-    }
-  }, [isOpen, contact?.id, job?.id])
-
-  // Set minimum date/time to 5 minutes from now (only for new reminders)
+  // Set minimum date/time to 5 minutes from now
   const minDateTime = useMemo(() => {
-    if (isEditingMode) {
-      // For editing, allow past dates (in case they want to reschedule to past for some reason)
-      return {
-        date: '',
-        time: ''
-      }
-    }
-    
     const now = new Date()
     const fiveMinutesFromNow = new Date(now.getTime() + REMINDER_VALIDATION.MIN_SCHEDULE_MINUTES * 60 * 1000)
     return {
       date: fiveMinutesFromNow.toISOString().split('T')[0],
       time: fiveMinutesFromNow.toTimeString().slice(0, 5)
     }
-  }, [isEditingMode]) // Fixed: Added closing brace and dependency array
+  }, [])
 
-  // Auto-detect user timezone (only for new reminders)
+  // Auto-detect user timezone
   useEffect(() => {
-    if (!isEditingMode) {
-      try {
-        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-        if (COMMON_TIMEZONES.find(tz => tz.value === userTimezone)) {
-          setFormData(prev => ({ ...prev, user_timezone: userTimezone }))
-        }
-      } catch (error) {
-        console.log('Could not detect timezone, using default')
+    try {
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      if (COMMON_TIMEZONES.find(tz => tz.value === userTimezone)) {
+        setFormData(prev => ({ ...prev, user_timezone: userTimezone }))
       }
+    } catch (error) {
+      console.log('Could not detect timezone, using default')
     }
-  }, [isEditingMode])
-
-  // Reuse the exact search logic from ContactList.tsx
-  const filteredContacts = useMemo(() => {
-    if (!contactSearchTerm.trim()) return contacts
-
-    const term = contactSearchTerm.toLowerCase()
-    return contacts.filter(contact => {
-      // Basic fields - same as ContactList
-      const basicMatch = contact.name.toLowerCase().includes(term) ||
-        (contact.company && contact.company.toLowerCase().includes(term)) ||
-        (contact.email && contact.email.toLowerCase().includes(term)) ||
-        (contact.job_title && contact.job_title.toLowerCase().includes(term)) ||
-        (contact.notes && contact.notes.toLowerCase().includes(term))
-
-      // Experience search - same as ContactList
-      const experienceMatch = contact.experience?.some(exp =>
-        exp.company.toLowerCase().includes(term) ||
-        exp.title.toLowerCase().includes(term) ||
-        (exp.description && exp.description.toLowerCase().includes(term))
-      )
-
-      // Education search - same as ContactList
-      const educationMatch = contact.education?.some(edu =>
-        edu.institution.toLowerCase().includes(term) ||
-        edu.degree_and_field.toLowerCase().includes(term) ||
-        (edu.notes && edu.notes.toLowerCase().includes(term))
-      )
-
-      // Mutual connections search - same as ContactList
-      const connectionMatch = contact.mutual_connections?.some(conn =>
-        conn.toLowerCase().includes(term)
-      )
-
-      return basicMatch || experienceMatch || educationMatch || connectionMatch
-    })
-  }, [contacts, contactSearchTerm])
-
-  // Reuse the exact search logic from JobList.tsx
-  const filteredJobs = useMemo(() => {
-    if (!jobSearchTerm.trim()) return jobs
-
-    const term = jobSearchTerm.toLowerCase()
-    return jobs.filter(job =>
-      job.company?.toLowerCase().includes(term) ||
-      job.job_title?.toLowerCase().includes(term) ||
-      job.notes?.toLowerCase().includes(term) ||
-      job.location?.toLowerCase().includes(term)
-    )
-  }, [jobs, jobSearchTerm])
+  }, [])
 
   // Handle form field changes
   const handleFieldChange = useCallback((field: keyof ReminderFormData, value: string) => {
@@ -259,7 +131,7 @@ export default function CreateReminderModal({
       const minTime = new Date(now.getTime() + REMINDER_VALIDATION.MIN_SCHEDULE_MINUTES * 60 * 1000)
       const maxTime = new Date(now.getTime() + REMINDER_VALIDATION.MAX_SCHEDULE_MONTHS * 30 * 24 * 60 * 60 * 1000)
 
-      if (!isEditingMode && scheduledDateTime < minTime) {
+      if (scheduledDateTime < minTime) {
         newErrors.scheduled_time = `Must be at least ${REMINDER_VALIDATION.MIN_SCHEDULE_MINUTES} minutes from now`
       }
 
@@ -290,42 +162,7 @@ export default function CreateReminderModal({
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }, [formData, isEditingMode])
-
-  // Handle modal close
-  const handleClose = useCallback(() => {
-    if (!isSubmitting) {
-      onClose()
-    }
-  }, [isSubmitting, onClose])
-
-  // ESC key handling
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isSubmitting) {
-        onClose()
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown)
-      return () => document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isOpen, isSubmitting, onClose])
-
-  // Click outside handlers to close dropdowns
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (!target.closest('.dropdown-container')) {
-        setShowContactDropdown(false)
-        setShowJobDropdown(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  }, [formData])
 
   // Handle form submission
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -357,15 +194,8 @@ export default function CreateReminderModal({
         requestData.job_id = formData.job_id
       }
 
-      // Use different endpoints for create vs update
-      const url = isEditingMode && editingReminder 
-        ? `/api/reminders/${editingReminder.id}` 
-        : '/api/reminders'
-      
-      const method = isEditingMode ? 'PUT' : 'POST'
-
-      const response = await fetch(url, {
-        method,
+      const response = await fetch('/api/reminders', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -375,7 +205,7 @@ export default function CreateReminderModal({
       const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || `Failed to ${isEditingMode ? 'update' : 'create'} reminder`)
+        throw new Error(result.error || 'Failed to create reminder')
       }
 
       // Show success state
@@ -384,30 +214,47 @@ export default function CreateReminderModal({
         setShowSuccess(false)
         onSuccess()
         onClose()
-        // Reset form only if not editing
-        if (!isEditingMode) {
-          setFormData({
-            type: 'contact',
-            contact_id: '',
-            job_id: '',
-            scheduled_date: '',
-            scheduled_time: '',
-            user_timezone: formData.user_timezone, // Keep timezone
-            email_subject: '',
-            user_message: ''
-          })
-          setContactSearchTerm('')
-          setJobSearchTerm('')
-        }
+        // Reset form
+        setFormData({
+          type: 'contact',
+          contact_id: '',
+          job_id: '',
+          scheduled_date: '',
+          scheduled_time: '',
+          user_timezone: formData.user_timezone, // Keep timezone
+          email_subject: '',
+          user_message: ''
+        })
       }, 1500)
 
     } catch (error) {
-      console.error(`Error ${isEditingMode ? 'updating' : 'creating'} reminder:`, error)
-      setErrors({ submit: error instanceof Error ? error.message : `Failed to ${isEditingMode ? 'update' : 'create'} reminder` })
+      console.error('Error creating reminder:', error)
+      setErrors({ submit: error instanceof Error ? error.message : 'Failed to create reminder' })
     } finally {
       setIsSubmitting(false)
     }
-  }, [formData, validateForm, onSuccess, onClose, isEditingMode, editingReminder])
+  }, [formData, validateForm, onSuccess, onClose])
+
+  // Handle modal close
+  const handleClose = useCallback(() => {
+    if (!isSubmitting) {
+      onClose()
+    }
+  }, [isSubmitting, onClose])
+
+  // ESC key handling
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isSubmitting) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, isSubmitting, onClose])
 
   if (!isOpen) return null
 
@@ -431,15 +278,12 @@ export default function CreateReminderModal({
               </div>
               <div>
                 <h2 className="text-xl font-bold">
-                  {showSuccess ? 
-                    `Reminder ${isEditingMode ? 'Updated' : 'Created'}!` : 
-                    `${isEditingMode ? 'Edit' : 'Schedule'} Email Reminder`
-                  }
+                  {showSuccess ? 'Reminder Created!' : 'Schedule Email Reminder'}
                 </h2>
                 <p className="text-purple-100 text-sm">
                   {showSuccess 
-                    ? `Your reminder has been ${isEditingMode ? 'updated' : 'scheduled'} successfully`
-                    : `${isEditingMode ? 'Update your reminder' : 'Get reminded to follow up at the perfect time'}`
+                    ? 'Your reminder has been scheduled successfully'
+                    : 'Get reminded to follow up at the perfect time'
                   }
                 </p>
               </div>
@@ -460,17 +304,13 @@ export default function CreateReminderModal({
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Reminder {isEditingMode ? 'Updated' : 'Scheduled'}!
-            </h3>
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">Reminder Scheduled!</h3>
             <p className="text-slate-600">
-              {isEditingMode 
-                ? 'Your reminder has been updated successfully.'
-                : "You'll receive an email reminder at the scheduled time with your message ready to copy and send."
-              }
+              You'll receive an email reminder at the scheduled time with your message ready to copy and send.
             </p>
           </div>
         ) : (
+          /* Form Content */
           <form onSubmit={handleSubmit} className="p-8 overflow-y-auto max-h-[calc(90vh-120px)] custom-scrollbar">
             <div className="space-y-6">
               {/* Error Alert */}
@@ -493,12 +333,12 @@ export default function CreateReminderModal({
                   <button
                     type="button"
                     onClick={() => handleTypeChange('contact')}
-                    disabled={!!contact || isEditingMode}
+                    disabled={!!contact}
                     className={`flex-1 p-4 rounded-lg border-2 transition-all duration-200 ${
                       formData.type === 'contact'
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300'
-                    } ${(contact || isEditingMode) ? 'opacity-75' : ''}`}
+                    } ${contact ? 'opacity-75' : ''}`}
                   >
                     <User className="w-5 h-5 mx-auto mb-2 text-slate-600" />
                     <div className="text-sm font-medium text-slate-800">Contact</div>
@@ -508,12 +348,12 @@ export default function CreateReminderModal({
                   <button
                     type="button"
                     onClick={() => handleTypeChange('job')}
-                    disabled={!!job || isEditingMode}
+                    disabled={!!job}
                     className={`flex-1 p-4 rounded-lg border-2 transition-all duration-200 ${
                       formData.type === 'job'
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300'
-                    } ${(job || isEditingMode) ? 'opacity-75' : ''}`}
+                    } ${job ? 'opacity-75' : ''}`}
                   >
                     <Briefcase className="w-5 h-5 mx-auto mb-2 text-slate-600" />
                     <div className="text-sm font-medium text-slate-800">Job Application</div>
@@ -522,138 +362,49 @@ export default function CreateReminderModal({
                 </div>
               </div>
 
-              {/* Contact Selection with Search */}
+              {/* Contact/Job Selection */}
               {formData.type === 'contact' && (
-                <div className="relative dropdown-container">
+                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Select Contact
                   </label>
-                  
-                  {/* Search Input */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      placeholder="Search contacts by name, company, email..."
-                      value={contactSearchTerm}
-                      onChange={(e) => setContactSearchTerm(e.target.value)}
-                      onFocus={() => setShowContactDropdown(true)}
-                      disabled={!!contact}
-                      className={`input pl-10 w-full ${errors.contact_id ? 'border-red-300' : ''}`}
-                    />
-                    {contactSearchTerm && !contact && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setContactSearchTerm('')
-                          handleFieldChange('contact_id', '')
-                        }}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Dropdown Results */}
-                  {showContactDropdown && !contact && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                      {filteredContacts.length === 0 ? (
-                        <div className="p-4 text-center text-slate-500 text-sm">
-                          {contactSearchTerm ? 'No matching contacts found' : 'No contacts available'}
-                        </div>
-                      ) : (
-                        filteredContacts.slice(0, 10).map(contact => (
-                          <button
-                            key={contact.id}
-                            type="button"
-                            onClick={() => {
-                              handleFieldChange('contact_id', contact.id)
-                              setContactSearchTerm(contact.name)
-                              setShowContactDropdown(false)
-                            }}
-                            className="w-full text-left px-4 py-3 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors"
-                          >
-                            <div className="font-medium text-slate-900">{contact.name}</div>
-                            {contact.company && (
-                              <div className="text-sm text-slate-600">
-                                {contact.company}{contact.job_title ? ` • ${contact.job_title}` : ''}
-                              </div>
-                            )}
-                          </button>
-                        ))
-                      )}
-                    </div>
-                  )}
-                  
+                  <select
+                    value={formData.contact_id}
+                    onChange={(e) => handleFieldChange('contact_id', e.target.value)}
+                    disabled={!!contact}
+                    className={`input w-full ${errors.contact_id ? 'border-red-300' : ''}`}
+                  >
+                    <option value="">Choose a contact...</option>
+                    {contacts.map(contact => (
+                      <option key={contact.id} value={contact.id}>
+                        {contact.name}{contact.company ? ` - ${contact.company}` : ''}
+                      </option>
+                    ))}
+                  </select>
                   {errors.contact_id && (
                     <p className="text-red-600 text-sm mt-1">{errors.contact_id}</p>
                   )}
                 </div>
               )}
 
-              {/* Job Selection with Search */}
               {formData.type === 'job' && (
-                <div className="relative dropdown-container">
+                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Select Job Application
                   </label>
-                  
-                  {/* Search Input */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      placeholder="Search jobs by company, title, or location..."
-                      value={jobSearchTerm}
-                      onChange={(e) => setJobSearchTerm(e.target.value)}
-                      onFocus={() => setShowJobDropdown(true)}
-                      disabled={!!job}
-                      className={`input pl-10 w-full ${errors.job_id ? 'border-red-300' : ''}`}
-                    />
-                    {jobSearchTerm && !job && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setJobSearchTerm('')
-                          handleFieldChange('job_id', '')
-                        }}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Dropdown Results */}
-                  {showJobDropdown && !job && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                      {filteredJobs.length === 0 ? (
-                        <div className="p-4 text-center text-slate-500 text-sm">
-                          {jobSearchTerm ? 'No matching jobs found' : 'No job applications available'}
-                        </div>
-                      ) : (
-                        filteredJobs.slice(0, 10).map(job => (
-                          <button
-                            key={job.id}
-                            type="button"
-                            onClick={() => {
-                              handleFieldChange('job_id', job.id)
-                              setJobSearchTerm(`${job.job_title} at ${job.company}`)
-                              setShowJobDropdown(false)
-                            }}
-                            className="w-full text-left px-4 py-3 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors"
-                          >
-                            <div className="font-medium text-slate-900">{job.job_title}</div>
-                            <div className="text-sm text-slate-600">
-                              {job.company}{job.location ? ` • ${job.location}` : ''}
-                            </div>
-                          </button>
-                        ))
-                      )}
-                    </div>
-                  )}
-                  
+                  <select
+                    value={formData.job_id}
+                    onChange={(e) => handleFieldChange('job_id', e.target.value)}
+                    disabled={!!job}
+                    className={`input w-full ${errors.job_id ? 'border-red-300' : ''}`}
+                  >
+                    <option value="">Choose a job application...</option>
+                    {jobs.map(job => (
+                      <option key={job.id} value={job.id}>
+                        {job.job_title} at {job.company}
+                      </option>
+                    ))}
+                  </select>
                   {errors.job_id && (
                     <p className="text-red-600 text-sm mt-1">{errors.job_id}</p>
                   )}
@@ -765,7 +516,7 @@ export default function CreateReminderModal({
                   </p>
                 </div>
               </div>
-            
+
               {/* Action Buttons */}
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <button
@@ -784,12 +535,12 @@ export default function CreateReminderModal({
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>{isEditingMode ? 'Updating...' : 'Creating...'}</span>
+                      <span>Creating...</span>
                     </>
                   ) : (
                     <>
                       <Mail className="w-4 h-4" />
-                      <span>{isEditingMode ? 'Update Reminder' : 'Schedule Reminder'}</span>
+                      <span>Schedule Reminder</span>
                     </>
                   )}
                 </button>
@@ -797,7 +548,7 @@ export default function CreateReminderModal({
             </div>
           </form>
         )}
-      </div> 
-    </div> 
+      </div>
+    </div>
   )
 }

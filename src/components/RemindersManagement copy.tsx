@@ -1,3 +1,4 @@
+
 // src/components/RemindersManagement.tsx
 'use client'
 
@@ -14,15 +15,14 @@ import {
   getReminderStatusText,
   formatReminderDate,
   isReminderOverdue,
-  getTimeUntilReminder,
-  Reminder
+  getTimeUntilReminder
 } from '@/lib/types/reminders'
 import CreateReminderModal from './modals/CreateReminderModal'
-import ReminderDetailsModal from '@/components/ReminderDetailsModal'
 import { Contact, Job } from '@/lib/supabase'
 import { getContacts } from '@/lib/contacts'
 import { fetchJobs } from '@/lib/jobs'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs' // Import createClientComponentClient
+import { ReminderDetailsModal } from './ReminderDetails' // Import ReminderDetailsModal from the new path
 
 interface RemindersState {
   reminders: ReminderWithContext[]
@@ -30,24 +30,6 @@ interface RemindersState {
   error: string | null
   total: number
   hasMore: boolean
-}
-
-// Helper function to convert ReminderWithContext to Reminder for editing
-const reminderToReminderWithType = (reminder: ReminderWithContext): Reminder => {
-  return {
-    id: reminder.id,
-    type: reminder.contact_id ? 'contact' : reminder.job_id ? 'job' : 'general',
-    contact_id: reminder.contact_id || undefined,
-    job_id: reminder.job_id || undefined,
-    scheduled_time: reminder.scheduled_time,
-    user_timezone: reminder.user_timezone,
-    email_subject: reminder.email_subject,
-    user_message: reminder.user_message,
-    status: reminder.status,
-    created_at: reminder.created_at,
-    sent_at: reminder.sent_at,
-    error_message: reminder.error_message
-  }
 }
 
 export default function RemindersManagement() {
@@ -73,8 +55,7 @@ export default function RemindersManagement() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [selectedReminder, setSelectedReminder] = useState<Reminder | ReminderWithContext | null>(null)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedReminder, setSelectedReminder] = useState<ReminderWithContext | null>(null)
   const [showDetails, setShowDetails] = useState(false)
 
   const [contacts, setContacts] = useState<Contact[]>([])
@@ -182,66 +163,32 @@ export default function RemindersManagement() {
   }, [user, authLoading])
 
   // -------------------------
-  // Fixed API request handling for Next.js App Router + Supabase
+  // Fixed API requests - use session-based auth
   // -------------------------
   const makeRequest = useCallback(async (url: string, options: RequestInit = {}) => {
-    console.log('Making request to:', url, 'with options:', options)
+    console.log('Making request to:', url)
     
-    try {
-      // For Next.js App Router with Supabase, don't manually handle auth headers
-      // The cookies will be automatically sent and handled by the route handler
-      const response = await fetch(url, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
-        credentials: 'include', // This ensures cookies are sent
-      })
+    // No need to manually get session and add Authorization header here
+    // The browser will automatically send the cookies for the domain
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      credentials: 'include', // Ensure cookies are sent with the request
+    })
 
-      console.log('Response status:', response.status, 'Content-Type:', response.headers.get('content-type'))
-
-      // Check if response is HTML (error page) instead of JSON
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('text/html')) {
-        console.error('Received HTML response instead of JSON:', response.status, response.statusText)
-        
-        // Log the HTML response for debugging
-        const htmlText = await response.text()
-        console.error('HTML response body:', htmlText.substring(0, 500))
-        
-        if (response.status === 401) {
-          throw new Error('Authentication expired. Please sign in again.')
-        } else if (response.status === 404) {
-          throw new Error('API endpoint not found. Please check your deployment.')
-        } else {
-          throw new Error(`Server returned an error page (${response.status}). Please try again.`)
-        }
-      }
-
-      if (!response.ok) {
-        let errorMessage = `Request failed with status ${response.status}`
-        try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorData.message || errorMessage
-        } catch (e) {
-          console.warn('Could not parse error response as JSON')
-          // If we can't parse the error response, it might be HTML
-          const textResponse = await response.text()
-          console.error('Non-JSON error response:', textResponse.substring(0, 200))
-        }
-        throw new Error(errorMessage)
-      }
-
-      return response
-    } catch (error) {
-      console.error('Request failed:', error)
-      throw error
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || `Request failed with status ${response.status}`)
     }
-  }, [])
+
+    return response
+  }, []) // Removed supabase from dependency array as it's not directly used here
 
   // -------------------------
-  // Load reminders with better error handling
+  // Load reminders
   // -------------------------
   const loadReminders = useCallback(async (options: ReminderSearchOptions = {}) => {
     if (!user) {
@@ -284,7 +231,7 @@ export default function RemindersManagement() {
     }
   }, [user, makeRequest])
 
-  // Load statistics with better error handling
+  // Load statistics
   const loadStats = useCallback(async () => {
     if (!user) return
     
@@ -329,10 +276,10 @@ export default function RemindersManagement() {
     setSearchTerm('')
   }, [])
 
-  // Handle reminder actions with better error handling
+  // Handle reminder actions
   const handleEditReminder = useCallback((reminder: ReminderWithContext) => {
-    setSelectedReminder(reminderToReminderWithType(reminder))
-    setIsEditModalOpen(true)
+    setSelectedReminder(reminder)
+    setShowCreateModal(true)
   }, [])
 
   const handleDeleteReminder = useCallback(async (reminderId: string) => {
@@ -341,25 +288,18 @@ export default function RemindersManagement() {
     }
 
     try {
-      console.log('Deleting reminder:', reminderId)
       const response = await makeRequest(`/api/reminders/${reminderId}`, {
         method: 'DELETE',
       })
 
-      console.log('Delete response status:', response.status)
-
       // Refresh data
-      await Promise.all([
-        loadReminders({
-          searchTerm: searchTerm || undefined,
-          status: statusFilter,
-          sortBy,
-          sortOrder,
-        }),
-        loadStats()
-      ])
-
-      console.log('Reminder deleted successfully')
+      loadReminders({
+        searchTerm: searchTerm || undefined,
+        status: statusFilter,
+        sortBy,
+        sortOrder,
+      })
+      loadStats()
     } catch (error) {
       console.error('Error canceling reminder:', error)
       alert(error instanceof Error ? error.message : 'Failed to cancel reminder')
@@ -374,22 +314,18 @@ export default function RemindersManagement() {
   // Handle modal close
   const handleModalClose = useCallback(() => {
     setShowCreateModal(false)
-    setIsEditModalOpen(false)
     setSelectedReminder(null)
   }, [])
 
-  const handleModalSuccess = useCallback(async () => {
-    console.log('Modal success - refreshing data')
+  const handleModalSuccess = useCallback(() => {
     // Refresh data after creating/editing reminder
-    await Promise.all([
-      loadReminders({
-        searchTerm: searchTerm || undefined,
-        status: statusFilter,
-        sortBy,
-        sortOrder
-      }),
-      loadStats()
-    ])
+    loadReminders({
+      searchTerm: searchTerm || undefined,
+      status: statusFilter,
+      sortBy,
+      sortOrder
+    })
+    loadStats()
   }, [searchTerm, statusFilter, sortBy, sortOrder, loadReminders, loadStats])
 
   // Filter reminders for display
@@ -401,7 +337,7 @@ export default function RemindersManagement() {
   const statusCounts = useMemo(() => {
     if (!state.reminders.length) return { all: 0 }
     
-    const counts: Record<string, number> = { all: state.reminders.length }
+    const counts = { all: state.reminders.length }
     state.reminders.forEach(reminder => {
       counts[reminder.status] = (counts[reminder.status] || 0) + 1
     })
@@ -536,7 +472,7 @@ export default function RemindersManagement() {
             .map(status => (
               <button
                 key={status.key}
-                onClick={() => setStatusFilter(status.key as any)}
+                onClick={() => setStatusFilter(status.key)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                   statusFilter === status.key
                     ? 'bg-purple-600 text-white'
@@ -730,9 +666,9 @@ export default function RemindersManagement() {
       </div>
 
       {/* Create/Edit Reminder Modal */}
-      {(showCreateModal || isEditModalOpen) && (
+      {showCreateModal && (
         <CreateReminderModal
-          isOpen={showCreateModal || isEditModalOpen}
+          isOpen={showCreateModal}
           onClose={handleModalClose}
           onSuccess={handleModalSuccess}
           editingReminder={selectedReminder}
@@ -751,3 +687,5 @@ export default function RemindersManagement() {
     </div>
   )
 }
+
+

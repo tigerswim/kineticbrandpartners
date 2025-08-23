@@ -17,6 +17,11 @@ export interface EmailReminder {
   error_message?: string | null
 }
 
+// Alias for backward compatibility with the modal component
+export interface Reminder extends EmailReminder {
+  type: 'contact' | 'job' | 'general'
+}
+
 // Extended reminder interface with related data for display
 export interface ReminderWithContext extends EmailReminder {
   contact_name?: string | null
@@ -158,6 +163,20 @@ export const REMINDER_VALIDATION = {
   MIN_SCHEDULE_MINUTES: 5, // Minimum 5 minutes from now
   MAX_SCHEDULE_MONTHS: 12, // Maximum 12 months from now
 } as const
+
+// Helper functions to derive type from contact_id/job_id
+export function getReminderType(reminder: EmailReminder): 'contact' | 'job' | 'general' {
+  if (reminder.contact_id) return 'contact'
+  if (reminder.job_id) return 'job'
+  return 'general'
+}
+
+export function reminderToReminderWithType(reminder: EmailReminder): Reminder {
+  return {
+    ...reminder,
+    type: getReminderType(reminder)
+  }
+}
 
 // Helper type guards
 export function isContactReminder(reminder: EmailReminder): reminder is EmailReminder & { contact_id: string } {
