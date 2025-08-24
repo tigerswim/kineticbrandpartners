@@ -2,7 +2,7 @@
 
 import type { Metadata } from 'next';
 import { Inter, Merriweather } from 'next/font/google';
-import './globals.css';
+import '../styles/globals.css';
 
 // Configure fonts properly using Next.js font optimization
 const inter = Inter({

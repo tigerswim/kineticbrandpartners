@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import '../styles/globals.css'; // Import your external CSS
 
 const PersonalSite = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -42,7 +43,7 @@ const PersonalSite = () => {
     return () => {
       observer.disconnect();
     };
-  }, []); // No dependencies needed since refs are stable
+  }, []);
 
   const navigationItems = [
     { id: 'home', label: 'Home' },
@@ -111,10 +112,12 @@ const PersonalSite = () => {
       className="hero"
     >
       <div className="container">
-        <h1>Strategic Marketing Consulting That Drives Measurable Growth</h1>
+        <h1>Transform Your Marketing From Tactical to Strategic Advantage</h1>
         <p className="subhead">
-          We help ambitious B2B companies accelerate revenue growth through data-driven 
-          marketing strategies, proven methodologies, and hands-on implementation support.
+          I help established companies ($50M-$750M) break through growth plateaus by transforming 
+          their marketing organizations from reactive tactics to strategic growth engines. With 15+ years 
+          of brand management, including P&L ownership and award-winning campaign experience, I bring both the art and science needed 
+          to scale your business.
         </p>
         
         <div className="cta-group">
@@ -126,7 +129,7 @@ const PersonalSite = () => {
               scrollToSection('contact');
             }}
           >
-            Schedule Strategy Session
+            Get Your Marketing Assessment
           </a>
           <a 
             href="#services" 
@@ -142,20 +145,16 @@ const PersonalSite = () => {
         
         <div className="metrics">
           <div className="metric">
-            <strong>150%</strong>
-            Average ROI Increase
+            <strong>4B+</strong>
+            Campaign Impressions
           </div>
           <div className="metric">
-            <strong>50+</strong>
-            Companies Scaled
+            <strong>25+</strong>
+            Team Members Led
           </div>
           <div className="metric">
-            <strong>$10M+</strong>
-            Revenue Generated
-          </div>
-          <div className="metric">
-            <strong>15</strong>
-            Years Experience
+            <strong>15+</strong>
+            Years P&L Experience
           </div>
         </div>
       </div>
@@ -171,50 +170,65 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>Core Services</h2>
-          <p>Comprehensive marketing solutions designed to accelerate your growth</p>
+          <h2>Strategic Marketing Services</h2>
+          <p>Comprehensive solutions to transform your marketing organization and accelerate growth</p>
         </div>
         
         <div className="values">
           <article>
-            <h3>Growth Strategy &amp; Planning</h3>
+            <h3>Brand Transformation &amp; Positioning</h3>
             <p>
-              Comprehensive market analysis, competitive positioning, and strategic roadmap 
-              development to unlock sustainable growth opportunities.
+              Modernize your brand to break through commodity competition and command premium positioning. 
+              From comprehensive brand audits to complete visual and messaging transformations that drive 
+              business results.
             </p>
             <ul className="pillars">
-              <li>Market opportunity assessment</li>
-              <li>Competitive analysis</li>
-              <li>Growth strategy development</li>
-              <li>Performance frameworks</li>
+              <li>Brand architecture development</li>
+              <li>Competitive positioning strategy</li>
+              <li>Message framework creation</li>
+              <li>Visual identity transformation</li>
             </ul>
           </article>
           
-          <article style={{ borderLeftColor: 'var(--growth-green)' }}>
-            <h3>Digital Marketing &amp; Lead Generation</h3>
+          <article style={{ borderLeftColor: 'var(--accent-green)' }}>
+            <h3>Marketing Organization Development</h3>
             <p>
-              Data-driven digital marketing campaigns that generate qualified leads 
-              and nurture prospects through your sales funnel.
+              Build marketing capabilities that scale with your business. Transform from ad-hoc campaigns 
+              to strategic, data-driven operations with clear processes, metrics, and team structures.
             </p>
             <ul className="pillars">
-              <li>Content marketing strategy</li>
-              <li>SEO &amp; paid advertising</li>
-              <li>Marketing automation</li>
-              <li>Lead nurturing systems</li>
+              <li>Marketing maturity assessment</li>
+              <li>Team structure optimization</li>
+              <li>Process &amp; workflow design</li>
+              <li>Performance measurement systems</li>
             </ul>
           </article>
           
           <article>
-            <h3>Brand Positioning &amp; Messaging</h3>
+            <h3>Digital Marketing Transformation</h3>
             <p>
-              Strategic brand development that differentiates your company and 
-              resonates with your target market.
+              Move beyond traditional approaches to modern, omnichannel marketing that meets customers 
+              where they are. Integrate digital capabilities while maintaining your brand's authentic voice.
             </p>
             <ul className="pillars">
-              <li>Brand strategy development</li>
-              <li>Message architecture</li>
-              <li>Content strategy</li>
-              <li>Brand guidelines</li>
+              <li>Digital strategy development</li>
+              <li>Marketing technology stack</li>
+              <li>Omnichannel campaign design</li>
+              <li>Performance optimization</li>
+            </ul>
+          </article>
+          
+          <article>
+            <h3>Revenue Growth Acceleration</h3>
+            <p>
+              Apply proven methodologies to break through growth plateaus. Combine strategic vision 
+              with tactical execution to deliver measurable revenue impact and sustainable growth.
+            </p>
+            <ul className="pillars">
+              <li>Growth strategy development</li>
+              <li>Market opportunity analysis</li>
+              <li>Go-to-market optimization</li>
+              <li>Revenue attribution modeling</li>
             </ul>
           </article>
         </div>
@@ -231,37 +245,38 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>About Kinetic Brand Partners</h2>
+          <h2>The Marketing Leader Your Business Needs</h2>
         </div>
         
         <div className="values">
           <article>
-            <h3>Our Mission</h3>
+            <h3>Holistic Business Perspective</h3>
             <p>
-              We partner with ambitious B2B companies to unlock their growth potential through 
-              strategic marketing initiatives that drive measurable results. Our approach combines 
-              deep industry expertise with proven methodologies.
+              Unlike traditional marketing consultants, I bring a complete business perspective to every 
+              challenge. With 15+ years of P&L ownership and cross-functional leadership experience, 
+              I understand how marketing drives business results, not just marketing metrics.
             </p>
           </article>
           
           <article>
-            <h3>Leadership Philosophy</h3>
+            <h3>Proven Versatility</h3>
             <p>
-              &quot;Great marketing isn&apos;t about clever campaigns—it&apos;s about understanding your 
-              customers so deeply that your message feels like it was written just for them.&quot;
+              I'm equally at home setting strategic direction and rolling up my sleeves for tactical 
+              execution. Whether you need marketing as the hub of growth or as a strategic support 
+              function, I adapt my approach to what your business needs most.
             </p>
             <p>
-              With 15+ years of experience scaling B2B marketing organizations, our founder has 
-              helped companies from startups to Fortune 500 enterprises achieve breakthrough growth.
+              <em>&quot;Great marketing isn't about choosing between creativity and analytics—it's about 
+              knowing when to lean into each and how to make them work together seamlessly.&quot;</em>
             </p>
           </article>
           
           <article>
-            <h3>Our Approach</h3>
+            <h3>Enterprise Experience, Entrepreneurial Agility</h3>
             <p>
-              Every engagement begins with understanding your unique challenges and goals. 
-              We then develop customized strategies that align with your business objectives 
-              and deliver sustainable growth.
+              I've scaled marketing teams from startup environments to Fortune 500 enterprises, managing 
+              budgets from thousands to millions. This unique combination allows me to bring enterprise-level 
+              strategic thinking with the agility and resourcefulness your growing business demands.
             </p>
           </article>
         </div>
@@ -278,36 +293,34 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>Professional Experience</h2>
+          <h2>Track Record of Transformational Results</h2>
         </div>
         
         <div className="values">
           <article>
-            <h3>Background</h3>
+            <h3>Leadership Background</h3>
             <ul className="timeline">
-              <li>Former VP Marketing at 3 high-growth SaaS companies</li>
-              <li>Led marketing teams scaling from $1M to $50M ARR</li>
-              <li>MBA from Northwestern Kellogg</li>
-              <li>Certified in HubSpot, Salesforce, and Google Analytics</li>
+              <li><strong>SVP Marketing, Central Garden & Pet:</strong> Led 25-person team managing $1.5B+ brand portfolio</li>
+              <li><strong>Brand Manager, Johnson & Johnson:</strong> P&L ownership of $80M+ product lines</li>
+              <li><strong>MBA, University of Virginia Darden:</strong> Top-tier strategic business foundation</li>
+              <li><strong>Clio Sports Awards:</strong> Silver & Bronze for breakthrough campaign creativity</li>
             </ul>
           </article>
           
           <article>
-            <h3>Case Study Highlight</h3>
-            <h4>300% Lead Generation Increase</h4>
-            <p><strong>Challenge:</strong> B2B software company struggling with lead quality.</p>
-            <p><strong>Solution:</strong> Implemented account-based marketing strategy.</p>
-            <p><strong>Results:</strong> 300% increase in qualified leads, $2.3M additional revenue.</p>
+            <h3>Transformation Case Study</h3>
+            <h4>Brand Revitalization: +98.8% EBIT Growth</h4>
+            <p><strong>Challenge:</strong> Established lawn care brand facing commoditization and declining margins.</p>
+            <p><strong>Strategy:</strong> Complete brand transformation including positioning, innovation pipeline, and omnichannel marketing.</p>
+            <p><strong>Results:</strong> 98.8% EBIT growth in first year, followed by additional 12% growth while expanding market share.</p>
           </article>
           
           <article>
-            <h3>Industry Recognition</h3>
-            <ul className="resume-list">
-              <li>Featured speaker at 15+ marketing conferences</li>
-              <li>Recognized as &quot;Marketing Leader of the Year&quot; by TechCrunch</li>
-              <li>Published author in Harvard Business Review</li>
-              <li>Advisory board member for 3 marketing tech startups</li>
-            </ul>
+            <h3>Campaign Excellence</h3>
+            <h4>#FlipTheTurf: 4B Impressions, Award-Winning Impact</h4>
+            <p><strong>Challenge:</strong> Break through in crowded sports marketing landscape.</p>
+            <p><strong>Innovation:</strong> Created authentic storytelling campaign connecting brand values with cultural moments.</p>
+            <p><strong>Results:</strong> 3.95B media impressions, 2 Clio Sports Awards, significant brand awareness lift.</p>
           </article>
         </div>
       </div>
@@ -323,27 +336,29 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>Ready to Accelerate Your Growth?</h2>
-          <p>Let&apos;s discuss how we can help you achieve your marketing goals</p>
+          <h2>Ready to Transform Your Marketing Strategy?</h2>
+          <p>Let's start with a comprehensive assessment of your marketing organization and growth opportunities</p>
         </div>
         
         <div className="values">
           <article style={{ textAlign: 'center' }}>
-            <h3>Schedule a Strategy Session</h3>
+            <h3>Comprehensive Marketing Assessment</h3>
             <p>
-              Book a complimentary 30-minute consultation to discuss your challenges 
-              and explore growth opportunities.
+              Get clarity on your marketing maturity, brand positioning, and growth opportunities. 
+              In our initial consultation, we'll evaluate your current marketing effectiveness and 
+              identify the highest-impact transformation opportunities.
             </p>
-            <a href="mailto:hello@kineticbrandpartners.com" className="btn btn-primary">
-              Get Started
+            <a href="mailto:letstalk@kineticbrandpartners.com" className="btn btn-primary">
+              Schedule Assessment
             </a>
           </article>
           
           <article style={{ textAlign: 'center' }}>
-            <h3>Contact Information</h3>
-            <p><strong>Email:</strong> hello@kineticbrandpartners.com</p>
-            <p><strong>Phone:</strong> (555) 123-4567</p>
-            <p><strong>LinkedIn:</strong> /company/kinetic-brand-partners</p>
+            <h3>Let's Connect</h3>
+            <p><strong>Email:</strong> letstalk@kineticbrandpartners.com</p>
+            <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: '#666' }}>
+              <strong>Based in Atlanta, GA</strong> | Working with clients nationwide
+            </p>
           </article>
         </div>
       </div>
@@ -353,120 +368,26 @@ const PersonalSite = () => {
   const Footer = () => (
     <footer className="site-footer">
       <div className="container">
-        <p>&copy; 2024 Kinetic Brand Partners. All rights reserved.</p>
+        <p>&copy; 2025 Kinetic Brand Partners, LLC. All rights reserved.</p>
         <p style={{ fontSize: '0.85rem', marginTop: '1rem' }}>
-          Strategic Marketing Consulting | B2B Growth Acceleration | Revenue Optimization
+          Strategic Marketing Leadership | Brand Transformation | Revenue Growth Acceleration
         </p>
       </div>
     </footer>
   );
 
   return (
-    <>
-      <div className="site-wrapper">
-        <Header />
-        <main>
-          <HeroSection />
-          <ServicesSection />
-          <AboutSection />
-          <ExperienceSection />
-          <ContactSection />
-        </main>
-        <Footer />
-      </div>
-      
-      <style jsx>{`
-        .site-wrapper {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-        }
-        
-        main {
-          flex: 1;
-        }
-        
-        .mobile-menu-toggle {
-          display: none;
-          background: none;
-          border: none;
-          font-size: 1.5rem;
-          color: var(--text-primary, #333);
-          cursor: pointer;
-          padding: 0.5rem;
-          border-radius: 4px;
-          transition: background-color 0.2s ease;
-        }
-        
-        .mobile-menu-toggle:hover {
-          background-color: rgba(0,0,0,0.05);
-        }
-        
-        @media (max-width: 768px) {
-          .mobile-menu-toggle {
-            display: block;
-          }
-          
-          .nav-links {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100vh;
-            background: var(--executive-navy, #1b365d);
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: left 0.3s ease;
-            z-index: 1000;
-          }
-          
-          .nav-links.active {
-            left: 0;
-          }
-          
-          .nav-links a {
-            color: white;
-            font-size: 1.25rem;
-            padding: 1rem;
-          }
-        }
-        
-        /* Smooth scroll behavior */
-        html {
-          scroll-behavior: smooth;
-        }
-        
-        /* Animation classes for scroll effects */
-        section[data-section] {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        /* Additional responsive improvements */
-        @media (max-width: 480px) {
-          .hero h1 {
-            font-size: 1.75rem;
-            line-height: 1.2;
-          }
-          
-          .subhead {
-            font-size: 1rem;
-          }
-          
-          .cta-group {
-            flex-direction: column;
-            align-items: center;
-          }
-          
-          .btn {
-            width: 100%;
-            max-width: 300px;
-          }
-        }
-      `}</style>
-    </>
+    <div className="site-wrapper">
+      <Header />
+      <main>
+        <HeroSection />
+        <ServicesSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
