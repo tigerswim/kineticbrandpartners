@@ -1,18 +1,17 @@
-// src/components/JobList.tsx - Added Reminder Button
+// src/components/JobList.tsx - Fixed Actions column display issue
 'use client'
 
 import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
 import { Job, Contact } from '@/lib/supabase'
 import { fetchJobsWithContacts, deleteJob, JobWithContacts, clearJobsCache } from '@/lib/jobs'
 import {
-  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText, ChevronUp, ArrowUpDown, Mail, Phone, Linkedin, ExternalLink, GraduationCap, Bell
+  Users, Plus, Search, Filter, Briefcase, MapPin, DollarSign, Edit, Trash2, X, User, MoreVertical, ChevronDown, ChevronRight, FileText, ChevronUp, ArrowUpDown, Mail, Phone, Linkedin, ExternalLink, GraduationCap
 } from 'lucide-react'
 import JobForm from './JobForm'
 import JobContactManager from './JobContactManager'
 import JobContactLinks from './JobContactLinks'
 import ContactForm from './ContactForm'
 import ContactJobLinks from './ContactJobLinks'
-import CreateReminderModal from './modals/CreateReminderModal'
 
 // Types
 interface JobListState {
@@ -379,15 +378,13 @@ const JobTableRow = memo(({
   onEdit, 
   onDelete, 
   onManageContacts, 
-  onContactClick,
-  onCreateReminder
+  onContactClick 
 }: {
   job: JobWithContacts
   onEdit: (job: Job) => void
   onDelete: (jobId: string) => void
   onManageContacts: (job: Job) => void
   onContactClick: (contact: Contact) => void
-  onCreateReminder: (job: Job) => void
 }) => {
   // Memoize callbacks to prevent child re-renders
   const handleEdit = useCallback(() => {
@@ -401,10 +398,6 @@ const JobTableRow = memo(({
   const handleManageContacts = useCallback(() => {
     onManageContacts(job)
   }, [job, onManageContacts])
-
-  const handleCreateReminder = useCallback(() => {
-    onCreateReminder(job)
-  }, [job, onCreateReminder])
 
   return (
     <tr className="hover:bg-slate-50/50">
@@ -432,15 +425,8 @@ const JobTableRow = memo(({
           onContactClick={onContactClick}
         />
       </td>
-      <td className="px-4 py-3 text-right w-40 sticky right-0 bg-white">
+      <td className="px-4 py-3 text-right w-32 sticky right-0 bg-white">
         <div className="flex items-center justify-end space-x-1">
-          <button
-            onClick={handleCreateReminder}
-            className="p-1 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded"
-            title="Create reminder"
-          >
-            <Bell className="w-4 h-4" />
-          </button>
           <button
             onClick={handleManageContacts}
             className="p-1 text-green-600 hover:text-green-800 hover:bg-green-50 rounded"
@@ -628,12 +614,6 @@ export default function JobList() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [showContactManager, setShowContactManager] = useState(false)
-  
-  // Reminder modal state
-  const [showReminderModal, setShowReminderModal] = useState(false)
-  const [reminderJob, setReminderJob] = useState<Job | null>(null)
-  const [contacts, setContacts] = useState<Contact[]>([])
-  const [jobs, setJobs] = useState<Job[]>([])
 
   // Sorting function
   const sortJobs = useCallback((jobs: JobWithContacts[], config: SortConfig): JobWithContacts[] => {
@@ -769,11 +749,6 @@ export default function JobList() {
     setSelectedContact(contact)
   }, [])
 
-  const handleCreateReminder = useCallback((job: Job) => {
-    setReminderJob(job)
-    setShowReminderModal(true)
-  }, [])
-
   const handleCloseContactManager = useCallback(() => {
     setShowContactManager(false)
     setSelectedJob(null)
@@ -809,17 +784,6 @@ export default function JobList() {
     setSelectedContact(null)
   }, [])
 
-  const handleReminderModalClose = useCallback(() => {
-    setShowReminderModal(false)
-    setReminderJob(null)
-  }, [])
-
-  const handleReminderModalSuccess = useCallback(() => {
-    setShowReminderModal(false)
-    setReminderJob(null)
-    // Could optionally show a success message or refresh data
-  }, [])
-
   // Simplified data loading function
   const loadJobs = useCallback(async () => {
     console.log('Loading jobs...')
@@ -835,19 +799,6 @@ export default function JobList() {
         loading: false,
         error: null
       }))
-
-      // Set jobs for reminder modal
-      setJobs(jobsWithContacts.map(j => ({
-        id: j.id,
-        job_title: j.job_title,
-        company: j.company,
-        status: j.status,
-        location: j.location,
-        salary: j.salary,
-        notes: j.notes,
-        created_at: j.created_at,
-        updated_at: j.updated_at
-      })))
     } catch (error) {
       console.error('Error loading jobs:', error)
       setState(prev => ({
@@ -870,23 +821,6 @@ export default function JobList() {
   useEffect(() => {
     loadJobs()
   }, [loadJobs])
-
-  // Load contacts for reminder modal (you might want to implement getContacts if not available)
-  useEffect(() => {
-    const loadContacts = async () => {
-      try {
-        // Import getContacts or implement similar function
-        // const contactsData = await getContacts()
-        // setContacts(contactsData)
-        setContacts([]) // Placeholder until you implement contact loading
-      } catch (error) {
-        console.error('Error loading contacts:', error)
-        setContacts([])
-      }
-    }
-
-    loadContacts()
-  }, [])
 
   // Memoized status counts - dynamic approach based on actual data
   const statusCounts = useMemo(() => {
@@ -955,16 +889,12 @@ export default function JobList() {
           setShowContactManager(false)
           setSelectedJob(null)
         }
-        if (showReminderModal) {
-          setShowReminderModal(false)
-          setReminderJob(null)
-        }
       }
     }
 
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [showJobForm, selectedContact, showContactManager, showReminderModal])
+  }, [showJobForm, selectedContact, showContactManager])
 
   // Loading state
   if (state.loading) {
@@ -1090,40 +1020,40 @@ export default function JobList() {
                     label="Job Title"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[23%] min-w-[120px]"
+                    className="w-[25%] min-w-[120px]"
                   />
                   <SortableHeader
                     field="company"
                     label="Company"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[18%] min-w-[100px]"
+                    className="w-[20%] min-w-[100px]"
                   />
                   <SortableHeader
                     field="status"
                     label="Status"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[16%] min-w-[80px] hidden sm:table-cell"
+                    className="w-[18%] min-w-[80px] hidden sm:table-cell"
                   />
                   <SortableHeader
                     field="location"
                     label="Location"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[12%] min-w-[80px] hidden md:table-cell"
+                    className="w-[14%] min-w-[80px] hidden md:table-cell"
                   />
                   <SortableHeader
                     field="salary"
                     label="Salary"
                     sortConfig={sortConfig}
                     onSort={handleSort}
-                    className="w-[10%] min-w-[80px] hidden lg:table-cell"
+                    className="w-[12%] min-w-[80px] hidden lg:table-cell"
                   />
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[14%] min-w-[120px] hidden xl:table-cell">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[16%] min-w-[120px] hidden xl:table-cell">
                     Contacts
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[17%] min-w-[140px] sticky right-0 bg-slate-50/50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%] min-w-[120px] sticky right-0 bg-slate-50/50">
                     Actions
                   </th>
                 </tr>
@@ -1137,7 +1067,6 @@ export default function JobList() {
                     onDelete={handleDeleteJob}
                     onManageContacts={handleManageContacts}
                     onContactClick={handleContactClick}
-                    onCreateReminder={handleCreateReminder}
                   />
                 ))}
               </tbody>
@@ -1168,19 +1097,6 @@ export default function JobList() {
           job={selectedJob}
           onJobAdded={handleJobFormSubmit}
           onCancel={handleCancelJobForm}
-        />
-      )}
-
-      {/* Reminder Modal */}
-      {showReminderModal && reminderJob && (
-        <CreateReminderModal
-          isOpen={showReminderModal}
-          onClose={handleReminderModalClose}
-          onSuccess={handleReminderModalSuccess}
-          editingReminder={null}
-          contacts={contacts}
-          jobs={jobs}
-          prefilledJob={reminderJob}
         />
       )}
     </div>

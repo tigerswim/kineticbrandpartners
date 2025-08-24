@@ -22,6 +22,8 @@ interface CreateReminderModalProps {
   jobs?: Job[]
   editingReminder?: Reminder | null // Fixed prop name to match usage
   isEditing?: boolean // Add this prop to indicate edit mode
+  prefilledContact?: Contact  // New optional prop
+  prefilledJob?: Job         // New optional prop
 }
 
 export default function CreateReminderModal({
@@ -33,7 +35,9 @@ export default function CreateReminderModal({
   contacts = [],
   jobs = [],
   editingReminder,
-  isEditing = false
+  isEditing = false,
+  prefilledContact,  // Add this
+  prefilledJob       // Add this
 }: CreateReminderModalProps) {
   const [formData, setFormData] = useState<ReminderFormData>({
     type: 'contact',
@@ -100,7 +104,7 @@ export default function CreateReminderModal({
         contact_id: contact.id,
         job_id: '',
         email_subject: `Follow up with ${contact.name}${contact.company ? ` at ${contact.company}` : ''}`,
-        user_message: `Hi ${contact.name},\n\nI wanted to follow up on our previous conversation. I'm very interested in ${contact.company ? `opportunities at ${contact.company}` : 'working together'} and would love to discuss next steps.\n\nThanks for your time!\n\nBest regards`
+        user_message: `Hi,\n\nBe sure to follow up and discuss next steps.\n\nBest regards,\n\nJob Tracker`
       }))
       setContactSearchTerm(contact.name)
     } else if (job) {
@@ -111,19 +115,41 @@ export default function CreateReminderModal({
         contact_id: '',
         job_id: job.id,
         email_subject: `Follow up on ${job.job_title} position at ${job.company}`,
-        user_message: `Hi,\n\nI wanted to follow up on my application for the ${job.job_title} position at ${job.company}. I'm very excited about this opportunity and would appreciate any updates on the hiring process.\n\nThank you for your time and consideration.\n\nBest regards`
+        user_message: `Hi,\n\nDon't forget to check in on this role!\n\nBest regards\n\n,Job Tracker `
       }))
       setJobSearchTerm(`${job.job_title} at ${job.company}`)
+    } else if (prefilledContact && !editingReminder) {
+      // Handle new reminder with prefilled contact
+      setFormData(prev => ({
+        ...prev,
+        type: 'contact',
+        contact_id: prefilledContact.id,
+        job_id: '',
+        email_subject: `Follow up with ${prefilledContact.name}${prefilledContact.company ? ` at ${prefilledContact.company}` : ''}`,
+        user_message: `Hi,\nDon't forget to check in with ${prefilledContact.name}!\n\nBest regards,\nJob Tracker`
+      }))
+      setContactSearchTerm(prefilledContact.name)
+    } else if (prefilledJob && !editingReminder) {
+      // Handle new reminder with prefilled job
+      setFormData(prev => ({
+        ...prev,
+        type: 'job',
+        contact_id: '',
+        job_id: prefilledJob.id,
+        email_subject: `Follow up on ${prefilledJob.job_title} position at ${prefilledJob.company}`,
+        user_message: `Hi,\nDon't forget to follow up on the ${prefilledJob.job_title} role at ${prefilledJob.company}.\n\nBest regards,\nJob Tracker`
+      }))
+      setJobSearchTerm(`${prefilledJob.job_title} at ${prefilledJob.company}`)
     }
-  }, [editingReminder, contact, job, contacts, jobs])
+  }, [editingReminder, contact, job, prefilledContact, prefilledJob, contacts, jobs])
 
   // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
       setFormData({
         type: 'contact',
-        contact_id: contact?.id || '',
-        job_id: job?.id || '',
+        contact_id: contact?.id || prefilledContact?.id || '',
+        job_id: job?.id || prefilledJob?.id || '',
         scheduled_date: '',
         scheduled_time: '',
         user_timezone: 'America/New_York',
@@ -135,7 +161,7 @@ export default function CreateReminderModal({
       setContactSearchTerm('')
       setJobSearchTerm('')
     }
-  }, [isOpen, contact?.id, job?.id])
+  }, [isOpen, contact?.id, job?.id, prefilledContact?.id, prefilledJob?.id])
 
   // Set minimum date/time to 5 minutes from now (only for new reminders)
   const minDateTime = useMemo(() => {
@@ -493,12 +519,12 @@ export default function CreateReminderModal({
                   <button
                     type="button"
                     onClick={() => handleTypeChange('contact')}
-                    disabled={!!contact || isEditingMode}
+                    disabled={!!contact || !!prefilledContact || isEditingMode}
                     className={`flex-1 p-4 rounded-lg border-2 transition-all duration-200 ${
                       formData.type === 'contact'
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300'
-                    } ${(contact || isEditingMode) ? 'opacity-75' : ''}`}
+                    } ${(contact || prefilledContact || isEditingMode) ? 'opacity-75' : ''}`}
                   >
                     <User className="w-5 h-5 mx-auto mb-2 text-slate-600" />
                     <div className="text-sm font-medium text-slate-800">Contact</div>
@@ -508,12 +534,12 @@ export default function CreateReminderModal({
                   <button
                     type="button"
                     onClick={() => handleTypeChange('job')}
-                    disabled={!!job || isEditingMode}
+                    disabled={!!job || !!prefilledJob || isEditingMode}
                     className={`flex-1 p-4 rounded-lg border-2 transition-all duration-200 ${
                       formData.type === 'job'
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300'
-                    } ${(job || isEditingMode) ? 'opacity-75' : ''}`}
+                    } ${(job || prefilledJob || isEditingMode) ? 'opacity-75' : ''}`}
                   >
                     <Briefcase className="w-5 h-5 mx-auto mb-2 text-slate-600" />
                     <div className="text-sm font-medium text-slate-800">Job Application</div>
@@ -538,10 +564,10 @@ export default function CreateReminderModal({
                       value={contactSearchTerm}
                       onChange={(e) => setContactSearchTerm(e.target.value)}
                       onFocus={() => setShowContactDropdown(true)}
-                      disabled={!!contact}
+                      disabled={!!contact || !!prefilledContact}
                       className={`input pl-10 w-full ${errors.contact_id ? 'border-red-300' : ''}`}
                     />
-                    {contactSearchTerm && !contact && (
+                    {contactSearchTerm && !contact && !prefilledContact && (
                       <button
                         type="button"
                         onClick={() => {
@@ -556,7 +582,7 @@ export default function CreateReminderModal({
                   </div>
 
                   {/* Dropdown Results */}
-                  {showContactDropdown && !contact && (
+                  {showContactDropdown && !contact && !prefilledContact && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
                       {filteredContacts.length === 0 ? (
                         <div className="p-4 text-center text-slate-500 text-sm">
@@ -608,10 +634,10 @@ export default function CreateReminderModal({
                       value={jobSearchTerm}
                       onChange={(e) => setJobSearchTerm(e.target.value)}
                       onFocus={() => setShowJobDropdown(true)}
-                      disabled={!!job}
+                      disabled={!!job || !!prefilledJob}
                       className={`input pl-10 w-full ${errors.job_id ? 'border-red-300' : ''}`}
                     />
-                    {jobSearchTerm && !job && (
+                    {jobSearchTerm && !job && !prefilledJob && (
                       <button
                         type="button"
                         onClick={() => {
@@ -626,7 +652,7 @@ export default function CreateReminderModal({
                   </div>
 
                   {/* Dropdown Results */}
-                  {showJobDropdown && !job && (
+                  {showJobDropdown && !job && !prefilledJob && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
                       {filteredJobs.length === 0 ? (
                         <div className="p-4 text-center text-slate-500 text-sm">

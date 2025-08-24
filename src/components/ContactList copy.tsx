@@ -1,4 +1,4 @@
-// src/components/ContactList.tsx - Performance Optimized Version with Reminder Button
+// src/components/ContactList.tsx - Performance Optimized Version
 'use client'
 
 import { useState, useEffect, useMemo, useCallback, memo } from 'react'
@@ -24,13 +24,11 @@ import {
   Network,
   ExternalLink,
   ChevronUp,
-  ChevronDown,
-  Bell
+  ChevronDown
 } from 'lucide-react'
 import ContactForm from './ContactForm'
 import ContactJobLinks from './ContactJobLinks'
 import ContactFilter from './ContactFilter'
-import CreateReminderModal from './modals/CreateReminderModal'
 
 // Lazy-loaded InteractionList to avoid loading it until needed
 import { lazy, Suspense } from 'react'
@@ -50,8 +48,7 @@ const ContactCard = memo(({
   onClick, 
   onEdit, 
   onDelete,
-  onMutualConnectionClick,
-  onCreateReminder
+  onMutualConnectionClick 
 }: {
   contact: Contact
   index: number
@@ -62,7 +59,6 @@ const ContactCard = memo(({
   onEdit: (contact: Contact) => void
   onDelete: (id: string) => void
   onMutualConnectionClick: (connectionName: string) => void
-  onCreateReminder: (contact: Contact) => void
 }) => {
   const formatExperience = useCallback((contact: Contact) => {
     if (!contact.experience || contact.experience.length === 0) return null
@@ -105,16 +101,6 @@ const ContactCard = memo(({
 
         {/* Action Buttons */}
         <div className="flex gap-1">
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onCreateReminder(contact)
-            }}
-            className="p-1 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded transition-all duration-200"
-            title="Create reminder"
-          >
-            <Bell className="w-3 h-3" />
-          </button>
           <button
             onClick={async (e) => {
               e.stopPropagation()
@@ -570,11 +556,6 @@ export default function ContactList() {
   const [contactIdToJobs, setContactIdToJobs] = useState<Record<string, any[]>>({})
   const [displayedContactsCount, setDisplayedContactsCount] = useState(CONTACTS_PER_PAGE)
 
-  // Reminder modal state
-  const [showReminderModal, setShowReminderModal] = useState(false)
-  const [reminderContact, setReminderContact] = useState<Contact | null>(null)
-  const [jobs, setJobs] = useState<any[]>([])
-
   // Debounced search term for performance
   const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY)
 
@@ -629,22 +610,6 @@ export default function ContactList() {
     const fullContact = await getContactById(contact.id)
     setEditingContact(fullContact || contact)
     setShowForm(true)
-  }, [])
-
-  const handleCreateReminder = useCallback((contact: Contact) => {
-    setReminderContact(contact)
-    setShowReminderModal(true)
-  }, [])
-
-  const handleReminderModalClose = useCallback(() => {
-    setShowReminderModal(false)
-    setReminderContact(null)
-  }, [])
-
-  const handleReminderModalSuccess = useCallback(() => {
-    setShowReminderModal(false)
-    setReminderContact(null)
-    // Could optionally show a success message
   }, [])
 
   // Create a map for quick contact lookup by name (memoized)
@@ -719,23 +684,6 @@ export default function ContactList() {
     setDisplayedContactsCount(CONTACTS_PER_PAGE)
   }, [debouncedSearchTerm])
 
-  // Load jobs for reminder modal
-  useEffect(() => {
-    const loadJobs = async () => {
-      try {
-        // Import fetchJobs or implement similar function
-        // const jobsData = await fetchJobs()
-        // setJobs(jobsData)
-        setJobs([]) // Placeholder until you implement job loading
-      } catch (error) {
-        console.error('Error loading jobs:', error)
-        setJobs([])
-      }
-    }
-
-    loadJobs()
-  }, [])
-
   if (loading) {
     return (
       <div className="space-y-4 animate-fade-in">
@@ -751,7 +699,6 @@ export default function ContactList() {
                   <div className="flex justify-between">
                     <div className="h-5 bg-slate-200 rounded w-32"></div>
                     <div className="flex space-x-1">
-                      <div className="h-4 bg-slate-200 rounded w-8"></div>
                       <div className="h-4 bg-slate-200 rounded w-8"></div>
                       <div className="h-4 bg-slate-200 rounded w-8"></div>
                     </div>
@@ -892,7 +839,6 @@ export default function ContactList() {
                     onEdit={handleEditContact}
                     onDelete={handleDelete}
                     onMutualConnectionClick={handleMutualConnectionClick}
-                    onCreateReminder={handleCreateReminder}
                   />
                 ))}
               </div>
@@ -967,19 +913,6 @@ export default function ContactList() {
             setModalContact(null)
             handleEditContact(contact)
           }}
-        />
-      )}
-
-      {/* Reminder Modal */}
-      {showReminderModal && reminderContact && (
-        <CreateReminderModal
-          isOpen={showReminderModal}
-          onClose={handleReminderModalClose}
-          onSuccess={handleReminderModalSuccess}
-          editingReminder={null}
-          contacts={contacts}
-          jobs={jobs}
-          prefilledContact={reminderContact}
         />
       )}
     </div>
