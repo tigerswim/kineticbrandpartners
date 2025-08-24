@@ -1,293 +1,479 @@
-"use client";
-import React, { useEffect, useState, useRef } from 'react';
-import './PersonalSite.css';
+import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
-// useHasScrolled hook to detect if the user has scrolled
-function useHasScrolled() {
-  const [hasScrolled, setHasScrolled] = useState(false);
+const PersonalSite = () => {
+  const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+
+  // Use useRef for intersection observer instead of useInView hook
+  const sectionRefs = {
+    home: useRef<HTMLElement>(null),
+    about: useRef<HTMLElement>(null),
+    services: useRef<HTMLElement>(null),
+    experience: useRef<HTMLElement>(null),
+    contact: useRef<HTMLElement>(null),
+  };
+
+  // Set up intersection observer for scroll animations
   useEffect(() => {
-    const onScroll = () => setHasScrolled(true);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  return hasScrolled;
-}
-
-// useInView hook to detect when an element is visible
-function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '0px') {
-  const [isIntersecting, setIntersecting] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const observer = new window.IntersectionObserver(
-      ([entry]) => setIntersecting(entry.isIntersecting),
-      { rootMargin }
-    );
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [ref, rootMargin]);
-  return isIntersecting;
-}
-
-// CountUp component for ticker animation
-const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefix?: string; trigger?: boolean }> = ({ end, duration = 2, suffix = '', prefix = '', trigger = false }) => {
-  const [count, setCount] = useState(end);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient || hasAnimated || !trigger) return;
-    let start = 0;
-    const increment = end / (duration * 60);
-    const animate = () => {
-      start += increment;
-      if (start < end) {
-        setCount(Number(start.toFixed(2)));
-        requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-        setHasAnimated(true);
-      }
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '-20px 0px',
     };
-    animate();
-    // eslint-disable-next-line
-  }, [end, duration, isClient, hasAnimated, trigger]);
 
-  // On the server, just render the final value (no animation)
-  return <span>{prefix}{count.toLocaleString(undefined, { maximumFractionDigits: 2 })}{suffix}</span>;
-};
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const sectionId = entry.target.getAttribute('data-section');
+        if (sectionId) {
+          setVisibleSections(prev => {
+            const newSet = new Set(prev);
+            if (entry.isIntersecting) {
+              newSet.add(sectionId);
+            } else {
+              newSet.delete(sectionId);
+            }
+            return newSet;
+          });
+        }
+      });
+    }, observerOptions);
 
-const PersonalSite: React.FC = () => {
-  const hasScrolled = useHasScrolled();
-  const countUpRefs = [useRef(null), useRef(null), useRef(null)];
-  const inViews = countUpRefs.map(ref => useInView(ref));
+    // Observe all sections
+    Object.entries(sectionRefs).forEach(([key, ref]) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
 
-  return (
-    <div className="personal-site-container">
-      <header className="personal-site-header">
-        <div className="profile-section">
-          <div className="profile-avatar">
-            <img src="/Professional%20headshot.png" alt="Dan Hoeller headshot" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const navigationItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'services', label: 'Services' },
+    { id: 'about', label: 'About' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'contact', label: 'Contact' }
+  ];
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setActiveSection(sectionId);
+    setMobileMenuOpen(false);
+  };
+
+  const Header = () => (
+    <header className="site-header">
+      <div className="container">
+        <nav className="nav-bar">
+          <a href="#home" className="logo" onClick={() => scrollToSection('home')}>
+            Kinetic Brand Partners
+          </a>
+          
+          <button 
+            className="mobile-menu-toggle"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
+          
+          <ul className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
+            {navigationItems.map(item => (
+              <li key={item.id}>
+                <a 
+                  href={`#${item.id}`}
+                  className={activeSection === item.id ? 'active' : ''}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.id);
+                  }}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+
+  const HeroSection = () => (
+    <section 
+      id="home" 
+      ref={sectionRefs.home}
+      data-section="home"
+      className="hero"
+    >
+      <div className="container">
+        <h1>Strategic Marketing Consulting That Drives Measurable Growth</h1>
+        <p className="subhead">
+          We help ambitious B2B companies accelerate revenue growth through data-driven 
+          marketing strategies, proven methodologies, and hands-on implementation support.
+        </p>
+        
+        <div className="cta-group">
+          <a 
+            href="#contact" 
+            className="btn btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('contact');
+            }}
+          >
+            Schedule Strategy Session
+          </a>
+          <a 
+            href="#services" 
+            className="btn btn-secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('services');
+            }}
+          >
+            View Services
+          </a>
+        </div>
+        
+        <div className="metrics">
+          <div className="metric">
+            <strong>150%</strong>
+            Average ROI Increase
           </div>
-          <div className="profile-info">
-            <h1>Dan Hoeller</h1>
-            <div className="intro-buttons profile-buttons">
-              <a href="https://www.linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" className="intro-btn linkedin-btn">
-                <img src="/LI-Logo.png" alt="LinkedIn" style={{ height: '1.0935em', verticalAlign: 'middle', display: 'inline-block' }} />
-              </a>
-            </div>
+          <div className="metric">
+            <strong>50+</strong>
+            Companies Scaled
+          </div>
+          <div className="metric">
+            <strong>$10M+</strong>
+            Revenue Generated
+          </div>
+          <div className="metric">
+            <strong>15</strong>
+            Years Experience
           </div>
         </div>
-      </header>
+      </div>
+    </section>
+  );
 
-      <main className="personal-site-content">
-        <section className="intro-section">
-          <p className="intro-text">
-            I believe the best marketing happens when strategy meets empathy, when data tells a story that actually matters, and when taking smart risks leads to moments that stick with people long after they've scrolled past.
-          </p>
-          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '1.5rem 0' }} />
-        </section>
+  const ServicesSection = () => (
+    <section 
+      id="services" 
+      ref={sectionRefs.services}
+      data-section="services"
+      style={{ padding: '4rem 0', background: '#f7f9fc' }}
+    >
+      <div className="container">
+        <div className="spotlight">
+          <h2>Core Services</h2>
+          <p>Comprehensive marketing solutions designed to accelerate your growth</p>
+        </div>
+        
+        <div className="values">
+          <article>
+            <h3>Growth Strategy &amp; Planning</h3>
+            <p>
+              Comprehensive market analysis, competitive positioning, and strategic roadmap 
+              development to unlock sustainable growth opportunities.
+            </p>
+            <ul className="pillars">
+              <li>Market opportunity assessment</li>
+              <li>Competitive analysis</li>
+              <li>Growth strategy development</li>
+              <li>Performance frameworks</li>
+            </ul>
+          </article>
+          
+          <article style={{ borderLeftColor: 'var(--growth-green)' }}>
+            <h3>Digital Marketing &amp; Lead Generation</h3>
+            <p>
+              Data-driven digital marketing campaigns that generate qualified leads 
+              and nurture prospects through your sales funnel.
+            </p>
+            <ul className="pillars">
+              <li>Content marketing strategy</li>
+              <li>SEO &amp; paid advertising</li>
+              <li>Marketing automation</li>
+              <li>Lead nurturing systems</li>
+            </ul>
+          </article>
+          
+          <article>
+            <h3>Brand Positioning &amp; Messaging</h3>
+            <p>
+              Strategic brand development that differentiates your company and 
+              resonates with your target market.
+            </p>
+            <ul className="pillars">
+              <li>Brand strategy development</li>
+              <li>Message architecture</li>
+              <li>Content strategy</li>
+              <li>Brand guidelines</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
 
-        <section className="content-grid">
-          <div className="content-item no-section-break">
-            <div className="content-details">
-              <span className="content-category">ACHIEVEMENTS</span>
-            </div>
-          </div>
+  const AboutSection = () => (
+    <section 
+      id="about" 
+      ref={sectionRefs.about}
+      data-section="about"
+      style={{ padding: '4rem 0' }}
+    >
+      <div className="container">
+        <div className="spotlight">
+          <h2>About Kinetic Brand Partners</h2>
+        </div>
+        
+        <div className="values">
+          <article>
+            <h3>Our Mission</h3>
+            <p>
+              We partner with ambitious B2B companies to unlock their growth potential through 
+              strategic marketing initiatives that drive measurable results. Our approach combines 
+              deep industry expertise with proven methodologies.
+            </p>
+          </article>
+          
+          <article>
+            <h3>Leadership Philosophy</h3>
+            <p>
+              &quot;Great marketing isn&apos;t about clever campaigns—it&apos;s about understanding your 
+              customers so deeply that your message feels like it was written just for them.&quot;
+            </p>
+            <p>
+              With 15+ years of experience scaling B2B marketing organizations, our founder has 
+              helped companies from startups to Fortune 500 enterprises achieve breakthrough growth.
+            </p>
+          </article>
+          
+          <article>
+            <h3>Our Approach</h3>
+            <p>
+              Every engagement begins with understanding your unique challenges and goals. 
+              We then develop customized strategies that align with your business objectives 
+              and deliver sustainable growth.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
 
-          <div className="content-item achievements-content-item">
-            <div className="shared-grid-container">
-              <div className="achievements-blocks achievements-blocks-grouped">
-                {/* Reach Block */}
-                <div className="achievements-group-block achievements-column-block">
-                  <div className="achievements-title">Reach</div>
-                  <div className="achievements-metric-area">
-                    <div className="achievements-block" ref={countUpRefs[0]} style={{ paddingBottom: '1.2em' }}>
-                      <div className="achievements-stack">
-                        <span className="achievements-emph"><CountUp end={3.95} suffix="B" trigger={hasScrolled && inViews[0]} /></span>
-                        <div className="achievements-desc">Media Impressions</div>
-                      </div>
-                      <div className="achievements-note" style={{visibility: 'hidden'}}>(4x the category)</div>
-                    </div>
-                  </div>
-                  <div className="achievements-block how-block-1" style={{ textIndent: '1.5em' }}>
-                    Partnered with Super Bowl MVP Von Miller to join our fight to #FlipTheTurf in a social media campaign that drove more than 30,000 petition signatures by sports fans.
-                  </div>
-                </div>
-                {/* Recognition Block */}
-                <div className="achievements-group-block achievements-column-block">
-                  <div className="achievements-title">Recognition</div>
-                  <div className="achievements-metric-area">
-                    <div className="achievements-block" ref={countUpRefs[1]} style={{ paddingBottom: '1.2em' }}>
-                      <div className="achievements-stack">
-                        <span className="achievements-emph"><CountUp end={10} suffix=" pts" prefix="+" trigger={hasScrolled && inViews[1]} /></span>
-                        <div className="achievements-desc">Brand Awareness</div>
-                      </div>
-                      <div className="achievements-note" style={{visibility: 'hidden'}}>(4x the category)</div>
-                    </div>
-                  </div>
-                  <div className="achievements-block how-block-1" style={{ textIndent: '1.5em' }}>
-                    Optimized the media plan with learnings from Marketing Mix Modeling and A/B testing, pivoted to digital-first messaging, and balanced Brand and Performance tactics.
-                  </div>
-                </div>
-                {/* Revenue Block */}
-                <div className="achievements-group-block achievements-column-block">
-                  <div className="achievements-title">Revenue</div>
-                  <div className="achievements-metric-area">
-                    <div className="achievements-block" ref={countUpRefs[2]} style={{ paddingBottom: '1.2em' }}>
-                      <div className="achievements-stack">
-                        <span className="achievements-emph"><CountUp end={8.2} suffix="%" prefix="+" trigger={hasScrolled && inViews[2]} /></span>
-                        <div className="achievements-desc">2024 Revenue Growth</div>
-                      </div>
-                      <div className="achievements-note">(4x the category)</div>
-                    </div>
-                  </div>
-                  <div className="achievements-block how-block-1" style={{ textIndent: '1.5em' }}>
-                    Significantly outpaced category growth through a blend of compelling storytelling to a high-value consumer target and new product launches into white space categories.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  const ExperienceSection = () => (
+    <section 
+      id="experience" 
+      ref={sectionRefs.experience}
+      data-section="experience"
+      style={{ padding: '4rem 0', background: '#f7f9fc' }}
+    >
+      <div className="container">
+        <div className="spotlight">
+          <h2>Professional Experience</h2>
+        </div>
+        
+        <div className="values">
+          <article>
+            <h3>Background</h3>
+            <ul className="timeline">
+              <li>Former VP Marketing at 3 high-growth SaaS companies</li>
+              <li>Led marketing teams scaling from $1M to $50M ARR</li>
+              <li>MBA from Northwestern Kellogg</li>
+              <li>Certified in HubSpot, Salesforce, and Google Analytics</li>
+            </ul>
+          </article>
+          
+          <article>
+            <h3>Case Study Highlight</h3>
+            <h4>300% Lead Generation Increase</h4>
+            <p><strong>Challenge:</strong> B2B software company struggling with lead quality.</p>
+            <p><strong>Solution:</strong> Implemented account-based marketing strategy.</p>
+            <p><strong>Results:</strong> 300% increase in qualified leads, $2.3M additional revenue.</p>
+          </article>
+          
+          <article>
+            <h3>Industry Recognition</h3>
+            <ul className="resume-list">
+              <li>Featured speaker at 15+ marketing conferences</li>
+              <li>Recognized as &quot;Marketing Leader of the Year&quot; by TechCrunch</li>
+              <li>Published author in Harvard Business Review</li>
+              <li>Advisory board member for 3 marketing tech startups</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
 
-          {/* After Achievements section */}
-          <div className="content-item no-section-break">
-            <div className="content-details">
-              <span className="content-category">CAREER SUMMARY</span>
-              <div className="shared-grid-container">
-                <div className="journey-grid-container">
-                  <div className="journey-grid">
-                    {/* Box 1 */}
-                    <div className="journey-box">
-                      <div>
-                        <div style={{ fontSize: '1.15em', marginBottom: '0.05em', color: '#444', fontWeight: 600 }}>Technology Consulting</div>
-                        <div style={{ color: '#888', fontSize: '0.98em', marginBottom: '0.5em' }}>1999-2004</div>
-                        <img src="/MANH logo.png" alt="Manhattan Associates logo" style={{ width: '188px', height: 'auto', display: 'block', margin: '0 auto', paddingTop: '0.75em' }} />
-                      </div>
-                    </div>
-                    {/* Box 2 (split into 2a/2b/2c internally) */}
-                    <div className="journey-box" style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', borderBottom: '1px solid #e0e0e0', padding: '0.5em 0', width: '100%' }}>
-                        <div style={{ marginTop: '0.7em', fontSize: '0.98em', color: '#444' }}>
-                          Built a strong base in customer service, supply chain logistics, and software design by leading large-scale software implementations for global clients and honing analytical problem-solving skills.
-                        </div>
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', height: '100%', width: '100%' }}>
-                        <div style={{ flex: 1, borderRight: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em', textAlign: 'center', width: '100%' }}>Key Results</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>[Add Key Results]</li>
-                          </ul>
-                        </div>
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em', textAlign: 'center', width: '100%' }}>Transferable Skills</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>[Add Transferable Skills]</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Box 3 */}
-                    <div className="journey-box">
-                      <div>
-                        <div style={{ fontSize: '1.15em', marginBottom: '0.05em', color: '#444', fontWeight: 600 }}>Marketing Foundation</div>
-                        <div style={{ color: '#888', fontSize: '0.98em', marginBottom: '0.5em' }}>2006-2013</div>
-                        <img src="/Johnson and Johnson logo2.png" alt="Johnson & Johnson logo" style={{ width: '188px', height: 'auto', display: 'block', margin: '0 auto', paddingTop: '0.75em' }} />
-                      </div>
-                    </div>
-                    {/* Box 4 */}
-                    <div className="journey-box" style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', borderBottom: '1px solid #e0e0e0', padding: '0.5em 0', width: '100%' }}>
-                        <div style={{ marginTop: '0.7em', fontSize: '0.98em', color: '#444' }}>
-                          Transitioned into classic CPG brand management, taking P&amp;L ownership, driving growth for iconic brands, and leading early digital transformation initiatives.
-                        </div>
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', height: '100%', width: '100%' }}>
-                        <div style={{ flex: 1, borderRight: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em', textAlign: 'center', width: '100%' }}>Key Results</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>[Add Key Results]</li>
-                          </ul>
-                        </div>
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em', textAlign: 'center', width: '100%' }}>Transferable Skills</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>P&amp;L Ownership / Management</li>
-                            <li>Brand Fundamentals and Frameworks</li>
-                            <li>Translating Insights into Action</li>
-                            <li>Large and Small Brand Management</li>
-                            <li>New Product Development &amp; Commercialization</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Box 5 */}
-                    <div className="journey-box">
-                      <div>
-                        <div style={{ fontSize: '1.15em', marginBottom: '0.05em', color: '#444', fontWeight: 600 }}>Marketing Leadership</div>
-                        <div style={{ color: '#888', fontSize: '0.98em', marginBottom: '0.5em' }}>2013-2024</div>
-                        <img src="/CENT logo.png" alt="Central Garden & Pet logo" style={{ width: '188px', height: 'auto', display: 'block', margin: '0 auto', paddingTop: '0.75em' }} />
-                      </div>
-                    </div>
-                    {/* Box 6 */}
-                    <div className="journey-box" style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', borderBottom: '1px solid #e0e0e0', padding: '0.5em 0', width: '100%' }}>
-                        <div style={{ marginTop: '0.7em', fontSize: '0.98em', color: '#444' }}>
-                          Executive leadership roles, serving as the de facto CMO for a $1.5B segment, leading a 25-person team, and driving significant digital transformation and brand growth.
-                        </div>
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', height: '100%', width: '100%' }}>
-                        <div style={{ flex: 1, borderRight: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em' }}>Key Results</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>2 Clio Sports Awards</li>
-                            <li>Revenue, EBIT, and Share Growth</li>
-                            <li>Drove 46% POS growth via MLB team partnerships</li>
-                            <li>Delivered nearly 4B impressions via #FlipTheTurf social media campaign</li>
-                          </ul>
-                        </div>
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '0.5em' }}>
-                          <div style={{ fontWeight: 600, fontSize: '0.85em', color: '#444', marginBottom: '0.2em' }}>Transferable Skills</div>
-                          <ul style={{ fontSize: '0.85em', color: '#444', textAlign: 'left', margin: 0, paddingLeft: '1.2em' }}>
-                            <li>Servant-Leadership, B2B2C, Regulated Products</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: 0 }} />
+  const ContactSection = () => (
+    <section 
+      id="contact" 
+      ref={sectionRefs.contact}
+      data-section="contact"
+      style={{ padding: '4rem 0' }}
+    >
+      <div className="container">
+        <div className="spotlight">
+          <h2>Ready to Accelerate Your Growth?</h2>
+          <p>Let&apos;s discuss how we can help you achieve your marketing goals</p>
+        </div>
+        
+        <div className="values">
+          <article style={{ textAlign: 'center' }}>
+            <h3>Schedule a Strategy Session</h3>
+            <p>
+              Book a complimentary 30-minute consultation to discuss your challenges 
+              and explore growth opportunities.
+            </p>
+            <a href="mailto:hello@kineticbrandpartners.com" className="btn btn-primary">
+              Get Started
+            </a>
+          </article>
+          
+          <article style={{ textAlign: 'center' }}>
+            <h3>Contact Information</h3>
+            <p><strong>Email:</strong> hello@kineticbrandpartners.com</p>
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>LinkedIn:</strong> /company/kinetic-brand-partners</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
 
-          <div className="content-item career-highlights-section">
-            <div className="content-details">
-              <span className="content-category">CAREER HIGHLIGHTS</span>
-              <ul style={{ marginTop: '1em', marginBottom: '1em', paddingLeft: '1.5em', fontSize: '1.05em', color: '#444' }}>
-                <li>Led a 25-person marketing team to deliver 46% POS growth and two Clio Sports Awards.</li>
-                <li>Drove digital transformation and brand repositioning for a $1.5B business segment.</li>
-                <li>Launched multiple new products and expanded into white space categories.</li>
-                <li>Built foundational skills in technology consulting and supply chain optimization.</li>
-                <li>Managed P&amp;L and drove growth for iconic consumer brands at Johnson &amp; Johnson.</li>
-              </ul>
-            </div>
-          </div>
+  const Footer = () => (
+    <footer className="site-footer">
+      <div className="container">
+        <p>&copy; 2024 Kinetic Brand Partners. All rights reserved.</p>
+        <p style={{ fontSize: '0.85rem', marginTop: '1rem' }}>
+          Strategic Marketing Consulting | B2B Growth Acceleration | Revenue Optimization
+        </p>
+      </div>
+    </footer>
+  );
 
-          <div className="content-item">
-            <div className="content-details">
-              <span className="content-category">PERSONAL</span>
-              <p className="content-description">
-                Memberships and Activities
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+  return (
+    <>
+      <div className="site-wrapper">
+        <Header />
+        <main>
+          <HeroSection />
+          <ServicesSection />
+          <AboutSection />
+          <ExperienceSection />
+          <ContactSection />
+        </main>
+        <Footer />
+      </div>
+      
+      <style jsx>{`
+        .site-wrapper {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+        
+        main {
+          flex: 1;
+        }
+        
+        .mobile-menu-toggle {
+          display: none;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          color: var(--text-primary, #333);
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 4px;
+          transition: background-color 0.2s ease;
+        }
+        
+        .mobile-menu-toggle:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
+        
+        @media (max-width: 768px) {
+          .mobile-menu-toggle {
+            display: block;
+          }
+          
+          .nav-links {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--executive-navy, #1b365d);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.3s ease;
+            z-index: 1000;
+          }
+          
+          .nav-links.active {
+            left: 0;
+          }
+          
+          .nav-links a {
+            color: white;
+            font-size: 1.25rem;
+            padding: 1rem;
+          }
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* Animation classes for scroll effects */
+        section[data-section] {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        /* Additional responsive improvements */
+        @media (max-width: 480px) {
+          .hero h1 {
+            font-size: 1.75rem;
+            line-height: 1.2;
+          }
+          
+          .subhead {
+            font-size: 1rem;
+          }
+          
+          .cta-group {
+            flex-direction: column;
+            align-items: center;
+          }
+          
+          .btn {
+            width: 100%;
+            max-width: 300px;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 

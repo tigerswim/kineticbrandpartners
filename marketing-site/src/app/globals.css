@@ -39,9 +39,9 @@
   --bg-accent: #F8FAFC;
   --bg-dark: var(--gray-900);
   
-  /* Typography System */
-  --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-secondary: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  /* Typography System - Use CSS variables from Next.js font optimization */
+  --font-primary: var(--font-inter, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-secondary: var(--font-merriweather, 'Merriweather', Georgia, 'Times New Roman', serif);
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   
   /* Font Weights */
