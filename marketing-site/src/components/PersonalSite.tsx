@@ -112,12 +112,9 @@ const PersonalSite = () => {
       className="hero"
     >
       <div className="container">
-        <h1>Transform Your Marketing From Tactical to Strategic Advantage</h1>
-        <p className="subhead">
-          I help established companies ($50M-$750M) break through growth plateaus by transforming 
-          their marketing organizations from reactive tactics to strategic growth engines. With 15+ years 
-          of brand management, including P&L ownership and award-winning campaign experience, I bring both the art and science needed 
-          to scale your business.
+        <h1>{"Transform Your Marketing From Tactical to Strategic Advantage"}</h1>
+        <p className="subhead">{
+          "I help established companies ($50M-$750M) break through growth plateaus by transforming their marketing organizations from reactive tactics to strategic growth engines. With 15+ years of brand management, including P&L ownership and award-winning campaign experience, I bring both the art and science needed to scale your business."}
         </p>
         
         <div className="cta-group">
@@ -129,7 +126,7 @@ const PersonalSite = () => {
               scrollToSection('contact');
             }}
           >
-            Get Your Marketing Assessment
+            {"Get Your Marketing Assessment"}
           </a>
           <a 
             href="#services" 
@@ -139,22 +136,22 @@ const PersonalSite = () => {
               scrollToSection('services');
             }}
           >
-            View Services
+            {"View Services"}
           </a>
         </div>
         
         <div className="metrics">
           <div className="metric">
-            <strong>4B+</strong>
-            Campaign Impressions
+            <strong>{"4B+"}</strong>
+            {"Campaign Impressions"}
           </div>
           <div className="metric">
-            <strong>25+</strong>
-            Team Members Led
+            <strong>{"25+"}</strong>
+            {"Team Members Led"}
           </div>
           <div className="metric">
-            <strong>15+</strong>
-            Years P&L Experience
+            <strong>{"15+"}</strong>
+            {"Years P&L Experience"}
           </div>
         </div>
       </div>
@@ -171,16 +168,14 @@ const PersonalSite = () => {
       <div className="container">
         <div className="spotlight">
           <h2>Strategic Marketing Services</h2>
-          <p>Comprehensive solutions to transform your marketing organization and accelerate growth</p>
+          <p>{"Comprehensive solutions to transform your marketing organization and accelerate growth"}</p>
         </div>
         
         <div className="values">
           <article>
             <h3>Brand Transformation &amp; Positioning</h3>
-            <p>
-              Modernize your brand to break through commodity competition and command premium positioning. 
-              From comprehensive brand audits to complete visual and messaging transformations that drive 
-              business results.
+            <p>{
+              "Modernize your brand to break through commodity competition and command premium positioning. From comprehensive brand audits to complete visual and messaging transformations that drive business results."}
             </p>
             <ul className="pillars">
               <li>Brand architecture development</li>
@@ -191,44 +186,41 @@ const PersonalSite = () => {
           </article>
           
           <article style={{ borderLeftColor: 'var(--accent-green)' }}>
-            <h3>Marketing Organization Development</h3>
-            <p>
-              Build marketing capabilities that scale with your business. Transform from ad-hoc campaigns 
-              to strategic, data-driven operations with clear processes, metrics, and team structures.
+            <h3>{"Marketing Organization Development"}</h3>
+            <p>{
+              "Build marketing capabilities that scale with your business. Transform from ad-hoc campaigns to strategic, data-driven operations with clear processes, metrics, and team structures."}
             </p>
             <ul className="pillars">
-              <li>Marketing maturity assessment</li>
-              <li>Team structure optimization</li>
-              <li>Process &amp; workflow design</li>
-              <li>Performance measurement systems</li>
+              <li>{"Marketing maturity assessment"}</li>
+              <li>{"Team structure optimization"}</li>
+              <li>{"Process &amp; workflow design"}</li>
+              <li>{"Performance measurement systems"}</li>
             </ul>
           </article>
           
           <article>
-            <h3>Digital Marketing Transformation</h3>
-            <p>
-              Move beyond traditional approaches to modern, omnichannel marketing that meets customers 
-              where they are. Integrate digital capabilities while maintaining your brand's authentic voice.
+            <h3>{"Digital Marketing Transformation"}</h3>
+            <p>{
+              "Move beyond traditional approaches to modern, omnichannel marketing that meets customers where they are. Integrate digital capabilities while maintaining your brand's authentic voice."}
             </p>
             <ul className="pillars">
-              <li>Digital strategy development</li>
-              <li>Marketing technology stack</li>
-              <li>Omnichannel campaign design</li>
-              <li>Performance optimization</li>
+              <li>{"Digital strategy development"}</li>
+              <li>{"Marketing technology stack"}</li>
+              <li>{"Omnichannel campaign design"}</li>
+              <li>{"Performance optimization"}</li>
             </ul>
           </article>
           
           <article>
-            <h3>Revenue Growth Acceleration</h3>
-            <p>
-              Apply proven methodologies to break through growth plateaus. Combine strategic vision 
-              with tactical execution to deliver measurable revenue impact and sustainable growth.
+            <h3>{"Revenue Growth Acceleration"}</h3>
+            <p>{
+              "Apply proven methodologies to break through growth plateaus. Combine strategic vision with tactical execution to deliver measurable revenue impact and sustainable growth."}
             </p>
             <ul className="pillars">
-              <li>Growth strategy development</li>
-              <li>Market opportunity analysis</li>
-              <li>Go-to-market optimization</li>
-              <li>Revenue attribution modeling</li>
+              <li>{"Growth strategy development"}</li>
+              <li>{"Market opportunity analysis"}</li>
+              <li>{"Go-to-market optimization"}</li>
+              <li>{"Revenue attribution modeling"}</li>
             </ul>
           </article>
         </div>
@@ -245,38 +237,31 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>The Marketing Leader Your Business Needs</h2>
+          <h2>{"The Marketing Leader Your Business Needs"}</h2>
         </div>
         
         <div className="values">
           <article>
-            <h3>Holistic Business Perspective</h3>
-            <p>
-              Unlike traditional marketing consultants, I bring a complete business perspective to every 
-              challenge. With 15+ years of P&L ownership and cross-functional leadership experience, 
-              I understand how marketing drives business results, not just marketing metrics.
+            <h3>{"Holistic Business Perspective"}</h3>
+            <p>{
+              "Unlike traditional marketing consultants, I bring a complete business perspective to every challenge. With 15+ years of P&L ownership and cross-functional leadership experience, I understand how marketing drives business results, not just marketing metrics."}
             </p>
           </article>
           
           <article>
             <h3>Proven Versatility</h3>
-            <p>
-              I'm equally at home setting strategic direction and rolling up my sleeves for tactical 
-              execution. Whether you need marketing as the hub of growth or as a strategic support 
-              function, I adapt my approach to what your business needs most.
+            <p>{
+              "I'm equally at home setting strategic direction and rolling up my sleeves for tactical execution. Whether you need marketing as the hub of growth or as a strategic support function, I adapt my approach to what your business needs most."}
             </p>
             <p>
-              <em>&quot;Great marketing isn't about choosing between creativity and analytics—it's about 
-              knowing when to lean into each and how to make them work together seamlessly.&quot;</em>
+              <em>{"Great marketing isn't about choosing between creativity and analytics — it's about knowing when to lean into each and how to make them work together seamlessly."}</em>
             </p>
           </article>
           
           <article>
-            <h3>Enterprise Experience, Entrepreneurial Agility</h3>
-            <p>
-              I've scaled marketing teams from startup environments to Fortune 500 enterprises, managing 
-              budgets from thousands to millions. This unique combination allows me to bring enterprise-level 
-              strategic thinking with the agility and resourcefulness your growing business demands.
+            <h3>{"Enterprise Experience, Entrepreneurial Agility"}</h3>
+            <p>{
+              "I've scaled marketing teams from startup environments to Fortune 500 enterprises, managing budgets from thousands to millions. This unique combination allows me to bring enterprise-level strategic thinking with the agility and resourcefulness your growing business demands."}
             </p>
           </article>
         </div>
@@ -336,28 +321,26 @@ const PersonalSite = () => {
     >
       <div className="container">
         <div className="spotlight">
-          <h2>Ready to Transform Your Marketing Strategy?</h2>
-          <p>Let's start with a comprehensive assessment of your marketing organization and growth opportunities</p>
+          <h2>{"Ready to Transform Your Marketing Strategy?"}</h2>
+          <p>{"Let's start with a comprehensive assessment of your marketing organization and growth opportunities"}</p>
         </div>
         
         <div className="values">
           <article style={{ textAlign: 'center' }}>
-            <h3>Comprehensive Marketing Assessment</h3>
-            <p>
-              Get clarity on your marketing maturity, brand positioning, and growth opportunities. 
-              In our initial consultation, we'll evaluate your current marketing effectiveness and 
-              identify the highest-impact transformation opportunities.
+            <h3>{"Comprehensive Marketing Assessment"}</h3>
+            <p>{
+              "Get clarity on your marketing maturity, brand positioning, and growth opportunities. In our initial consultation, we'll evaluate your current marketing effectiveness and identify the highest-impact transformation opportunities."}
             </p>
             <a href="mailto:letstalk@kineticbrandpartners.com" className="btn btn-primary">
-              Schedule Assessment
+              {"Schedule Assessment"}
             </a>
           </article>
           
           <article style={{ textAlign: 'center' }}>
-            <h3>Let's Connect</h3>
-            <p><strong>Email:</strong> letstalk@kineticbrandpartners.com</p>
+            <h3>{"Let's Connect"}</h3>
+            <p><strong>{"Email:"}</strong> {"letstalk@kineticbrandpartners.com"}</p>
             <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: '#666' }}>
-              <strong>Based in Atlanta, GA</strong> | Working with clients nationwide
+              <strong>{"Based in Atlanta, GA"}</strong> {"| Working with clients nationwide"}
             </p>
           </article>
         </div>
@@ -368,9 +351,9 @@ const PersonalSite = () => {
   const Footer = () => (
     <footer className="site-footer">
       <div className="container">
-        <p>&copy; 2025 Kinetic Brand Partners, LLC. All rights reserved.</p>
+        <p>&copy; {"2025 Kinetic Brand Partners, LLC. All rights reserved."}</p>
         <p style={{ fontSize: '0.85rem', marginTop: '1rem' }}>
-          Strategic Marketing Leadership | Brand Transformation | Revenue Growth Acceleration
+          {"Strategic Marketing Leadership | Brand Transformation | Revenue Growth Acceleration"}
         </p>
       </div>
     </footer>
