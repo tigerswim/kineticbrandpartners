@@ -22,7 +22,7 @@ export default function Contact() {
       </header>
       <main className="container">
         <h1>Let&apos;s Connect</h1>
-        <p>Email: <a href="mailto:danhoeller@gmail.com">danhoeller@gmail.com</a></p>
+        <p>Email: </p>
         <p>LinkedIn: <a href="https://www.linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer">linkedin.com/in/danhoeller</a></p>
         <p>Location: Atlanta, GA (open to relocation)</p>
 

@@ -44,6 +44,8 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/Kinetic Brand Partners logo Favicon clear.png" />
         <link rel="apple-touch-icon" href="/Kinetic Brand Partners logo Favicon clear.png" />
         <link rel="shortcut icon" href="/Kinetic Brand Partners logo Favicon clear.png" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
