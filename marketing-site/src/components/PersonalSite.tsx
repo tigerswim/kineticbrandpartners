@@ -1,19 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
+// src/components/PersonalSite.tsx
+
+'use client';
+
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 const PersonalSite = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
 
-  // Use useRef for intersection observer instead of useInView hook
-  const sectionRefs = {
-    home: useRef<HTMLElement>(null),
-    about: useRef<HTMLElement>(null),
-    services: useRef<HTMLElement>(null),
-    experience: useRef<HTMLElement>(null),
-    contact: useRef<HTMLElement>(null),
-  };
+  // Create stable refs using useRef for each section
+  const homeRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
+  const servicesRef = useRef<HTMLElement>(null);
+  const experienceRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
 
   // Set up intersection observer for scroll animations
   useEffect(() => {
@@ -25,22 +25,15 @@ const PersonalSite = () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const sectionId = entry.target.getAttribute('data-section');
-        if (sectionId) {
-          setVisibleSections(prev => {
-            const newSet = new Set(prev);
-            if (entry.isIntersecting) {
-              newSet.add(sectionId);
-            } else {
-              newSet.delete(sectionId);
-            }
-            return newSet;
-          });
+        if (sectionId && entry.isIntersecting) {
+          setActiveSection(sectionId);
         }
       });
     }, observerOptions);
 
     // Observe all sections
-    Object.entries(sectionRefs).forEach(([key, ref]) => {
+    const refs = [homeRef, aboutRef, servicesRef, experienceRef, contactRef];
+    refs.forEach((ref) => {
       if (ref.current) {
         observer.observe(ref.current);
       }
@@ -49,7 +42,7 @@ const PersonalSite = () => {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, []); // No dependencies needed since refs are stable
 
   const navigationItems = [
     { id: 'home', label: 'Home' },
@@ -59,18 +52,18 @@ const PersonalSite = () => {
     { id: 'contact', label: 'Contact' }
   ];
 
-  const toggleMobileMenu = () => {
+  const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(!mobileMenuOpen);
-  };
+  }, [mobileMenuOpen]);
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setActiveSection(sectionId);
     setMobileMenuOpen(false);
-  };
+  }, []);
 
   const Header = () => (
     <header className="site-header">
@@ -113,7 +106,7 @@ const PersonalSite = () => {
   const HeroSection = () => (
     <section 
       id="home" 
-      ref={sectionRefs.home}
+      ref={homeRef}
       data-section="home"
       className="hero"
     >
@@ -172,7 +165,7 @@ const PersonalSite = () => {
   const ServicesSection = () => (
     <section 
       id="services" 
-      ref={sectionRefs.services}
+      ref={servicesRef}
       data-section="services"
       style={{ padding: '4rem 0', background: '#f7f9fc' }}
     >
@@ -232,7 +225,7 @@ const PersonalSite = () => {
   const AboutSection = () => (
     <section 
       id="about" 
-      ref={sectionRefs.about}
+      ref={aboutRef}
       data-section="about"
       style={{ padding: '4rem 0' }}
     >
@@ -279,7 +272,7 @@ const PersonalSite = () => {
   const ExperienceSection = () => (
     <section 
       id="experience" 
-      ref={sectionRefs.experience}
+      ref={experienceRef}
       data-section="experience"
       style={{ padding: '4rem 0', background: '#f7f9fc' }}
     >
@@ -324,7 +317,7 @@ const PersonalSite = () => {
   const ContactSection = () => (
     <section 
       id="contact" 
-      ref={sectionRefs.contact}
+      ref={contactRef}
       data-section="contact"
       style={{ padding: '4rem 0' }}
     >
