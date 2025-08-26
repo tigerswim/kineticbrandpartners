@@ -1,7 +1,7 @@
 // src/components/ContactForm.tsx
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Contact, ExperienceEntry, EducationEntry } from '@/lib/supabase'
 import { createContact, updateContact } from '@/lib/contacts'
 import { 
@@ -28,6 +28,7 @@ interface ContactFormProps {
   contact?: Contact
   onSuccess: () => void
   onCancel: () => void
+  allContacts?: Contact
 }
 
 // Helper function to get month options
@@ -97,7 +98,7 @@ const combineDate = (month: string, year: string): string => {
   return ''
 }
 
-export default function ContactForm({ contact, onSuccess, onCancel }: ContactFormProps) {
+export default function ContactForm({ contact, onSuccess, onCancel, allContacts }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: contact?.name || '',
     email: contact?.email || '',
@@ -124,6 +125,10 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
   const [newConnectionName, setNewConnectionName] = useState('')
   const [loading, setLoading] = useState(false)
   const [jobLinksKey, setJobLinksKey] = useState(0)
+
+
+  const [connectionSuggestions, setConnectionSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   // Debug function to log current state
   const debugLog = (message: string, data?: any) => {
@@ -290,24 +295,81 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
     })
   }, [])
 
+  // Auto-suggestion functions
+  const updateConnectionSuggestions = useCallback((input: string) => {
+    if (!input.trim() || input.length < 2) {
+      setConnectionSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    const inputLower = input.toLowerCase().trim()
+    
+    // Filter out the current contact and already added connections
+    const currentContactName = contact?.name?.toLowerCase()
+    const existingConnections = mutualConnections.map(name => name.toLowerCase())
+    
+    const suggestions = allContacts
+      .map(c => c.name)
+      .filter(name => {
+        const nameLower = name.toLowerCase()
+        return nameLower.includes(inputLower) && 
+               nameLower !== currentContactName && 
+               !existingConnections.includes(nameLower)
+      })
+      .slice(0, 5) // Limit to 5 suggestions
+
+    setConnectionSuggestions(suggestions)
+    setShowSuggestions(suggestions.length > 0)
+  }, [allContacts, contact?.name, mutualConnections])
+
+  const selectSuggestion = useCallback((suggestion: string) => {
+    setNewConnectionName(suggestion)
+    setShowSuggestions(false)
+    setConnectionSuggestions([])
+  }, [])
+
+  const handleConnectionInputChange = useCallback((value: string) => {
+    setNewConnectionName(value)
+    updateConnectionSuggestions(value)
+  }, [updateConnectionSuggestions])
+
+  // Add effect to clear suggestions when mutualConnections change
+  useEffect(() => {
+    if (newConnectionName.length >= 2) {
+      updateConnectionSuggestions(newConnectionName)
+    }
+  }, [mutualConnections, newConnectionName, updateConnectionSuggestions])
+
   // Mutual connections handlers
   const addMutualConnection = () => {
     if (newConnectionName.trim() && !mutualConnections.includes(newConnectionName.trim())) {
       setMutualConnections([...mutualConnections, newConnectionName.trim()])
       setNewConnectionName('')
+      setShowSuggestions(false)
+      setConnectionSuggestions([])
     }
   }
+
+const handleConnectionKeyPress = (e: React.KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    if (showSuggestions && connectionSuggestions.length > 0) {
+      selectSuggestion(connectionSuggestions[0])
+    } else {
+      addMutualConnection()
+    }
+  } else if (e.key === 'Escape') {
+    setShowSuggestions(false)
+    setConnectionSuggestions([])
+  }
+}
 
   const removeMutualConnection = (name: string) => {
     setMutualConnections(mutualConnections.filter(conn => conn !== name))
   }
 
-  const handleConnectionKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      addMutualConnection()
-    }
-  }
+
 
   const handleJobLinksChanged = () => {
     setJobLinksKey(prev => prev + 1)
@@ -783,23 +845,61 @@ export default function ContactForm({ contact, onSuccess, onCancel }: ContactFor
 
               <div className="form-group">
                 <label className="form-label">Add Mutual Connection</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newConnectionName}
-                    onChange={(e) => setNewConnectionName(e.target.value)}
-                    onKeyPress={handleConnectionKeyPress}
-                    className="input flex-1"
-                    placeholder="Enter name of mutual connection"
-                  />
-                  <button
-                    type="button"
-                    onClick={addMutualConnection}
-                    className="btn-secondary flex items-center space-x-1"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add</span>
-                  </button>
+                <div className="relative">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <input
+                        type="text"
+                        value={newConnectionName}
+                        onChange={(e) => handleConnectionInputChange(e.target.value)}
+                        onKeyPress={handleConnectionKeyPress}
+                        onBlur={() => {
+                          // Delay hiding suggestions to allow click events
+                          setTimeout(() => setShowSuggestions(false), 200)
+                        }}
+                        onFocus={() => {
+                          if (newConnectionName.length >= 2) {
+                            updateConnectionSuggestions(newConnectionName)
+                          }
+                        }}
+                        className="input w-full"
+                        placeholder="Enter name of mutual connection"
+                      />
+                      
+                      {/* Auto-suggestions dropdown */}
+                      {showSuggestions && connectionSuggestions.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-slate-200 rounded-lg shadow-lg mt-1 max-h-40 overflow-y-auto">
+                          {connectionSuggestions.map((suggestion, index) => (
+                            <button
+                              key={index}
+                              type="button"
+                              onClick={() => selectSuggestion(suggestion)}
+                              className="w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-100 last:border-b-0 flex items-center space-x-2"
+                            >
+                              <User className="w-3 h-3 text-slate-400" />
+                              <span>{suggestion}</span>
+                              <span className="ml-auto text-xs text-slate-400">existing contact</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <button
+                      type="button"
+                      onClick={addMutualConnection}
+                      className="btn-secondary flex items-center space-x-1"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add</span>
+                    </button>
+                  </div>
+                  
+                  {newConnectionName.length >= 2 && connectionSuggestions.length === 0 && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      No existing contacts found. Press Enter or click Add to create new connection.
+                    </p>
+                  )}
                 </div>
               </div>
 

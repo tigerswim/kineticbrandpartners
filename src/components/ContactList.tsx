@@ -661,9 +661,9 @@ export default function ContactList() {
     const contact = contactNameMap.get(connectionName.toLowerCase().trim())
     if (contact) {
       const full = await getContactById(contact.id)
-      setModalContact(full || contact)
+      handleEditContact(full || contact)
     }
-  }, [contactNameMap])
+  }, [contactNameMap, handleEditContact])
 
   // Enhanced filter contacts based on debounced search term (memoized)
   const filteredContacts = useMemo(() => {
@@ -955,6 +955,7 @@ export default function ContactList() {
             setShowForm(false)
             setEditingContact(null)
           }}
+          allContacts={contacts}
         />
       )}
 
