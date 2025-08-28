@@ -1,7 +1,7 @@
 // src/components/CSVManager.tsx - Updated with current_location field
 'use client'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createSupabaseClient } from '@/lib/supabase'
 import { 
   downloadJobsCSV, 
   downloadContactsCSV, 
@@ -67,6 +67,7 @@ const handleFileUpload = async (file: File, type: 'jobs' | 'contacts' | 'interac
     console.log(`Date validation results for ${type}:`, dateValidation)
 
     // Get current user with better error handling
+    const supabase = createSupabaseClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError) {
