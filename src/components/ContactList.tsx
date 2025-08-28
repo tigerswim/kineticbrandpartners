@@ -568,7 +568,8 @@ export default function ContactList() {
   const [searchTerm, setSearchTerm] = useState('')
   const [modalContact, setModalContact] = useState<Contact | null>(null)
   const [contactIdToJobs, setContactIdToJobs] = useState<Record<string, any[]>>({})
-  const [displayedContactsCount, setDisplayedContactsCount] = useState(CONTACTS_PER_PAGE)
+  const [displayedContactsCount, setDisplayedContactsCount] = useState(20)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   // Reminder modal state
   const [showReminderModal, setShowReminderModal] = useState(false)
@@ -585,23 +586,31 @@ export default function ContactList() {
   const loadContacts = useCallback(async () => {
     setLoading(true)
     try {
-      // Fetch lightweight list first for fast render
+      // Step 1: Load contacts FAST - show them immediately
+      console.time('contacts-load-only')
       const data = await getContactsLite()
       setContacts(data as unknown as Contact[])
+      console.timeEnd('contacts-load-only')
       
-      // Batch fetch linked jobs for all contacts to avoid N+1 queries
+      // Show contacts immediately to user
+      setLoading(false)
+      
+      // Step 2: Load jobs in background (non-blocking UI)
       if (data.length > 0) {
-        try {
-          const map = await getJobsForContacts((data as any).map((c: any) => c.id))
-          setContactIdToJobs(map)
-        } catch (e) {
-          console.error('Error fetching jobs for contacts:', e)
-          setContactIdToJobs({})
-        }
+        setTimeout(async () => {
+          console.time('jobs-background-load')
+          try {
+            const map = await getJobsForContacts((data as any).map((c: any) => c.id))
+            setContactIdToJobs(map)
+            console.timeEnd('jobs-background-load')
+          } catch (e) {
+            console.error('Error fetching jobs for contacts:', e)
+            setContactIdToJobs({})
+          }
+        }, 50) // Small delay to let contacts render first
       }
     } catch (error) {
       console.error('Error loading contacts:', error)
-    } finally {
       setLoading(false)
     }
   }, [])
@@ -710,13 +719,16 @@ export default function ContactList() {
 
   const hasMoreContacts = filteredContacts.length > displayedContactsCount
 
-  const loadMoreContacts = useCallback(() => {
-    setDisplayedContactsCount(prev => prev + CONTACTS_PER_PAGE)
-  }, [])
+  const loadMoreContacts = useCallback(async () => {
+    setIsLoadingMore(true)
+    await new Promise(resolve => setTimeout(resolve, 100))
+    setDisplayedContactsCount(prev => Math.min(prev + 20, filteredContacts.length))
+    setIsLoadingMore(false)
+  }, [filteredContacts.length])
 
   // Reset pagination when search changes
   useEffect(() => {
-    setDisplayedContactsCount(CONTACTS_PER_PAGE)
+    setDisplayedContactsCount(20)
   }, [debouncedSearchTerm])
 
   // Load jobs for reminder modal
@@ -902,9 +914,21 @@ export default function ContactList() {
                 <div className="text-center py-6">
                   <button
                     onClick={loadMoreContacts}
-                    className="btn-secondary"
+                    disabled={isLoadingMore}
+                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                      isLoadingMore 
+                        ? 'bg-slate-200 text-slate-500 cursor-not-allowed' 
+                        : 'bg-blue-500 text-white hover:bg-blue-600 hover:scale-105'
+                    }`}
                   >
-                    Load More Contacts ({filteredContacts.length - displayedContactsCount} remaining)
+                    {isLoadingMore ? (
+                      <span className="flex items-center space-x-2">
+                        <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+                        <span>Loading...</span>
+                      </span>
+                    ) : (
+                      `Load More Contacts (${filteredContacts.length - displayedContactsCount} remaining)`
+                    )}
                   </button>
                 </div>
               )}
