@@ -45,6 +45,7 @@ export async function GET(request: NextRequest) {
   const hasMore = offset + limit < total
 
   return NextResponse.json(
-    { contacts: data ?? [], total, hasMore }),
+    { contacts: data ?? [], total, hasMore },
     { headers: { 'Cache-Control': 'private, max-age=60'}},
+  )  
 }
