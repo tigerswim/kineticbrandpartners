@@ -262,7 +262,7 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
             />
           </div>
 
-          {/* Notes - FIXED font size */}
+          {/* Notes - FIXED font size with resizable field */}
           <div className="form-group">
             <label className="form-label text-xs font-medium text-slate-700 mb-1">Detailed Notes</label>
             <textarea
@@ -270,12 +270,13 @@ export default function InteractionForm({ contactId, interaction, onSuccess, onC
               value={formData.notes}
               onChange={handleNotesChange}
               placeholder="Add detailed notes about the conversation, outcomes, next steps, etc..."
-              className="input min-h-[120px] resize-none text-xs py-2 px-3 leading-relaxed"
+              className="input min-h-[120px] max-h-[400px] resize-y text-xs py-2 px-3 leading-relaxed"
             />
             <p className="form-help text-xs text-slate-500 mt-1">
-              Include key discussion points, decisions made, or follow-up actions needed
+              Include key discussion points, decisions made, or follow-up actions needed • Drag the bottom-right corner to resize
             </p>
           </div>
+
 
           {/* Action Buttons - FIXED sizing to be more compact */}
           <div className="flex justify-center space-x-2 pt-3 border-t border-slate-200">
