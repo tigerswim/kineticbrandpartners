@@ -466,8 +466,9 @@ const MutualConnections = memo(({ connections, contactNameMap, onConnectionClick
   const [isExpanded, setIsExpanded] = useState(false)
   const maxInitialDisplay = 2
 
-  const isContactInSystem = useCallback((connectionName: string): Contact | null => {
-    return contactNameMap.get(connectionName.toLowerCase().trim()) || null
+  const isContactInSystem = useCallback((connectionName: string | null | undefined): Contact | null => {
+    const safeName = (connectionName || '').toLowerCase().trim()
+    return contactNameMap.get(safeName) || null
   }, [contactNameMap])
 
   const handleConnectionClick = useCallback((e: React.MouseEvent, connectionName: string) => {
@@ -660,7 +661,10 @@ export default function ContactList() {
   const contactNameMap = useMemo(() => {
     const map = new Map<string, Contact>()
     contacts.forEach(contact => {
-      map.set(contact.name.toLowerCase().trim(), contact)
+      const safeName = (contact.name || '').toLowerCase().trim()
+      if (safeName) {
+        map.set(safeName, contact)
+      }
     })
     return map
   }, [contacts])

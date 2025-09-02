@@ -201,34 +201,36 @@ export default function CreateReminderModal({
 
     const term = contactSearchTerm.toLowerCase()
     return contacts.filter(contact => {
-      // Basic fields - same as ContactList
-      const basicMatch = contact.name.toLowerCase().includes(term) ||
-        (contact.company && contact.company.toLowerCase().includes(term)) ||
-        (contact.email && contact.email.toLowerCase().includes(term)) ||
-        (contact.job_title && contact.job_title.toLowerCase().includes(term)) ||
-        (contact.notes && contact.notes.toLowerCase().includes(term))
+      // Basic fields - SAFE pattern for all fields
+      const basicMatch =
+        (contact.name || '').toLowerCase().includes(term) ||
+        (contact.company || '').toLowerCase().includes(term) ||
+        (contact.email || '').toLowerCase().includes(term) ||
+        (contact.job_title || '').toLowerCase().includes(term) ||
+        (contact.notes || '').toLowerCase().includes(term)
 
-      // Experience search - same as ContactList
+      // Experience search - all props checked
       const experienceMatch = contact.experience?.some(exp =>
-        exp.company.toLowerCase().includes(term) ||
-        exp.title.toLowerCase().includes(term) ||
-        (exp.description && exp.description.toLowerCase().includes(term))
+        (exp.company || '').toLowerCase().includes(term) ||
+        (exp.title || '').toLowerCase().includes(term) ||
+        (exp.description || '').toLowerCase().includes(term)
       )
 
-      // Education search - same as ContactList
+      // Education search - all props checked
       const educationMatch = contact.education?.some(edu =>
-        edu.institution.toLowerCase().includes(term) ||
-        edu.degree_and_field.toLowerCase().includes(term) ||
-        (edu.notes && edu.notes.toLowerCase().includes(term))
+        (edu.institution || '').toLowerCase().includes(term) ||
+        (edu.degree_and_field || '').toLowerCase().includes(term) ||
+        (edu.notes || '').toLowerCase().includes(term)
       )
 
-      // Mutual connections search - same as ContactList
+      // Mutual connections search - all connections checked
       const connectionMatch = contact.mutual_connections?.some(conn =>
-        conn.toLowerCase().includes(term)
+        (conn || '').toLowerCase().includes(term)
       )
 
       return basicMatch || experienceMatch || educationMatch || connectionMatch
     })
+
   }, [contacts, contactSearchTerm])
 
   // Reuse the exact search logic from JobList.tsx
