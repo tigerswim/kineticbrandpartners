@@ -682,32 +682,32 @@ export default function ContactList() {
 
     const term = debouncedSearchTerm.toLowerCase()
     return contacts.filter(contact => {
-      // Basic fields
-      const basicMatch = contact.name.toLowerCase().includes(term) ||
-        (contact.company && contact.company.toLowerCase().includes(term)) ||
-        (contact.email && contact.email.toLowerCase().includes(term)) ||
-        (contact.job_title && contact.job_title.toLowerCase().includes(term)) ||
-        (contact.notes && contact.notes.toLowerCase().includes(term))
-
-      // Experience search
+      // Basic fields - add null checks before toLowerCase()
+      const basicMatch = (contact.name || '').toLowerCase().includes(term) ||
+        (contact.company || '').toLowerCase().includes(term) ||
+        (contact.email || '').toLowerCase().includes(term) ||
+        (contact.job_title || '').toLowerCase().includes(term) ||
+        (contact.notes || '').toLowerCase().includes(term)
+      
+      // Experience search - add null checks for company and title
       const experienceMatch = contact.experience?.some(exp =>
-        exp.company.toLowerCase().includes(term) ||
-        exp.title.toLowerCase().includes(term) ||
+        (exp.company || '').toLowerCase().includes(term) ||
+        (exp.title || '').toLowerCase().includes(term) ||
         (exp.description && exp.description.toLowerCase().includes(term))
       )
-
-      // Education search
+      
+      // Education search - add null checks for institution and degree_and_field
       const educationMatch = contact.education?.some(edu =>
-        edu.institution.toLowerCase().includes(term) ||
-        edu.degree_and_field.toLowerCase().includes(term) ||
+        (edu.institution || '').toLowerCase().includes(term) ||
+        (edu.degree_and_field || '').toLowerCase().includes(term) ||
         (edu.notes && edu.notes.toLowerCase().includes(term))
       )
-
-      // Mutual connections search
+      
+      // Mutual connections search - add null check for each connection
       const connectionMatch = contact.mutual_connections?.some(conn =>
-        conn.toLowerCase().includes(term)
+        (conn || '').toLowerCase().includes(term)
       )
-
+      
       return basicMatch || experienceMatch || educationMatch || connectionMatch
     })
   }, [contacts, debouncedSearchTerm])

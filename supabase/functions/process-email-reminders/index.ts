@@ -316,31 +316,115 @@ function generateEmailContent(
   }
 
   // Add user's message
-  body += `
-      </div>
-      
-      <div class="message-box">
-        <h3>💬 Your Message (Ready to Copy)</h3>
-        <p style="white-space: pre-wrap; font-family: monospace; background: white; padding: 16px; border-radius: 4px; border: 1px solid #d1d5db;">${reminder.user_message}</p>
-      </div>
-      
-      <div class="links">
-        <h3>🚀 Quick Actions</h3>
-        <a href="${appUrl}" class="btn">Open Job Tracker</a>`
-
-  if (reminder.contact_id) {
-    body += `<a href="${appUrl}/contacts/${reminder.contact_id}" class="btn">View Contact</a>`
-  }
-
-  if (reminder.job_id) {
-    body += `<a href="${appUrl}/jobs/${reminder.job_id}" class="btn">View Job</a>`
-  }
+  // … earlier parts of your template builder
 
   body += `
-      </div>
-      
-      <p>Good luck with your follow-up! 🤞</p>
-    </div>
+  ### 🚀 Quick Actions
+
+  <!-- Bulletproof button for Outlook -->
+  <!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+      href="${jobTrackerUrl}"
+      style="height:40px;v-text-anchor:middle;width:160px;"
+      arcsize="8%"
+      strokecolor="#007bff"
+      fillcolor="#007bff">
+    <w:anchorlock/>
+    <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;">
+      Open Job Tracker
+    </center>
+  </v:roundrect>
+  <![endif]-->
+
+  <!-- Standard HTML button fallback -->
+  <a
+    href="${jobTrackerUrl}"
+    style="
+      display: inline-block;
+      background-color: #007bff;
+      color: white !important;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.2;
+    "
+  >
+    Open Job Tracker
+  </a>
+
+  ${reminder.contact_id ? `
+  &nbsp;&nbsp;<!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+      href="${contactUrl}"
+      style="height:40px;v-text-anchor:middle;width:120px;"
+      arcsize="8%"
+      strokecolor="#28a745"
+      fillcolor="#28a745">
+    <w:anchorlock/>
+    <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;">
+      View Contact
+    </center>
+  </v:roundrect>
+  <![endif]-->
+
+  <a
+    href="${contactUrl}"
+    style="
+      display: inline-block;
+      background-color: #28a745;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.2;
+    "
+  >
+    View Contact
+  </a>` : ''}
+
+  ${reminder.job_id ? `
+  &nbsp;&nbsp;<!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+      href="${jobUrl}"
+      style="height:40px;v-text-anchor:middle;width:120px;"
+      arcsize="8%"
+      strokecolor="#17a2b8"
+      fillcolor="#17a2b8">
+    <w:anchorlock/>
+    <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;">
+      View Job
+    </center>
+  </v:roundrect>
+  <![endif]-->
+
+  <a
+    href="${jobUrl}"
+    style="
+      display: inline-block;
+      background-color: #17a2b8;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.2;
+    "
+  >
+    View Job
+  </a>` : ''}
+
+  Good luck with your follow-up! 🤞
+  `;
+
+
     
     <div class="footer">
       <p>This reminder was sent by Job Tracker</p>
