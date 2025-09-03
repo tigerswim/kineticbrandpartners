@@ -141,10 +141,19 @@ export default function ContactForm({ contact, onSuccess, onCancel, allContacts 
     setLoading(true)
 
     try {
+      // Filter out empty experience and education entries before saving
+      const filteredExperience = experience.filter(exp => 
+        exp.company.trim() || exp.title.trim() || exp.description.trim() || exp.start_date || exp.end_date
+      )
+      
+      const filteredEducation = education.filter(edu => 
+        edu.institution.trim() || edu.degree_and_field.trim() || edu.notes?.trim() || edu.year
+      )
+
       const contactData = {
         ...formData,
-        experience,
-        education,
+        experience: filteredExperience,
+        education: filteredEducation,
         mutual_connections: mutualConnections
       }
 
