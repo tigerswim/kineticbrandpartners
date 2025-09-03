@@ -57,9 +57,7 @@ export default function LoginForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: process.env.NODE_ENV === 'production' 
-            ? 'https://your-domain.com' 
-            : 'http://localhost:3000',
+          redirectTo: `${window.location.origin}/auth/callback`,
           // Force Google to show account picker
           queryParams: {
             prompt: 'select_account'
