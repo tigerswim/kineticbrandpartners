@@ -582,6 +582,25 @@ export default function ContactList() {
 
   // Mobile interactions state
   const [showMobileInteractions, setShowMobileInteractions] = useState(false)
+  
+  // Track available width for responsive grid
+  const [availableWidth, setAvailableWidth] = useState<number>(1200)
+  const [isClient, setIsClient] = useState(false)
+
+  // Calculate optimal grid columns based on available width
+  const getGridColumns = useCallback(() => {
+    if (!isClient) return '3' // Default to 3 during SSR
+    if (availableWidth >= 1200) return '3' // 3 columns for wide screens
+    if (availableWidth >= 800) return '2'  // 2 columns for medium screens  
+    return '1' // 1 column for narrow screens
+  }, [availableWidth, isClient])
+
+  const gridCols = getGridColumns()
+
+  // Set client flag after mount
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Debounced search term for performance
   const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY)
@@ -653,6 +672,34 @@ export default function ContactList() {
       setShowMobileInteractions(false)
     }
   }, [selectedContactId])
+
+  // Track available width for responsive grid
+  useEffect(() => {
+    if (!isClient) return
+    
+    const mainArea = document.querySelector('.contacts-main-area')
+    if (!mainArea) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setAvailableWidth(entry.contentRect.width)
+      }
+    })
+
+    resizeObserver.observe(mainArea)
+    
+    // Also listen for window resize to handle mobile orientation changes
+    const handleWindowResize = () => {
+      setAvailableWidth(mainArea.getBoundingClientRect().width)
+    }
+    
+    window.addEventListener('resize', handleWindowResize)
+    
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', handleWindowResize)
+    }
+  }, [isClient])
 
   const handleCreateReminder = useCallback((contact: Contact) => {
     setReminderContact(contact)
@@ -907,8 +954,19 @@ export default function ContactList() {
             </div>
           ) : (
             <>
-              {/* Contact Cards in Grid Layout - Responsive based on panel width */}
-              <div className="contact-grid-responsive grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {/* Contact Cards in Grid Layout - Dynamic based on available width */}
+              <div 
+                className="grid gap-4 transition-all duration-300"
+                style={{
+                  gridTemplateColumns: isClient && typeof window !== 'undefined'
+                    ? (window.innerWidth >= 1024 
+                        ? `repeat(${gridCols}, 1fr)`
+                        : window.innerWidth >= 768 
+                          ? 'repeat(2, 1fr)'
+                          : '1fr')
+                    : 'repeat(3, 1fr)' // SSR fallback
+                }}
+              >
                 {displayedContacts.map((contact, index) => (
                   <ContactCard
                     key={contact.id}
@@ -920,8 +978,12 @@ export default function ContactList() {
                     onClick={(id) => {
                       setSelectedContactId(id)
                       // On mobile, show bottom sheet when contact is selected
-                      if (window.innerWidth < 1024) {
+                      if (isClient && typeof window !== 'undefined' && window.innerWidth < 1024) {
                         setShowMobileInteractions(true)
+                        // Scroll to top on mobile so bottom sheet is visible
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }, 100)
                       }
                     }}
                     onEdit={handleEditContact}
@@ -1009,7 +1071,7 @@ export default function ContactList() {
           isOpen={showMobileInteractions && !!selectedContactId}
           onClose={() => setShowMobileInteractions(false)}
           title="Interactions"
-          snapPoints={[160, Math.min(500, window.innerHeight * 0.6), window.innerHeight * 0.85]}
+          snapPoints={[160, Math.min(500, (isClient && typeof window !== 'undefined' ? window.innerHeight * 0.6 : 500)), (isClient && typeof window !== 'undefined' ? window.innerHeight * 0.85 : 600)]}
           defaultSnap={1}
         >
           {selectedContactId && (
