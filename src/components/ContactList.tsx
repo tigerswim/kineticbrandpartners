@@ -35,6 +35,9 @@ import CreateReminderModal from './modals/CreateReminderModal'
 // Lazy-loaded InteractionList to avoid loading it until needed
 import { lazy, Suspense } from 'react'
 const InteractionList = lazy(() => import('./InteractionList'))
+// Import new hybrid components
+import ResizablePanel from './ui/ResizablePanel'
+import BottomSheet from './ui/BottomSheet'
 
 // Constants for performance
 const CONTACTS_PER_PAGE = 50
@@ -577,6 +580,9 @@ export default function ContactList() {
   const [reminderContact, setReminderContact] = useState<Contact | null>(null)
   const [jobs, setJobs] = useState<any[]>([])
 
+  // Mobile interactions state
+  const [showMobileInteractions, setShowMobileInteractions] = useState(false)
+
   // Debounced search term for performance
   const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY)
 
@@ -640,6 +646,13 @@ export default function ContactList() {
     setEditingContact(fullContact || contact)
     setShowForm(true)
   }, [])
+
+  // Close mobile interactions when contact selection changes
+  useEffect(() => {
+    if (!selectedContactId) {
+      setShowMobileInteractions(false)
+    }
+  }, [selectedContactId])
 
   const handleCreateReminder = useCallback((contact: Contact) => {
     setReminderContact(contact)
@@ -867,10 +880,10 @@ export default function ContactList() {
         </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Contact List - Three Column Grid */}
-        <div className="lg:col-span-3">
+      {/* Hybrid Main Content Layout */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Contact List - Flexible Width */}
+        <div className="flex-1 min-w-0 contacts-main-area">
           {displayedContacts.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
@@ -894,8 +907,8 @@ export default function ContactList() {
             </div>
           ) : (
             <>
-              {/* Contact Cards in Grid Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {/* Contact Cards in Grid Layout - Responsive based on panel width */}
+              <div className="contact-grid-responsive grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {displayedContacts.map((contact, index) => (
                   <ContactCard
                     key={contact.id}
@@ -904,7 +917,13 @@ export default function ContactList() {
                     isSelected={selectedContactId === contact.id}
                     contactIdToJobs={contactIdToJobs}
                     contactNameMap={contactNameMap}
-                    onClick={setSelectedContactId}
+                    onClick={(id) => {
+                      setSelectedContactId(id)
+                      // On mobile, show bottom sheet when contact is selected
+                      if (window.innerWidth < 1024) {
+                        setShowMobileInteractions(true)
+                      }
+                    }}
                     onEdit={handleEditContact}
                     onDelete={handleDelete}
                     onMutualConnectionClick={handleMutualConnectionClick}
@@ -940,38 +959,75 @@ export default function ContactList() {
           )}
         </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
+        {/* Desktop Resizable Panel - Hidden on mobile */}
+        <div className="hidden lg:block">
           {selectedContactId ? (
-            <div className="card p-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center space-x-2">
-                <MessageCircle className="w-5 h-5" />
-                <span>Interactions</span>
-              </h3>
-              <Suspense fallback={
-                <div className="space-y-3">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
-                      <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
-                      <div className="h-3 bg-slate-200 rounded w-5/6"></div>
-                    </div>
-                  ))}
-                </div>
-              }>
-                <InteractionList contactId={selectedContactId} />
-              </Suspense>
-            </div>
+            <ResizablePanel
+              defaultWidth={350}
+              minWidth={300}
+              maxWidth={600}
+              storageKey="interactions-panel-width"
+              position="right"
+            >
+              <div className="card p-6 h-full">
+                <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center space-x-2">
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Interactions</span>
+                </h3>
+                <Suspense fallback={
+                  <div className="space-y-3">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+                        <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
+                        <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+                      </div>
+                    ))}
+                  </div>
+                }>
+                  <InteractionList contactId={selectedContactId} />
+                </Suspense>
+              </div>
+            </ResizablePanel>
           ) : (
-            <div className="card p-6 text-center">
-              <User className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-              <h3 className="text-sm font-medium text-slate-500 mb-2">No Contact Selected</h3>
-              <p className="text-xs text-slate-400">
-                Click on a contact to view their interaction history
-              </p>
+            <div className="w-80">
+              <div className="card p-6 text-center">
+                <User className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+                <h3 className="text-sm font-medium text-slate-500 mb-2">No Contact Selected</h3>
+                <p className="text-xs text-slate-400">
+                  Click on a contact to view their interaction history
+                </p>
+              </div>
             </div>
           )}
         </div>
+      </div>
+
+      {/* Mobile Bottom Sheet */}
+      <div className="lg:hidden">
+        <BottomSheet
+          isOpen={showMobileInteractions && !!selectedContactId}
+          onClose={() => setShowMobileInteractions(false)}
+          title="Interactions"
+          snapPoints={[160, Math.min(500, window.innerHeight * 0.6), window.innerHeight * 0.85]}
+          defaultSnap={1}
+        >
+          {selectedContactId && (
+            <Suspense fallback={
+              <div className="space-y-3">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
+                    <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+                  </div>
+                ))}
+              </div>
+            }>
+              <InteractionList contactId={selectedContactId} compact={true} />
+            </Suspense>
+          )}
+        </BottomSheet>
       </div>
 
       {/* Contact Form Modal */}

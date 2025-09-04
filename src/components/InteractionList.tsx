@@ -1,4 +1,4 @@
-// src/components/InteractionList.tsx - Fixed icon positioning, button size, and text sizing
+// src/components/InteractionList.tsx - Enhanced with InteractionCard component
 
 'use client'
 
@@ -7,199 +7,18 @@ import { Interaction } from '@/lib/supabase'
 import { getInteractions, deleteInteraction, clearInteractionsCache } from '@/lib/interactions'
 import {
   Plus,
-  Mail,
-  Phone,
-  Video,
-  Linkedin,
-  Calendar,
   MessageSquare,
-  Edit,
-  Trash2,
-  Clock
+  User
 } from 'lucide-react'
 import InteractionForm from './InteractionForm'
+import InteractionCard from './InteractionCard'
 
 interface InteractionListProps {
   contactId: string
+  compact?: boolean
 }
 
-// Memoized constants to prevent recreation on every render
-const INTERACTION_TYPE_CONFIG = {
-  email: {
-    icon: Mail,
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
-    dot: 'bg-blue-500'
-  },
-  phone: {
-    icon: Phone,
-    bg: 'bg-green-50',
-    text: 'text-green-700',
-    border: 'border-green-200',
-    dot: 'bg-green-500'
-  },
-  video_call: {
-    icon: Video,
-    bg: 'bg-purple-50',
-    text: 'text-purple-700',
-    border: 'border-purple-200',
-    dot: 'bg-purple-500'
-  },
-  linkedin: {
-    icon: Linkedin,
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
-    dot: 'bg-blue-600'
-  },
-  meeting: {
-    icon: Calendar,
-    bg: 'bg-orange-50',
-    text: 'text-orange-700',
-    border: 'border-orange-200',
-    dot: 'bg-orange-500'
-  },
-  other: {
-    icon: MessageSquare,
-    bg: 'bg-slate-50',
-    text: 'text-slate-700',
-    border: 'border-slate-200',
-    dot: 'bg-slate-500'
-  }
-} as const
-
-const INTERACTION_TYPE_LABELS = {
-  video_call: 'Video Call',
-  linkedin: 'LinkedIn',
-  email: 'Email',
-  phone: 'Phone',
-  meeting: 'Meeting',
-  other: 'Other'
-} as const
-
-// Memoized utility functions
-const getInteractionTypeConfig = (type: string) => {
-  return INTERACTION_TYPE_CONFIG[type as keyof typeof INTERACTION_TYPE_CONFIG] || INTERACTION_TYPE_CONFIG.other
-}
-
-const getInteractionTypeLabel = (type: string) => {
-  return INTERACTION_TYPE_LABELS[type as keyof typeof INTERACTION_TYPE_LABELS] ||
-    (type.charAt(0).toUpperCase() + type.slice(1))
-}
-
-// Memoized date formatter with caching
-const dateFormatCache = new Map()
-const formatDate = (dateString: string): string => {
-  if (dateFormatCache.has(dateString)) {
-    return dateFormatCache.get(dateString)!
-  }
-
-  // Fix: Parse the date as local date instead of UTC
-  const [year, month, day] = dateString.split('-').map(Number)
-  const date = new Date(year, month - 1, day) // month is 0-indexed
-  const today = new Date()
-  const yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
-
-  let formatted: string
-  if (date.toDateString() === today.toDateString()) {
-    formatted = 'Today'
-  } else if (date.toDateString() === yesterday.toDateString()) {
-    formatted = 'Yesterday'
-  } else {
-    formatted = date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
-    })
-  }
-
-  dateFormatCache.set(dateString, formatted)
-  return formatted
-}
-
-// Memoized individual interaction item component - FIXED positioning and text sizing
-const InteractionItem = memo(({
-  interaction,
-  index,
-  onEdit,
-  onDelete
-}: {
-  interaction: Interaction
-  index: number
-  onEdit: (interaction: Interaction) => void
-  onDelete: (id: string) => void
-}) => {
-  const config = useMemo(() => getInteractionTypeConfig(interaction.type), [interaction.type])
-  const typeLabel = useMemo(() => getInteractionTypeLabel(interaction.type), [interaction.type])
-  const formattedDate = useMemo(() => formatDate(interaction.date), [interaction.date])
-  const Icon = config.icon
-
-  const handleEdit = useCallback(() => {
-    onEdit(interaction)
-  }, [interaction, onEdit])
-
-  const handleDelete = useCallback(() => {
-    onDelete(interaction.id)
-  }, [interaction.id, onDelete])
-
-  return (
-    <div className={`card relative p-4 pt-12 ${config.bg} ${config.border} border-l-4 mb-3 group hover:shadow-md transition-all duration-200`}>
-      {/* Action buttons - FIXED: positioned at top with proper spacing, always visible, smaller icons */}
-      <div className="absolute top-3 right-3 flex gap-1">
-        <button
-          onClick={handleEdit}
-          className="btn-ghost p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
-          title="Edit interaction"
-        >
-          <Edit size={14} />
-        </button>
-        <button
-          onClick={handleDelete}
-          className="btn-ghost p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
-          title="Delete interaction"
-        >
-          <Trash2 size={14} />
-        </button>
-      </div>
-
-      {/* Header with type and date - content pushed down from top */}
-      <div className="flex items-center gap-3 mb-2">
-        <div className={`p-2 rounded-lg ${config.bg} ${config.border} border`}>
-          <Icon size={16} className={config.text} />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <span className={`font-medium text-sm ${config.text}`}>
-              {typeLabel}
-            </span>
-            <div className="flex items-center gap-1 text-slate-500 text-xs">
-              <Clock size={12} />
-              {formattedDate}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Summary - FIXED: changed to text-xs to match contact card text */}
-      <div className="mb-2">
-        <p className="text-slate-800 font-medium text-xs line-clamp-2">
-          {interaction.summary}
-        </p>
-      </div>
-
-      {/* Notes - FIXED: changed to text-xs to match contact card text */}
-      {interaction.notes && (
-        <div className="text-slate-600 text-xs bg-white/60 rounded-lg p-3 border border-slate-200/60">
-          <p className="line-clamp-3">{interaction.notes}</p>
-        </div>
-      )}
-    </div>
-  )
-})
-
-InteractionItem.displayName = 'InteractionItem'
+// InteractionItem component is now replaced by InteractionCard
 
 // Memoized loading skeleton
 const LoadingSkeleton = memo(() => (
@@ -237,7 +56,7 @@ const EmptyState = memo(({ onAddInteraction }: { onAddInteraction: () => void })
 
 EmptyState.displayName = 'EmptyState'
 
-export default function InteractionList({ contactId }: InteractionListProps) {
+export default function InteractionList({ contactId, compact = false }: InteractionListProps) {
   const [interactions, setInteractions] = useState<Interaction[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -319,17 +138,22 @@ export default function InteractionList({ contactId }: InteractionListProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Header - FIXED: made Add button more compact */}
+    <div className={compact ? 'space-y-3' : 'space-y-4'}>
+      {/* Header - Enhanced for mobile */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold text-slate-800">Recent Activity</h3>
-          <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">
+          <h3 className={`font-semibold text-slate-800 ${compact ? 'text-base' : 'text-sm'}`}>Recent Activity</h3>
+          <span className={`bg-slate-100 text-slate-600 px-2 py-1 rounded-full ${compact ? 'text-sm' : 'text-xs'}`}>
             {interactions.length}
           </span>
         </div>
-        <button onClick={handleShowForm} className="btn-primary flex items-center gap-2 px-3 py-1.5 text-sm ml-6">
-          <Plus size={14} />
+        <button 
+          onClick={handleShowForm} 
+          className={`btn-primary flex items-center gap-2 ${
+            compact ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-sm ml-6'
+          }`}
+        >
+          <Plus size={compact ? 16 : 14} />
           Add
         </button>
       </div>
@@ -338,14 +162,14 @@ export default function InteractionList({ contactId }: InteractionListProps) {
       {sortedInteractions.length === 0 ? (
         <EmptyState onAddInteraction={handleShowForm} />
       ) : (
-        <div className="space-y-3">
-          {sortedInteractions.map((interaction, index) => (
-            <InteractionItem
+        <div className={compact ? 'space-y-2' : 'space-y-3'}>
+          {sortedInteractions.map((interaction) => (
+            <InteractionCard
               key={interaction.id}
               interaction={interaction}
-              index={index}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              compact={compact}
             />
           ))}
         </div>
