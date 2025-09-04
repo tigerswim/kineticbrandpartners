@@ -112,7 +112,7 @@ export default function ResizablePanel({
 
   return (
     <div 
-      className={`relative flex ${position === 'left' ? 'flex-row' : 'flex-row-reverse'} ${className}`}
+      className={`relative flex ${position === 'left' ? 'flex-row' : 'flex-row-reverse'} ${className} min-h-0`}
       ref={panelRef}
     >
       {/* Resize Handle - Enhanced visibility */}

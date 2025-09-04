@@ -928,9 +928,9 @@ export default function ContactList() {
       </div>
 
       {/* Hybrid Main Content Layout */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6 min-h-0">
         {/* Contact List - Flexible Width */}
-        <div className="flex-1 min-w-0 contacts-main-area">
+        <div className="flex-1 min-w-0 contacts-main-area overflow-hidden">
           {displayedContacts.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
@@ -978,7 +978,7 @@ export default function ContactList() {
                     onClick={(id) => {
                       setSelectedContactId(id)
                       // On mobile, show bottom sheet when contact is selected
-                      if (isClient && typeof window !== 'undefined' && window.innerWidth < 1024) {
+                      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
                         setShowMobileInteractions(true)
                         // Scroll to top on mobile so bottom sheet is visible
                         setTimeout(() => {
@@ -1022,8 +1022,8 @@ export default function ContactList() {
         </div>
 
         {/* Desktop Resizable Panel - Hidden on mobile */}
-        <div className="hidden lg:block">
-          {selectedContactId ? (
+        {selectedContactId && (
+          <div className="hidden lg:block">
             <ResizablePanel
               defaultWidth={350}
               minWidth={300}
@@ -1031,49 +1031,42 @@ export default function ContactList() {
               storageKey="interactions-panel-width"
               position="right"
             >
-              <div className="card p-6 h-full">
+              <div className="card p-6 h-full overflow-hidden">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center space-x-2">
                   <MessageCircle className="w-5 h-5" />
                   <span>Interactions</span>
                 </h3>
-                <Suspense fallback={
-                  <div className="space-y-3">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
-                        <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
-                        <div className="h-3 bg-slate-200 rounded w-5/6"></div>
-                      </div>
-                    ))}
-                  </div>
-                }>
-                  <InteractionList contactId={selectedContactId} />
-                </Suspense>
+                <div className="flex-1 overflow-auto">
+                  <Suspense fallback={
+                    <div className="space-y-3">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                          <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
+                          <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+                        </div>
+                      ))}
+                    </div>
+                  }>
+                    <InteractionList contactId={selectedContactId} />
+                  </Suspense>
+                </div>
               </div>
             </ResizablePanel>
-          ) : (
-            <div className="w-80">
-              <div className="card p-6 text-center">
-                <User className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                <h3 className="text-sm font-medium text-slate-500 mb-2">No Contact Selected</h3>
-                <p className="text-xs text-slate-400">
-                  Click on a contact to view their interaction history
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Mobile Bottom Sheet */}
-      <div className="lg:hidden">
-        <BottomSheet
-          isOpen={showMobileInteractions && !!selectedContactId}
-          onClose={() => setShowMobileInteractions(false)}
-          title="Interactions"
-          snapPoints={[160, Math.min(500, (isClient && typeof window !== 'undefined' ? window.innerHeight * 0.6 : 500)), (isClient && typeof window !== 'undefined' ? window.innerHeight * 0.85 : 600)]}
-          defaultSnap={1}
-        >
+      {isClient && (
+        <div className="lg:hidden">
+          <BottomSheet
+            isOpen={showMobileInteractions && !!selectedContactId}
+            onClose={() => setShowMobileInteractions(false)}
+            title="Interactions"
+            snapPoints={[160, 500, 600]}
+            defaultSnap={1}
+          >
           {selectedContactId && (
             <Suspense fallback={
               <div className="space-y-3">
@@ -1089,8 +1082,9 @@ export default function ContactList() {
               <InteractionList contactId={selectedContactId} compact={true} />
             </Suspense>
           )}
-        </BottomSheet>
-      </div>
+          </BottomSheet>
+        </div>
+      )}
 
       {/* Contact Form Modal */}
       {showForm && (

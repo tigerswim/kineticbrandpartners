@@ -145,9 +145,10 @@ export default function BottomSheet({
       {/* Backdrop */}
       <div
         className={`
-          fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300
+          fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
         `}
+        style={{ zIndex: 1000 }}
         onClick={handleBackdropClick}
       />
 
@@ -155,7 +156,7 @@ export default function BottomSheet({
       <div
         ref={sheetRef}
         className={`
-          fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl z-50
+          fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl
           transition-all duration-300 ease-out
           ${isDragging ? 'transition-none' : ''}
           ${className}
@@ -163,6 +164,7 @@ export default function BottomSheet({
         style={{
           height: `${clampedHeight}px`,
           transform: isOpen ? 'translateY(0)' : `translateY(100%)`,
+          zIndex: 1001
         }}
       >
         {/* Drag Handle */}
