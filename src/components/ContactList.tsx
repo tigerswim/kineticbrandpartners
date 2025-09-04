@@ -1,7 +1,7 @@
 // src/components/ContactList.tsx - Performance Optimized Version with Reminder Button
 'use client'
 
-import { useState, useEffect, useMemo, useCallback, memo } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
 import { Contact } from '@/lib/supabase'
 import { getContactsLite, getContactById, deleteContact } from '@/lib/contacts'
 import { getJobsForContacts } from '@/lib/jobContacts'
@@ -42,6 +42,119 @@ import BottomSheet from './ui/BottomSheet'
 // Constants for performance
 const CONTACTS_PER_PAGE = 50
 const DEBOUNCE_DELAY = 300
+
+// Smart text truncation component (similar to InteractionCard)
+const TruncatedText = ({ 
+  text, 
+  maxLines = 2, 
+  className = '',
+  showToggle = true 
+}: { 
+  text: string
+  maxLines?: number
+  className?: string
+  showToggle?: boolean
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+  
+  // Calculate if text needs truncation (rough estimation)
+  const shouldTruncate = text.length > maxLines * 60 // Slightly shorter for contact cards
+  
+  const toggleExpansion = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIsExpanded(!isExpanded)
+  }, [isExpanded])
+
+  if (!shouldTruncate || isExpanded) {
+    return (
+      <div className={className}>
+        <p className="whitespace-pre-wrap text-xs">{text}</p>
+        {shouldTruncate && showToggle && (
+          <button
+            onClick={toggleExpansion}
+            className="text-blue-600 hover:text-blue-800 text-xs font-medium mt-1 flex items-center space-x-1"
+          >
+            <ChevronUp className="w-3 h-3" />
+            <span>Show less</span>
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className={className}>
+      <p 
+        className={`whitespace-pre-wrap text-xs line-clamp-${maxLines}`}
+        style={{
+          display: '-webkit-box',
+          WebkitLineClamp: maxLines,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden'
+        }}
+      >
+        {text}
+      </p>
+      {showToggle && (
+        <button
+          onClick={toggleExpansion}
+          className="text-blue-600 hover:text-blue-800 text-xs font-medium mt-1 flex items-center space-x-1"
+        >
+          <ChevronDown className="w-3 h-3" />
+          <span>Show more</span>
+        </button>
+      )}
+    </div>
+  )
+}
+
+// Resizable text area component for modal fields
+const ResizableTextArea = ({ 
+  text, 
+  className = '',
+  minHeight = 100,
+  maxHeight = 400
+}: { 
+  text: string | null | undefined
+  className?: string
+  minHeight?: number
+  maxHeight?: number
+}) => {
+  const [height, setHeight] = useState(minHeight)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    const startY = e.clientY
+    const startHeight = height
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaY = e.clientY - startY
+      const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + deltaY))
+      setHeight(newHeight)
+    }
+    
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+    
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+  }, [height, minHeight, maxHeight])
+  
+  return (
+    <div className={className}>
+      <textarea
+        ref={textareaRef}
+        value={text || ''}
+        readOnly
+        className="w-full p-3 text-sm text-slate-700 bg-white border border-slate-200 rounded-lg resize-y focus:outline-none"
+        style={{ height: `${height}px`, minHeight: `${minHeight}px`, maxHeight: `${maxHeight}px` }}
+      />
+    </div>
+  )
+}
 
 // Memoized Contact Card Component
 const ContactCard = memo(({ 
@@ -274,12 +387,12 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5" />
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <User className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">{contact.name}</h2>
-                <p className="text-blue-100 text-sm">Contact Details</p>
+                <h2 className="text-lg font-semibold">{contact.name}</h2>
+                <p className="text-blue-100 text-xs">Contact Details</p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -288,34 +401,34 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
                 className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
                 title="Edit contact"
               >
-                <Edit className="w-4 h-4" />
+                <Edit className="w-3 h-3" />
               </button>
               <button
                 onClick={onClose}
                 className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(80vh-80px)]">
-          <div className="space-y-6">
+        <div className="p-4 overflow-y-auto max-h-[calc(80vh-80px)]">
+          <div className="space-y-4">
             {/* Current Role */}
             {(contact.job_title && contact.company) || formatExperience(contact) ? (
               <div>
-                <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                  <Building className="w-4 h-4" />
+                <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                  <Building className="w-3 h-3" />
                   <span>Current Role</span>
                 </h3>
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <div className="bg-slate-50 rounded-lg p-2 border border-slate-200">
                   {contact.job_title && contact.company ? (
-                    <p className="font-medium">{contact.job_title} at {contact.company}</p>
+                    <p className="font-medium text-xs">{contact.job_title} at {contact.company}</p>
                   ) : (
                     formatExperience(contact) && (
-                      <p className="font-medium">{formatExperience(contact)}</p>
+                      <p className="font-medium text-xs">{formatExperience(contact)}</p>
                     )
                   )}
                 </div>
@@ -324,26 +437,26 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
 
             {/* Contact Information */}
             <div>
-              <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                <Mail className="w-4 h-4" />
+              <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                <Mail className="w-3 h-3" />
                 <span>Contact Information</span>
               </h3>
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 space-y-2">
                 {contact.email && (
-                  <div className="flex items-center space-x-2 text-sm">
-                    <Mail className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center space-x-2 text-xs">
+                    <Mail className="w-3 h-3 text-slate-400" />
                     <span>{contact.email}</span>
                   </div>
                 )}
                 {contact.phone && (
-                  <div className="flex items-center space-x-2 text-sm">
-                    <Phone className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center space-x-2 text-xs">
+                    <Phone className="w-3 h-3 text-slate-400" />
                     <span>{contact.phone}</span>
                   </div>
                 )}
                 {contact.linkedin_url && (
-                  <div className="flex items-center space-x-2 text-sm">
-                    <Linkedin className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center space-x-2 text-xs">
+                    <Linkedin className="w-3 h-3 text-slate-400" />
                     <a 
                       href={contact.linkedin_url} 
                       target="_blank" 
@@ -351,7 +464,7 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
                       className="text-blue-600 hover:text-blue-800 flex items-center space-x-1"
                     >
                       <span>LinkedIn Profile</span>
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-2 h-2" />
                     </a>
                   </div>
                 )}
@@ -361,12 +474,12 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
             {/* Education */}
             {formatEducation(contact) && (
               <div>
-                <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                  <GraduationCap className="w-4 h-4" />
+                <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                  <GraduationCap className="w-3 h-3" />
                   <span>Education</span>
                 </h3>
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                  <p>{formatEducation(contact)}</p>
+                <div className="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                  <p className="text-xs">{formatEducation(contact)}</p>
                 </div>
               </div>
             )}
@@ -374,29 +487,35 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
             {/* Work Experience */}
             {contact.experience && contact.experience.length > 0 && (
               <div>
-                <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                  <Briefcase className="w-4 h-4" />
+                <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                  <Briefcase className="w-3 h-3" />
                   <span>Work Experience</span>
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {contact.experience.map((exp, index) => (
-                    <div key={exp.id || index} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{exp.title}</h4>
+                    <div key={exp.id || index} className="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                      <div className="flex items-center justify-between mb-1">
+                        <h4 className="font-medium text-xs">{exp.title}</h4>
                         {exp.is_current && (
-                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                          <span className="px-1.5 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
                             Current
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-slate-600 mb-1">{exp.company}</p>
+                      <p className="text-xs text-slate-600 mb-1">{exp.company}</p>
                       {(exp.start_date || exp.end_date) && (
                         <p className="text-xs text-slate-500 mb-2">
                           {exp.start_date} - {exp.is_current ? 'Present' : (exp.end_date || 'Present')}
                         </p>
                       )}
                       {exp.description && (
-                        <p className="text-sm text-slate-700">{exp.description}</p>
+                        <div className="mt-2">
+                          <ResizableTextArea
+                            text={exp.description}
+                            minHeight={80}
+                            maxHeight={300}
+                          />
+                        </div>
                       )}
                     </div>
                   ))}
@@ -407,16 +526,16 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
             {/* Mutual Connections */}
             {contact.mutual_connections && contact.mutual_connections.length > 0 && (
               <div>
-                <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                  <Network className="w-4 h-4" />
+                <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                  <Network className="w-3 h-3" />
                   <span>Mutual Connections</span>
                 </h3>
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                  <div className="flex flex-wrap gap-2">
+                <div className="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                  <div className="flex flex-wrap gap-1">
                     {contact.mutual_connections.map((connection, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+                        className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs"
                       >
                         {connection}
                       </span>
@@ -428,11 +547,11 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
 
             {/* Linked Jobs */}
             <div>
-              <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                <Briefcase className="w-4 h-4" />
+              <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                <Briefcase className="w-3 h-3" />
                 <span>Associated Job Applications</span>
               </h3>
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                 <ContactJobLinks contactId={contact.id} compact={false} />
               </div>
             </div>
@@ -440,13 +559,15 @@ const ContactModal = memo(({ contact, onClose, onEdit }: ContactModalProps) => {
             {/* Notes */}
             {contact.notes && (
               <div>
-                <h3 className="flex items-center space-x-2 text-slate-700 font-semibold mb-2">
-                  <MessageCircle className="w-4 h-4" />
+                <h3 className="flex items-center space-x-2 text-slate-700 font-medium mb-2 text-sm">
+                  <MessageCircle className="w-3 h-3" />
                   <span>Notes</span>
                 </h3>
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                  <p className="text-sm text-slate-700 whitespace-pre-wrap">{contact.notes}</p>
-                </div>
+                <ResizableTextArea
+                  text={contact.notes}
+                  minHeight={100}
+                  maxHeight={400}
+                />
               </div>
             )}
           </div>

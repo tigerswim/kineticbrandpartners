@@ -1,7 +1,7 @@
 // src/components/ContactForm.tsx
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { Contact, ExperienceEntry, EducationEntry } from '@/lib/supabase'
 import { createContact, updateContact } from '@/lib/contacts'
 import { 
@@ -96,6 +96,65 @@ const combineDate = (month: string, year: string): string => {
   }
   
   return ''
+}
+
+// Resizable text area component for form fields
+const ResizableTextArea = ({ 
+  value, 
+  onChange,
+  placeholder,
+  name,
+  id,
+  className = '',
+  minHeight = 100,
+  maxHeight = 400
+}: { 
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  placeholder?: string
+  name?: string
+  id?: string
+  className?: string
+  minHeight?: number
+  maxHeight?: number
+}) => {
+  const [height, setHeight] = useState(minHeight)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    const startY = e.clientY
+    const startHeight = height
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaY = e.clientY - startY
+      const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + deltaY))
+      setHeight(newHeight)
+    }
+    
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+    
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+  }, [height, minHeight, maxHeight])
+  
+  return (
+    <div className={className}>
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        name={name}
+        id={id}
+        className="w-full p-3 text-sm text-slate-700 bg-white border border-slate-200 rounded-lg resize-y focus:outline-none"
+        style={{ height: `${height}px`, minHeight: `${minHeight}px`, maxHeight: `${maxHeight}px` }}
+      />
+    </div>
+  )
 }
 
 export default function ContactForm({ contact, onSuccess, onCancel, allContacts }: ContactFormProps) {
@@ -745,7 +804,7 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                         <input
                           type="text"
                           id={`experience-${index}-company`}
-                          value={exp.company}
+                          value={exp.company || ''}
                           onChange={(e) => updateExperience(index, 'company', e.target.value)}
                           className="input"
                           placeholder="Company name"
@@ -767,7 +826,7 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                         <input
                           type="text"
                           id={`experience-${index}-title`}
-                          value={exp.title}
+                          value={exp.title || ''}
                           onChange={(e) => updateExperience(index, 'title', e.target.value)}
                           className="input"
                           placeholder="Job title"
@@ -834,60 +893,8 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                       </div>
                       
                       <div className="form-group">
-                        <label className="form-label">End Date</label>
-                        <div className="space-y-2">
-                          <div className="flex gap-2" data-date-group="end-date" data-field-index={index}>
-                            <select
-                              id={`experience-${index}-end-month`}
-                              value={endDate.month}
-                              onChange={(e) => {
-                                debugLog(`Changing end month for exp[${index}] to:`, e.target.value)
-                                updateExperienceDate(index, 'end_date', 'month', e.target.value)
-                              }}
-                              className="input flex-1"
-                              disabled={exp.is_current}
-                              data-field="experience-end-month"
-                              data-field-type="experience"
-                              data-field-index={index}
-                              data-date-type="month"
-                              data-date-field="end"
-                              data-linkedin-field="experience-end-month"
-                              data-accepts="01-12, Jan-Dec, January-December, Present"
-                              aria-label={`End month for experience ${index + 1}`}
-                            >
-                              <option value="">Select Month</option>
-                              {monthOptions.map(month => (
-                                <option key={month.value} value={month.value}>
-                                  {month.label}
-                                </option>
-                              ))}
-                            </select>
-                            <select
-                              id={`experience-${index}-end-year`}
-                              value={endDate.year}
-                              onChange={(e) => {
-                                debugLog(`Changing end year for exp[${index}] to:`, e.target.value)
-                                updateExperienceDate(index, 'end_date', 'year', e.target.value)
-                              }}
-                              className="input flex-1"
-                              disabled={exp.is_current}
-                              data-field="experience-end-year"
-                              data-field-type="experience"
-                              data-field-index={index}
-                              data-date-type="year"
-                              data-date-field="end"
-                              data-linkedin-field="experience-end-year"
-                              data-accepts="YYYY, 2020-2025, Present"
-                              aria-label={`End year for experience ${index + 1}`}
-                            >
-                              <option value="">Select Year</option>
-                              {yearOptions.map(year => (
-                                <option key={year.value} value={year.value}>
-                                  {year.label}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="form-label">End Date</label>
                           <label className="flex items-center space-x-2 text-sm" htmlFor={`experience-${index}-current`}>
                             <input
                               type="checkbox"
@@ -910,27 +917,75 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                             <span>Current role</span>
                           </label>
                         </div>
+                        <div className="flex gap-2" data-date-group="end-date" data-field-index={index}>
+                          <select
+                            id={`experience-${index}-end-month`}
+                            value={endDate.month}
+                            onChange={(e) => {
+                              debugLog(`Changing end month for exp[${index}] to:`, e.target.value)
+                              updateExperienceDate(index, 'end_date', 'month', e.target.value)
+                            }}
+                            className="input flex-1"
+                            disabled={exp.is_current}
+                            data-field="experience-end-month"
+                            data-field-type="experience"
+                            data-field-index={index}
+                            data-date-type="month"
+                            data-date-field="end"
+                            data-linkedin-field="experience-end-month"
+                            data-accepts="01-12, Jan-Dec, January-December, Present"
+                            aria-label={`End month for experience ${index + 1}`}
+                          >
+                            <option value="">Select Month</option>
+                            {monthOptions.map(month => (
+                              <option key={month.value} value={month.value}>
+                                {month.label}
+                              </option>
+                            ))}
+                          </select>
+                          <select
+                            id={`experience-${index}-end-year`}
+                            value={endDate.year}
+                            onChange={(e) => {
+                              debugLog(`Changing end year for exp[${index}] to:`, e.target.value)
+                              updateExperienceDate(index, 'end_date', 'year', e.target.value)
+                            }}
+                            className="input flex-1"
+                            disabled={exp.is_current}
+                            data-field="experience-end-year"
+                            data-field-type="experience"
+                            data-field-index={index}
+                            data-date-type="year"
+                            data-date-field="end"
+                            data-linkedin-field="experience-end-year"
+                            data-accepts="YYYY, 2020-2025, Present"
+                            aria-label={`End year for experience ${index + 1}`}
+                          >
+                            <option value="">Select Year</option>
+                            {yearOptions.map(year => (
+                              <option key={year.value} value={year.value}>
+                                {year.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                     </div>
                     
-                    <div className="form-group">
+                    <div className="form-group mt-3">
                       <label 
                         className="form-label" 
                         htmlFor={`experience-${index}-description`}
                       >
                         Description
                       </label>
-                      <textarea
+                      <ResizableTextArea
                         id={`experience-${index}-description`}
                         value={exp.description || ''}
                         onChange={(e) => updateExperience(index, 'description', e.target.value)}
-                        className="input min-h-[80px] resize-none"
                         placeholder="Key responsibilities, achievements, technologies used..."
-                        data-field="experience-description"
-                        data-field-type="experience"
-                        data-field-index={index}
-                        data-linkedin-field="experience-description"
-                        aria-label={`Job description for experience ${index + 1}`}
+                        minHeight={80}
+                        maxHeight={300}
                       />
                     </div>
                   </fieldset>
@@ -991,7 +1046,7 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                         <input
                           type="text"
                           id={`education-${index}-institution`}
-                          value={edu.institution}
+                          value={edu.institution || ''}
                           onChange={(e) => updateEducation(index, 'institution', e.target.value)}
                           className="input"
                           placeholder="University name"
@@ -1013,7 +1068,7 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
                         <input
                           type="text"
                           id={`education-${index}-degree`}
-                          value={edu.degree_and_field}
+                          value={edu.degree_and_field || ''}
                           onChange={(e) => updateEducation(index, 'degree_and_field', e.target.value)}
                           className="input"
                           placeholder="e.g., Bachelor's in Computer Science"
@@ -1240,18 +1295,14 @@ const handleConnectionKeyDown = (e: React.KeyboardEvent) => {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="contact-notes">Notes & Context</label>
-                <textarea
+                <ResizableTextArea
                   id="contact-notes"
                   name="notes"
                   value={formData.notes}
                   onChange={handleChange}
-                  rows={4}
-                  className="input min-h-[120px] resize-none"
                   placeholder="Add context about how you met, shared connections, conversation topics, or other relevant details..."
-                  data-field="notes"
-                  data-linkedin-field="notes"
-                  data-accepts="Free-form text about the contact"
-                  aria-label="Additional notes and context about the contact"
+                  minHeight={120}
+                  maxHeight={400}
                 />
                 <p className="form-help">
                   Include meeting context, conversation highlights, or other important notes

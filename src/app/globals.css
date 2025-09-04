@@ -50,7 +50,7 @@ body {
 
 /* Enhanced component styles */
 .input { 
-  @apply w-full border border-slate-200 rounded-lg px-4 py-3 text-slate-700 placeholder-slate-400 
+  @apply w-full border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-700 placeholder-slate-400 
          focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 
          transition-all duration-200 bg-white/80 backdrop-blur-sm; 
 }
@@ -190,7 +190,7 @@ body {
 }
 
 .form-label {
-  @apply block text-sm font-semibold text-slate-700;
+  @apply flex items-center text-sm font-semibold text-slate-700;
 }
 
 .form-error {
