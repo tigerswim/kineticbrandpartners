@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronUp, ChevronDown, X } from 'lucide-react'
 
 interface BottomSheetProps {
@@ -38,8 +39,18 @@ export default function BottomSheet({
     if (isOpen) {
       setSheetState(defaultSnap === 0 ? 'peek' : defaultSnap === 1 ? 'half' : 'full')
       setCurrentHeight(snapPoints[defaultSnap])
+      
+      // Prevent body scroll when sheet is open - use simple overflow hidden
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'hidden'
+      }
     } else {
       setSheetState('closed')
+      
+      // Restore body scroll when sheet is closed
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = ''
+      }
     }
   }, [isOpen, defaultSnap, snapPoints])
 
@@ -135,12 +146,16 @@ export default function BottomSheet({
     setSheetState(snapPoints[1] ? 'half' : 'peek')
   }, [snapPoints])
 
-  if (!isOpen && sheetState === 'closed') return null
+  if (!isOpen) return null
 
-  const maxHeight = window.innerHeight * 0.9
-  const clampedHeight = Math.min(currentHeight, maxHeight)
+  const maxHeight = 600 // Fixed height to avoid SSR issues
+  const clampedHeight = Math.max(200, Math.min(currentHeight, maxHeight)) // Ensure minimum height
+  
 
-  return (
+  // Only render on client side and portal to body
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <>
       {/* Backdrop */}
       <div
@@ -148,7 +163,14 @@ export default function BottomSheet({
           fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
         `}
-        style={{ zIndex: 1000 }}
+        style={{ 
+          zIndex: 9998,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
+        }}
         onClick={handleBackdropClick}
       />
 
@@ -163,8 +185,8 @@ export default function BottomSheet({
         `}
         style={{
           height: `${clampedHeight}px`,
-          transform: isOpen ? 'translateY(0)' : `translateY(100%)`,
-          zIndex: 1001
+          transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
+          zIndex: 9999
         }}
       >
         {/* Drag Handle */}
@@ -237,6 +259,7 @@ export default function BottomSheet({
         {/* Safe area spacer for devices with home indicator */}
         <div className="pb-safe" />
       </div>
-    </>
+    </>,
+    document.body
   )
 }

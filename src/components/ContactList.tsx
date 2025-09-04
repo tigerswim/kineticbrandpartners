@@ -590,12 +590,40 @@ export default function ContactList() {
   // Calculate optimal grid columns based on available width
   const getGridColumns = useCallback(() => {
     if (!isClient) return '3' // Default to 3 during SSR
-    if (availableWidth >= 1200) return '3' // 3 columns for wide screens
-    if (availableWidth >= 800) return '2'  // 2 columns for medium screens  
-    return '1' // 1 column for narrow screens
+    
+    // Mobile breakpoint - always single column on small screens
+    if (typeof window !== 'undefined' && window.innerWidth < 640) return '1'
+    
+    // For larger screens, base it on the available width of the contacts area
+    // Each card needs roughly 300px minimum width + gap
+    const cardMinWidth = 300
+    const gapWidth = 16 // 4 * 4px (gap-4)
+    
+    if (availableWidth >= (cardMinWidth * 3) + (gapWidth * 2)) return '3'
+    if (availableWidth >= (cardMinWidth * 2) + gapWidth) return '2'
+    return '1'
   }, [availableWidth, isClient])
 
   const gridCols = getGridColumns()
+  
+  // Debug: Log grid changes for development
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Grid columns: ${gridCols}, Available width: ${availableWidth}px`)
+    }
+  }, [gridCols, availableWidth])
+  
+  // Debug: Log mobile interactions state
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Mobile interactions state:', {
+        isClient,
+        showMobileInteractions,
+        selectedContactId,
+        isOpen: showMobileInteractions && !!selectedContactId
+      })
+    }
+  }, [isClient, showMobileInteractions, selectedContactId])
 
   // Set client flag after mount
   useEffect(() => {
@@ -678,11 +706,25 @@ export default function ContactList() {
     if (!isClient) return
     
     const mainArea = document.querySelector('.contacts-main-area')
-    if (!mainArea) return
+    if (!mainArea) {
+      // If not found immediately, try again in next frame
+      requestAnimationFrame(() => {
+        const mainAreaRetry = document.querySelector('.contacts-main-area')
+        if (mainAreaRetry) {
+          setAvailableWidth(mainAreaRetry.getBoundingClientRect().width)
+        }
+      })
+      return
+    }
+
+    // Initial width measurement
+    setAvailableWidth(mainArea.getBoundingClientRect().width)
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setAvailableWidth(entry.contentRect.width)
+        // Use getBoundingClientRect for more accurate measurements
+        const newWidth = entry.target.getBoundingClientRect().width
+        setAvailableWidth(newWidth)
       }
     })
 
@@ -690,7 +732,8 @@ export default function ContactList() {
     
     // Also listen for window resize to handle mobile orientation changes
     const handleWindowResize = () => {
-      setAvailableWidth(mainArea.getBoundingClientRect().width)
+      const currentWidth = mainArea.getBoundingClientRect().width
+      setAvailableWidth(currentWidth)
     }
     
     window.addEventListener('resize', handleWindowResize)
@@ -928,9 +971,9 @@ export default function ContactList() {
       </div>
 
       {/* Hybrid Main Content Layout */}
-      <div className="flex flex-col lg:flex-row gap-6 min-h-0">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Contact List - Flexible Width */}
-        <div className="flex-1 min-w-0 contacts-main-area overflow-hidden">
+        <div className="flex-1 min-w-0 contacts-main-area px-4 sm:px-0">
           {displayedContacts.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
@@ -954,17 +997,12 @@ export default function ContactList() {
             </div>
           ) : (
             <>
-              {/* Contact Cards in Grid Layout - Dynamic based on available width */}
+              {/* Contact Cards in Grid Layout - Dynamic responsive grid */}
               <div 
-                className="grid gap-4 transition-all duration-300"
+                className="grid gap-4"
                 style={{
-                  gridTemplateColumns: isClient && typeof window !== 'undefined'
-                    ? (window.innerWidth >= 1024 
-                        ? `repeat(${gridCols}, 1fr)`
-                        : window.innerWidth >= 768 
-                          ? 'repeat(2, 1fr)'
-                          : '1fr')
-                    : 'repeat(3, 1fr)' // SSR fallback
+                  gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+                  transition: 'grid-template-columns 0.3s ease'
                 }}
               >
                 {displayedContacts.map((contact, index) => (
@@ -980,10 +1018,6 @@ export default function ContactList() {
                       // On mobile, show bottom sheet when contact is selected
                       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
                         setShowMobileInteractions(true)
-                        // Scroll to top on mobile so bottom sheet is visible
-                        setTimeout(() => {
-                          window.scrollTo({ top: 0, behavior: 'smooth' })
-                        }, 100)
                       }
                     }}
                     onEdit={handleEditContact}
@@ -1059,12 +1093,14 @@ export default function ContactList() {
 
       {/* Mobile Bottom Sheet */}
       {isClient && (
-        <div className="lg:hidden">
-          <BottomSheet
+        <BottomSheet
             isOpen={showMobileInteractions && !!selectedContactId}
-            onClose={() => setShowMobileInteractions(false)}
+            onClose={() => {
+              setShowMobileInteractions(false)
+              setSelectedContactId(null)
+            }}
             title="Interactions"
-            snapPoints={[160, 500, 600]}
+            snapPoints={[160, 400, 600]}
             defaultSnap={1}
           >
           {selectedContactId && (
@@ -1083,7 +1119,6 @@ export default function ContactList() {
             </Suspense>
           )}
           </BottomSheet>
-        </div>
       )}
 
       {/* Contact Form Modal */}
