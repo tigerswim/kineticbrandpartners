@@ -307,17 +307,17 @@ const AboutSection = () => (
           <article>
             <h3>Proven Versatility</h3>
             <p>{
-              "I&apos;m equally at home setting strategic direction and rolling up my sleeves for tactical execution. Whether you need marketing as the hub of growth or as a strategic support function, I adapt my approach to what your business needs most."}
+              "I'm equally at home setting strategic direction and rolling up my sleeves for tactical execution. Whether you need marketing as the hub of growth or as a strategic support function, I adapt my approach to what your business needs most."}
             </p>
             <p>
-              <em>{"Great marketing isn&apos;t about choosing between creativity and analytics — it&apos;s about knowing when to lean into each and how to make them work together seamlessly."}</em>
+              <em>{"Great marketing isn't about choosing between creativity and analytics — it's about knowing when to lean into each and how to make them work together seamlessly."}</em>
             </p>
           </article>
           
           <article>
             <h3>{"Enterprise Experience, Entrepreneurial Agility"}</h3>
             <p>{
-              "I&apos;ve scaled marketing teams from startup environments to Fortune 500 enterprises, managing budgets from thousands to millions. This unique combination allows me to bring enterprise-level strategic thinking with the agility and resourcefulness your growing business demands."}
+              "I've scaled marketing teams from startup environments to Fortune 500 enterprises, managing budgets from thousands to millions. This unique combination allows me to bring enterprise-level strategic thinking with the agility and resourcefulness your growing business demands."}
             </p>
           </article>
         </div>
@@ -378,7 +378,7 @@ const AboutSection = () => (
       <div className="container">
         <div className="spotlight">
           <h2>{"Ready to Transform Your Marketing Strategy?"}</h2>
-          <p>{"Let&apos;s start with a comprehensive assessment of your marketing organization and growth opportunities"}</p>
+          <p>{"Let's start with a comprehensive assessment of your marketing organization and growth opportunities"}</p>
         </div>
         
         <div className="values">
@@ -393,7 +393,7 @@ const AboutSection = () => (
           </article>
           
           <article style={{ textAlign: 'center' }}>
-            <h3>{"Let&apos;s Connect"}</h3>
+            <h3>{"Let's Connect"}</h3>
             <p><strong>{"Email:"}</strong> {"letstalk@kineticbrandpartners.com"}</p>
             <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: '#666' }}>
               <strong>{"Based in Atlanta, GA"}</strong> {"| Working with clients nationwide"}
