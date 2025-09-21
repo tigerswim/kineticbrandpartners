@@ -1,6 +1,7 @@
 [build]
-command = "npm run build"
-publish = "out"
+command = "cd marketing-site && npm install && npm run build"
+publish = "marketing-site/out"
+base = "."
 
 [build.environment]
 NODE_VERSION = "18"
