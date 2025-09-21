@@ -41,7 +41,7 @@ describe('formatDate', () => {
   })
 
   it('throws error for null date', () => {
-    expect(() => formatDate(null as any)).toThrow('Invalid date provided')
+    expect(() => formatDate(null as unknown as string)).toThrow('Invalid date provided')
   })
 })
 
@@ -63,6 +63,6 @@ describe('formatCurrency', () => {
   })
 
   it('throws error for non-number input', () => {
-    expect(() => formatCurrency('123' as any)).toThrow('Invalid amount provided')
+    expect(() => formatCurrency('123' as unknown as number)).toThrow('Invalid amount provided')
   })
 }) 

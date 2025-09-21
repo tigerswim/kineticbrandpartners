@@ -23,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "cypress", "tests", "marketing-site", "job-tracker", "RacePrep", "sagenet-website", "prd-documents"]
 }
