@@ -170,7 +170,7 @@ const PersonalSite = () => {
             </ul>
           </article>
           
-          <article style={{ borderLeftColor: 'var(--accent-green)' }}>
+          <article>
             <h3>{"Marketing Organization Development"}</h3>
             <p>{
               "Build marketing capabilities that scale with your business. Transform from ad-hoc campaigns to strategic, data-driven operations with clear processes, metrics, and team structures."}
