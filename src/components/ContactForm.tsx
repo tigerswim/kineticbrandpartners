@@ -187,15 +187,17 @@ export default function ContactForm({
   });
 
   const [experience, setExperience] = useState<ExperienceEntry[]>(
-    contact?.experience || [],
+    Array.isArray(contact?.experience) ? contact.experience : [],
   );
 
   const [education, setEducation] = useState<EducationEntry[]>(
-    contact?.education || [],
+    Array.isArray(contact?.education) ? contact.education : [],
   );
 
   const [mutualConnections, setMutualConnections] = useState<string[]>(
-    contact?.mutual_connections || [],
+    Array.isArray(contact?.mutual_connections)
+      ? contact.mutual_connections
+      : [],
   );
 
   const [newConnectionName, setNewConnectionName] = useState("");
