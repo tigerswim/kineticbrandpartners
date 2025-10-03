@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
 
     // Map n8n data to contacts table structure
     const contactData = {
+      user_id: '13837e44-874d-47df-a08f-00a0314eb107',
       name: body.name,
       company: body.company || null,
       job_title: body.title || body.current_position?.title || null,
