@@ -438,7 +438,7 @@ export default function ContactForm({
 
       // Filter out the current contact and already added connections
       const currentContactName = contact?.name?.toLowerCase();
-      const existingConnections = mutualConnections.map((name) =>
+      const existingConnections = (mutualConnections || []).map((name) =>
         name.toLowerCase(),
       );
 
