@@ -1,106 +1,149 @@
 // src/lib/contacts.ts - Fixed Version with Consistent Client Usage
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Contact } from './supabase'
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Contact } from "./supabase";
 
 export interface ContactsResponse {
-  contacts: Contact[]
-  total: number
-  hasMore: boolean
+  contacts: Contact[];
+  total: number;
+  hasMore: boolean;
 }
 
 export interface ContactSearchOptions {
-  searchTerm?: string
-  limit?: number
-  offset?: number
-  sortBy?: 'name' | 'company' | 'created_at'
-  sortOrder?: 'asc' | 'desc'
+  searchTerm?: string;
+  limit?: number;
+  offset?: number;
+  sortBy?: "name" | "company" | "created_at";
+  sortOrder?: "asc" | "desc";
 }
 
 export async function getContacts(): Promise<Contact[]> {
   try {
     // Use the same client pattern throughout
-    const supabase = createClientComponentClient()
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-    
+    const supabase = createClientComponentClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return []
+      console.error("Error getting user:", userError);
+      return [];
     }
 
-    console.log('getContacts: Fetching contacts for user ID:', user.id, 'email:', user.email)
+    console.log(
+      "getContacts: Fetching contacts for user ID:",
+      user.id,
+      "email:",
+      user.email,
+    );
 
     const { data, error } = await supabase
-      .from('contacts')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .from("contacts")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
     if (error) {
-      console.error('Error fetching contacts:', error)
-      return []
+      console.error("Error fetching contacts:", error);
+      return [];
     }
 
-    console.log('getContacts: Found', data?.length || 0, 'contacts for user:', user.id)
-    return data || []
+    console.log(
+      "getContacts: Found",
+      data?.length || 0,
+      "contacts for user:",
+      user.id,
+    );
+    return data || [];
   } catch (error) {
-    console.error('Exception in getContacts:', error)
-    return []
+    console.error("Exception in getContacts:", error);
+    return [];
   }
 }
 
-export async function getContactsLite(): Promise<Pick<Contact,
-  'id' | 'name' | 'company' | 'job_title' | 'email' | 'phone' | 'current_location' | 'linkedin_url' | 'notes' | 'mutual_connections' | 'experience' | 'education' | 'created_at' | 'updated_at' | 'user_id'
->[]> {
+export async function getContactsLite(): Promise<
+  Pick<
+    Contact,
+    | "id"
+    | "name"
+    | "company"
+    | "job_title"
+    | "email"
+    | "phone"
+    | "current_location"
+    | "linkedin_url"
+    | "notes"
+    | "mutual_connections"
+    | "experience"
+    | "education"
+    | "created_at"
+    | "updated_at"
+    | "user_id"
+  >[]
+> {
   try {
-    const supabase = createClientComponentClient()
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return []
+      console.error("Error getting user:", userError);
+      return [];
     }
 
     const { data, error } = await supabase
-      .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .from("contacts")
+      .select(
+        "id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id",
+      )
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
     if (error) {
-      console.error('Error fetching contacts (lite):', error)
-      return []
+      console.error("Error fetching contacts (lite):", error);
+      return [];
     }
 
-    return (data as any) || []
+    return (data as any) || [];
   } catch (error) {
-    console.error('Exception in getContactsLite:', error)
-    return []
+    console.error("Exception in getContactsLite:", error);
+    return [];
   }
 }
 
-export async function searchContacts(options: ContactSearchOptions = {}): Promise<ContactsResponse> {
+export async function searchContacts(
+  options: ContactSearchOptions = {},
+): Promise<ContactsResponse> {
   try {
     const {
-      searchTerm = '',
+      searchTerm = "",
       limit = 50,
       offset = 0,
-      sortBy = 'created_at',
-      sortOrder = 'desc'
-    } = options
+      sortBy = "created_at",
+      sortOrder = "desc",
+    } = options;
 
-    const supabase = createClientComponentClient()
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return { contacts: [], total: 0, hasMore: false }
+      console.error("Error getting user:", userError);
+      return { contacts: [], total: 0, hasMore: false };
     }
 
     let query = supabase
-      .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id', { count: 'exact' })
-      .eq('user_id', user.id)
+      .from("contacts")
+      .select(
+        "id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id",
+        { count: "exact" },
+      )
+      .eq("user_id", user.id);
 
     if (searchTerm.trim()) {
-      const term = searchTerm.trim()
+      const term = searchTerm.trim();
       query = query.or(`
         name.ilike.%${term}%,
         company.ilike.%${term}%,
@@ -108,157 +151,229 @@ export async function searchContacts(options: ContactSearchOptions = {}): Promis
         email.ilike.%${term}%,
         current_location.ilike.%${term}%,
         notes.ilike.%${term}%
-      `)
+      `);
     }
 
-    query = query.order(sortBy, { ascending: sortOrder === 'asc' })
-    const { data, error, count } = await query.range(offset, offset + limit - 1)
+    query = query.order(sortBy, { ascending: sortOrder === "asc" });
+    const { data, error, count } = await query.range(
+      offset,
+      offset + limit - 1,
+    );
 
     if (error) {
-      console.error('Error searching contacts:', error)
-      return { contacts: [], total: 0, hasMore: false }
+      console.error("Error searching contacts:", error);
+      return { contacts: [], total: 0, hasMore: false };
     }
 
-    const total = count || 0
-    const hasMore = (offset + limit) < total
+    const total = count || 0;
+    const hasMore = offset + limit < total;
 
     return {
       contacts: (data as any) || [],
       total,
-      hasMore
-    }
+      hasMore,
+    };
   } catch (error) {
-    console.error('Exception in searchContacts:', error)
-    return { contacts: [], total: 0, hasMore: false }
+    console.error("Exception in searchContacts:", error);
+    return { contacts: [], total: 0, hasMore: false };
   }
 }
 
-export async function getContactsBatch(offset: number = 0, limit: number = 50): Promise<ContactsResponse> {
+export async function getContactsBatch(
+  offset: number = 0,
+  limit: number = 50,
+): Promise<ContactsResponse> {
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return { contacts: [], total: 0, hasMore: false }
+      console.error("Error getting user:", userError);
+      return { contacts: [], total: 0, hasMore: false };
     }
 
     const { data, error, count } = await supabase
-      .from('contacts')
-      .select('id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id', { count: 'exact' })
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1)
+      .from("contacts")
+      .select(
+        "id,name,company,job_title,email,phone,current_location,linkedin_url,notes,mutual_connections,experience,education,created_at,updated_at,user_id",
+        { count: "exact" },
+      )
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
-      console.error('Error fetching contacts batch:', error)
-      return { contacts: [], total: 0, hasMore: false }
+      console.error("Error fetching contacts batch:", error);
+      return { contacts: [], total: 0, hasMore: false };
     }
 
-    const total = count || 0
-    const hasMore = (offset + limit) < total
+    const total = count || 0;
+    const hasMore = offset + limit < total;
 
     return {
       contacts: (data as any) || [],
       total,
-      hasMore
-    }
+      hasMore,
+    };
   } catch (error) {
-    console.error('Exception in getContactsBatch:', error)
-    return { contacts: [], total: 0, hasMore: false }
+    console.error("Exception in getContactsBatch:", error);
+    return { contacts: [], total: 0, hasMore: false };
   }
 }
 
 export async function getContactById(id: string): Promise<Contact | null> {
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return null
+      console.error("Error getting user:", userError);
+      return null;
     }
 
     const { data, error } = await supabase
-      .from('contacts')
-      .select('*')
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .single()
+      .from("contacts")
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .single();
 
     if (error) {
-      console.error('Error fetching contact by id:', error)
-      return null
+      console.error("Error fetching contact by id:", error);
+      return null;
     }
 
-    return data as unknown as Contact
+    // Parse JSON string fields into arrays if they're strings
+    if (data.experience && typeof data.experience === "string") {
+      try {
+        data.experience = JSON.parse(data.experience);
+      } catch (e) {
+        console.error("Failed to parse experience JSON:", e);
+        data.experience = [];
+      }
+    }
+
+    if (data.education && typeof data.education === "string") {
+      try {
+        data.education = JSON.parse(data.education);
+      } catch (e) {
+        console.error("Failed to parse education JSON:", e);
+        data.education = [];
+      }
+    }
+
+    if (data.skills && typeof data.skills === "string") {
+      try {
+        data.skills = JSON.parse(data.skills);
+      } catch (e) {
+        console.error("Failed to parse skills JSON:", e);
+        data.skills = [];
+      }
+    }
+
+    if (data.certifications && typeof data.certifications === "string") {
+      try {
+        data.certifications = JSON.parse(data.certifications);
+      } catch (e) {
+        console.error("Failed to parse certifications JSON:", e);
+        data.certifications = [];
+      }
+    }
+
+    if (
+      data.mutual_connections &&
+      typeof data.mutual_connections === "string"
+    ) {
+      try {
+        data.mutual_connections = JSON.parse(data.mutual_connections);
+      } catch (e) {
+        console.error("Failed to parse mutual_connections JSON:", e);
+        data.mutual_connections = [];
+      }
+    }
+
+    return data as unknown as Contact;
   } catch (error) {
-    console.error('Exception in getContactById:', error)
-    return null
+    console.error("Exception in getContactById:", error);
+    return null;
   }
 }
 
 export async function getContactsByIds(ids: string[]): Promise<Contact[]> {
   try {
-    if (!ids || ids.length === 0) return []
+    if (!ids || ids.length === 0) return [];
 
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return []
+      console.error("Error getting user:", userError);
+      return [];
     }
 
     const { data, error } = await supabase
-      .from('contacts')
-      .select('*')
-      .in('id', ids)
-      .eq('user_id', user.id)
+      .from("contacts")
+      .select("*")
+      .in("id", ids)
+      .eq("user_id", user.id);
 
     if (error) {
-      console.error('Error fetching contacts by ids:', error)
-      return []
+      console.error("Error fetching contacts by ids:", error);
+      return [];
     }
 
-    return (data as unknown as Contact[]) || []
+    return (data as unknown as Contact[]) || [];
   } catch (error) {
-    console.error('Exception in getContactsByIds:', error)
-    return []
+    console.error("Exception in getContactsByIds:", error);
+    return [];
   }
 }
 
-export async function createContact(contact: Omit<Contact, 'id' | 'created_at' | 'updated_at'>): Promise<Contact | null> {
-  console.log('=== ENHANCED DEBUG: createContact started ===')
-  
+export async function createContact(
+  contact: Omit<Contact, "id" | "created_at" | "updated_at">,
+): Promise<Contact | null> {
+  console.log("=== ENHANCED DEBUG: createContact started ===");
+
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+
     // 1. Check user authentication
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-    
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
     if (userError) {
-      console.error('❌ User authentication error:', userError)
-      return null
+      console.error("❌ User authentication error:", userError);
+      return null;
     }
 
     if (!user) {
-      console.error('❌ No authenticated user')
-      return null
+      console.error("❌ No authenticated user");
+      return null;
     }
 
-    console.log('✅ User authenticated:', user.email)
+    console.log("✅ User authenticated:", user.email);
 
     // 2. Test basic table access
-    console.log('🔍 Testing table access...')
+    console.log("🔍 Testing table access...");
     const { data: testData, error: testError } = await supabase
-      .from('contacts')
-      .select('id')
-      .limit(1)
+      .from("contacts")
+      .select("id")
+      .limit(1);
 
     if (testError) {
-      console.error('❌ Table access error:', testError.message)
-      return null
+      console.error("❌ Table access error:", testError.message);
+      return null;
     }
 
-    console.log('✅ Table access successful')
+    console.log("✅ Table access successful");
 
     // 3. Prepare insert data
     const insertData = {
@@ -273,124 +388,151 @@ export async function createContact(contact: Omit<Contact, 'id' | 'created_at' |
       experience: contact.experience || null,
       education: contact.education || null,
       mutual_connections: contact.mutual_connections || null,
-      user_id: user.id
-    }
+      user_id: user.id,
+    };
 
-    console.log('🔧 Prepared insert data:', insertData)
+    console.log("🔧 Prepared insert data:", insertData);
 
     // 4. Attempt the insert
     const { data, error } = await supabase
-      .from('contacts')
+      .from("contacts")
       .insert([insertData])
       .select()
-      .single()
+      .single();
 
     if (error) {
-      console.error('❌ Insert failed:', error.message)
-      return null
+      console.error("❌ Insert failed:", error.message);
+      return null;
     }
 
-    console.log('✅ Contact created successfully:', data)
-    return data
-
+    console.log("✅ Contact created successfully:", data);
+    return data;
   } catch (exception) {
-    console.error('❌ Exception in createContact:', exception)
-    return null
+    console.error("❌ Exception in createContact:", exception);
+    return null;
   }
 }
 
-export async function updateContact(id: string, contactData: Partial<Omit<Contact, 'id' | 'created_at' | 'updated_at' | 'user_id'>>): Promise<Contact | null> {
+export async function updateContact(
+  id: string,
+  contactData: Partial<
+    Omit<Contact, "id" | "created_at" | "updated_at" | "user_id">
+  >,
+): Promise<Contact | null> {
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    console.log('Updating contact with data:', contactData)
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    console.log("Updating contact with data:", contactData);
 
     const { data, error } = await supabase
-      .from('contacts')
-      .update({ 
-        ...contactData, 
-        updated_at: new Date().toISOString() 
+      .from("contacts")
+      .update({
+        ...contactData,
+        updated_at: new Date().toISOString(),
       })
-      .eq('id', id)
+      .eq("id", id)
       .select()
-      .single()
+      .single();
 
     if (error) {
-      console.error('Error updating contact:', error)
-      return null
+      console.error("Error updating contact:", error);
+      return null;
     }
 
-    console.log('Contact updated successfully:', data)
-    return data
+    console.log("Contact updated successfully:", data);
+    return data;
   } catch (error) {
-    console.error('Exception in updateContact:', error)
-    return null
+    console.error("Exception in updateContact:", error);
+    return null;
   }
 }
 
 export async function deleteContact(id: string): Promise<boolean> {
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    const { error } = await supabase
-      .from('contacts')
-      .delete()
-      .eq('id', id)
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    const { error } = await supabase.from("contacts").delete().eq("id", id);
 
     if (error) {
-      console.error('Error deleting contact:', error)
-      return false
+      console.error("Error deleting contact:", error);
+      return false;
     }
 
-    return true
+    return true;
   } catch (error) {
-    console.error('Exception in deleteContact:', error)
-    return false
+    console.error("Exception in deleteContact:", error);
+    return false;
   }
 }
 
 export async function getContactStats(): Promise<{
-  total: number
-  withEmail: number
-  withPhone: number
-  withLinkedIn: number
-  withLocation: number
-  withJobs: number
+  total: number;
+  withEmail: number;
+  withPhone: number;
+  withLinkedIn: number;
+  withLocation: number;
+  withJobs: number;
 }> {
   try {
-    const supabase = createClientComponentClient() // ✅ Fixed: Use consistent client
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const supabase = createClientComponentClient(); // ✅ Fixed: Use consistent client
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (userError || !user) {
-      console.error('Error getting user:', userError)
-      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
+      console.error("Error getting user:", userError);
+      return {
+        total: 0,
+        withEmail: 0,
+        withPhone: 0,
+        withLinkedIn: 0,
+        withLocation: 0,
+        withJobs: 0,
+      };
     }
 
     const { data, error } = await supabase
-      .from('contacts')
-      .select(`
+      .from("contacts")
+      .select(
+        `
         id,
         email,
         phone,
         current_location,
         linkedin_url
-      `)
-      .eq('user_id', user.id)
+      `,
+      )
+      .eq("user_id", user.id);
 
     if (error) {
-      console.error('Error fetching contact stats:', error)
-      return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
+      console.error("Error fetching contact stats:", error);
+      return {
+        total: 0,
+        withEmail: 0,
+        withPhone: 0,
+        withLinkedIn: 0,
+        withLocation: 0,
+        withJobs: 0,
+      };
     }
 
-    const contacts = data || []
-    
+    const contacts = data || [];
+
     return {
       total: contacts.length,
-      withEmail: contacts.filter(c => c.email).length,
-      withPhone: contacts.filter(c => c.phone).length,
-      withLinkedIn: contacts.filter(c => c.linkedin_url).length,
-      withLocation: contacts.filter(c => c.current_location).length,
-      withJobs: 0
-    }
+      withEmail: contacts.filter((c) => c.email).length,
+      withPhone: contacts.filter((c) => c.phone).length,
+      withLinkedIn: contacts.filter((c) => c.linkedin_url).length,
+      withLocation: contacts.filter((c) => c.current_location).length,
+      withJobs: 0,
+    };
   } catch (error) {
-    console.error('Exception in getContactStats:', error)
-    return { total: 0, withEmail: 0, withPhone: 0, withLinkedIn: 0, withLocation: 0, withJobs: 0 }
+    console.error("Exception in getContactStats:", error);
+    return {
+      total: 0,
+      withEmail: 0,
+      withPhone: 0,
+      withLinkedIn: 0,
+      withLocation: 0,
+      withJobs: 0,
+    };
   }
 }
