@@ -105,7 +105,41 @@ export async function getContactsLite(): Promise<
       return [];
     }
 
-    return (data as any) || [];
+    // Parse JSON string fields into arrays if they're strings
+    const parsedData = (data || []).map((contact) => {
+      const parsed = { ...contact };
+
+      if (parsed.experience && typeof parsed.experience === "string") {
+        try {
+          parsed.experience = JSON.parse(parsed.experience);
+        } catch (e) {
+          parsed.experience = [];
+        }
+      }
+
+      if (parsed.education && typeof parsed.education === "string") {
+        try {
+          parsed.education = JSON.parse(parsed.education);
+        } catch (e) {
+          parsed.education = [];
+        }
+      }
+
+      if (
+        parsed.mutual_connections &&
+        typeof parsed.mutual_connections === "string"
+      ) {
+        try {
+          parsed.mutual_connections = JSON.parse(parsed.mutual_connections);
+        } catch (e) {
+          parsed.mutual_connections = [];
+        }
+      }
+
+      return parsed;
+    });
+
+    return parsedData as any;
   } catch (error) {
     console.error("Exception in getContactsLite:", error);
     return [];
