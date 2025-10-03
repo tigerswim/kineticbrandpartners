@@ -450,7 +450,7 @@ export default function ContactForm({
             .filter((name) => name)
         : [];
 
-      const suggestions = allContacts
+      const suggestions = (allContacts || [])
         .map((c) => c.name)
         .filter((name) => {
           const nameLower = name.toLowerCase();
