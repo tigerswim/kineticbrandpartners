@@ -206,10 +206,7 @@ export const dbHelpers = {
         .from('race_results')
         .select(`
           *,
-          races (
-            *,
-            courses (*)
-          )
+          user_races (*)
         `)
         .order('created_at', { ascending: false });
       return { data, error };
@@ -221,10 +218,7 @@ export const dbHelpers = {
         .from('race_results')
         .select(`
           *,
-          races (
-            *,
-            courses (*)
-          )
+          user_races (*)
         `)
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
@@ -238,10 +232,7 @@ export const dbHelpers = {
         .insert(raceResult)
         .select(`
           *,
-          races (
-            *,
-            courses (*)
-          )
+          user_races (*)
         `)
         .single();
       return { data, error };
@@ -255,10 +246,7 @@ export const dbHelpers = {
         .eq('id', resultId)
         .select(`
           *,
-          races (
-            *,
-            courses (*)
-          )
+          user_races (*)
         `)
         .single();
       return { data, error };
