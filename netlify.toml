@@ -1,0 +1,7 @@
+# Root-level netlify.toml
+# Each project (job-tracker, marketing-site) has its own netlify.toml
+# Base directory must be configured in Netlify dashboard for each site
+
+# This file intentionally minimal - configuration is in:
+# - job-tracker/netlify.toml
+# - marketing-site/netlify.toml
