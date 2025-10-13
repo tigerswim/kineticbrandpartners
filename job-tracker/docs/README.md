@@ -12,6 +12,12 @@ Welcome to the Job Tracker documentation. This directory contains comprehensive 
 - **[API Documentation](API.md)**: REST API endpoints, request/response formats, and data models
 - **[UI Components](COMPONENTS.md)**: Custom component library with usage examples and styling guidelines
 
+## Planning & Strategy
+
+- **[Database Migration Plan](planning/database-migration-plan.md)**: LinkedIn integration database schema updates
+- **[LinkedIn Integration User Stories](planning/linkedin-integration-user-stories.md)**: Feature requirements and user stories
+- **[User Journey Map](planning/user-journey-map.md)**: User experience flows and touchpoints
+
 ## Quick Navigation
 
 ### For Developers

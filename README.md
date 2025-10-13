@@ -1,207 +1,195 @@
-# Job Tracker
+# Kinetic Brand Partners - Development Workspace
 
-A comprehensive job application tracking and contact management system built with Next.js, TypeScript, and Supabase. Designed for job seekers to organize their applications, manage professional contacts, track interactions, and set follow-up reminders.
+This directory contains multiple projects for Kinetic Brand Partners and related applications.
 
-## Features
+## 📁 Projects
 
-### 🎯 Job Management
-- **Application Tracking**: Track job applications with statuses (interested, applied, interviewing, on hold, offered, rejected)
-- **Detailed Information**: Store job title, company, location, salary, job URL, description, and personal notes
-- **Status Management**: Visual status indicators and filtering
-- **Application Timeline**: Track application dates and progression
+### [job-tracker/](job-tracker/)
+**Job Application & Contact Management System**
 
-### 👥 Contact Management  
-- **Professional Network**: Maintain detailed contact profiles with work experience, education, and personal notes
-- **Rich Contact Profiles**: Store email, phone, location, LinkedIn profiles, current role, and detailed work history
-- **Contact-Job Linking**: Associate contacts with specific job applications and track relationships
-- **Interaction Tracking**: Log all communications and touchpoints with contacts
+A comprehensive job tracking and professional networking application built with Next.js, TypeScript, and Supabase.
 
-### 💬 Interaction System
-- **Communication Logging**: Record emails, phone calls, video calls, LinkedIn messages, meetings, and other interactions
-- **Detailed Notes**: Resizable text areas for comprehensive interaction documentation
-- **Timeline View**: Chronological view of all contact interactions
-- **Type-Based Organization**: Categorized interaction types with visual indicators
+- **Repository**: Part of this monorepo (`https://github.com/tigerswim/kineticbrandpartners.git`)
+- **Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS 4, Supabase
+- **Deployment**: Netlify
+- **Port**: 3001 (development)
 
-### ⏰ Reminder System
-- **Smart Reminders**: Set follow-up reminders for applications and contacts
-- **Email Notifications**: Automated email reminders for important follow-ups
-- **Reminder Management**: Create, edit, and track reminder status
-- **Statistics Dashboard**: Overview of reminder metrics and completion rates
+**Key Features:**
+- Job application tracking with status management
+- Contact relationship management
+- Interaction logging and communication history
+- Smart reminder system with email notifications
+- Analytics and reporting dashboard
 
-### 📊 Reporting & Analytics
-- **Application Analytics**: Visual insights into job search progress
-- **Contact Statistics**: Network growth and engagement metrics  
-- **Performance Tracking**: Success rates and timeline analysis
-- **Data Export**: CSV export functionality for external analysis
-
-### 🎨 Enhanced UI/UX
-- **Responsive Design**: Optimized for desktop and mobile devices
-- **Bottom Sheet Modals**: Mobile-first modal system for better UX
-- **Resizable Components**: Drag-to-resize text areas and panels
-- **Smart Forms**: Auto-saving forms with validation and null-value handling
-- **Compact Layouts**: Data-dense interfaces with expandable content
-
-## Technology Stack
-
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS 4 with custom component system
-- **Database**: Supabase (PostgreSQL) with real-time capabilities
-- **Authentication**: Supabase Auth with secure session management
-- **Icons**: Lucide React for consistent iconography
-- **Deployment**: Optimized for Vercel deployment
-
-## Prerequisites
-
-- Node.js 18+ 
-- npm, yarn, pnpm, or bun
-- Supabase account and project
-- Modern web browser with JavaScript enabled
-
-## Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/tigerswim/job-tracker.git
-   cd job-tracker
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. **Environment Setup**
-   
-   Create a `.env.local` file in the root directory:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   
-   Add your Supabase credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Database Setup**
-   
-   Run the Supabase migrations to set up your database schema:
-   - Jobs table with application tracking fields
-   - Contacts table with professional profile data
-   - Interactions table for communication logging
-   - Reminders table with notification system
-   - User authentication and row-level security
-
-5. **Start Development Server**
-   ```bash
-   npm run dev
-   ```
-   
-   Open [http://localhost:3001](http://localhost:3001) in your browser.
-
-## Usage
-
-### Getting Started
-1. **Sign Up/Login**: Create an account or sign in with existing credentials
-2. **Add Jobs**: Start by adding job applications you're interested in or have applied to
-3. **Manage Contacts**: Add professional contacts from your network
-4. **Track Interactions**: Log communications and meetings
-5. **Set Reminders**: Schedule follow-ups and important dates
-
-### Key Workflows
-
-#### Job Application Management
-- Add new job applications with complete details
-- Update application status as you progress through the hiring process
-- Link relevant contacts to each job application
-- Set reminders for follow-ups and important dates
-
-#### Contact Relationship Building
-- Create detailed professional profiles with work history and education
-- Track all interactions and communications
-- Leverage mutual connections and networking opportunities
-- Maintain notes on conversations and relationship context
-
-#### Communication Tracking
-- Log every touchpoint with contacts and hiring managers
-- Use resizable text areas for detailed interaction notes
-- Categorize interactions by type (email, phone, meeting, etc.)
-- Build a comprehensive communication timeline
-
-## Architecture
-
-### Core Components
-
-- **ContactList**: Main contact management interface with modal views
-- **JobList**: Job application tracking with status management
-- **InteractionForm/List**: Communication logging system
-- **ReminderSystem**: Follow-up scheduling and notifications
-- **Reporting**: Analytics and insights dashboard
-
-### Enhanced UI Components
-
-- **ResizableTextArea**: Drag-to-resize text inputs for detailed notes
-- **BottomSheet**: Mobile-optimized modal system
-- **ResizablePanel**: Adjustable layout panels
-- **TruncatedText**: Expandable content with show more/less functionality
-
-### Data Models
-
-- **Jobs**: Application details, status, timeline
-- **Contacts**: Professional profiles, work history, education
-- **Interactions**: Communication logs, meeting notes
-- **Reminders**: Follow-up scheduling, notification status
-
-## API Routes
-
-- `GET/POST /api/contacts` - Contact management
-- `GET/POST /api/reminders` - Reminder system
-- `GET /api/reminders/stats` - Reminder analytics
-- `PUT/DELETE /api/reminders/[id]` - Individual reminder management
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Use the established component patterns
-- Maintain responsive design principles
-- Write clear, descriptive commit messages
-- Test functionality across desktop and mobile devices
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on every push to main branch
-
-### Manual Deployment
-
-```bash
-npm run build
-npm run start
-```
-
-## License
-
-This project is private and proprietary. All rights reserved.
-
-## Support
-
-For questions, issues, or feature requests, please create an issue in the GitHub repository or contact the development team.
+[→ View job-tracker README](job-tracker/README.md)
 
 ---
 
-Built with ❤️ for job seekers looking to organize and accelerate their career search.
+### [marketing-site/](marketing-site/)
+**Kinetic Brand Partners Marketing Website**
+
+The official marketing website showcasing services, team, and brand development approach.
+
+- **Repository**: Part of this monorepo (`https://github.com/tigerswim/kineticbrandpartners.git`)
+- **Tech Stack**: Next.js, TypeScript, Tailwind CSS
+- **Deployment**: Netlify
+- **Port**: 3000 (development)
+
+**Key Features:**
+- Modern responsive design
+- Service portfolio showcase
+- Team profiles and company information
+- Optimized for performance and SEO
+
+[→ View marketing-site README](marketing-site/README.md)
+
+---
+
+### [RacePrep/](RacePrep/)
+**Triathlon Training & Race Analytics**
+
+Mobile-first triathlon tracking application for beginner to intermediate triathletes.
+
+- **Repository**: Standalone (`https://github.com/tigerswim/raceprep.git`)
+- **Tech Stack**: React Native, Expo, TypeScript, Supabase
+- **Platform**: iOS & Android
+- **Status**: Active development (Phase 2 complete, Phase 3 in progress)
+
+**Key Features:**
+- Comprehensive race analysis with transition tracking
+- Strava integration for training data
+- Race discovery and planning tools
+- Performance analytics and predictions
+- Beautiful mobile experience with dark theme
+
+[→ View RacePrep README](RacePrep/README.md)
+
+---
+
+### [sagenet-website/](sagenet-website/)
+**SageNet Corporate Website**
+
+Corporate website project for SageNet network infrastructure services.
+
+- **Repository**: Standalone (`https://github.com/tigerswim/sagenet-website.git`)
+- **Status**: Build files only (source in separate repository)
+
+---
+
+## 🚀 Quick Start
+
+### Clone the Monorepo
+```bash
+git clone https://github.com/tigerswim/kineticbrandpartners.git
+cd kineticbrandpartners
+```
+
+### Install Dependencies (per project)
+```bash
+# Job Tracker
+cd job-tracker && npm install
+
+# Marketing Site
+cd ../marketing-site && npm install
+
+# RacePrep (separate repo)
+cd ../RacePrep && npm install
+```
+
+### Development Servers
+```bash
+# Job Tracker (port 3001)
+cd job-tracker && npm run dev
+
+# Marketing Site (port 3000)
+cd marketing-site && npm run dev
+
+# RacePrep (Expo)
+cd RacePrep && npx expo start
+```
+
+## 🗂️ Repository Structure
+
+```
+kineticbrandpartners/
+├── job-tracker/           # Job tracking app (monorepo)
+│   ├── src/              # Source code
+│   ├── docs/             # Documentation
+│   ├── public/           # Static assets
+│   └── supabase/         # Supabase functions
+│
+├── marketing-site/        # Marketing website (monorepo)
+│   ├── src/              # Source code
+│   ├── public/           # Static assets
+│   └── cypress/          # E2E tests
+│
+├── RacePrep/             # Triathlon app (standalone repo)
+│   ├── app/              # React Native app
+│   ├── components/       # Reusable components
+│   └── src/              # Additional source
+│
+├── sagenet-website/       # SageNet site (standalone repo)
+│   ├── build/            # Production build
+│   └── src/              # Source (minimal)
+│
+└── README.md             # This file
+```
+
+## 🔗 Git Repositories
+
+| Project | Repository URL | Type |
+|---------|---------------|------|
+| job-tracker | `https://github.com/tigerswim/kineticbrandpartners.git` | Monorepo |
+| marketing-site | `https://github.com/tigerswim/kineticbrandpartners.git` | Monorepo |
+| RacePrep | `https://github.com/tigerswim/raceprep.git` | Standalone |
+| sagenet-website | `https://github.com/tigerswim/sagenet-website.git` | Standalone |
+
+## 📝 Development Notes
+
+### Monorepo Projects (job-tracker, marketing-site)
+- Share the same git repository
+- Deployed separately via Netlify
+- Independent package.json and dependencies
+- Commit changes affect both projects
+
+### Standalone Projects (RacePrep, sagenet-website)
+- Have their own git repositories
+- Managed independently
+- Located in this workspace for convenience
+- Push/pull from their respective remotes
+
+## 🛠️ Technology Stack Overview
+
+### Frontend Frameworks
+- **Next.js 15** (job-tracker, marketing-site)
+- **React Native / Expo** (RacePrep)
+
+### Styling
+- **Tailwind CSS 4** (job-tracker, marketing-site)
+- **React Native StyleSheet** (RacePrep)
+
+### Database & Backend
+- **Supabase** (PostgreSQL, Auth, Real-time)
+- **Netlify Functions** (serverless)
+
+### Deployment
+- **Netlify** (job-tracker, marketing-site)
+- **Expo EAS** (RacePrep mobile apps)
+
+## 📚 Additional Resources
+
+- **job-tracker Documentation**: [job-tracker/docs/](job-tracker/docs/)
+- **RacePrep Documentation**: [RacePrep/DOCUMENTATION_INDEX.md](RacePrep/DOCUMENTATION_INDEX.md)
+- **Development Plans**: See individual project READMEs
+
+## 🤝 Contributing
+
+Each project has its own contribution guidelines. See individual README files for details.
+
+## 📄 License
+
+All projects are private and proprietary. All rights reserved.
+
+---
+
+**Last Updated**: October 2025

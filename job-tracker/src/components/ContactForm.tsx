@@ -187,17 +187,15 @@ export default function ContactForm({
   });
 
   const [experience, setExperience] = useState<ExperienceEntry[]>(
-    Array.isArray(contact?.experience) ? contact.experience : [],
+    contact?.experience || [],
   );
 
   const [education, setEducation] = useState<EducationEntry[]>(
-    Array.isArray(contact?.education) ? contact.education : [],
+    contact?.education || [],
   );
 
   const [mutualConnections, setMutualConnections] = useState<string[]>(
-    Array.isArray(contact?.mutual_connections)
-      ? contact.mutual_connections
-      : [],
+    contact?.mutual_connections || [],
   );
 
   const [newConnectionName, setNewConnectionName] = useState("");
@@ -440,7 +438,7 @@ export default function ContactForm({
 
       // Filter out the current contact and already added connections
       const currentContactName = contact?.name?.toLowerCase();
-      const existingConnections = (mutualConnections || []).map((name) =>
+      const existingConnections = mutualConnections.map((name) =>
         name.toLowerCase(),
       );
 
@@ -452,7 +450,7 @@ export default function ContactForm({
             .filter((name) => name)
         : [];
 
-      const suggestions = (allContacts || [])
+      const suggestions = allContacts
         .map((c) => c.name)
         .filter((name) => {
           const nameLower = name.toLowerCase();

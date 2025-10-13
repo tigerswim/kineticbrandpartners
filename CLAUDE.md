@@ -1,135 +1,225 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this workspace.
 
-## Development Commands
+## Workspace Overview
 
-### Core Development
-- `npm run dev` - Start development server with TurboNext (port 3000)
-- `npm run build` - Build production version
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint (note: currently ignores build errors via next.config.js)
+This workspace contains multiple projects with different structures and purposes:
 
-### Environment Setup
-Ensure `.env.local` contains required Supabase credentials:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- **job-tracker/** - Next.js job tracking app (monorepo project)
+- **marketing-site/** - Next.js marketing website (monorepo project)
+- **RacePrep/** - React Native triathlon app (standalone repository)
+- **sagenet-website/** - Static website (standalone repository)
 
-## Architecture Overview
+## Repository Structure
 
-### Tech Stack
-- **Framework**: Next.js 15 with App Router
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth with Google OAuth
-- **Styling**: TailwindCSS 4.x
-- **Language**: TypeScript with strict mode
-- **Deployment**: Netlify (configured via netlify.toml)
+### Monorepo Projects
+**job-tracker** and **marketing-site** share the same git repository:
+- Remote: `https://github.com/tigerswim/kineticbrandpartners.git`
+- Branch: `main`
+- Commits affect both projects
+- Deployed separately via Netlify
 
-### Project Structure
+### Standalone Projects
+**RacePrep** and **sagenet-website** have their own repositories:
+- RacePrep: `https://github.com/tigerswim/raceprep.git`
+- sagenet-website: `https://github.com/tigerswim/sagenet-website.git`
+
+## Working with Projects
+
+### Before Starting Work
+1. **Verify current directory** - Use `pwd` to confirm location
+2. **Check git remote** - Run `git remote -v` to confirm correct repository
+3. **Read project-specific CLAUDE.md** - Each project may have additional guidance
+
+### Project-Specific Commands
+
+#### job-tracker
+```bash
+cd /Users/danhoeller/Website Development/kineticbrandpartners/job-tracker
+npm run dev      # Port 3001
+npm run build
+npm run lint
 ```
-src/
-├── app/                    # App Router pages and API routes
-│   ├── api/               # REST API endpoints
-│   │   ├── contacts/      # Contact CRUD operations  
-│   │   ├── jobs/          # Job application management
-│   │   ├── reminders/     # Email reminder system
-│   │   └── interactions/  # Contact interaction logging
-│   ├── layout.tsx         # Root layout with Geist fonts
-│   └── page.tsx          # Main dashboard with tabs
-├── components/            # React components
-│   ├── modals/           # Modal dialogs
-│   └── reminder-actions/ # Reminder-specific components
-└── lib/                  # Shared utilities and types
-    ├── types/           # TypeScript interfaces
-    └── *.ts            # Database queries and business logic
+- See [job-tracker/CLAUDE.md](job-tracker/CLAUDE.md) for detailed guidance
+- Tech: Next.js 15, TypeScript, Tailwind CSS 4, Supabase
+
+#### marketing-site
+```bash
+cd /Users/danhoeller/Website Development/kineticbrandpartners/marketing-site
+npm run dev      # Port 3000
+npm run build
+npm run lint
+```
+- Tech: Next.js, TypeScript, Tailwind CSS
+
+#### RacePrep
+```bash
+cd /Users/danhoeller/Website Development/kineticbrandpartners/RacePrep
+npx expo start
+npm run ios
+npm run android
+```
+- See [RacePrep/CONTEXT.md](RacePrep/CONTEXT.md) and [RacePrep/QUICKSTART.md](RacePrep/QUICKSTART.md)
+- Tech: React Native, Expo, TypeScript, Supabase
+
+## Important Paths
+
+### job-tracker
+- Source: `job-tracker/src/`
+- Config: `job-tracker/` (root level - next.config.js, tsconfig.json, etc.)
+- Docs: `job-tracker/docs/`
+- API: `job-tracker/src/app/api/`
+
+### marketing-site
+- Source: `marketing-site/src/`
+- Tests: `marketing-site/cypress/`
+- Public: `marketing-site/public/`
+
+### RacePrep
+- Source: `RacePrep/app/`, `RacePrep/components/`, `RacePrep/src/`
+- Config: `RacePrep/app.json`, `RacePrep/package.json`
+
+## Git Workflow
+
+### For Monorepo Changes (job-tracker, marketing-site)
+```bash
+cd /Users/danhoeller/Website Development/kineticbrandpartners
+git status
+git add job-tracker/  # or marketing-site/
+git commit -m "Description"
+git push origin main
 ```
 
-### Database Schema
-Core tables managed via Supabase:
-- **contacts** - Professional network contacts with experience/education JSON fields
-- **jobs** - Job applications with status tracking ('interested' | 'applied' | 'interviewing' | 'onhold' | 'offered' | 'rejected')
-- **interactions** - Contact communication log
-- **email_reminders** - Scheduled email system with timezone support
-- **job_contacts** - Many-to-many relationship between jobs and contacts
+### For Standalone Projects (RacePrep)
+```bash
+cd /Users/danhoeller/Website Development/kineticbrandpartners/RacePrep
+git status
+git add .
+git commit -m "Description"
+git push origin main  # Pushes to raceprep.git
+```
 
-### Authentication & Authorization
-- Supabase middleware (`middleware.ts`) handles session refresh
-- Row Level Security (RLS) enforced via `user_id` field on all tables
-- Client-side auth state managed via `@supabase/auth-helpers-nextjs`
-- API routes use `createRouteHandlerClient` for server-side auth
+## Deployment
 
-## Key Components
+### job-tracker
+- **Platform**: Netlify
+- **Config**: `job-tracker/netlify.toml`
+- **Trigger**: Push to main branch
+- **Environment Variables**: Set in Netlify dashboard
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `NETLIFY_DATABASE_URL` (optional)
 
-### Main Application (`src/app/page.tsx`)
-Tab-based dashboard with four main sections:
-- **Job Pipeline**: Job application tracking with status filters
-- **Network**: Contact management with pagination and search
-- **Reporting**: Analytics and insights dashboard
-- **Data Hub**: CSV import/export functionality
+### marketing-site
+- **Platform**: Netlify
+- **Build Command**: `npm run build`
+- **Publish Directory**: `out/`
+- **Trigger**: Push to main branch
 
-### API Patterns
-All API routes follow consistent patterns:
-- User authentication check via Supabase client
-- Graceful handling of unauthenticated requests (return empty data vs 401)
-- Pagination with offset/limit parameters
-- Search functionality via Supabase `ilike` queries
-- Proper TypeScript typing for request/response objects
+### RacePrep
+- **Platform**: Expo EAS
+- **iOS/Android**: Separate build configurations
+- **See**: RacePrep documentation for mobile deployment
 
-### Component Architecture
-- Client components use `'use client'` directive
-- Supabase client created via `createClientComponentClient()`
-- Form handling with controlled components
-- Modal dialogs for data entry/editing
-- Responsive design with TailwindCSS utilities
+## Common Tasks
 
-## Development Patterns
+### Adding a new npm package
+```bash
+# For job-tracker
+cd job-tracker && npm install <package>
 
-### TypeScript Usage
-- Strict TypeScript configuration with path aliases (`@/*` maps to `./src/*`)
-- Comprehensive type definitions in `src/lib/types/`
-- Interface-driven development with proper type exports
-- Database types mirror Supabase table schemas
+# For marketing-site
+cd marketing-site && npm install <package>
 
-### State Management
-- React hooks for local state (useState, useEffect)
-- Supabase real-time subscriptions for live data
-- Auth state managed globally via Supabase context
-- No external state management library (Redux, Zustand) used
+# For RacePrep
+cd RacePrep && npm install <package>
+```
 
-### Error Handling
-- API routes return appropriate HTTP status codes
-- Client-side error boundaries for component failures
-- Graceful degradation for authentication failures
-- Console logging for debugging (should be replaced with proper logging in production)
+### Running tests
+```bash
+# job-tracker (if tests exist)
+cd job-tracker && npm test
 
-### Email Reminders System
-Sophisticated scheduling system with:
-- Timezone-aware scheduling with user preference storage
-- Rate limiting (max 100 active, 15 daily reminders)
-- Status tracking (pending/sent/failed/cancelled)
-- Integration with jobs and contacts for contextual reminders
-- Supabase Edge Functions for email processing
+# marketing-site (Cypress)
+cd marketing-site && npm run cypress:open
+```
 
-## Configuration Notes
+### Checking TypeScript errors
+```bash
+cd job-tracker && npx tsc --noEmit
+cd marketing-site && npx tsc --noEmit
+cd RacePrep && npx tsc --noEmit
+```
 
-### Next.js Configuration
-- ESLint and TypeScript errors ignored during builds (see `next.config.js`)
-- TurboNext enabled for development
-- Path aliases configured in `tsconfig.json`
+## File Organization Rules
 
-### Database Connection
-- Dual database support: Supabase for main app, Neon for additional features
-- Environment variable fallback chain: `NETLIFY_DATABASE_URL` → `DATABASE_URL` → `NEON_DATABASE_URL`
+### ✅ Correct Structure
+- All job-tracker files in `job-tracker/` directory
+- All marketing-site files in `marketing-site/` directory
+- All RacePrep files in `RacePrep/` directory
+- Root level only contains: README.md, CLAUDE.md, .git/, project directories
 
-### Styling
-- TailwindCSS 4.x with PostCSS configuration
-- Custom gradient backgrounds and modern UI patterns
-- Responsive design mobile-first approach
-- Lucide React for icons
+### ❌ Avoid
+- Placing project-specific files at workspace root
+- Mixing files between projects
+- Creating duplicate directories
 
-## Testing & Quality
-Currently no automated testing setup. When adding tests:
-- Consider Vitest for unit testing (Next.js compatible)
-- Playwright for E2E testing
-- Mock Supabase client for component tests
-- Test database operations with test data
+## Environment Variables
+
+Each project has its own `.env.local` file:
+
+```
+job-tracker/.env.local
+marketing-site/.env.local
+RacePrep/.env
+```
+
+**Never commit .env files to git!**
+
+## Documentation
+
+### Key Documentation Files
+- **Workspace**: `/README.md` (this workspace overview)
+- **job-tracker**: `job-tracker/README.md`, `job-tracker/CLAUDE.md`, `job-tracker/docs/`
+- **marketing-site**: `marketing-site/README.md`
+- **RacePrep**: `RacePrep/README.md`, `RacePrep/DOCUMENTATION_INDEX.md`, `RacePrep/CONTEXT.md`
+
+### When to Read Documentation
+- **Before starting work** - Understand project context
+- **When encountering errors** - Check troubleshooting guides
+- **For API changes** - Review API documentation
+- **For deployment** - Check deployment guides
+
+## Best Practices
+
+1. **Always verify you're in the correct directory** before running commands
+2. **Check git remote** before committing to avoid pushing to wrong repository
+3. **Read project-specific CLAUDE.md** for detailed project guidance
+4. **Use project-specific npm scripts** as defined in each package.json
+5. **Keep dependencies separate** between projects
+6. **Test locally** before committing changes
+7. **Follow existing code patterns** within each project
+
+## Getting Help
+
+- **job-tracker**: See `job-tracker/docs/` for comprehensive documentation
+- **RacePrep**: See `RacePrep/DOCUMENTATION_INDEX.md` for complete documentation catalog
+- **Issues**: Create issues in respective GitHub repositories
+- **Questions**: Refer to project-specific README files
+
+## Quick Reference
+
+| Task | Command | Directory |
+|------|---------|-----------|
+| Start job-tracker dev server | `npm run dev` | job-tracker/ |
+| Start marketing-site dev server | `npm run dev` | marketing-site/ |
+| Start RacePrep | `npx expo start` | RacePrep/ |
+| Build job-tracker | `npm run build` | job-tracker/ |
+| Run job-tracker lint | `npm run lint` | job-tracker/ |
+| Check git repo | `git remote -v` | Any directory |
+
+---
+
+**Last Updated**: October 2025
+**Workspace Root**: `/Users/danhoeller/Website Development/kineticbrandpartners/`
