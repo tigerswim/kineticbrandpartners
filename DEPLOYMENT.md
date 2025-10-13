@@ -27,7 +27,7 @@ This workspace uses a **monorepo** for related projects and **standalone reposit
 2. **Base directory**: `job-tracker`
 3. **Build command**: `npm run build`
 4. **Publish directory**: `job-tracker/.next`
-5. **Node version**: 18
+5. **Node version**: 20 (Active LTS)
 
 **Environment Variables (Netlify Dashboard):**
 ```
@@ -48,7 +48,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 2. **Base directory**: `marketing-site`
 3. **Build command**: `npm run build`
 4. **Publish directory**: `marketing-site/out`
-5. **Node version**: 18
+5. **Node version**: 20 (Active LTS)
 
 **Configuration File**: `marketing-site/netlify.toml` (within project directory)
 
@@ -63,7 +63,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 2. **Base directory**: (root)
 3. **Build command**: `npm run build`
 4. **Publish directory**: `build`
-5. **Node version**: 18
+5. **Node version**: 20 (Active LTS)
 
 **Branch**: `main`
 

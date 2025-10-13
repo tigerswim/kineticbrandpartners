@@ -17,8 +17,10 @@ After the recent workspace restructuring, you need to configure **base directori
    - **Base directory**: `job-tracker`
    - **Build command**: `npm run build`
    - **Publish directory**: `job-tracker/.next`
-   - **Node version**: 18 (under Environment)
 5. **Save** changes
+6. Scroll down to **Dependency management** section
+7. Set **Node.js version**: `20` (or leave blank to use default from netlify.toml)
+8. **Save** if changed
 
 ### 2. marketing-site (kineticbrandpartners.com) Configuration
 
@@ -29,8 +31,10 @@ After the recent workspace restructuring, you need to configure **base directori
    - **Base directory**: `marketing-site`
    - **Build command**: `npm run build`
    - **Publish directory**: `marketing-site/out`
-   - **Node version**: 18 (under Environment)
 5. **Save** changes
+6. Scroll down to **Dependency management** section
+7. Set **Node.js version**: `20` (or leave blank to use default from netlify.toml)
+8. **Save** if changed
 
 ### 3. Verify Environment Variables (job-tracker only)
 
@@ -54,6 +58,7 @@ After configuration:
 ### Before
 - Configuration files were at repository root
 - Base directory was unclear/misconfigured
+- Node.js version 18 (now End of Life)
 
 ### After
 - Each project has its own `netlify.toml` inside its directory:
@@ -61,6 +66,13 @@ After configuration:
   - `marketing-site/netlify.toml`
 - Base directory **must be set in Netlify dashboard** for each site
 - Repository structure is now clear and organized
+- **Node.js version upgraded to 20** (Active LTS, supported until April 2026)
+
+### Note on Node.js Version
+- Node 18 reached End of Life in April 2025
+- Node 20 is the current Active LTS version
+- Both netlify.toml files now specify `NODE_VERSION = "20"`
+- You can also set this in Netlify dashboard under **Dependency management**
 
 ---
 
