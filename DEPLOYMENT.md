@@ -1,45 +1,22 @@
 # Deployment Guide
 
-This document provides deployment configuration for all projects in the kineticbrandpartners workspace.
+This document provides deployment configuration for the kineticbrandpartners repository.
 
 ## Repository Structure
 
-This workspace uses a **monorepo** for related projects and **standalone repositories** for independent projects:
-
-### Monorepo Projects
-- **job-tracker/** - Deployed to Netlify
-- **marketing-site/** - Deployed to Netlify
+This repository contains only the **marketing-site** project:
 
 **Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
+- **marketing-site/** - Next.js marketing website deployed to Netlify
 
-### Standalone Projects
-- **RacePrep/** - Deployed via Expo EAS (repo: `https://github.com/tigerswim/raceprep.git`)
-- **sagenet-website/** - Deployed to Netlify (repo: `https://github.com/tigerswim/sagenet-website.git`)
+### Related Standalone Repositories
+- **job-tracker** - `https://github.com/tigerswim/job-tracker.git` (deployed to Netlify)
+- **RacePrep** - `https://github.com/tigerswim/raceprep.git` (deployed via Expo EAS)
+- **sagenet-website** - `https://github.com/tigerswim/sagenet-website.git` (deployed to Netlify)
 
 ---
 
 ## Netlify Deployment Configuration
-
-### job-tracker (Job Application Tracker)
-
-**Netlify Site Settings:**
-1. **Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
-2. **Base directory**: `job-tracker`
-3. **Build command**: `npm run build`
-4. **Publish directory**: `job-tracker/.next`
-5. **Node version**: 20 (Active LTS)
-
-**Environment Variables (Netlify Dashboard):**
-```
-NEXT_PUBLIC_SUPABASE_URL=<your-supabase-url>
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-```
-
-**Configuration File**: `job-tracker/netlify.toml` (within project directory)
-
-**Branch**: `main`
-
----
 
 ### marketing-site (Kinetic Brand Partners Website)
 
@@ -54,78 +31,51 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 
 **Branch**: `main`
 
----
-
-### sagenet-website (SageNet Corporate Site)
-
-**Netlify Site Settings:**
-1. **Repository**: `https://github.com/tigerswim/sagenet-website.git`
-2. **Base directory**: (root)
-3. **Build command**: `npm run build`
-4. **Publish directory**: `build`
-5. **Node version**: 20 (Active LTS)
-
-**Branch**: `main`
+**Environment Variables**: None required (static site)
 
 ---
 
-## RacePrep Deployment (Mobile App)
+## Related Project Deployments
 
-**Platform**: Expo Application Services (EAS)
+For deployment instructions for other projects, see their respective repositories:
 
-**Repositories**: `https://github.com/tigerswim/raceprep.git`
-
-See `RacePrep/DEPLOYMENT_GUIDE.md` for complete mobile deployment instructions.
+- **job-tracker**: See `https://github.com/tigerswim/job-tracker` (deployed to Netlify)
+- **RacePrep**: See `https://github.com/tigerswim/raceprep` (deployed via Expo EAS)
+- **sagenet-website**: See `https://github.com/tigerswim/sagenet-website` (deployed to Netlify)
 
 ---
 
-## Setting Up Netlify Sites
+## Setting Up Netlify Site
 
-### Step 1: Create Separate Netlify Sites
+### Step 1: Create Netlify Site
 
-You need **TWO separate Netlify sites** for the monorepo projects:
+Create a Netlify site for the marketing website:
 
-1. **Site 1**: job-tracker
-   - Name: `job-tracker` (or your custom domain)
-   - Connected to: `tigerswim/kineticbrandpartners` repo
+**Site Configuration:**
+- Name: `kineticbrandpartners` (or your custom domain)
+- Connected to: `tigerswim/kineticbrandpartners` repository
 
-2. **Site 2**: marketing-site (kineticbrandpartners.com)
-   - Name: `kineticbrandpartners` (or your custom domain)
-   - Connected to: `tigerswim/kineticbrandpartners` repo
+### Step 2: Configure Base Directory
 
-### Step 2: Configure Base Directory (Critical!)
-
-For **each Netlify site**, go to:
+In Netlify dashboard, go to:
 
 ```
 Site Settings → Build & Deploy → Continuous Deployment → Build settings
 ```
 
-**job-tracker site:**
-- Base directory: `job-tracker`
-- Build command: `npm run build`
-- Publish directory: `job-tracker/.next`
-
-**marketing-site site:**
+**Settings:**
 - Base directory: `marketing-site`
 - Build command: `npm run build`
 - Publish directory: `marketing-site/out`
 
-### Step 3: Configure Environment Variables
+### Step 3: Set Node Version
 
-For **job-tracker site** only, add environment variables:
-
-```
-Site Settings → Build & Deploy → Environment → Environment variables
-```
-
-Add:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+Under **Dependency management**, set:
+- Node version: `20` (Active LTS)
 
 ### Step 4: Trigger Deployment
 
-Push to `main` branch triggers deployment for both sites automatically.
+Push to `main` branch triggers automatic deployment.
 
 ---
 
@@ -137,58 +87,44 @@ Push to `main` branch triggers deployment for both sites automatically.
 
 **Solution**:
 1. Check base directory is set in Netlify dashboard (not just netlify.toml)
-2. Verify the directory exists in your repository
-3. Ensure the path is relative to repository root (e.g., `job-tracker`, not `/job-tracker`)
+2. Verify `marketing-site/` directory exists in your repository
+3. Ensure the path is relative to repository root (`marketing-site`, not `/marketing-site`)
 
 ### Build Fails with "Cannot find package.json"
 
 **Problem**: Build is running from wrong directory.
 
 **Solution**:
-1. Set base directory in Netlify dashboard
-2. Verify netlify.toml is inside the project directory
-3. Check that build command doesn't include `cd` commands
-
-### Both Sites Building the Same Project
-
-**Problem**: Base directory not configured per-site.
-
-**Solution**:
-1. Create two separate Netlify sites (not two deploy contexts)
-2. Configure base directory for EACH site individually
-3. Each site should point to its own project directory
+1. Set base directory to `marketing-site` in Netlify dashboard
+2. Verify netlify.toml exists in `marketing-site/netlify.toml`
+3. Check that `marketing-site/package.json` exists
+4. Ensure build command doesn't include `cd` commands
 
 ---
 
 ## Deployment Checklist
 
-### Before Deploying job-tracker:
-- [ ] Base directory set to `job-tracker` in Netlify dashboard
-- [ ] Environment variables configured in Netlify
-- [ ] Supabase credentials are valid
-- [ ] Database migrations applied
-- [ ] Build succeeds locally: `cd job-tracker && npm run build`
-
 ### Before Deploying marketing-site:
 - [ ] Base directory set to `marketing-site` in Netlify dashboard
+- [ ] Node version set to 20 in Netlify dashboard
 - [ ] Build succeeds locally: `cd marketing-site && npm run build`
 - [ ] All assets are committed to repository
 - [ ] Custom domain configured (if applicable)
 
 ### After Deployment:
-- [ ] Site loads correctly
-- [ ] Environment variables work (for job-tracker)
-- [ ] No console errors
-- [ ] Test key user flows
+- [ ] Site loads correctly at production URL
+- [ ] No console errors in browser
+- [ ] Test all pages and links
 - [ ] Check mobile responsiveness
+- [ ] Verify SEO meta tags
 
 ---
 
 ## Questions?
 
-- **Monorepo best practices**: See `CLAUDE.md` for development guidance
-- **job-tracker specific**: See `job-tracker/docs/DEPLOYMENT.md`
-- **RacePrep deployment**: See `RacePrep/DEPLOYMENT_GUIDE.md`
+- **Development guidance**: See `CLAUDE.md` for repository overview
+- **marketing-site specific**: See `marketing-site/README.md`
+- **Other projects**: Visit their respective GitHub repositories
 
 ---
 

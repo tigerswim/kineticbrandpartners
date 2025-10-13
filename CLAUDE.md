@@ -2,28 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this workspace.
 
-## Workspace Overview
+## Repository Overview
 
-This workspace contains multiple projects with different structures and purposes:
+This repository contains the **marketing-site** project for Kinetic Brand Partners.
 
-- **job-tracker/** - Next.js job tracking app (monorepo project)
-- **marketing-site/** - Next.js marketing website (monorepo project)
-- **RacePrep/** - React Native triathlon app (standalone repository)
-- **sagenet-website/** - Static website (standalone repository)
+**This Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
+- **marketing-site/** - Next.js marketing website (primary content of this repo)
+
+**Related Standalone Repositories** (not in this repo):
+- **job-tracker** - `https://github.com/tigerswim/job-tracker.git`
+- **RacePrep** - `https://github.com/tigerswim/raceprep.git`
+- **sagenet-website** - `https://github.com/tigerswim/sagenet-website.git`
 
 ## Repository Structure
 
-### Monorepo Projects
-**job-tracker** and **marketing-site** share the same git repository:
+This repository contains only the **marketing-site** project:
 - Remote: `https://github.com/tigerswim/kineticbrandpartners.git`
 - Branch: `main`
-- Commits affect both projects
-- Deployed separately via Netlify
+- Deployed via Netlify with base directory `marketing-site`
 
-### Standalone Projects
-**RacePrep** and **sagenet-website** have their own repositories:
-- RacePrep: `https://github.com/tigerswim/raceprep.git`
-- sagenet-website: `https://github.com/tigerswim/sagenet-website.git`
+**Other projects** are in separate repositories and may exist in your local workspace for convenience.
 
 ## Working with Projects
 
@@ -32,19 +30,9 @@ This workspace contains multiple projects with different structures and purposes
 2. **Check git remote** - Run `git remote -v` to confirm correct repository
 3. **Read project-specific CLAUDE.md** - Each project may have additional guidance
 
-### Project-Specific Commands
+### Project Commands
 
-#### job-tracker
-```bash
-cd /Users/danhoeller/Website Development/kineticbrandpartners/job-tracker
-npm run dev      # Port 3001
-npm run build
-npm run lint
-```
-- See [job-tracker/CLAUDE.md](job-tracker/CLAUDE.md) for detailed guidance
-- Tech: Next.js 15, TypeScript, Tailwind CSS 4, Supabase
-
-#### marketing-site
+#### marketing-site (this repository)
 ```bash
 cd /Users/danhoeller/Website Development/kineticbrandpartners/marketing-site
 npm run dev      # Port 3000
@@ -53,126 +41,82 @@ npm run lint
 ```
 - Tech: Next.js, TypeScript, Tailwind CSS
 
-#### RacePrep
-```bash
-cd /Users/danhoeller/Website Development/kineticbrandpartners/RacePrep
-npx expo start
-npm run ios
-npm run android
-```
-- See [RacePrep/CONTEXT.md](RacePrep/CONTEXT.md) and [RacePrep/QUICKSTART.md](RacePrep/QUICKSTART.md)
-- Tech: React Native, Expo, TypeScript, Supabase
+#### Other Projects (if in workspace)
+If job-tracker, RacePrep, or sagenet-website are cloned in your workspace:
+- **job-tracker**: `cd ../job-tracker` (separate repo)
+- **RacePrep**: `cd ../RacePrep` (separate repo)
+- **sagenet-website**: `cd ../sagenet-website` (separate repo)
+
+Each has its own git repository and documentation.
 
 ## Important Paths
-
-### job-tracker
-- Source: `job-tracker/src/`
-- Config: `job-tracker/` (root level - next.config.js, tsconfig.json, etc.)
-- Docs: `job-tracker/docs/`
-- API: `job-tracker/src/app/api/`
 
 ### marketing-site
 - Source: `marketing-site/src/`
 - Tests: `marketing-site/cypress/`
 - Public: `marketing-site/public/`
 
-### RacePrep
-- Source: `RacePrep/app/`, `RacePrep/components/`, `RacePrep/src/`
-- Config: `RacePrep/app.json`, `RacePrep/package.json`
 
 ## Git Workflow
 
-### For Monorepo Changes (job-tracker, marketing-site)
+### For This Repository (marketing-site)
 ```bash
 cd /Users/danhoeller/Website Development/kineticbrandpartners
 git status
-git add job-tracker/  # or marketing-site/
+git add marketing-site/
 git commit -m "Description"
 git push origin main
 ```
 
-### For Standalone Projects (RacePrep)
-```bash
-cd /Users/danhoeller/Website Development/kineticbrandpartners/RacePrep
-git status
-git add .
-git commit -m "Description"
-git push origin main  # Pushes to raceprep.git
-```
+### For Other Projects (if in workspace)
+Each project (job-tracker, RacePrep, sagenet-website) has its own git repository.
+Navigate to that directory and use standard git commands.
 
 ## Deployment
 
-### job-tracker
+### marketing-site (this repository)
 - **Platform**: Netlify
-- **Config**: `job-tracker/netlify.toml`
-- **Trigger**: Push to main branch
-- **Environment Variables**: Set in Netlify dashboard
-  - `NEXT_PUBLIC_SUPABASE_URL`
-  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-  - `NETLIFY_DATABASE_URL` (optional)
-
-### marketing-site
-- **Platform**: Netlify
+- **Base Directory**: `marketing-site`
 - **Build Command**: `npm run build`
-- **Publish Directory**: `out/`
+- **Publish Directory**: `marketing-site/out`
+- **Node Version**: 20 (Active LTS)
 - **Trigger**: Push to main branch
-
-### RacePrep
-- **Platform**: Expo EAS
-- **iOS/Android**: Separate build configurations
-- **See**: RacePrep documentation for mobile deployment
 
 ## Common Tasks
 
 ### Adding a new npm package
 ```bash
-# For job-tracker
-cd job-tracker && npm install <package>
-
 # For marketing-site
 cd marketing-site && npm install <package>
-
-# For RacePrep
-cd RacePrep && npm install <package>
 ```
 
 ### Running tests
 ```bash
-# job-tracker (if tests exist)
-cd job-tracker && npm test
-
 # marketing-site (Cypress)
 cd marketing-site && npm run cypress:open
 ```
 
 ### Checking TypeScript errors
 ```bash
-cd job-tracker && npx tsc --noEmit
 cd marketing-site && npx tsc --noEmit
-cd RacePrep && npx tsc --noEmit
 ```
 
 ## File Organization Rules
 
 ### ✅ Correct Structure
-- All job-tracker files in `job-tracker/` directory
 - All marketing-site files in `marketing-site/` directory
-- All RacePrep files in `RacePrep/` directory
-- Root level only contains: README.md, CLAUDE.md, .git/, project directories
+- Root level contains: README.md, CLAUDE.md, DEPLOYMENT.md, netlify.toml, .git/, marketing-site/
 
 ### ❌ Avoid
-- Placing project-specific files at workspace root
-- Mixing files between projects
+- Placing project-specific files at repository root
 - Creating duplicate directories
 
 ## Environment Variables
 
-Each project has its own `.env.local` file:
+marketing-site uses `.env.local` (if needed):
 
 ```
-job-tracker/.env.local
 marketing-site/.env.local
-RacePrep/.env
 ```
 
 **Never commit .env files to git!**
@@ -180,16 +124,15 @@ RacePrep/.env
 ## Documentation
 
 ### Key Documentation Files
-- **Workspace**: `/README.md` (this workspace overview)
-- **job-tracker**: `job-tracker/README.md`, `job-tracker/CLAUDE.md`, `job-tracker/docs/`
+- **Repository**: `/README.md` (repository overview)
+- **This file**: `/CLAUDE.md` (AI assistant guidance)
+- **Deployment**: `/DEPLOYMENT.md` (deployment configuration)
 - **marketing-site**: `marketing-site/README.md`
-- **RacePrep**: `RacePrep/README.md`, `RacePrep/DOCUMENTATION_INDEX.md`, `RacePrep/CONTEXT.md`
 
 ### When to Read Documentation
-- **Before starting work** - Understand project context
-- **When encountering errors** - Check troubleshooting guides
-- **For API changes** - Review API documentation
-- **For deployment** - Check deployment guides
+- **Before starting work** - Read CLAUDE.md and marketing-site/README.md
+- **For deployment** - Check DEPLOYMENT.md
+- **For other projects** - Navigate to their respective repositories
 
 ## Best Practices
 
@@ -203,20 +146,17 @@ RacePrep/.env
 
 ## Getting Help
 
-- **job-tracker**: See `job-tracker/docs/` for comprehensive documentation
-- **RacePrep**: See `RacePrep/DOCUMENTATION_INDEX.md` for complete documentation catalog
-- **Issues**: Create issues in respective GitHub repositories
-- **Questions**: Refer to project-specific README files
+- **marketing-site**: See `marketing-site/README.md`
+- **Other projects**: Visit their respective GitHub repositories
+- **Issues**: Create issues in the appropriate GitHub repository
 
 ## Quick Reference
 
 | Task | Command | Directory |
 |------|---------|-----------|
-| Start job-tracker dev server | `npm run dev` | job-tracker/ |
 | Start marketing-site dev server | `npm run dev` | marketing-site/ |
-| Start RacePrep | `npx expo start` | RacePrep/ |
-| Build job-tracker | `npm run build` | job-tracker/ |
-| Run job-tracker lint | `npm run lint` | job-tracker/ |
+| Build marketing-site | `npm run build` | marketing-site/ |
+| Run marketing-site lint | `npm run lint` | marketing-site/ |
 | Check git repo | `git remote -v` | Any directory |
 
 ---

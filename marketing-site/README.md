@@ -29,10 +29,11 @@ marketing-site/
 
 ## Installation
 
-This project is part of the kineticbrandpartners monorepo.
+This project is the primary content of the kineticbrandpartners repository.
 
-1. **Navigate to the project**
+1. **Clone the repository**
    ```bash
+   git clone https://github.com/tigerswim/kineticbrandpartners.git
    cd kineticbrandpartners/marketing-site
    ```
 
@@ -64,15 +65,18 @@ This project is part of the kineticbrandpartners monorepo.
 
 The site is deployed via Netlify:
 
-1. Connected to GitHub repository: `https://github.com/tigerswim/kineticbrandpartners.git`
-2. Build command: `npm run build`
-3. Publish directory: `out/`
-4. Automatic deployment on push to main branch
+1. **Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
+2. **Base directory**: `marketing-site`
+3. **Build command**: `npm run build`
+4. **Publish directory**: `marketing-site/out`
+5. **Node version**: 20 (Active LTS)
+6. **Automatic deployment** on push to main branch
 
 ## Repository
 
 - **Git Remote**: `https://github.com/tigerswim/kineticbrandpartners.git`
-- **Part of**: kineticbrandpartners monorepo
+- **Structure**: Primary project in repository (marketing-site subdirectory)
+- **Related Projects**: job-tracker, RacePrep, sagenet-website are in separate repositories
 
 ## License
 
