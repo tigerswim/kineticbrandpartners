@@ -4,15 +4,16 @@ This directory contains multiple projects for Kinetic Brand Partners and related
 
 ## 📁 Projects
 
-### [job-tracker/](job-tracker/)
+### job-tracker
 **Job Application & Contact Management System**
 
 A comprehensive job tracking and professional networking application built with Next.js, TypeScript, and Supabase.
 
-- **Repository**: Part of this monorepo (`https://github.com/tigerswim/kineticbrandpartners.git`)
+- **Repository**: Standalone repository (`https://github.com/tigerswim/job-tracker.git`)
 - **Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS 4, Supabase
 - **Deployment**: Netlify
 - **Port**: 3001 (development)
+- **Location**: Separate repository (not in this workspace)
 
 **Key Features:**
 - Job application tracking with status management
@@ -21,7 +22,7 @@ A comprehensive job tracking and professional networking application built with 
 - Smart reminder system with email notifications
 - Analytics and reporting dashboard
 
-[→ View job-tracker README](job-tracker/README.md)
+[→ View job-tracker on GitHub](https://github.com/tigerswim/job-tracker)
 
 ---
 
@@ -111,51 +112,40 @@ cd RacePrep && npx expo start
 ## 🗂️ Repository Structure
 
 ```
-kineticbrandpartners/
-├── job-tracker/           # Job tracking app (monorepo)
-│   ├── src/              # Source code
-│   ├── docs/             # Documentation
-│   ├── public/           # Static assets
-│   └── supabase/         # Supabase functions
-│
-├── marketing-site/        # Marketing website (monorepo)
+kineticbrandpartners/ (this repository)
+├── marketing-site/        # Marketing website
 │   ├── src/              # Source code
 │   ├── public/           # Static assets
-│   └── cypress/          # E2E tests
-│
-├── RacePrep/             # Triathlon app (standalone repo)
-│   ├── app/              # React Native app
-│   ├── components/       # Reusable components
-│   └── src/              # Additional source
-│
-├── sagenet-website/       # SageNet site (standalone repo)
-│   ├── build/            # Production build
-│   └── src/              # Source (minimal)
+│   └── package.json      # Dependencies
 │
 └── README.md             # This file
+
+Separate repositories (may be in workspace directory):
+├── job-tracker/          # Standalone repo: github.com/tigerswim/job-tracker
+├── RacePrep/             # Standalone repo: github.com/tigerswim/raceprep
+└── sagenet-website/      # Standalone repo: github.com/tigerswim/sagenet-website
 ```
 
 ## 🔗 Git Repositories
 
 | Project | Repository URL | Type |
 |---------|---------------|------|
-| job-tracker | `https://github.com/tigerswim/kineticbrandpartners.git` | Monorepo |
-| marketing-site | `https://github.com/tigerswim/kineticbrandpartners.git` | Monorepo |
+| job-tracker | `https://github.com/tigerswim/job-tracker.git` | Standalone |
+| marketing-site | `https://github.com/tigerswim/kineticbrandpartners.git` | This repo |
 | RacePrep | `https://github.com/tigerswim/raceprep.git` | Standalone |
 | sagenet-website | `https://github.com/tigerswim/sagenet-website.git` | Standalone |
 
 ## 📝 Development Notes
 
-### Monorepo Projects (job-tracker, marketing-site)
-- Share the same git repository
-- Deployed separately via Netlify
-- Independent package.json and dependencies
-- Commit changes affect both projects
+### This Repository (marketing-site only)
+- Contains only the marketing-site project
+- Deployed via Netlify
+- Simple single-project repository
 
-### Standalone Projects (RacePrep, sagenet-website)
+### Standalone Projects (job-tracker, RacePrep, sagenet-website)
 - Have their own git repositories
 - Managed independently
-- Located in this workspace for convenience
+- May be located in this workspace directory for convenience
 - Push/pull from their respective remotes
 
 ## 🛠️ Technology Stack Overview
