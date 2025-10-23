@@ -1,18 +1,17 @@
 # Kinetic Brand Partners - Marketing Site
 
-The official marketing website for Kinetic Brand Partners, showcasing our services, team, and approach to brand development and marketing strategy.
+The official marketing website for Kinetic Brand Partners, showcasing strategic marketing consulting services with a focus on brand development, growth acceleration, and digital transformation.
 
 ## Overview
 
-This is a Next.js-based marketing website featuring modern design, responsive layouts, and optimized performance for fast load times and excellent user experience.
+This is a Next.js-based marketing website featuring modern design, responsive layouts, professional photography, and optimized performance for fast load times and excellent user experience.
 
 ## Technology Stack
 
-- **Framework**: Next.js with App Router
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Testing**: Cypress (E2E testing configured)
-- **Deployment**: Netlify
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Custom CSS with dynamic gradients and glassmorphism effects
+- **Language**: TypeScript with strict mode
+- **Deployment**: Netlify (static export)
 
 ## Project Structure
 
@@ -20,12 +19,31 @@ This is a Next.js-based marketing website featuring modern design, responsive la
 marketing-site/
 ├── src/
 │   ├── app/              # Next.js app router pages
-│   ├── components/       # React components
-│   └── __tests__/        # Test files
-├── cypress/              # E2E tests
-├── public/               # Static assets
-└── out/                  # Build output
+│   │   ├── layout.tsx    # Root layout with metadata
+│   │   ├── page.tsx      # Home page
+│   │   └── globals.css   # Global styles
+│   └── components/       # React components
+│       └── PersonalSite.tsx  # Main site component
+├── public/
+│   └── images/           # Professional photography
+│       ├── about-workspace.jpg
+│       ├── service-strategy.jpg
+│       ├── service-brand.jpg
+│       ├── service-growth.jpg
+│       └── service-digital.jpg
+└── out/                  # Build output (static export)
 ```
+
+## Site Sections
+
+1. **Hero** - Dynamic gradient background with core value proposition
+2. **Services** - Four service categories with top-banner image cards:
+   - Strategic Planning & GTM Strategy
+   - Brand Development
+   - Growth & Performance
+   - Digital Transformation & MarTech
+3. **About** - Professional workspace imagery with leadership philosophy
+4. **Contact** - Comprehensive marketing assessment CTA and direct contact
 
 ## Installation
 
@@ -52,12 +70,19 @@ This project is the primary content of the kineticbrandpartners repository.
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
+- `npm run dev` - Start development server on port 3000
+- `npm run build` - Build for production (static export)
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run test` - Run tests
-- `npm run cypress:open` - Open Cypress test runner
+- `npm run lint` - Run ESLint (requires configuration)
+- `npx tsc --noEmit` - Check TypeScript errors
+
+## Content Strategy
+
+The site focuses on **capabilities over achievements**:
+- No specific metrics, company names, or campaign references
+- Emphasis on strategic consulting services
+- Professional, consultative tone
+- Clear service categorization aligned with core competencies
 
 ## Deployment
 

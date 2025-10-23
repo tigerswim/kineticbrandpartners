@@ -38,3 +38,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# project prompts and documentation
+Prompt for Website Update.md

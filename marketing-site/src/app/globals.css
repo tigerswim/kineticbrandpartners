@@ -193,7 +193,7 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
+  background:
     radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
     radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
   animation: pulse 8s ease-in-out infinite;
@@ -510,6 +510,50 @@ section:nth-child(even) {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Service cards with top image banner */
+.service-style-1 {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-image-top {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+}
+
+.service-image-top img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.4s ease;
+}
+
+.service-style-1:hover .service-image-top img {
+  transform: scale(1.05);
+}
+
+.service-style-1 .service-text {
+  padding: 1.5rem 2.5rem 2rem;
+}
+
+.service-style-1 .service-text h3 {
+  margin-bottom: 0.75rem;
+}
+
+.service-style-1 .service-text p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.service-style-1 .pillars li {
+  padding: 0.5rem 0;
+  padding-left: 2rem;
+}
+
 .values article::before {
   content: '';
   position: absolute;
@@ -563,6 +607,21 @@ section:nth-child(even) {
   font-size: 1.05rem;
 }
 
+/* Contact Section - Single Centered Box */
+.contact-single-box {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-single-box article {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
 /* Contact Section Buttons - Enhanced visibility */
 #contact .btn-primary {
   background: var(--primary-gradient);
@@ -603,27 +662,18 @@ section:nth-child(even) {
   color: var(--primary-blue);
   font-size: 1.2rem;
   font-weight: bold;
-  animation: sparkle 2s ease-in-out infinite;
 }
 
 .pillars li:nth-child(2)::before {
   color: var(--secondary-orange);
-  animation-delay: 0.5s;
 }
 
 .pillars li:nth-child(3)::before {
   color: var(--accent-red);
-  animation-delay: 1s;
 }
 
 .pillars li:nth-child(4)::before {
   color: var(--primary-blue);
-  animation-delay: 1.5s;
-}
-
-@keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
 }
 
 .pillars li:hover {
