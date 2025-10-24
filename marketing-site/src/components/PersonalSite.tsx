@@ -109,9 +109,9 @@ const PersonalSite = () => {
       className="hero"
     >
       <div className="container">
-        <h1>{"Transform Your Marketing From Tactical to Strategic Advantage"}</h1>
+        <h1>{"Transform Your Marketing"}</h1>
         <p className="subhead">{
-          "I help mid-market and enterprise companies break through growth plateaus by transforming their marketing organizations from reactive tactics to strategic growth engines. With extensive brand management and P&L ownership experience, I bring both the art and science needed to scale your business."}
+          "I help mid-market and enterprise companies break through growth plateaus by transforming their marketing organizations from reactive tactics to strategic growth engines. Let's utilize both the art and science needed to scale your business."}
         </p>
 
         <div className="cta-group">
@@ -123,7 +123,7 @@ const PersonalSite = () => {
               scrollToSection('contact');
             }}
           >
-            {"Get Your Marketing Assessment"}
+            {"Get Your Free Marketing Assessment"}
           </a>
           <a
             href="#services"
@@ -239,7 +239,7 @@ const AboutSection = () => (
     >
       <div className="container">
         <div className="spotlight">
-          <h2>The Marketing Leader Your Business Needs</h2>
+          <h2>Marketing Leadership for Your Business</h2>
         </div>
         
         <div className="about-content">
@@ -258,10 +258,10 @@ const AboutSection = () => (
           </div>
           <div className="about-intro">
             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--primary-dark)' }}>
-              Strategic Marketing Leadership with Complete Business Perspective
+              Strategic Marketing Leadership Grounded in a Holistic Business Understanding
             </h3>
             <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
-              With extensive P&L ownership and cross-functional leadership experience, I bring a complete business perspective to every marketing challenge. I've scaled teams from startup environments to enterprise organizations, managing budgets across diverse business contexts.
+              With extensive P&L ownership and cross-functional leadership experience, I bring a complete business perspective to every marketing challenge. I've scaled teams from startup environments to enterprise organizations, managed budgets across diverse business contexts, and delivered profitable, sustainable, growth.
             </p>
           </div>
         </div>
@@ -305,34 +305,26 @@ const AboutSection = () => (
     >
       <div className="container">
         <div className="spotlight">
-          <h2>{"Ready to Transform Your Marketing Strategy?"}</h2>
-          <p>{"Let's start with a comprehensive assessment of your marketing organization and growth opportunities"}</p>
+          <h2>{"Let's Do This!"}</h2>
+          <p>{"Start with a comprehensive assessment of your marketing organization and growth opportunities. Get clarity on your marketing maturity, brand positioning, and highest-impact growth opportunities."}</p>
         </div>
-
-        <div className="contact-single-box">
-          <article style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
-            <h3>{"Comprehensive Marketing Assessment"}</h3>
-            <p>{
-              "Get clarity on your marketing maturity, brand positioning, and growth opportunities. In our initial consultation, we'll evaluate your current marketing effectiveness and identify the highest-impact transformation opportunities."}
-            </p>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
               <a href="mailto:assessment@kineticbrandpartners.com" className="btn btn-primary">
-                {"Schedule Assessment"}
+                {"Schedule Your Free Assessment"}
               </a>
             </div>
-            <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
-              <h3 style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>{"Questions? Want To Chat?"}</h3>
+          <article style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
+            <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.1)', marginBottom: '1.5 rem' }}>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--primary-dark)' }}>
+                {"Questions? Want To Talk Through Your Ideas?"}</h3>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <a href="mailto:letstalk@kineticbrandpartners.com" className="btn btn-primary">
                   {"Email Me"}
                 </a>
               </div>
-              <p style={{ fontSize: '0.95rem', color: '#666', marginTop: '1.5rem' }}>
-                <strong>{"Based in Atlanta, GA"}</strong> {"| Working with clients nationwide"}
-              </p>
             </div>
           </article>
-        </div>
+
       </div>
     </section>
   );
