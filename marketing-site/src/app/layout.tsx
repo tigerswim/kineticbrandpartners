@@ -3,8 +3,8 @@ import '@/app/globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Kinetic Brand Partners',
-  description: 'Strategic Marketing Leadership | Brand Transformation | Revenue Growth Acceleration',
+  title: 'Brand Strategy Consultant | Consumer & B2B Marketing | Kinetic Brand Partners',
+  description: 'Transform forgettable brands into household names. 20+ years building consumer brands and B2B companies for Target, Walmart, Amazon, and more.',
 }
 
 export default function RootLayout({

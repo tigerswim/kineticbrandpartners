@@ -31,40 +31,48 @@ npx tsc --noEmit # Check TypeScript errors
 src/
 ├── app/
 │   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Home page (client component)
+│   ├── page.tsx            # Home/landing page
+│   ├── consumer/
+│   │   ├── layout.tsx      # Consumer Brands metadata
+│   │   └── page.tsx        # Consumer Brands page
+│   ├── b2b/
+│   │   ├── layout.tsx      # B2B Brands metadata
+│   │   └── page.tsx        # B2B Brands page
 │   └── globals.css         # Global styles with custom CSS
 ├── components/
-│   └── PersonalSite.tsx    # Main site component
-public/
-└── images/                 # Professional photography
-    ├── about-workspace.jpg
-    ├── service-strategy.jpg
-    ├── service-brand.jpg
-    ├── service-growth.jpg
-    └── service-digital.jpg
+│   ├── Header.tsx          # Navigation component
+│   ├── Footer.tsx          # Footer component
+│   ├── ProcessTimeline.tsx # 3-step timeline visual
+│   ├── ContactCTA.tsx      # Contact section with dual emails
+│   ├── ServiceCard.tsx     # Landing page service cards
+│   └── GridCard.tsx        # 2x2 grid cards with hover effects
 ```
 
 ### Key Patterns
-- **Client Components**: Main application uses `"use client"` directive in page.tsx
-- **Metadata**: Defined in layout.tsx for SEO
-- **Component Architecture**: Single main component (PersonalSite) renders all sections
-- **Hydration**: `suppressHydrationWarning={true}` in layout to handle client-side rendering
-- **Image Assets**: Professional photography in `/public/images/` directory
-- **Scroll Animations**: Intersection Observer for active section tracking
+- **Client Components**: All pages use `"use client"` directive
+- **Metadata**: Defined in separate layout.tsx files (server components) for each route
+- **Multi-Page Architecture**: Landing page with separate Consumer Brands and B2B Brands pages
+- **Reusable Components**: Shared Header, Footer, ContactCTA, ProcessTimeline, GridCard
+- **Glassmorphism Design**: Subtle borders, backdrop blur, hover effects
+- **Brand Colors**: Blue (#3b82f6), Orange (#f97316), Red (#ef4444)
 
 ## Site Structure
 
-### Sections
-1. **Hero** - Animated gradient background with value proposition
-2. **Services** - Four service cards with top-banner images (240px height)
-3. **About** - Workspace image + narrative text layout
-4. **Contact** - Single centered box with dual CTAs
+### Pages
+1. **Home (/)** - Landing page with hero, value props, service split, contact
+2. **Consumer Brands (/consumer)** - Consumer brand services and expertise
+3. **B2B Brands (/b2b)** - B2B brand services and expertise
 
 ### Navigation
 - Fixed header with glassmorphism effect
-- Smooth scroll to sections
+- Three main pages: Home, Consumer Brands, B2B Brands
 - Mobile-responsive hamburger menu
-- Four main sections: Home, Services, About, Contact
+- Active page state tracking
+
+### Contact Information
+- **Scheduling diagnostics**: assessment@kineticbrandpartners.com
+- **General inquiries**: letstalk@kineticbrandpartners.com
+- ContactCTA component handles both emails automatically
 
 ## Content Guidelines
 
@@ -74,11 +82,11 @@ public/
 - Professional, consultative tone
 - Emphasis on strategic value delivery
 
-### Image Management
-- All images in `/public/images/` directory
-- Service cards use 240px height top-banner style
-- About section uses horizontal layout (image left, text right)
-- Images from Unsplash should be professionally curated
+### Component Guidelines
+- **GridCard**: Used for 2x2 grid sections with title and description props
+- **ProcessTimeline**: 3-step visual with variant prop ('consumer' | 'b2b')
+- **ContactCTA**: Dual email support - emailAddress for CTA button, directEmailAddress for general contact
+- **ServiceCard**: Landing page cards with colorScheme prop ('consumer' | 'b2b')
 
 ## Deployment
 
