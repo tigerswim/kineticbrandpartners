@@ -1,127 +1,242 @@
-// src/app/page.tsx
+// Main page - Option 1: Minimal Editorial with logo integration
 
-"use client"
-
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ServiceCard from '../components/ServiceCard';
-import ContactCTA from '../components/ContactCTA';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="site-wrapper">
-      <Header currentPage="home" />
+    <div className="opt1">
+      <header className="site-header">
+        <div className="container">
+          <nav className="nav-bar">
+            <Link href="/" className="logo">
+              <Image
+                src="/logos/kinetic-brand-partners.png"
+                alt="Kinetic Brand Partners"
+                width={550}
+                height={140}
+                className="header-logo"
+                priority
+              />
+            </Link>
+            <ul className="nav-links">
+              <li>
+                <a
+                  href="https://linkedin.com/in/danhoeller"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="/Dan-Hoeller-Resume.pdf" target="_blank" rel="noopener noreferrer">
+                  Resume
+                </a>
+              </li>
+              <li>
+                <a href="#contact">Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
       <main>
-        {/* Hero Section */}
-        <section className="hero" style={{ padding: '6rem 0 4rem' }}>
+        {/* Hero */}
+        <section className="hero">
           <div className="container">
-            <h1>{"Your Brand Is Invisible in a World Full of Noise."}</h1>
-            <p className="subhead" style={{ maxWidth: '900px', margin: '0 auto 2.5rem' }}>
-              {"I turn forgettable brands into household names that people choose, love, and recommend—not just the cheapest option on the shelf."}
+            <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
+            <h1 className="hero__title">
+              Marketing leader with 15+ years building brands and driving growth
+            </h1>
+            <p className="hero__subtitle">
+              From enterprise software to healthcare to consumer products—I&apos;ve led teams,
+              owned P&amp;Ls, and delivered results across B2B and B2C. Now offering strategic
+              marketing leadership to companies that need experience without the full-time overhead.
             </p>
-            <div className="cta-group">
-              <Link href="/consumer" className="btn btn-primary">
-                {"Consumer Brands →"}
-              </Link>
-              <Link href="/b2b" className="btn btn-secondary">
-                {"B2B Brands →"}
-              </Link>
+            <div className="hero__cta">
+              <a href="#contact" className="btn btn--primary">
+                Let&apos;s Talk
+              </a>
+              <a
+                href="https://linkedin.com/in/danhoeller"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--secondary"
+              >
+                LinkedIn Profile
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Value Proposition Cards */}
-        <section style={{ padding: '4rem 0', background: '#f7f9fc' }}>
+        {/* What I Bring */}
+        <section className="section section--alt">
           <div className="container">
-            <div className="values">
-              <article>
-                <h3>{"Built Brands Both Large and Small"}</h3>
-                <p>
-                  {"20+ years managing P&Ls and marketing teams across baby care, personal care, lawn & garden, and more. Launched consumer products into Target, Walmart, The Home Depot, Amazon, and everywhere in between."}
+            <h2 className="section__title">What I Bring</h2>
+            <div className="grid grid--2col">
+              <div className="card">
+                <h3 className="card__title">Leadership &amp; Scale</h3>
+                <p className="card__text">
+                  Built and led 25-person marketing organization spanning Consumer Insights,
+                  Digital, Creative, Innovation, and Customer Marketing.
                 </p>
-              </article>
-
-              <article>
-                <h3>{"Focused Expertise"}</h3>
-                <p>
-                  {"Big consulting firms charge $50K+ for strategy decks built by associates who've never launched a product. You're paying for my direct expertise and the ability to diagnose fast, decide faster, and execute."}
+              </div>
+              <div className="card">
+                <h3 className="card__title">P&amp;L Ownership</h3>
+                <p className="card__text">
+                  Managed portfolios from $40MM to $250MM. Grew a $250MM brand at 4x the
+                  category rate through integrated strategy and execution.
                 </p>
-              </article>
-
-              <article>
-                <h3>{"You Get Me. Not a Team."}</h3>
-                <p>
-                  {"Every insight, every framework, every recommendation comes from someone who's actually done the job. No bait-and-switch. No 'I'll introduce you to the team.' Just direct access to two decades of brand-building expertise."}
+              </div>
+              <div className="card">
+                <h3 className="card__title">Data-Driven Marketing</h3>
+                <p className="card__text">
+                  Marketing Mix Modeling, attribution frameworks, KPI dashboards. Delivered
+                  25% efficiency gains through optimization.
                 </p>
-              </article>
+              </div>
+              <div className="card">
+                <h3 className="card__title">Digital Transformation</h3>
+                <p className="card__text">
+                  MarTech implementation (Salsify, Vizit), sales enablement tools, e-commerce/DTC
+                  builds. Earned retailer &quot;Best in Class&quot; recognition.
+                </p>
+              </div>
+              <div className="card">
+                <h3 className="card__title">Creative Excellence</h3>
+                <p className="card__text">
+                  Clio Award-winning campaigns. 3.95 billion impressions. 10-point brand
+                  awareness lifts. Creative grounded in strategy.
+                </p>
+              </div>
+              <div className="card">
+                <h3 className="card__title">Cross-Functional Leadership</h3>
+                <p className="card__text">
+                  Player-coach management style. Agency selection and management. Change
+                  management across matrixed organizations.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Service Split Section */}
-        <section style={{ padding: '4rem 0' }}>
+        {/* Background */}
+        <section className="section">
           <div className="container">
-            <div className="spotlight">
-              <h2>{"What I Do"}</h2>
-              <p>{"Choose your path based on who you serve"}</p>
+            <h2 className="section__title">Background</h2>
+
+            <div className="exp-with-logo">
+              <div className="logo-item logo-item--central">
+                <Image
+                  src="/logos/central-garden-pet.svg"
+                  alt="Central Garden & Pet"
+                  width={200}
+                  height={160}
+                />
+              </div>
+              <div className="exp-with-logo__content">
+                <h3 className="exp__company">Central Garden &amp; Pet</h3>
+                <p className="exp__role">SVP Marketing · 11 years</p>
+                <p className="exp__desc">
+                  Led marketing for $1.5B Garden segment. Built and managed 25-person team.
+                  Full P&amp;L ownership across multi-brand portfolio.
+                </p>
+              </div>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
-              gap: '2.5rem',
-              marginTop: '3rem'
-            }}>
-              <ServiceCard
-                title="Consumer Brands"
-                description="Turn forgettable consumer brands into household names. From shelf to cart, online to retail. Build brands that people choose, love, and recommend."
-                outcomes="$50M+ launches • 40% price premiums • 10M+ impressions"
-                ctaText="Explore Consumer Brands →"
-                ctaLink="/consumer"
-                colorScheme="consumer"
-              />
-
-              <ServiceCard
-                title="B2B Brands"
-                description="Stop competing on price alone. Build differentiation that sticks in buyers' minds and justifies premium pricing. Transform sales teams with positioning that converts."
-                outcomes="Premium positioning • Sales enablement • Predictable growth"
-                ctaText="Explore B2B Brands →"
-                ctaLink="/b2b"
-                colorScheme="b2b"
-              />
+            <div className="exp-with-logo">
+              <div className="logo-item">
+                <Image
+                  src="/logos/johnson-johnson.svg"
+                  alt="Johnson & Johnson"
+                  width={200}
+                  height={160}
+                />
+              </div>
+              <div className="exp-with-logo__content">
+                <h3 className="exp__company">Johnson &amp; Johnson</h3>
+                <p className="exp__role">Brand Management · 7 years</p>
+                <p className="exp__desc">
+                  Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio
+                  responsibility. Award-winning campaigns.
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
 
-        {/* Quick About */}
-        <section style={{ padding: '4rem 0', background: '#f7f9fc' }}>
-          <div className="container">
-            <div className="spotlight">
-              <h2>{"Why This Works"}</h2>
+            <div className="exp-with-logo">
+              <div className="logo-item">
+                <Image
+                  src="/logos/manhattan-associates.jpg"
+                  alt="Manhattan Associates"
+                  width={200}
+                  height={160}
+                />
+              </div>
+              <div className="exp-with-logo__content">
+                <h3 className="exp__company">Manhattan Associates</h3>
+                <p className="exp__role">Professional Services · 5 years</p>
+                <p className="exp__desc">
+                  Enterprise software implementations for Fortune 500 clients including
+                  Michelin, Bic, and The Diamond Trading Company.
+                </p>
+              </div>
             </div>
-            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-                {"I've spent 20+ years building brands from startup environments to enterprise organizations. Drove billions of impressions that bolstered brand health and grew share. Led companies through positioning transformations that grew revenue."}
+
+            <h2 className="section__title" style={{ marginTop: 'var(--space-4xl)' }}>Education</h2>
+
+            <div className="edu-row">
+              <div className="logo-item logo-item--darden">
+                <Image
+                  src="/logos/uva-darden.png"
+                  alt="UVA Darden"
+                  width={200}
+                  height={160}
+                />
+              </div>
+              <p className="edu-row__text">
+                MBA — University of Virginia, Darden School of Business
               </p>
-              <p style={{ fontSize: '1.05rem', lineHeight: '1.7', fontWeight: '600', color: 'var(--primary)' }}>
-                {"Target • Walmart • The Home Depot • Amazon • Independent Retailers"}
+            </div>
+            <div className="edu-row">
+              <div className="logo-item">
+                <Image
+                  src="/logos/clemson.png"
+                  alt="Clemson University"
+                  width={200}
+                  height={160}
+                />
+              </div>
+              <p className="edu-row__text">
+                BS, Management — Clemson University
               </p>
             </div>
           </div>
         </section>
 
-        {/* Contact CTA */}
-        <ContactCTA
-          title="Let's Talk About What's Actually Possible"
-          description="Book a 60-minute brand diagnostic. I'll map your situation, identify your highest-ROI growth opportunities, and determine if working together makes sense. No pitch. No hard sell. Just a conversation between people who've both built brands that matter."
-          ctaText="Schedule Your Free Brand Diagnostic"
-          emailAddress="assessment@kineticbrandpartners.com"
-          directEmailAddress="letstalk@kineticbrandpartners.com"
-        />
+        {/* Contact */}
+        <section id="contact" className="contact section--alt">
+          <div className="container">
+            <h2 className="contact__title">Let&apos;s Talk</h2>
+            <p className="contact__text">
+              Ready to discuss how I can help—or just have a conversation about what you&apos;re building.
+            </p>
+            <a
+              href="mailto:letstalk@kineticbrandpartners.com"
+              className="contact__email"
+            >
+              letstalk@kineticbrandpartners.com
+            </a>
+          </div>
+        </section>
       </main>
-      <Footer />
+
+      <footer className="site-footer">
+        <div className="container">
+          <p>&copy; {new Date().getFullYear()} Kinetic Brand Partners</p>
+        </div>
+      </footer>
     </div>
   );
 }

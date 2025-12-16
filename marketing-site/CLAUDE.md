@@ -33,62 +33,58 @@ npx tsc --noEmit # Check TypeScript errors
 src/
 ├── app/
 │   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Home/landing page
-│   ├── consumer/
-│   │   ├── layout.tsx      # Consumer Brands metadata
-│   │   └── page.tsx        # Consumer Brands page
-│   ├── b2b/
-│   │   ├── layout.tsx      # B2B Brands metadata
-│   │   └── page.tsx        # B2B Brands page
+│   ├── page.tsx            # Single-page personal portfolio
 │   └── globals.css         # Global styles with custom CSS
 ├── components/
-│   ├── Header.tsx          # Navigation component
-│   ├── Footer.tsx          # Footer component
-│   ├── ProcessTimeline.tsx # 3-step timeline visual
-│   ├── ContactCTA.tsx      # Contact section with dual emails
-│   ├── ServiceCard.tsx     # Landing page service cards
-│   └── GridCard.tsx        # 2x2 grid cards with hover effects
+│   ├── Header.tsx          # Navigation component (minimal)
+│   └── Footer.tsx          # Footer component (minimal)
+public/
+├── logos/                  # Company and education logos
+│   ├── kinetic-brand-partners.png
+│   ├── central-garden-pet.svg
+│   ├── johnson-johnson.svg
+│   ├── manhattan-associates.jpg
+│   ├── uva-darden.png
+│   └── clemson.png
+└── Dan-Hoeller-Resume.pdf
 ```
 
 ### Key Patterns
-- **Client Components**: All pages use `"use client"` directive
-- **Metadata**: Defined in separate layout.tsx files (server components) for each route
-- **Multi-Page Architecture**: Landing page with separate Consumer Brands and B2B Brands pages
-- **Reusable Components**: Shared Header, Footer, ContactCTA, ProcessTimeline, GridCard
-- **Glassmorphism Design**: Subtle borders, backdrop blur, hover effects
-- **Brand Colors**: Blue (#3b82f6), Orange (#f97316), Red (#ef4444)
+- **Single-Page Portfolio**: Personal marketing site for Dan Hoeller
+- **Clean Editorial Design**: Minimal styling with focus on typography and whitespace
+- **Logo Integration**: Company and education logos displayed with consistent treatment
+- **Brand Colors**: Navy (#1a365d) to Teal (#0d9488) gradient from logo
+- **Sections**: Hero, What I Bring, Background (with company logos), Education, Contact
 
 ## Site Structure
 
-### Pages
-1. **Home (/)** - Landing page with hero, value props, service split, contact
-2. **Consumer Brands (/consumer)** - Consumer brand services and expertise
-3. **B2B Brands (/b2b)** - B2B brand services and expertise
+### Single Page (/)
+1. **Hero** - Name, location, professional summary with dual CTAs
+2. **What I Bring** - 2x3 grid of capability cards
+3. **Background** - Work experience with company logos
+   - Central Garden & Pet (11 years)
+   - Johnson & Johnson (7 years)
+   - Manhattan Associates (5 years)
+4. **Education** - MBA and undergrad with university logos
+5. **Contact** - Simple contact section
 
 ### Navigation
-- Fixed header with glassmorphism effect
-- Three main pages: Home, Consumer Brands, B2B Brands
-- Mobile-responsive hamburger menu
-- Active page state tracking
+- Minimal header with logo, LinkedIn, Resume PDF, Contact anchor
+- Single-page design with smooth scroll to contact section
+- Mobile-responsive layout
 
 ### Contact Information
-- **Scheduling diagnostics**: assessment@kineticbrandpartners.com
-- **General inquiries**: letstalk@kineticbrandpartners.com
-- ContactCTA component handles both emails automatically
+- **Primary**: letstalk@kineticbrandpartners.com
+- **LinkedIn**: linkedin.com/in/danhoeller
+- **Resume**: PDF download available in header
 
 ## Content Guidelines
 
 ### Brand Voice
-- Focus on **capabilities** not achievements
-- No specific metrics, company names, or campaign references
-- Professional, consultative tone
-- Emphasis on strategic value delivery
-
-### Component Guidelines
-- **GridCard**: Used for 2x2 grid sections with title and description props
-- **ProcessTimeline**: 3-step visual with variant prop ('consumer' | 'b2b')
-- **ContactCTA**: Dual email support - emailAddress for CTA button, directEmailAddress for general contact
-- **ServiceCard**: Landing page cards with colorScheme prop ('consumer' | 'b2b')
+- Professional but approachable
+- Focus on experience and capabilities
+- Quantitative achievements included (team size, P&L scale, results)
+- Clear value proposition for consulting/fractional leadership
 
 ## Deployment
 
