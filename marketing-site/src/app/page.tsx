@@ -73,7 +73,7 @@ export default function Home() {
               </div>
               <div className="hero__image">
                 <Image
-                  src="/images/DJH-CGPT.png"
+                  src="/images/DJH-CGPT-Sketch.png"
                   alt="Dan Hoeller"
                   width={300}
                   height={400}
