@@ -46,27 +46,41 @@ export default function Home() {
         {/* Hero */}
         <section className="hero">
           <div className="container">
-            <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
-            <h1 className="hero__title">
-              Marketing leader with 15+ years building brands and driving growth
-            </h1>
-            <p className="hero__subtitle">
-              From enterprise software to healthcare to consumer products—I&apos;ve led teams,
-              owned P&amp;Ls, and delivered results across B2B and B2C. Now offering strategic
-              marketing leadership to companies that need experience without the full-time overhead.
-            </p>
-            <div className="hero__cta">
-              <a href="#contact" className="btn btn--primary">
-                Let&apos;s Talk
-              </a>
-              <a
-                href="https://linkedin.com/in/danhoeller"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn--secondary"
-              >
-                LinkedIn Profile
-              </a>
+            <div className="hero__inner">
+              <div className="hero__content">
+                <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
+                <h1 className="hero__title">
+                  Marketing leader with 15+ years building brands and driving growth
+                </h1>
+                <p className="hero__subtitle">
+                  From enterprise software to healthcare to consumer products—I&apos;ve led teams,
+                  owned P&amp;Ls, and delivered results across B2B and B2C. Now offering strategic
+                  marketing leadership to companies that need experience without the full-time overhead.
+                </p>
+                <div className="hero__cta">
+                  <a href="#contact" className="btn btn--primary">
+                    Let&apos;s Talk
+                  </a>
+                  <a
+                    href="https://linkedin.com/in/danhoeller"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn--secondary"
+                  >
+                    LinkedIn Profile
+                  </a>
+                </div>
+              </div>
+              <div className="hero__image">
+                <Image
+                  src="/images/DJH-CGPT.png"
+                  alt="Dan Hoeller"
+                  width={300}
+                  height={400}
+                  className="hero__headshot"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </section>
