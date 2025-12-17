@@ -50,16 +50,14 @@ export default function Home() {
               <div className="hero__content">
                 <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
                 <h1 className="hero__title">
-                  Marketing leader with 15+ years building brands and driving growth
+                  You need senior marketing leadership. You&apos;re not ready for a full-time CMO.
                 </h1>
                 <p className="hero__subtitle">
-                  From enterprise software to healthcare to consumer products—I&apos;ve led teams,
-                  owned P&amp;Ls, and delivered results across B2B and B2C. Now offering strategic
-                  marketing leadership to companies that need experience without the full-time overhead.
+                  I&apos;ve spent 15 years building brands, leading teams, and owning P&amp;Ls from $40MM to $250MM. Now I work with growth-stage companies that need experience and strategic firepower, balanced with a player-coach mindset — on terms that make sense for where they are today.
                 </p>
                 <div className="hero__cta">
                   <a href="#contact" className="btn btn--primary">
-                    Let&apos;s Talk
+                    See If We&apos;re a Fit
                   </a>
                   <a
                     href="https://linkedin.com/in/danhoeller"
