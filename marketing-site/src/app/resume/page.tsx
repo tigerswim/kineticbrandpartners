@@ -1,9 +1,15 @@
-// Main page - Option 1: Minimal Editorial with logo integration
+// Resume page - Full resume content with PDF download
 
 import Link from 'next/link';
 import Image from 'next/image';
+import type { Metadata } from 'next';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Resume | Dan Hoeller | Kinetic Brand Partners',
+  description: 'Professional resume - P&L-focused marketing executive with 15+ years of experience driving growth, brand transformation, and digital innovation.',
+};
+
+export default function Resume() {
   return (
     <div className="opt1">
       <header className="site-header">
@@ -33,7 +39,7 @@ export default function Home() {
                 <Link href="/resume">Resume</Link>
               </li>
               <li>
-                <a href="#contact">Contact</a>
+                <Link href="/#contact">Contact</Link>
               </li>
             </ul>
           </nav>
@@ -44,99 +50,75 @@ export default function Home() {
         {/* Hero */}
         <section className="hero">
           <div className="container">
-            <div className="hero__inner">
-              <div className="hero__content">
-                <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
-                <h1 className="hero__title">
-                  You need senior marketing leadership. You&apos;re not ready for a full-time CMO.
-                </h1>
-                <p className="hero__subtitle">
-                  I&apos;ve spent 15 years building brands, leading teams, and owning P&amp;Ls from $40MM to $250MM. Now I work with growth-stage companies that need experience and strategic firepower, balanced with a player-coach mindset — on terms that make sense for where they are today.
-                </p>
-                <div className="hero__cta">
-                  <a href="#contact" className="btn btn--primary">
-                    See If We&apos;re a Fit
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/danhoeller"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn--secondary"
-                  >
-                    LinkedIn Profile
-                  </a>
-                </div>
-              </div>
-              <div className="hero__image">
-                <Image
-                  src="/images/DJH-CGPT-Sketch.png"
-                  alt="Dan Hoeller"
-                  width={300}
-                  height={400}
-                  className="hero__headshot"
-                  priority
-                />
-              </div>
+            <p className="hero__eyebrow">Resume</p>
+            <h1 className="hero__title">Dan Hoeller</h1>
+            <p className="hero__subtitle">
+              Atlanta, GA · <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}>linkedin.com/in/danhoeller</a>
+            </p>
+            <div className="hero__cta">
+              <a
+                href="/Dan-Hoeller-Resume.pdf"
+                download
+                className="btn btn--primary"
+              >
+                Download Resume PDF
+              </a>
+              <Link href="/#contact" className="btn btn--secondary">
+                Get in Touch
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* What I Bring */}
+        {/* Executive Summary */}
         <section className="section section--alt">
           <div className="container">
-            <h2 className="section__title">What I Bring</h2>
+            <h2 className="section__title">Executive Summary</h2>
+            <p className="card__text" style={{ maxWidth: '800px', lineHeight: '1.8' }}>
+              P&amp;L-focused marketing executive with 15+ years of experience driving growth, brand transformation, and digital innovation for top brands in the CPG and Lawn &amp; Garden industries. Strong track record in creating award-winning campaigns that leverage data-driven insights and creative storytelling to deliver sales growth. Strengths include setting strategic vision, bringing a holistic business perspective to decision-making, championing the consumer, and building and leading successful teams with a player-coach management style.
+            </p>
+          </div>
+        </section>
+
+        {/* Core Competencies */}
+        <section className="section">
+          <div className="container">
+            <h2 className="section__title">Core Competencies</h2>
             <div className="grid grid--2col">
               <div className="card">
-                <h3 className="card__title">Leadership &amp; Scale</h3>
+                <h3 className="card__title">Strategic Perspective</h3>
                 <p className="card__text">
-                  Built and led 25-person marketing organization spanning Consumer Insights,
-                  Digital, Creative, Innovation, and Customer Marketing.
+                  Strategic Planning | Marketing Strategy | GTM (B2B2C, Omnichannel, DTC) | Innovation
                 </p>
               </div>
               <div className="card">
-                <h3 className="card__title">P&amp;L Ownership</h3>
+                <h3 className="card__title">Financial Management &amp; Performance</h3>
                 <p className="card__text">
-                  Managed portfolios from $40MM to $250MM. Grew a $250MM brand at 4x the
-                  category rate through integrated strategy and execution.
+                  P&amp;L Management | Revenue &amp; Margin Growth | Pricing | Scenario Planning
                 </p>
               </div>
               <div className="card">
-                <h3 className="card__title">Data-Driven Marketing</h3>
+                <h3 className="card__title">Brand &amp; Marketing Execution</h3>
                 <p className="card__text">
-                  Marketing Mix Modeling, attribution frameworks, KPI dashboards. Delivered
-                  25% efficiency gains through optimization.
+                  Brand Architecture &amp; Visual Identity | Performance Marketing | Marketing Insights | Creative Development | Digital Transformation | MarTech Stack | Agency Selection &amp; Management
                 </p>
               </div>
               <div className="card">
-                <h3 className="card__title">Digital Transformation</h3>
+                <h3 className="card__title">Leadership &amp; Team Development</h3>
                 <p className="card__text">
-                  MarTech implementation (Salsify, Vizit), sales enablement tools, e-commerce/DTC
-                  builds. Earned retailer &quot;Best in Class&quot; recognition.
-                </p>
-              </div>
-              <div className="card">
-                <h3 className="card__title">Creative Excellence</h3>
-                <p className="card__text">
-                  Clio Award-winning campaigns. 3.95 billion impressions. 10-point brand
-                  awareness lifts. Creative grounded in strategy.
-                </p>
-              </div>
-              <div className="card">
-                <h3 className="card__title">Cross-Functional Leadership</h3>
-                <p className="card__text">
-                  Player-coach management style. Agency selection and management. Change
-                  management across matrixed organizations.
+                  Cross-functional Leadership | Change Management | Servant Leadership
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Background */}
-        <section className="section">
+        {/* Professional Experience */}
+        <section className="section section--alt">
           <div className="container">
-            <h2 className="section__title">Background</h2>
+            <h2 className="section__title">Professional Experience</h2>
 
+            {/* Central Garden & Pet */}
             <div className="exp-with-logo">
               <div className="logo-item logo-item--central">
                 <svg
@@ -170,15 +152,46 @@ export default function Home() {
                 </svg>
               </div>
               <div className="exp-with-logo__content">
-                <h3 className="exp__company">Central Garden &amp; Pet</h3>
-                <p className="exp__role">SVP Marketing · 11 years</p>
-                <p className="exp__desc">
-                  Led marketing for $1.5B Garden segment. Built and managed 25-person team.
-                  Full P&amp;L ownership across multi-brand portfolio.
+                <h3 className="exp__company">Central Garden &amp; Pet — Atlanta, GA</h3>
+                <p className="exp__role">2013–2024</p>
+                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
+                  $3B+ manufacturer + distributor of lawn, garden, and pet supplies; Member of Central Leadership Council and managed 25 people across Insights, Innovation, Digital, Creative, Customer Marketing, and Customer Care.
                 </p>
               </div>
             </div>
 
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
+              <h4 className="card__title">Senior Vice President of Marketing: Garden Segment</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Nov 2019 – Oct 2024</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Brand Transformation:</strong> Grew the $250MM Pennington lawn and garden brand 8.2% in 2024, 4x the category growth rate, by leading comprehensive brand transformation initiatives, including improved positioning, visual identity, and product development.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Award-Winning Creative:</strong> Created and led the #FlipTheTurf campaign that generated 3.95 billion media impressions, won two Clio Sports Awards, and helped boost brand awareness by 10 points.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>New Product Launches:</strong> Developed a multi-year innovation pipeline that consistently launched $20MM+ in sustainable, category-leading solutions annually.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Led cross-functional teams to build top-tier Product Detail Pages using Salsify and Vizit, earning retailer &quot;Best in Class&quot; recognition and driving higher conversion rates.</li>
+              </ul>
+            </div>
+
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
+              <h4 className="card__title">Vice President of Marketing: Garden Segment</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Nov 2017 – Nov 2019</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Revenue Growth:</strong> Secured $7MM in incremental revenue with The Home Depot through executive-level partnership negotiations.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Marketing Effectiveness:</strong> Guided teams using Marketing Mix Modeling (MMM) and real-time KPI dashboards, delivering a 25% increase in efficiency.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Partnership Expansion:</strong> Expanded MLB partnership to 9 teams, driving in-store traffic and amplifying promotional impact.</li>
+              </ul>
+            </div>
+
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)', borderBottom: '1px solid var(--gray-200)' }}>
+              <h4 className="card__title">Senior Director / Director of Marketing: Grass Seed Business Unit</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Apr 2013 – Nov 2017</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Financial Performance:</strong> Delivered 98.8% EBIT growth in 2016 and an additional 12% in 2017 through margin-accretive new product launches and strategic price optimization.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Product Innovation:</strong> Upgraded and launched best-in-category grass repair product, driving sales +36.7% at +840bp higher margins in 2016.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Relaunched the Pennington brand website, increasing sessions by 295% and tested DTC with Shopify.</li>
+              </ul>
+            </div>
+
+            {/* Johnson & Johnson */}
             <div className="exp-with-logo">
               <div className="logo-item">
                 <svg
@@ -201,15 +214,42 @@ export default function Home() {
                 </svg>
               </div>
               <div className="exp-with-logo__content">
-                <h3 className="exp__company">Johnson &amp; Johnson</h3>
-                <p className="exp__role">Brand Management · 7 years</p>
-                <p className="exp__desc">
-                  Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio
-                  responsibility. Award-winning campaigns.
+                <h3 className="exp__company">Johnson &amp; Johnson — Raritan, NJ / Skillman, NJ</h3>
+                <p className="exp__role">2006–2013</p>
+                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
+                  Consumer and Medical Device divisions; managed P&amp;Ls, brand strategy, new product development, marketing campaigns, promotions, forecasting, and reporting.
                 </p>
               </div>
             </div>
 
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
+              <h4 className="card__title">Marketing Manager: Ortho Clinical Diagnostics</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>May 2012 – Mar 2013</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Strategic Marketing:</strong> Transformed traditional clinical lab marketing approach by centering strategies around patient outcomes and healthcare provider needs.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Developed custom iPad applications and deployed to 150+ field sales reps, streamlining sales enablement processes.</li>
+              </ul>
+            </div>
+
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
+              <h4 className="card__title">Brand Manager: Consumer Healthcare Division</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Jul 2010 – May 2012</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>P&amp;L Management:</strong> Managed the $60MM Tucks and ept P&amp;Ls. Reversed a multi-year decline for Tucks, growing the brand 26.8% via targeted marketing.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Portfolio Management:</strong> Evaluated the ept brand&apos;s viability, recommended its strategic sale, and managed the transition process.</li>
+              </ul>
+            </div>
+
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)', borderBottom: '1px solid var(--gray-200)' }}>
+              <h4 className="card__title">Brand Manager, Assistant Product Director: Baby Care Division</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Jul 2006 – Jul 2010</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>P&amp;L Management:</strong> Owned the P&amp;L across an ~$80MM portfolio, including the $40MM Baby Shampoo business, while growing Baby Oil by 9.8% and Baby Powder by 5.2%.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Award-Winning Marketing:</strong> Led the &quot;Thanks, Mom&quot; campaign that generated 290MM impressions and won J&amp;J&apos;s Global Burke Award.</li>
+              </ul>
+            </div>
+
+            {/* Manhattan Associates */}
             <div className="exp-with-logo">
               <div className="logo-item">
                 <Image
@@ -220,16 +260,29 @@ export default function Home() {
                 />
               </div>
               <div className="exp-with-logo__content">
-                <h3 className="exp__company">Manhattan Associates</h3>
-                <p className="exp__role">Professional Services · 5 years</p>
-                <p className="exp__desc">
-                  Enterprise software implementations for Fortune 500 clients including
-                  Michelin, Bic, and The Diamond Trading Company.
+                <h3 className="exp__company">Manhattan Associates — Atlanta, GA</h3>
+                <p className="exp__role">1999–2004</p>
+                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
+                  $215MM provider of supply chain software solutions; led design, testing, implementation, and support projects.
                 </p>
               </div>
             </div>
 
-            <h2 className="section__title" style={{ marginTop: 'var(--space-4xl)' }}>Education</h2>
+            <div style={{ marginLeft: '0', marginBottom: 'var(--space-xl)' }}>
+              <h4 className="card__title">Manager, Senior Consultant, Consultant, Support Consultant: Professional Services</h4>
+              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Mar 1999 – Jun 2004</p>
+              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Software Implementation:</strong> Managed warehouse management software projects for major clients, including Michelin and Bic, with international experience at The Diamond Trading Company (DeBeers) in London, UK.</li>
+                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>System Design:</strong> Developed and deployed a $1MM tracking system at Michelin that reduced operational risk and improved product quality.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Education */}
+        <section className="section">
+          <div className="container">
+            <h2 className="section__title">Education</h2>
 
             <div className="edu-row">
               <div className="logo-item logo-item--darden">
@@ -241,7 +294,8 @@ export default function Home() {
                 />
               </div>
               <p className="edu-row__text">
-                MBA — University of Virginia, Darden School of Business
+                <strong>University of Virginia Darden School of Business</strong><br />
+                Master of Business Administration (MBA)
               </p>
             </div>
             <div className="edu-row">
@@ -254,24 +308,44 @@ export default function Home() {
                 />
               </div>
               <p className="edu-row__text">
-                BS, Management — Clemson University
+                <strong>Clemson University</strong><br />
+                Bachelor of Science, Management<br />
+                <span style={{ color: 'var(--gray-500)', fontSize: '0.9375rem' }}>Co-captain and four-year Letterman on the varsity swim team; earned a scholarship as a walk-on athlete</span>
               </p>
             </div>
           </div>
         </section>
 
-        {/* Contact */}
-        <section id="contact" className="contact section--alt">
+        {/* Other Activities */}
+        <section className="section section--alt">
           <div className="container">
-            <h2 className="contact__title">Let&apos;s Talk</h2>
-            <p className="contact__text">
-              Ready to discuss how I can help—or just have a conversation about what you&apos;re building.
-            </p>
+            <h2 className="section__title">Other Activities</h2>
+            <div className="grid grid--2col">
+              <div className="card">
+                <h3 className="card__title">Memberships</h3>
+                <p className="card__text">
+                  CMO Collaborative, Southern Off-Road Bicycle Association (SORBA)
+                </p>
+              </div>
+              <div className="card">
+                <h3 className="card__title">Athletics &amp; Interests</h3>
+                <p className="card__text">
+                  Triathlete and Ironman finisher. Avid road and MTB cyclist. DIY enthusiast. Experimenting with using AI for &quot;vibe coding&quot; of an app for triathletes for race preparation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Download CTA */}
+        <section className="section">
+          <div className="container" style={{ textAlign: 'center' }}>
             <a
-              href="mailto:letstalk@kineticbrandpartners.com"
-              className="contact__email"
+              href="/Dan-Hoeller-Resume.pdf"
+              download
+              className="btn btn--primary"
             >
-              letstalk@kineticbrandpartners.com
+              Download Resume PDF
             </a>
           </div>
         </section>
