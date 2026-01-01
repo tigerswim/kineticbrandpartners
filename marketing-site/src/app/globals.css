@@ -225,6 +225,11 @@ main {
   max-height: 160px;
 }
 
+/* Compensate for SVG internal whitespace to align with other logos */
+.exp-with-logo .logo-item--central svg {
+  margin-left: -20px;
+}
+
 /* UVA Darden - make it larger with better spacing */
 .edu-row .logo-item--darden {
   width: 200px;
