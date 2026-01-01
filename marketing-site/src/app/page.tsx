@@ -46,10 +46,9 @@ export default function Home() {
           <div className="container">
             <div className="hero__inner">
               <div className="hero__content">
-                <p className="hero__eyebrow">Dan Hoeller · Atlanta, GA</p>
+                <p className="hero__eyebrow">Fractional CMO · Atlanta, GA</p>
                 <h1 className="hero__title">
-                  You need senior marketing leadership, but not a full-time
-                  CMO...yet.
+                  Senior marketing leadership without the full-time commitment
                 </h1>
                 <p className="hero__subtitle">
                   I&apos;ve spent 15 years building brands, leading teams, and
@@ -75,7 +74,7 @@ export default function Home() {
               <div className="hero__image">
                 <Image
                   src="/images/DJH-CGPT-Sketch.png"
-                  alt="Dan Hoeller"
+                  alt="Dan Hoeller - Fractional CMO and Marketing Leader in Atlanta"
                   width={300}
                   height={400}
                   className="hero__headshot"

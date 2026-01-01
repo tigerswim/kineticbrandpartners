@@ -1,0 +1,11 @@
+# robots.txt for kineticbrandpartners.com
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://kineticbrandpartners.com/sitemap.xml
+
+# Disallow admin/private paths (if any exist in future)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
