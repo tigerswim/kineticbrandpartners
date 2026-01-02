@@ -82,35 +82,15 @@ export default function WorkPage() {
                 <strong>The Approach:</strong> Partner with NFL star Von Miller on a deliberately provocative anti-turf campaign designed to get banned by the league. This turned the NFL&apos;s censorship into free media coverage, sparking a grassroots movement among players and fans.
               </p>
 
-              {/* Videos */}
-              <div className="campaign__media-grid">
-                <div className="media-item">
-                  <h3 className="media-item__title">The Banned Ad</h3>
-                  <div className="media-item__wrapper">
-                    <video
-                      controls
-                      className="media-item__video"
-                      poster="/Videos/FTT-banned-ad-poster.jpg"
-                    >
-                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-
-                <div className="media-item">
-                  <h3 className="media-item__title">Campaign Summary</h3>
-                  <div className="media-item__wrapper">
-                    <video
-                      controls
-                      className="media-item__video"
-                      poster="/Videos/FTT-summary-video-poster.jpg"
-                    >
-                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
+              {/* Campaign Summary Slide */}
+              <div className="campaign__image-wrapper">
+                <Image
+                  src="/Videos/FTT-summary-slide.jpg"
+                  alt="FlipTheTurf Campaign Results"
+                  width={1200}
+                  height={675}
+                  className="campaign__image"
+                />
               </div>
 
               {/* Results */}
@@ -164,24 +144,11 @@ export default function WorkPage() {
                 <strong>The Approach:</strong> Transform Pennington from grass seed legacy brand to innovation partner for outdoor living. By challenging traditional lawn care conventions and championing sustainable, creative approaches, the integrated campaign spanning CTV, social, influencers, search, and OOH positioned Pennington to launch products into higher-growth segments.
               </p>
 
-              {/* Videos */}
-              <div className="campaign__media-grid">
+              {/* Video */}
+              <div className="campaign__media-single">
                 <div className="media-item">
-                  <h3 className="media-item__title">Hero 30</h3>
-                  <div className="media-item__wrapper">
-                    <video
-                      controls
-                      className="media-item__video"
-                    >
-                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-
-                <div className="media-item">
-                  <h3 className="media-item__title">Garden 15</h3>
-                  <div className="media-item__wrapper">
+                  <h3 className="media-item__title">Garden Campaign</h3>
+                  <div className="media-item__wrapper media-item__wrapper--large">
                     <video
                       controls
                       className="media-item__video"
