@@ -82,11 +82,42 @@ export default function WorkPage() {
                 <strong>The Approach:</strong> Partner with NFL star Von Miller on a deliberately provocative anti-turf campaign designed to get banned by the league. This turned the NFL&apos;s censorship into free media coverage, sparking a grassroots movement among players and fans.
               </p>
 
-              {/* Campaign Summary Slide */}
+              {/* Campaign Videos */}
+              <div className="campaign__media-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <div className="media-item">
+                  <h3 className="media-item__title">Banned Ad</h3>
+                  <div className="media-item__wrapper">
+                    <video
+                      controls
+                      className="media-item__video"
+                      poster="/Videos/FTT-banned-ad-poster.jpg"
+                    >
+                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+
+                <div className="media-item">
+                  <h3 className="media-item__title">Campaign Summary</h3>
+                  <div className="media-item__wrapper">
+                    <video
+                      controls
+                      className="media-item__video"
+                      poster="/Videos/FTT-summary-video-poster.jpg"
+                    >
+                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
+              {/* Results Summary */}
               <div className="campaign__image-wrapper">
                 <Image
                   src="/Videos/FTT-summary-slide.jpg"
-                  alt="FlipTheTurf Campaign Results"
+                  alt="FlipTheTurf Campaign Results Summary"
                   width={1200}
                   height={675}
                   className="campaign__image"
@@ -111,17 +142,6 @@ export default function WorkPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Summary Slide */}
-              <div className="campaign__image-wrapper">
-                <Image
-                  src="/Videos/FTT-summary-slide.jpg"
-                  alt="FlipTheTurf Campaign Results"
-                  width={1200}
-                  height={675}
-                  className="campaign__image"
-                />
-              </div>
             </div>
           </div>
         </section>
@@ -144,11 +164,24 @@ export default function WorkPage() {
                 <strong>The Approach:</strong> Transform Pennington from grass seed legacy brand to innovation partner for outdoor living. By challenging traditional lawn care conventions and championing sustainable, creative approaches, the integrated campaign spanning CTV, social, influencers, search, and OOH positioned Pennington to launch products into higher-growth segments.
               </p>
 
-              {/* Video */}
-              <div className="campaign__media-single">
+              {/* Videos */}
+              <div className="campaign__media-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <div className="media-item">
+                  <h3 className="media-item__title">Hero Campaign</h3>
+                  <div className="media-item__wrapper">
+                    <video
+                      controls
+                      className="media-item__video"
+                    >
+                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+
                 <div className="media-item">
                   <h3 className="media-item__title">Garden Campaign</h3>
-                  <div className="media-item__wrapper media-item__wrapper--large">
+                  <div className="media-item__wrapper">
                     <video
                       controls
                       className="media-item__video"
