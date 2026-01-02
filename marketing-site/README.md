@@ -21,29 +21,41 @@ marketing-site/
 │   ├── app/              # Next.js app router pages
 │   │   ├── layout.tsx    # Root layout with metadata
 │   │   ├── page.tsx      # Home page
-│   │   └── globals.css   # Global styles
+│   │   ├── work/
+│   │   │   └── page.tsx  # Work/portfolio page
+│   │   └── globals.css   # Global styles (includes campaign styles)
 │   └── components/       # React components
-│       └── PersonalSite.tsx  # Main site component
 ├── public/
-│   └── images/           # Professional photography
-│       ├── about-workspace.jpg
-│       ├── service-strategy.jpg
-│       ├── service-brand.jpg
-│       ├── service-growth.jpg
-│       └── service-digital.jpg
+│   ├── images/           # Campaign assets & photography
+│   │   ├── Gold-shampoo.jpg
+│   │   ├── Pink-lotion.jpg
+│   │   └── [other assets]
+│   ├── Videos/           # Campaign video assets
+│   │   ├── FTT-banned-ad.mp4
+│   │   ├── FTT-summary-video.mp4
+│   │   ├── GFANA_Hero30_MP4.mp4
+│   │   ├── GFANA_GARDEN15.mp4
+│   │   ├── Thanks-Mom-Cullen.2.mp4
+│   │   ├── Thanks-Mom-Debbie.mp4
+│   │   └── [poster images]
+│   └── logos/            # Brand logos
 └── out/                  # Build output (static export)
 ```
 
 ## Site Sections
 
-1. **Hero** - Dynamic gradient background with core value proposition
-2. **Services** - Four service categories with top-banner image cards:
-   - Strategic Planning & GTM Strategy
-   - Brand Development
-   - Growth & Performance
-   - Digital Transformation & MarTech
-3. **About** - Professional workspace imagery with leadership philosophy
-4. **Contact** - Comprehensive marketing assessment CTA and direct contact
+### Home Page (/)
+1. **Hero** - Fractional CMO positioning with dual CTAs
+2. **What I Bring** - 2x3 grid of core capabilities
+3. **Background** - Work experience with company logos (Central Garden & Pet, Johnson & Johnson, Manhattan Associates)
+4. **Education** - MBA and undergraduate credentials with university logos
+5. **Contact** - Call-to-action section with email contact
+
+### Work/Portfolio Page (/work)
+Showcases award-winning marketing campaigns with problem/solution/results framework:
+1. **#FlipTheTurf** - Central Garden & Pet anti-turf campaign (2 videos, results slide)
+2. **Grow From a New Angle** - Pennington brand platform campaign (2 videos with custom posters)
+3. **Johnson's Baby** - Multi-asset campaign (2 videos stacked vertically, 2 print assets)
 
 ## Installation
 
@@ -78,11 +90,16 @@ This project is the primary content of the kineticbrandpartners repository.
 
 ## Content Strategy
 
-The site focuses on **capabilities over achievements**:
-- No specific metrics, company names, or campaign references
-- Emphasis on strategic consulting services
-- Professional, consultative tone
-- Clear service categorization aligned with core competencies
+**Home page** focuses on capabilities and experience:
+- Professional CMO positioning and background
+- Core competencies in brand strategy, leadership, and digital transformation
+- Educational credentials and company affiliations
+
+**Work page** showcases measurable campaign impact:
+- Award-winning campaigns with concrete results (3.95B+ impressions, Clio awards)
+- Problem/Solution/Results narrative framework for each campaign
+- Mix of video (with custom poster frames) and static assets
+- Demonstrates strategic thinking, creative excellence, and data-driven results
 
 ## Deployment
 

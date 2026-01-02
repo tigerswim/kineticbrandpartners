@@ -1345,6 +1345,220 @@ main {
 }
 
 /* ==========================================================================
+   Work Page - Campaign Styles
+   ========================================================================== */
+
+.campaign {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.campaign__header {
+  margin-bottom: var(--space-xl);
+  text-align: center;
+}
+
+.campaign__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: var(--space-sm);
+}
+
+.campaign__meta {
+  font-size: 0.9375rem;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+.campaign__description {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: var(--space-3xl);
+  text-align: center;
+}
+
+/* Media Grid */
+.campaign__media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+}
+
+.campaign__media-grid--three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.campaign__media-single {
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 968px) {
+  .campaign__media-grid,
+  .campaign__media-grid--three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Media Items */
+.media-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.media-item__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--space-md);
+}
+
+.media-item__wrapper {
+  position: relative;
+  width: 100%;
+  background: var(--gray-900);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.media-item__wrapper--large {
+  aspect-ratio: 16 / 9;
+}
+
+.media-item__video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--gray-900);
+}
+
+.media-item__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* PDF Link Styling */
+.media-item__wrapper--pdf {
+  aspect-ratio: 1;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-decoration: none;
+  color: var(--navy);
+  transition: all 0.2s;
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.pdf-link:hover {
+  color: var(--teal);
+}
+
+.pdf-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--brand-gradient);
+  color: var(--white);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+
+.pdf-link:hover .pdf-icon {
+  transform: scale(1.05);
+}
+
+.pdf-link span {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* Campaign Image */
+.campaign__image-wrapper {
+  margin-top: var(--space-3xl);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.campaign__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Results Section */
+.campaign__results {
+  margin-top: var(--space-3xl);
+  padding: var(--space-2xl);
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+}
+
+.opt1 .section--alt .campaign__results {
+  background: var(--white);
+}
+
+.results__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+}
+
+.results__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .results__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.result-stat {
+  text-align: center;
+}
+
+.result-stat__value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-xs);
+  line-height: 1.2;
+}
+
+.result-stat__label {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+/* ==========================================================================
    Shared Mobile Styles
    ========================================================================== */
 

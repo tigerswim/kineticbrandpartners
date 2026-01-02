@@ -21,6 +21,9 @@ export default function Home() {
             </Link>
             <ul className="nav-links">
               <li>
+                <Link href="/work">Work</Link>
+              </li>
+              <li>
                 <a
                   href="https://linkedin.com/in/danhoeller"
                   target="_blank"
