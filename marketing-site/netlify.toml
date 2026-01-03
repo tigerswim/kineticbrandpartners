@@ -1,10 +1,12 @@
 [build]
-  command = "git lfs install && git lfs pull && npm run build"
+  command = "npm run build"
   publish = "out"
 
 [build.environment]
   NODE_VERSION = "20"
-  GIT_LFS_ENABLED = "true"
+
+[[plugins]]
+  package = "netlify-plugin-git-lfs"
 
 [[redirects]]
   from = "/*"
