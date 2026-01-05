@@ -32,33 +32,38 @@ npx tsc --noEmit # Check TypeScript errors
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Single-page personal portfolio
-│   └── globals.css         # Global styles with custom CSS
-├── components/
-│   ├── Header.tsx          # Navigation component (minimal)
-│   └── Footer.tsx          # Footer component (minimal)
+│   ├── layout.tsx          # Root layout with metadata and GTM
+│   ├── page.tsx            # Home/portfolio page
+│   ├── work/
+│   │   └── page.tsx        # Marketing campaign portfolio
+│   ├── resume/
+│   │   └── page.tsx        # Full resume page
+│   └── globals.css         # Global styles (clean, single design system)
 public/
-├── logos/                  # Company and education logos
+├── logos/                  # Company and education logos (PNG/JPG only)
 │   ├── kinetic-brand-partners.png
-│   ├── central-garden-pet.svg
-│   ├── johnson-johnson.svg
 │   ├── manhattan-associates.jpg
 │   ├── uva-darden.png
 │   └── clemson.png
+├── images/                 # Portfolio images
+├── Videos/                 # Marketing campaign videos (~88MB)
 └── Dan-Hoeller-Resume.pdf
 ```
 
+**Note**: Components directory removed (2026-01) - all layouts built inline for simplicity.
+
 ### Key Patterns
-- **Single-Page Portfolio**: Personal marketing site for Dan Hoeller
+- **Multi-Page Portfolio**: Personal marketing site for Dan Hoeller
 - **Clean Editorial Design**: Minimal styling with focus on typography and whitespace
+- **Inline Layouts**: All page structures built inline (no shared component abstractions)
 - **Logo Integration**: Company and education logos displayed with consistent treatment
 - **Brand Colors**: Navy (#1a365d) to Teal (#0d9488) gradient from logo
-- **Sections**: Hero, What I Bring, Background (with company logos), Education, Contact
 
 ## Site Structure
 
-### Single Page (/)
+### Pages
+
+#### Home Page (/)
 1. **Hero** - Name, location, professional summary with dual CTAs
 2. **What I Bring** - 2x3 grid of capability cards
 3. **Background** - Work experience with company logos
@@ -68,10 +73,19 @@ public/
 4. **Education** - MBA and undergrad with university logos
 5. **Contact** - Simple contact section
 
+#### Work Page (/work)
+- Marketing campaign portfolio with videos and case studies
+- Featured campaigns: Thanks Mom, Green Frog, Flea & Tick Terminator
+- Video embeds with poster images (~88MB total)
+
+#### Resume Page (/resume)
+- Full professional resume
+- Downloadable PDF version available
+
 ### Navigation
-- Minimal header with logo, LinkedIn, Resume PDF, Contact anchor
-- Single-page design with smooth scroll to contact section
+- Minimal header with logo, Work link, Resume link, LinkedIn, Contact anchor
 - Mobile-responsive layout
+- Consistent navigation across all pages
 
 ### Contact Information
 - **Primary**: letstalk@kineticbrandpartners.com
@@ -106,3 +120,23 @@ The following optimizations have been implemented to reduce CPU and memory usage
 **Expected dev server performance:**
 - CPU: 5-10% idle, 20-30% during file edits
 - Memory: 200-400 MB (significantly reduced from previous versions)
+
+## Code Cleanup & Refactoring (2026-01)
+
+**Major refactoring completed** to eliminate unused code and optimize repository size:
+
+**Removed:**
+- 8 unused component files (~66KB): Header, Footer, PersonalSite, ContactCTA, GridCard, ServiceCard, ProcessTimeline
+- 6 CSS variant files (~74KB): Historical design iterations
+- 11 unused images (~24MB): Service category images, sketches, workspace photos
+- 4 duplicate/unused logos: SVG duplicates, square variants
+- 1 orphaned test file with no corresponding utility
+- Untracked /Ignore/ folder
+
+**Impact:**
+- Reduced repository size by ~24.4MB
+- Removed 140KB of unused source code
+- Simplified maintenance with zero dead code
+- All builds verified successful post-cleanup
+
+**Current state:** Clean, minimal codebase with only actively used files.
