@@ -3,59 +3,19 @@
 
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { TrendingUp, DollarSign, BarChart2, Zap, Award, Users } from "react-feather";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import GradientMesh from "@/components/GradientMesh";
 import "../styles/kinetic-design-system.css";
 import "../styles/mockup-b.css";
 
 export default function Home() {
   return (
     <div className="kinetic-page">
-      {/* Gradient Mesh Background */}
-      <div className="kinetic-gradient-mesh">
-        <div className="kinetic-gradient-blob kinetic-gradient-blob--1"></div>
-        <div className="kinetic-gradient-blob kinetic-gradient-blob--2"></div>
-        <div className="kinetic-gradient-blob kinetic-gradient-blob--3"></div>
-      </div>
-
-      {/* Header */}
-      <header className="kinetic-header">
-        <div className="kinetic-container">
-          <Link href="/">
-            <Image
-              src="/logos/kinetic-brand-partners.png"
-              alt="Kinetic Brand Partners"
-              width={180}
-              height={45}
-              className="kinetic-logo"
-              priority
-            />
-          </Link>
-          <ul className="kinetic-nav">
-            <li>
-              <Link href="/work">Work</Link>
-            </li>
-            <li>
-              <Link href="/resume">Resume</Link>
-            </li>
-            <li>
-              <a
-                href="https://linkedin.com/in/danhoeller"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a href="#contact" className="kinetic-nav-cta">
-                Contact
-              </a>
-            </li>
-          </ul>
-        </div>
-      </header>
+      <GradientMesh />
+      <Header />
 
       <main>
         {/* Hero */}
@@ -397,11 +357,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="kinetic-footer">
-        <div className="kinetic-container">
-          <p>&copy; {new Date().getFullYear()} Kinetic Brand Partners</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
