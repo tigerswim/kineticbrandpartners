@@ -292,6 +292,109 @@
   color: var(--white) !important;
 }
 
+/* Hamburger Menu Button (Mobile Only) */
+.kinetic-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 101;
+}
+
+.kinetic-hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--gray-700);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.kinetic-hamburger span.active:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+
+.kinetic-hamburger span.active:nth-child(2) {
+  opacity: 0;
+}
+
+.kinetic-hamburger span.active:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Menu */
+.kinetic-mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  transition: right 0.3s ease;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.kinetic-mobile-menu.is-open {
+  right: 0;
+}
+
+.kinetic-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 2rem 2rem;
+  gap: 1.5rem;
+}
+
+.kinetic-mobile-nav a {
+  color: var(--gray-700);
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.kinetic-mobile-nav a:hover {
+  background: var(--gray-50);
+  color: var(--teal);
+}
+
+.kinetic-mobile-nav a.kinetic-nav-cta {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  color: var(--white) !important;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.kinetic-mobile-nav a.kinetic-nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+}
+
+/* Menu Backdrop */
+.kinetic-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ============================================================================
    SECTIONS
    ========================================================================= */
@@ -523,16 +626,18 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   :root {
     --container-padding: 1.25rem;
   }
 
-  .kinetic-nav {
-    gap: 1rem;
+  /* Show hamburger menu on mobile */
+  .kinetic-hamburger {
+    display: flex;
   }
 
-  .kinetic-nav a:not(.kinetic-nav-cta) {
+  /* Hide desktop navigation on mobile */
+  .kinetic-nav {
     display: none;
   }
 }
