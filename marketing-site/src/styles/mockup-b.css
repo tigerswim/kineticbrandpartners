@@ -1,0 +1,312 @@
+/*
+ * Mockup B: Kinetic Flow - Page Specific Styles
+ * Imports shared design system and adds page-specific components
+ */
+
+/* ============================================================================
+   HERO SECTION
+   ========================================================================= */
+.mb-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 8rem 0 6rem;
+  position: relative;
+}
+
+.mb-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 5rem;
+  align-items: center;
+}
+
+.mb-hero-content {
+  position: relative;
+}
+
+.mb-title {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gray-900);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.03em;
+}
+
+.mb-subtitle {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.mb-cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Hero Visual */
+.mb-hero-visual {
+  position: relative;
+}
+
+.mb-image-container {
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+
+.mb-image-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.2) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: -1;
+}
+
+.mb-headshot {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ============================================================================
+   CAPABILITIES GRID
+   ========================================================================= */
+.mb-capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ============================================================================
+   EXPERIENCE CARDS
+   ========================================================================= */
+.mb-experience-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.mb-exp-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  background: var(--white);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  transition: all var(--transition-base);
+}
+
+.mb-exp-card:hover {
+  box-shadow: 0 15px 50px rgba(26, 54, 93, 0.08);
+  border-color: rgba(13, 148, 136, 0.2);
+}
+
+.mb-exp-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.mb-exp-logo-wrap img,
+.mb-exp-logo-wrap svg {
+  max-width: 160px;
+  height: auto;
+  opacity: 0.8;
+  transition: opacity var(--transition-base);
+}
+
+.mb-exp-card:hover .mb-exp-logo-wrap img,
+.mb-exp-card:hover .mb-exp-logo-wrap svg {
+  opacity: 1;
+}
+
+.mb-exp-content h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 0.25rem 0;
+}
+
+.mb-exp-role {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--teal);
+  margin-bottom: 0.75rem;
+}
+
+.mb-exp-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+/* ============================================================================
+   EDUCATION
+   ========================================================================= */
+.mb-education-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.mb-edu-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--white);
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-100);
+  transition: all var(--transition-base);
+}
+
+.mb-edu-card:hover {
+  border-color: rgba(13, 148, 136, 0.3);
+  box-shadow: 0 10px 30px rgba(13, 148, 136, 0.08);
+}
+
+.mb-edu-logo {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mb-edu-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mb-edu-text {
+  font-size: 0.9375rem;
+  color: var(--gray-600);
+  line-height: 1.5;
+}
+
+.mb-edu-text strong {
+  display: block;
+  color: var(--gray-900);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   CONTACT SECTION
+   ========================================================================= */
+.mb-contact {
+  padding: 8rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.mb-contact-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  border-radius: var(--radius-2xl);
+  padding: 5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mb-contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.3;
+}
+
+.mb-contact-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.mb-contact-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 1rem 0;
+}
+
+.mb-contact-text {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-base);
+}
+
+.mb-contact-email:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 968px) {
+  .mb-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .mb-hero-visual {
+    order: -1;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .mb-hero-content {
+    text-align: center;
+  }
+
+  .mb-cta-group {
+    justify-content: center;
+  }
+
+  .mb-capabilities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mb-exp-card {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .mb-education-row {
+    grid-template-columns: 1fr;
+  }
+}

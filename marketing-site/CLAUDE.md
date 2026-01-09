@@ -17,7 +17,8 @@ npx tsc --noEmit # Check TypeScript errors
 
 ### Tech Stack
 - **Framework**: Next.js 15.5.6 with App Router
-- **Styling**: Custom CSS with dynamic gradients, glassmorphism effects, and animations
+- **Styling**: Kinetic Design System - Custom CSS with dynamic gradients, glassmorphism effects, and animations
+- **Icons**: React Feather (lightweight icon library)
 - **Language**: TypeScript with strict mode
 - **Deployment**: Netlify (static export via `output: 'export'`)
 
@@ -33,12 +34,17 @@ npx tsc --noEmit # Check TypeScript errors
 src/
 ├── app/
 │   ├── layout.tsx          # Root layout with metadata and GTM
-│   ├── page.tsx            # Home/portfolio page
+│   ├── page.tsx            # Home/portfolio page (Kinetic Design System)
 │   ├── work/
 │   │   └── page.tsx        # Marketing campaign portfolio
 │   ├── resume/
 │   │   └── page.tsx        # Full resume page
-│   └── globals.css         # Global styles (clean, single design system)
+│   └── globals.css         # Global base styles
+├── styles/                 # Kinetic Design System
+│   ├── kinetic-design-system.css  # Core: variables, animations, components
+│   ├── mockup-b.css        # Homepage-specific styles
+│   ├── work.css            # Work page styles
+│   └── resume.css          # Resume page styles
 public/
 ├── logos/                  # Company and education logos (PNG/JPG only)
 │   ├── kinetic-brand-partners.png
@@ -54,10 +60,11 @@ public/
 
 ### Key Patterns
 - **Multi-Page Portfolio**: Personal marketing site for Dan Hoeller
-- **Clean Editorial Design**: Minimal styling with focus on typography and whitespace
+- **Kinetic Design System**: Unified design language with glassmorphism effects, animated gradient mesh backgrounds, and consistent components
 - **Inline Layouts**: All page structures built inline (no shared component abstractions)
-- **Logo Integration**: Company and education logos displayed with consistent treatment
+- **Logo Integration**: Company and education logos displayed with consistent treatment (180x45px)
 - **Brand Colors**: Navy (#1a365d) to Teal (#0d9488) gradient from logo
+- **Standardized Navigation**: All pages use identical header structure (Work, Resume, LinkedIn, Contact)
 
 ## Site Structure
 
@@ -91,6 +98,38 @@ public/
 - **Primary**: letstalk@kineticbrandpartners.com
 - **LinkedIn**: linkedin.com/in/danhoeller
 - **Resume**: PDF download available in header
+
+## Design System
+
+### Kinetic Design System (2026-01)
+
+**Architecture:**
+- **Core System** (`kinetic-design-system.css` - 12KB): CSS variables, animations, base components, glassmorphism effects
+- **Page-Specific Styles**: Homepage (`mockup-b.css` - 6.4KB), Work (`work.css` - 5KB), Resume (`resume.css` - 6KB)
+
+**Key Features:**
+- **Animated Gradient Mesh**: Background with three animated gradient blobs (navy, teal, purple)
+- **Glassmorphism**: Frosted glass effects on header, footer, cards, and CTAs
+- **Typography**: System font stack optimized for readability
+- **Responsive Grid**: Flexible layouts that adapt from mobile to desktop
+- **Icon Integration**: React Feather icons for visual hierarchy and clarity
+- **Consistent Components**: Standardized buttons, cards, sections across all pages
+
+**Design Tokens:**
+- Colors: Navy (#1a365d), Teal (#0d9488), Purple (#7c3aed), Gray scale
+- Spacing: 8px base unit (0.5rem to 8rem scale)
+- Border Radius: 16px standard, 24px for large cards
+- Shadows: Layered shadows for depth (sm, md, lg, xl)
+- Transitions: 200-400ms cubic-bezier easing
+
+**Component Classes:**
+- `.kinetic-header` - Glassmorphic navigation header
+- `.kinetic-footer` - Minimal footer with links
+- `.kinetic-hero` - Hero sections with gradient titles
+- `.kinetic-section` - Content sections with consistent padding
+- `.kinetic-card` - Glassmorphic cards with hover effects
+- `.kinetic-btn-*` - Primary, secondary, and outline buttons
+- `.gradient-mesh` - Animated background gradient
 
 ## Content Guidelines
 
@@ -140,3 +179,28 @@ The following optimizations have been implemented to reduce CPU and memory usage
 - All builds verified successful post-cleanup
 
 **Current state:** Clean, minimal codebase with only actively used files.
+
+## Design System Implementation (2026-01)
+
+**New Kinetic Design System launched** with unified visual language across all pages:
+
+**Added:**
+- Kinetic Design System CSS architecture (`src/styles/` - 29.4KB total)
+  - `kinetic-design-system.css` - Core system with variables, animations, components
+  - `mockup-b.css` - Homepage-specific styles
+  - `work.css` - Work page styles
+  - `resume.css` - Resume page styles
+- React Feather icon library dependency
+- Animated gradient mesh backgrounds
+- Glassmorphism UI components
+
+**Updated:**
+- All three production pages (`page.tsx`, `work/page.tsx`, `resume/page.tsx`)
+- Standardized headers across all pages (180x45px logo, consistent navigation)
+- Tightened section spacing on resume page for better readability
+
+**Impact:**
+- Professional, modern design system with consistent branding
+- Improved visual hierarchy and user experience
+- Mobile-responsive layouts across all pages
+- Reduced need for custom CSS with reusable component classes

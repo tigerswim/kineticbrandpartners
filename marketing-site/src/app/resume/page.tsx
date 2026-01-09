@@ -1,8 +1,11 @@
-// Resume page - Full resume content with PDF download
+// Resume page - Full professional resume with PDF download
+// Uses shared Kinetic Design System
 
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
+import "../../styles/kinetic-design-system.css";
+import "../../styles/resume.css";
 
 export const metadata: Metadata = {
   title: 'Resume | Dan Hoeller | Kinetic Brand Partners',
@@ -11,62 +14,54 @@ export const metadata: Metadata = {
 
 export default function Resume() {
   return (
-    <div className="opt1">
-      <header className="site-header">
-        <div className="container">
-          <nav className="nav-bar">
-            <Link href="/" className="logo">
-              <Image
-                src="/logos/kinetic-brand-partners.png"
-                alt="Kinetic Brand Partners"
-                width={550}
-                height={140}
-                className="header-logo"
-                priority
-              />
-            </Link>
-            <ul className="nav-links">
-              <li>
-                <Link href="/work">Work</Link>
-              </li>
-              <li>
-                <a
-                  href="https://linkedin.com/in/danhoeller"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <Link href="/resume">Resume</Link>
-              </li>
-              <li>
-                <Link href="/#contact">Contact</Link>
-              </li>
-            </ul>
-          </nav>
+    <div className="kinetic-page">
+      {/* Gradient Mesh Background */}
+      <div className="kinetic-gradient-mesh">
+        <div className="kinetic-gradient-blob kinetic-gradient-blob--1"></div>
+        <div className="kinetic-gradient-blob kinetic-gradient-blob--2"></div>
+        <div className="kinetic-gradient-blob kinetic-gradient-blob--3"></div>
+      </div>
+
+      {/* Header */}
+      <header className="kinetic-header">
+        <div className="kinetic-container">
+          <Link href="/">
+            <Image
+              src="/logos/kinetic-brand-partners.png"
+              alt="Kinetic Brand Partners"
+              width={180}
+              height={45}
+              className="kinetic-logo"
+              priority
+            />
+          </Link>
+          <ul className="kinetic-nav">
+            <li><Link href="/work">Work</Link></li>
+            <li><Link href="/resume">Resume</Link></li>
+            <li><a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="/#contact" className="kinetic-nav-cta">Contact</a></li>
+          </ul>
         </div>
       </header>
 
       <main>
         {/* Hero */}
-        <section className="hero">
-          <div className="container">
-            <p className="hero__eyebrow">Resume</p>
-            <h1 className="hero__title">Dan Hoeller</h1>
-            <p className="hero__subtitle">
-              Atlanta, GA · <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}>linkedin.com/in/danhoeller</a>
+        <section className="resume-hero">
+          <div className="kinetic-container">
+            <p className="resume-hero-eyebrow">Resume</p>
+            <h1 className="resume-hero-title">Dan Hoeller</h1>
+            <p className="resume-hero-subtitle">
+              Atlanta, GA · <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer">linkedin.com/in/danhoeller</a>
             </p>
-            <div className="hero__cta">
+            <div className="resume-hero-cta">
               <a
                 href="/Dan-Hoeller-Resume.pdf"
                 download
-                className="btn btn--primary"
+                className="kinetic-btn kinetic-btn--primary"
               >
                 Download Resume PDF
               </a>
-              <Link href="/#contact" className="btn btn--secondary">
+              <Link href="/#contact" className="kinetic-btn kinetic-btn--secondary">
                 Get in Touch
               </Link>
             </div>
@@ -74,41 +69,41 @@ export default function Resume() {
         </section>
 
         {/* Executive Summary */}
-        <section className="section section--alt">
-          <div className="container">
-            <h2 className="section__title">Executive Summary</h2>
-            <p className="card__text" style={{ maxWidth: '800px', lineHeight: '1.8' }}>
+        <section className="kinetic-section kinetic-section--alt">
+          <div className="kinetic-container">
+            <h2 className="kinetic-section-title">Executive Summary</h2>
+            <p className="resume-summary">
               P&amp;L-focused marketing executive with 15+ years of experience driving growth, brand transformation, and digital innovation for top brands in the CPG and Lawn &amp; Garden industries. Strong track record in creating award-winning campaigns that leverage data-driven insights and creative storytelling to deliver sales growth. Strengths include setting strategic vision, bringing a holistic business perspective to decision-making, championing the consumer, and building and leading successful teams with a player-coach management style.
             </p>
           </div>
         </section>
 
         {/* Core Competencies */}
-        <section className="section">
-          <div className="container">
-            <h2 className="section__title">Core Competencies</h2>
-            <div className="grid grid--2col">
-              <div className="card">
-                <h3 className="card__title">Strategic Perspective</h3>
-                <p className="card__text">
+        <section className="kinetic-section">
+          <div className="kinetic-container">
+            <h2 className="kinetic-section-title">Core Competencies</h2>
+            <div className="competencies-grid">
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Strategic Perspective</h3>
+                <p className="kinetic-card-text">
                   Strategic Planning | Marketing Strategy | GTM (B2B2C, Omnichannel, DTC) | Innovation
                 </p>
               </div>
-              <div className="card">
-                <h3 className="card__title">Financial Management &amp; Performance</h3>
-                <p className="card__text">
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Financial Management &amp; Performance</h3>
+                <p className="kinetic-card-text">
                   P&amp;L Management | Revenue &amp; Margin Growth | Pricing | Scenario Planning
                 </p>
               </div>
-              <div className="card">
-                <h3 className="card__title">Brand &amp; Marketing Execution</h3>
-                <p className="card__text">
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Brand &amp; Marketing Execution</h3>
+                <p className="kinetic-card-text">
                   Brand Architecture &amp; Visual Identity | Performance Marketing | Marketing Insights | Creative Development | Digital Transformation | MarTech Stack | Agency Selection &amp; Management
                 </p>
               </div>
-              <div className="card">
-                <h3 className="card__title">Leadership &amp; Team Development</h3>
-                <p className="card__text">
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Leadership &amp; Team Development</h3>
+                <p className="kinetic-card-text">
                   Cross-functional Leadership | Change Management | Servant Leadership
                 </p>
               </div>
@@ -117,13 +112,13 @@ export default function Resume() {
         </section>
 
         {/* Professional Experience */}
-        <section className="section section--alt">
-          <div className="container">
-            <h2 className="section__title">Professional Experience</h2>
+        <section className="kinetic-section kinetic-section--alt">
+          <div className="kinetic-container">
+            <h2 className="kinetic-section-title">Professional Experience</h2>
 
             {/* Central Garden & Pet */}
-            <div className="exp-with-logo">
-              <div className="logo-item logo-item--central">
+            <div className="resume-exp-company">
+              <div className="resume-exp-logo">
                 <svg
                   viewBox="0 0 453.29 164.44"
                   width={190}
@@ -134,7 +129,7 @@ export default function Resume() {
                   <path fill="#006e43" d="M188.19,108.36h4.45v4a7.31,7.31,0,0,1-3.3.62c-3.77,0-6.24-2.22-6.24-5.48s2.45-5.43,6.22-5.43a10.07,10.07,0,0,1,4.26,1l.15-1.58a10,10,0,0,0-4.39-1c-4.81,0-8,2.85-8,7s3.21,7,8,7a9.85,9.85,0,0,0,4.85-1.13v-6.53h-6.07Z"/>
                   <path fill="#006e43" d="M206.88,100.67l-5.65,13.65H203l1.26-3.17h7.21l1.27,3.17h1.74l-5.64-13.65Zm-2.1,9.06,3.07-7.33,3.07,7.33Z"/>
                   <path fill="#006e43" d="M232.68,105.38c0-3.23-2.2-4.71-4.77-4.71h-6v13.65h1.66V110h4.34l3.44,4.28h2.08l-3.76-4.57A4.43,4.43,0,0,0,232.68,105.38Zm-5,3.16h-4.18v-6.36h4.18a3,3,0,0,1,3.26,3.21A3.09,3.09,0,0,1,227.72,108.54Z"/>
-                  <path fill="#006e43" d="M246.72,100.67h-5.59v13.65h5.57c4.57,0,6.91-2.63,6.91-6.82C253.61,103.47,251.28,100.67,246.72,100.67Zm-.1,12.13h-3.83V102.18h3.83c3.53,0,5.3,2,5.3,5.32S250.15,112.8,246.62,112.8Z"/>
+                  <path fill="#006e43" d="M246.72,100.67h-5.59v13.65h5.57c4.57,0,6.91-2.63,6.91-6.82C253.61,103.47,251.28,100.67,246.72,100.67Zm-.10,12.13h-3.83V102.18h3.83c3.53,0,5.3,2,5.3,5.32S250.15,112.8,246.62,112.8Z"/>
                   <polygon fill="#006e43" points="263.59 108.06 270.67 108.06 270.67 106.55 263.59 106.55 263.59 102.17 271.72 102.17 271.72 100.67 261.93 100.67 261.93 114.32 271.93 114.32 271.93 112.82 263.59 112.82 263.59 108.06"/>
                   <polygon fill="#006e43" points="290.9 111.86 281.62 100.67 279.88 100.67 279.88 114.32 281.55 114.32 281.55 103.17 290.82 114.32 292.56 114.32 292.56 100.67 290.9 100.67 290.9 111.86"/>
                   <path fill="#006e43" d="M323,106.9h-1.53a6.48,6.48,0,0,1-.9,4l-4.44-4.19c-1-1-1.58-1.6-1.58-2.81s1.27-2,2.86-2a7.06,7.06,0,0,1,2.9.63l.2-1.46a8.24,8.24,0,0,0-3.12-.62c-2.49,0-4.47,1.25-4.47,3.46a4,4,0,0,0,1.18,2.78,4.4,4.4,0,0,0-2.6,3.72c0,2.43,2.13,4.1,5.1,4.1a5.86,5.86,0,0,0,4.08-1.5l1.38,1.3h2.23l-2.56-2.44A7.91,7.91,0,0,0,323,106.9ZM316.57,113c-2,0-3.48-1.06-3.48-2.62a3,3,0,0,1,1.82-2.71l4.63,4.26A4.16,4.16,0,0,1,316.57,113Z"/>
@@ -154,49 +149,54 @@ export default function Resume() {
                   <rect fill="#006e43" x="95.37" y="98.22" width="8.71" height="18.1"/>
                 </svg>
               </div>
-              <div className="exp-with-logo__content">
-                <h3 className="exp__company">Central Garden &amp; Pet — Atlanta, GA</h3>
-                <p className="exp__role">2013–2024</p>
-                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
-                  $3B+ manufacturer + distributor of lawn, garden, and pet supplies; Member of Central Leadership Council and managed 25 people across Insights, Innovation, Digital, Creative, Customer Marketing, and Customer Care.
-                </p>
+              <div className="resume-exp-content">
+                <div className="resume-exp-header">
+                  <h3 className="resume-company-name">Central Garden &amp; Pet</h3>
+                  <p className="resume-company-years">2013–2024 · Atlanta, GA</p>
+                  <p className="resume-company-desc">
+                    $3B+ manufacturer + distributor of lawn, garden, and pet supplies; Member of Central Leadership Council and managed 25 people across Insights, Innovation, Digital, Creative, Customer Marketing, and Customer Care.
+                  </p>
+                </div>
+
+                {/* Role 1 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Senior Vice President of Marketing: Garden Segment</h4>
+                  <p className="resume-role-years">Nov 2019 – Oct 2024</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>Brand Transformation:</strong> Grew the $250MM Pennington lawn and garden brand 8.2% in 2024, 4x the category growth rate, by leading comprehensive brand transformation initiatives, including improved positioning, visual identity, and product development.</li>
+                    <li><strong>Award-Winning Creative:</strong> Created and led the #FlipTheTurf campaign that generated 3.95 billion media impressions, won two Clio Sports Awards, and helped boost brand awareness by 10 points.</li>
+                    <li><strong>New Product Launches:</strong> Developed a multi-year innovation pipeline that consistently launched $20MM+ in sustainable, category-leading solutions annually.</li>
+                    <li><strong>Digital Transformation:</strong> Led cross-functional teams to build top-tier Product Detail Pages using Salsify and Vizit, earning retailer "Best in Class" recognition and driving higher conversion rates.</li>
+                  </ul>
+                </div>
+
+                {/* Role 2 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Vice President of Marketing: Garden Segment</h4>
+                  <p className="resume-role-years">Nov 2017 – Nov 2019</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>Revenue Growth:</strong> Secured $7MM in incremental revenue with The Home Depot through executive-level partnership negotiations.</li>
+                    <li><strong>Marketing Effectiveness:</strong> Guided teams using Marketing Mix Modeling (MMM) and real-time KPI dashboards, delivering a 25% increase in efficiency.</li>
+                    <li><strong>Partnership Expansion:</strong> Expanded MLB partnership to 9 teams, driving in-store traffic and amplifying promotional impact.</li>
+                  </ul>
+                </div>
+
+                {/* Role 3 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Senior Director / Director of Marketing: Grass Seed Business Unit</h4>
+                  <p className="resume-role-years">Apr 2013 – Nov 2017</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>Financial Performance:</strong> Delivered 98.8% EBIT growth in 2016 and an additional 12% in 2017 through margin-accretive new product launches and strategic price optimization.</li>
+                    <li><strong>Product Innovation:</strong> Upgraded and launched best-in-category grass repair product, driving sales +36.7% at +840bp higher margins in 2016.</li>
+                    <li><strong>Digital Transformation:</strong> Relaunched the Pennington brand website, increasing sessions by 295% and tested DTC with Shopify.</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
-              <h4 className="card__title">Senior Vice President of Marketing: Garden Segment</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Nov 2019 – Oct 2024</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Brand Transformation:</strong> Grew the $250MM Pennington lawn and garden brand 8.2% in 2024, 4x the category growth rate, by leading comprehensive brand transformation initiatives, including improved positioning, visual identity, and product development.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Award-Winning Creative:</strong> Created and led the #FlipTheTurf campaign that generated 3.95 billion media impressions, won two Clio Sports Awards, and helped boost brand awareness by 10 points.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>New Product Launches:</strong> Developed a multi-year innovation pipeline that consistently launched $20MM+ in sustainable, category-leading solutions annually.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Led cross-functional teams to build top-tier Product Detail Pages using Salsify and Vizit, earning retailer &quot;Best in Class&quot; recognition and driving higher conversion rates.</li>
-              </ul>
-            </div>
-
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
-              <h4 className="card__title">Vice President of Marketing: Garden Segment</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Nov 2017 – Nov 2019</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Revenue Growth:</strong> Secured $7MM in incremental revenue with The Home Depot through executive-level partnership negotiations.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Marketing Effectiveness:</strong> Guided teams using Marketing Mix Modeling (MMM) and real-time KPI dashboards, delivering a 25% increase in efficiency.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Partnership Expansion:</strong> Expanded MLB partnership to 9 teams, driving in-store traffic and amplifying promotional impact.</li>
-              </ul>
-            </div>
-
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)', borderBottom: '1px solid var(--gray-200)' }}>
-              <h4 className="card__title">Senior Director / Director of Marketing: Grass Seed Business Unit</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Apr 2013 – Nov 2017</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Financial Performance:</strong> Delivered 98.8% EBIT growth in 2016 and an additional 12% in 2017 through margin-accretive new product launches and strategic price optimization.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Product Innovation:</strong> Upgraded and launched best-in-category grass repair product, driving sales +36.7% at +840bp higher margins in 2016.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Relaunched the Pennington brand website, increasing sessions by 295% and tested DTC with Shopify.</li>
-              </ul>
-            </div>
-
             {/* Johnson & Johnson */}
-            <div className="exp-with-logo">
-              <div className="logo-item">
+            <div className="resume-exp-company">
+              <div className="resume-exp-logo">
                 <svg
                   viewBox="0 0 1000 181.354"
                   width={180}
@@ -216,45 +216,50 @@ export default function Resume() {
                   </g>
                 </svg>
               </div>
-              <div className="exp-with-logo__content">
-                <h3 className="exp__company">Johnson &amp; Johnson — Raritan, NJ / Skillman, NJ</h3>
-                <p className="exp__role">2006–2013</p>
-                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
-                  Consumer and Medical Device divisions; managed P&amp;Ls, brand strategy, new product development, marketing campaigns, promotions, forecasting, and reporting.
-                </p>
+              <div className="resume-exp-content">
+                <div className="resume-exp-header">
+                  <h3 className="resume-company-name">Johnson &amp; Johnson</h3>
+                  <p className="resume-company-years">2006–2013 · Raritan, NJ / Skillman, NJ</p>
+                  <p className="resume-company-desc">
+                    Consumer and Medical Device divisions; managed P&amp;Ls, brand strategy, new product development, marketing campaigns, promotions, forecasting, and reporting.
+                  </p>
+                </div>
+
+                {/* Role 1 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Marketing Manager: Ortho Clinical Diagnostics</h4>
+                  <p className="resume-role-years">May 2012 – Mar 2013</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>Strategic Marketing:</strong> Transformed traditional clinical lab marketing approach by centering strategies around patient outcomes and healthcare provider needs.</li>
+                    <li><strong>Digital Transformation:</strong> Developed custom iPad applications and deployed to 150+ field sales reps, streamlining sales enablement processes.</li>
+                  </ul>
+                </div>
+
+                {/* Role 2 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Brand Manager: Consumer Healthcare Division</h4>
+                  <p className="resume-role-years">Jul 2010 – May 2012</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>P&amp;L Management:</strong> Managed the $60MM Tucks and ept P&amp;Ls. Reversed a multi-year decline for Tucks, growing the brand 26.8% via targeted marketing.</li>
+                    <li><strong>Portfolio Management:</strong> Evaluated the ept brand&apos;s viability, recommended its strategic sale, and managed the transition process.</li>
+                  </ul>
+                </div>
+
+                {/* Role 3 */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Brand Manager, Assistant Product Director: Baby Care Division</h4>
+                  <p className="resume-role-years">Jul 2006 – Jul 2010</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>P&amp;L Management:</strong> Owned the P&amp;L across an ~$80MM portfolio, including the $40MM Baby Shampoo business, while growing Baby Oil by 9.8% and Baby Powder by 5.2%.</li>
+                    <li><strong>Award-Winning Marketing:</strong> Led the "Thanks, Mom" campaign that generated 290MM impressions and won J&amp;J&apos;s Global Burke Award.</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
-              <h4 className="card__title">Marketing Manager: Ortho Clinical Diagnostics</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>May 2012 – Mar 2013</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Strategic Marketing:</strong> Transformed traditional clinical lab marketing approach by centering strategies around patient outcomes and healthcare provider needs.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Digital Transformation:</strong> Developed custom iPad applications and deployed to 150+ field sales reps, streamlining sales enablement processes.</li>
-              </ul>
-            </div>
-
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)' }}>
-              <h4 className="card__title">Brand Manager: Consumer Healthcare Division</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Jul 2010 – May 2012</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>P&amp;L Management:</strong> Managed the $60MM Tucks and ept P&amp;Ls. Reversed a multi-year decline for Tucks, growing the brand 26.8% via targeted marketing.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Portfolio Management:</strong> Evaluated the ept brand&apos;s viability, recommended its strategic sale, and managed the transition process.</li>
-              </ul>
-            </div>
-
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)', borderBottom: '1px solid var(--gray-200)' }}>
-              <h4 className="card__title">Brand Manager, Assistant Product Director: Baby Care Division</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Jul 2006 – Jul 2010</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>P&amp;L Management:</strong> Owned the P&amp;L across an ~$80MM portfolio, including the $40MM Baby Shampoo business, while growing Baby Oil by 9.8% and Baby Powder by 5.2%.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Award-Winning Marketing:</strong> Led the &quot;Thanks, Mom&quot; campaign that generated 290MM impressions and won J&amp;J&apos;s Global Burke Award.</li>
-              </ul>
-            </div>
-
             {/* Manhattan Associates */}
-            <div className="exp-with-logo">
-              <div className="logo-item">
+            <div className="resume-exp-company">
+              <div className="resume-exp-logo">
                 <Image
                   src="/logos/manhattan-associates.png"
                   alt="Manhattan Associates"
@@ -262,78 +267,84 @@ export default function Resume() {
                   height={160}
                 />
               </div>
-              <div className="exp-with-logo__content">
-                <h3 className="exp__company">Manhattan Associates — Atlanta, GA</h3>
-                <p className="exp__role">1999–2004</p>
-                <p className="exp__desc" style={{ fontStyle: 'italic', marginBottom: 'var(--space-lg)' }}>
-                  $215MM provider of supply chain software solutions; led design, testing, implementation, and support projects.
-                </p>
-              </div>
-            </div>
+              <div className="resume-exp-content">
+                <div className="resume-exp-header">
+                  <h3 className="resume-company-name">Manhattan Associates</h3>
+                  <p className="resume-company-years">1999–2004 · Atlanta, GA</p>
+                  <p className="resume-company-desc">
+                    $215MM provider of supply chain software solutions; led design, testing, implementation, and support projects.
+                  </p>
+                </div>
 
-            <div style={{ marginLeft: '0', marginBottom: 'var(--space-xl)' }}>
-              <h4 className="card__title">Manager, Senior Consultant, Consultant, Support Consultant: Professional Services</h4>
-              <p className="exp__role" style={{ marginBottom: 'var(--space-md)' }}>Mar 1999 – Jun 2004</p>
-              <ul style={{ color: 'var(--gray-600)', lineHeight: '1.7', paddingLeft: 'var(--space-lg)' }}>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>Software Implementation:</strong> Managed warehouse management software projects for major clients, including Michelin and Bic, with international experience at The Diamond Trading Company (DeBeers) in London, UK.</li>
-                <li style={{ marginBottom: 'var(--space-sm)' }}><strong>System Design:</strong> Developed and deployed a $1MM tracking system at Michelin that reduced operational risk and improved product quality.</li>
-              </ul>
+                {/* Role */}
+                <div className="resume-role">
+                  <h4 className="resume-role-title">Manager, Senior Consultant, Consultant, Support Consultant: Professional Services</h4>
+                  <p className="resume-role-years">Mar 1999 – Jun 2004</p>
+                  <ul className="resume-role-bullets">
+                    <li><strong>Software Implementation:</strong> Managed warehouse management software projects for major clients, including Michelin and Bic, with international experience at The Diamond Trading Company (DeBeers) in London, UK.</li>
+                    <li><strong>System Design:</strong> Developed and deployed a $1MM tracking system at Michelin that reduced operational risk and improved product quality.</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Education */}
-        <section className="section">
-          <div className="container">
-            <h2 className="section__title">Education</h2>
+        <section className="kinetic-section">
+          <div className="kinetic-container">
+            <h2 className="kinetic-section-title">Education</h2>
 
-            <div className="edu-row">
-              <div className="logo-item logo-item--darden">
-                <Image
-                  src="/logos/uva-darden.png"
-                  alt="UVA Darden"
-                  width={200}
-                  height={160}
-                />
+            <div className="resume-edu">
+              <div className="resume-edu-item">
+                <div className="resume-edu-logo">
+                  <Image
+                    src="/logos/uva-darden.png"
+                    alt="UVA Darden"
+                    width={200}
+                    height={160}
+                  />
+                </div>
+                <div className="resume-edu-text">
+                  <strong>University of Virginia Darden School of Business</strong>
+                  <p className="resume-edu-degree">Master of Business Administration (MBA)</p>
+                </div>
               </div>
-              <p className="edu-row__text">
-                <strong>University of Virginia Darden School of Business</strong><br />
-                Master of Business Administration (MBA)
-              </p>
-            </div>
-            <div className="edu-row">
-              <div className="logo-item">
-                <Image
-                  src="/logos/clemson.png"
-                  alt="Clemson University"
-                  width={200}
-                  height={160}
-                />
+
+              <div className="resume-edu-item">
+                <div className="resume-edu-logo">
+                  <Image
+                    src="/logos/clemson.png"
+                    alt="Clemson University"
+                    width={200}
+                    height={160}
+                  />
+                </div>
+                <div className="resume-edu-text">
+                  <strong>Clemson University</strong>
+                  <p className="resume-edu-degree">Bachelor of Science, Management</p>
+                  <p className="resume-edu-note">Co-captain and four-year Letterman on the varsity swim team; earned a scholarship as a walk-on athlete</p>
+                </div>
               </div>
-              <p className="edu-row__text">
-                <strong>Clemson University</strong><br />
-                Bachelor of Science, Management<br />
-                <span style={{ color: 'var(--gray-500)', fontSize: '0.9375rem' }}>Co-captain and four-year Letterman on the varsity swim team; earned a scholarship as a walk-on athlete</span>
-              </p>
             </div>
           </div>
         </section>
 
         {/* Other Activities */}
-        <section className="section section--alt">
-          <div className="container">
-            <h2 className="section__title">Other Activities</h2>
-            <div className="grid grid--2col">
-              <div className="card">
-                <h3 className="card__title">Memberships</h3>
-                <p className="card__text">
+        <section className="kinetic-section kinetic-section--alt">
+          <div className="kinetic-container">
+            <h2 className="kinetic-section-title">Other Activities</h2>
+            <div className="activities-grid">
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Memberships</h3>
+                <p className="kinetic-card-text">
                   CMO Collaborative, Southern Off-Road Bicycle Association (SORBA)
                 </p>
               </div>
-              <div className="card">
-                <h3 className="card__title">Athletics &amp; Interests</h3>
-                <p className="card__text">
-                  Triathlete and Ironman finisher. Avid road and MTB cyclist. DIY enthusiast. Experimenting with using AI for &quot;vibe coding&quot; of an app for triathletes for race preparation.
+              <div className="kinetic-card">
+                <h3 className="kinetic-card-title">Athletics &amp; Interests</h3>
+                <p className="kinetic-card-text">
+                  Triathlete and Ironman finisher. Avid road and MTB cyclist. DIY enthusiast. Experimenting with using AI for "vibe coding" of an app for triathletes for race preparation.
                 </p>
               </div>
             </div>
@@ -341,12 +352,12 @@ export default function Resume() {
         </section>
 
         {/* Download CTA */}
-        <section className="section">
-          <div className="container" style={{ textAlign: 'center' }}>
+        <section className="resume-download-cta">
+          <div className="kinetic-container">
             <a
               href="/Dan-Hoeller-Resume.pdf"
               download
-              className="btn btn--primary"
+              className="kinetic-btn kinetic-btn--primary"
             >
               Download Resume PDF
             </a>
@@ -354,8 +365,9 @@ export default function Resume() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="container">
+      {/* Footer */}
+      <footer className="kinetic-footer">
+        <div className="kinetic-container">
           <p>&copy; {new Date().getFullYear()} Kinetic Brand Partners</p>
         </div>
       </footer>

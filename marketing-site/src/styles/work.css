@@ -1,0 +1,247 @@
+/*
+ * Work Page - Marketing Campaign Portfolio
+ * Uses shared Kinetic Design System
+ */
+
+/* ============================================================================
+   HERO
+   ========================================================================= */
+.work-hero {
+  padding: 10rem 0 6rem;
+  text-align: center;
+}
+
+.work-hero-eyebrow {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+
+.work-hero-title {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gray-900);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.03em;
+}
+
+.work-hero-subtitle {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
+   CAMPAIGN CARDS
+   ========================================================================= */
+.campaign-card {
+  background: var(--white);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+}
+
+.campaign-header {
+  margin-bottom: 2rem;
+}
+
+.campaign-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 0.5rem 0;
+}
+
+.campaign-meta {
+  font-size: 1rem;
+  color: var(--teal);
+  font-weight: 500;
+  margin: 0;
+}
+
+.campaign-description {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: 1.5rem;
+}
+
+.campaign-description strong {
+  color: var(--gray-900);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   MEDIA GRIDS
+   ========================================================================= */
+.campaign-media-grid {
+  display: grid;
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.campaign-media-grid--2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.campaign-media-grid--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.media-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.media-item-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin: 0 0 1rem 0;
+}
+
+.media-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--gray-100);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.media-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.media-video,
+.media-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.campaign-image-full {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: 2rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   RESULTS SECTION
+   ========================================================================= */
+.campaign-results {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.results-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.result-stat {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.05), rgba(26, 54, 93, 0.05));
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(13, 148, 136, 0.1);
+  transition: all var(--transition-base);
+}
+
+.result-stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.1);
+  border-color: rgba(13, 148, 136, 0.3);
+}
+
+.result-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.result-stat-label {
+  font-size: 0.9375rem;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+/* ============================================================================
+   CTA SECTION
+   ========================================================================= */
+.work-cta {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.work-cta-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 1rem 0;
+}
+
+.work-cta-text {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 968px) {
+  .campaign-media-grid--2col,
+  .campaign-media-grid--3col {
+    grid-template-columns: 1fr;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .campaign-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .work-hero {
+    padding: 8rem 0 4rem;
+  }
+
+  .campaign-title {
+    font-size: 1.75rem;
+  }
+}

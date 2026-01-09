@@ -1,0 +1,311 @@
+/*
+ * Resume Page - Professional Resume
+ * Uses shared Kinetic Design System
+ */
+
+/* ============================================================================
+   SECTION SPACING OVERRIDES
+   ========================================================================= */
+.resume-hero + .kinetic-section {
+  padding-top: 3rem;
+}
+
+.kinetic-section + .kinetic-section {
+  padding-top: 3rem;
+}
+
+.kinetic-section .kinetic-section-title {
+  margin-bottom: 2rem;
+}
+
+/* ============================================================================
+   HERO
+   ========================================================================= */
+.resume-hero {
+  padding: 10rem 0 4rem;
+  text-align: center;
+}
+
+.resume-hero-eyebrow {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+
+.resume-hero-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gray-900);
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.03em;
+}
+
+.resume-hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+}
+
+.resume-hero-subtitle a {
+  color: var(--teal);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.resume-hero-subtitle a:hover {
+  color: var(--teal-light);
+}
+
+.resume-hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================================================
+   EXECUTIVE SUMMARY
+   ========================================================================= */
+.resume-summary {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--gray-600);
+}
+
+/* ============================================================================
+   COMPETENCIES GRID
+   ========================================================================= */
+.competencies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* ============================================================================
+   EXPERIENCE SECTION
+   ========================================================================= */
+.resume-exp-company {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.resume-exp-logo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+}
+
+.resume-exp-logo img,
+.resume-exp-logo svg {
+  max-width: 180px;
+  height: auto;
+  opacity: 0.8;
+}
+
+.resume-exp-header {
+  margin-bottom: 2rem;
+}
+
+.resume-company-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 0.25rem 0;
+}
+
+.resume-company-years {
+  font-size: 1rem;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.resume-company-desc {
+  font-style: italic;
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* Job Roles */
+.resume-role {
+  margin-bottom: 2.5rem;
+}
+
+.resume-role:last-child {
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.resume-role-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0 0 0.5rem 0;
+}
+
+.resume-role-years {
+  font-size: 0.9375rem;
+  color: var(--gray-500);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.resume-role-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resume-role-bullets li {
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.resume-role-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65rem;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  border-radius: 50%;
+}
+
+.resume-role-bullets li strong {
+  color: var(--gray-900);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   EDUCATION
+   ========================================================================= */
+.resume-edu {
+  display: grid;
+  gap: 2rem;
+  max-width: 800px;
+}
+
+.resume-edu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.resume-edu-item:last-child {
+  border-bottom: none;
+}
+
+.resume-edu-logo {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resume-edu-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.resume-edu-text {
+  flex: 1;
+}
+
+.resume-edu-text strong {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 0.25rem;
+}
+
+.resume-edu-degree {
+  color: var(--gray-700);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.resume-edu-note {
+  color: var(--gray-500);
+  font-size: 0.9375rem;
+  font-style: italic;
+}
+
+/* ============================================================================
+   OTHER ACTIVITIES GRID
+   ========================================================================= */
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* ============================================================================
+   DOWNLOAD CTA
+   ========================================================================= */
+.resume-download-cta {
+  text-align: center;
+  padding: 3rem 0 4rem;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 968px) {
+  .resume-exp-company {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .resume-exp-logo {
+    justify-content: center;
+  }
+
+  .competencies-grid,
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-edu-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .resume-hero {
+    padding: 8rem 0 3rem;
+  }
+
+  .resume-hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resume-role-bullets li {
+    padding-left: 1.25rem;
+  }
+}
