@@ -4,7 +4,14 @@
 "use client";
 
 import Image from "next/image";
-import { TrendingUp, DollarSign, BarChart2, Zap, Award, Users } from "react-feather";
+import {
+  TrendingUp,
+  DollarSign,
+  BarChart2,
+  Zap,
+  Award,
+  Users,
+} from "react-feather";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
@@ -25,22 +32,33 @@ export default function Home() {
               <div className="mb-hero-content">
                 <div className="kinetic-badge animate-slide-up delay-1">
                   <span className="kinetic-badge-dot"></span>
-                  Fractional CMO · Atlanta, GA
+                  Consultant / Fractional CMO · Atlanta, GA
                 </div>
                 <h1 className="mb-title animate-slide-up delay-2">
                   Strategic marketing leadership,{" "}
-                  <span className="kinetic-title-gradient">without the overhead</span>
+                  <span className="kinetic-title-gradient">
+                    without the overhead
+                  </span>
                 </h1>
                 <p className="mb-subtitle animate-slide-up delay-3">
-                  15 years building brands at Fortune 500 companies. Now helping
-                  growth-stage companies access senior marketing leadership and
-                  strategic firepower on flexible terms.
+                  15 years building brands from Fortune 50 to Fortune 1000
+                  companies. Now helping growth-stage companies access senior
+                  marketing leadership and strategic firepower on flexible
+                  terms.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
-                  <a href="#contact" className="kinetic-btn kinetic-btn--primary">
+                  <a
+                    href="#contact"
+                    className="kinetic-btn kinetic-btn--primary"
+                  >
                     Let&apos;s Talk
                   </a>
-                  <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" className="kinetic-btn kinetic-btn--secondary">
+                  <a
+                    href="https://linkedin.com/in/danhoeller"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="kinetic-btn kinetic-btn--secondary"
+                  >
                     View LinkedIn →
                   </a>
                 </div>
@@ -76,8 +94,9 @@ export default function Home() {
                 </div>
                 <h3 className="kinetic-card-title">Leadership & Scale</h3>
                 <p className="kinetic-card-text">
-                  Built and led 25-person marketing org spanning Consumer Insights,
-                  Digital, Creative, Innovation, and Customer Marketing.
+                  Built and led 25-person marketing org spanning Consumer
+                  Insights, Digital, Creative, Innovation, and Customer
+                  Marketing.
                 </p>
               </div>
               <div className="kinetic-card">
@@ -86,8 +105,8 @@ export default function Home() {
                 </div>
                 <h3 className="kinetic-card-title">P&L Ownership</h3>
                 <p className="kinetic-card-text">
-                  Managed portfolios from $40MM to $250MM. Grew a $250MM brand at
-                  4x the category rate.
+                  Managed portfolios from $20MM to $100MM+, from Gross Sales to
+                  EBIT.
                 </p>
               </div>
               <div className="kinetic-card">
@@ -96,8 +115,8 @@ export default function Home() {
                 </div>
                 <h3 className="kinetic-card-title">Data-Driven Marketing</h3>
                 <p className="kinetic-card-text">
-                  Marketing Mix Modeling, attribution frameworks, KPI dashboards.
-                  25% efficiency gains through optimization.
+                  Marketing Mix Modeling, attribution frameworks, KPI
+                  dashboards. 25% efficiency gains through optimization.
                 </p>
               </div>
               <div className="kinetic-card">
@@ -116,15 +135,17 @@ export default function Home() {
                 </div>
                 <h3 className="kinetic-card-title">Creative Excellence</h3>
                 <p className="kinetic-card-text">
-                  Clio Award-winning campaigns. 3.95B impressions. 10-point brand
-                  awareness lifts. Strategy-grounded creative.
+                  Clio Award-winning campaigns. 3.95B impressions. 10-point
+                  brand awareness lifts. Strategy-grounded creative.
                 </p>
               </div>
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
                   <Users />
                 </div>
-                <h3 className="kinetic-card-title">Cross-Functional Leadership</h3>
+                <h3 className="kinetic-card-title">
+                  Cross-Functional Leadership
+                </h3>
                 <p className="kinetic-card-text">
                   Player-coach style. Agency selection and management. Change
                   management across matrixed orgs.
@@ -244,8 +265,9 @@ export default function Home() {
                   <h3>Central Garden & Pet</h3>
                   <p className="mb-exp-role">SVP Marketing · 11 years</p>
                   <p className="mb-exp-desc">
-                    Led marketing for $1.5B Garden segment. Built and managed 25-person team.
-                    Full responsibility for brand development and marketing plans across multi-brand portfolio.
+                    Led marketing for $1.5B Garden segment. Built and managed
+                    25-person team. Full responsibility for brand development
+                    and marketing plans across multi-brand portfolio.
                   </p>
                 </div>
               </div>
@@ -279,8 +301,8 @@ export default function Home() {
                   <h3>Johnson & Johnson</h3>
                   <p className="mb-exp-role">Brand Management · 7 years</p>
                   <p className="mb-exp-desc">
-                    Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio
-                    responsibility. Award-winning campaigns.
+                    Consumer and Medical Device divisions. Multiple brands,
+                    $80MM+ portfolio responsibility. Award-winning campaigns.
                   </p>
                 </div>
               </div>
@@ -298,8 +320,8 @@ export default function Home() {
                   <h3>Manhattan Associates</h3>
                   <p className="mb-exp-role">Professional Services · 5 years</p>
                   <p className="mb-exp-desc">
-                    Enterprise software implementations for Fortune 500 clients including
-                    Michelin, Bic, and The Diamond Trading Company.
+                    Enterprise software implementations for Fortune 500 clients
+                    including Michelin, Bic, and The Diamond Trading Company.
                   </p>
                 </div>
               </div>
@@ -348,7 +370,10 @@ export default function Home() {
                   Ready to discuss how I can help—or just have a conversation
                   about what you&apos;re building.
                 </p>
-                <a href="mailto:letstalk@kineticbrandpartners.com" className="mb-contact-email">
+                <a
+                  href="mailto:letstalk@kineticbrandpartners.com"
+                  className="mb-contact-email"
+                >
                   ✉️ letstalk@kineticbrandpartners.com
                 </a>
               </div>

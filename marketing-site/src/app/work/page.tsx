@@ -225,17 +225,16 @@ export default function WorkPage() {
 
               <p className="campaign-description">
                 <strong>The Challenge:</strong> In a commoditized baby care
-                aisle, Johnson's Baby needed to reinforce its emotional equity
-                and differentiate beyond product attributes.
+                aisle, Johnson's Baby needed to reinforce its emotional equity.
               </p>
               <p className="campaign-description">
-                <strong>The Approach:</strong> Tap into the universal
-                mother-child bond through "Thanks Mom," an Olympic campaign
-                where athletes thanked their mothers on the world stage. The
-                campaign was so compelling that Debbie Phelps, Michael Phelps'
-                mom, asked to participate. Complementary print campaigns for
-                Gold Shampoo and Pink Lotion extended this emotional positioning
-                at retail.
+                <strong>The Approach:</strong> Take two paths. One, drive reach
+                and relevance with "Thanks Mom," an Olympic campaign where
+                athletes thanked their mothers on the world stage. The campaign
+                was so compelling that Debbie Phelps, Michael Phelps' mom,{" "}
+                <i>asked</i> to participate. Two, reinforce the brand's deep
+                equity by highlighting the mother-baby bond outside the Olympics
+                via emotional print campaigns and digital activations.
               </p>
 
               {/* Media Grid */}
