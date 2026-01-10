@@ -1,0 +1,371 @@
+/* About Me Page Styles
+ * Personal page showcasing family, interests (AI/coding), and athletics
+ * Follows Kinetic Design System patterns with warmer, personal tone
+ */
+
+/* ============================================
+   HERO SECTION - Compact intro
+   ============================================ */
+
+.about-hero {
+  padding: 10rem 0 6rem;
+  text-align: center;
+}
+
+.about-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-hero-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 1rem 0 1.5rem;
+  color: var(--gray-900);
+}
+
+.about-hero-text {
+  font-family: "Newsreader", serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   FAMILY SECTION - Image + story grid
+   ============================================ */
+
+.about-family {
+  background: var(--white);
+}
+
+.about-family-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-image-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--gray-100);
+  transition: all 0.3s ease;
+}
+
+.about-image-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
+}
+
+.about-sketch-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.about-content-block {
+  text-align: left;
+}
+
+.about-text-content {
+  margin-top: 1.5rem;
+}
+
+.about-text-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: 1rem;
+}
+
+.about-text-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   INTERESTS SECTION - AI/Coding projects
+   ============================================ */
+
+.about-interests-intro {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.about-interests-intro p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+}
+
+/* Tech Stack */
+.about-tech-stack {
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.about-tech-stack h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.about-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.about-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  transition: all 0.3s ease;
+}
+
+.about-tech-badge:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  transform: translateY(-2px);
+}
+
+.about-tech-badge svg {
+  stroke: var(--teal);
+}
+
+/* Projects Grid */
+.about-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.about-projects-grid .kinetic-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-project-favicon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-project-favicon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.about-project-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--gray-900);
+}
+
+.about-project-desc {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.about-project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-project-tech span {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(
+    135deg,
+    rgba(13, 148, 136, 0.1) 0%,
+    rgba(26, 54, 93, 0.1) 100%
+  );
+  border-radius: 12px;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+/* ============================================
+   ATHLETICS SECTION - Dual cards
+   ============================================ */
+
+.about-athletics {
+  background: var(--white);
+}
+
+.about-athletics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.about-athletics-card {
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--gray-100);
+  transition: all 0.3s ease;
+}
+
+.about-athletics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.about-athletics-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--gray-50);
+}
+
+.about-athletics-content {
+  padding: 2rem;
+}
+
+.about-athletics-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--gray-900);
+}
+
+.about-athletics-title svg {
+  stroke: var(--teal);
+  flex-shrink: 0;
+}
+
+.about-athletics-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 968px) {
+  /* Projects: 3-col → 2-col on tablet */
+  .about-projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero */
+  .about-hero {
+    padding: 8rem 0 4rem;
+  }
+
+  .about-hero-title {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+  }
+
+  .about-hero-text {
+    font-size: 1.125rem;
+  }
+
+  /* Family: 2-col → 1-col, content-first */
+  .about-family-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-family-grid .about-content-block {
+    order: -1; /* Content appears first on mobile */
+  }
+
+  /* Projects: 2-col → 1-col on mobile */
+  .about-projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-project-desc {
+    min-height: auto; /* Remove fixed height on mobile */
+  }
+
+  /* Athletics: 2-col → 1-col on mobile */
+  .about-athletics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tech badges */
+  .about-tech-badges {
+    justify-content: flex-start;
+  }
+
+  /* Section padding adjustments */
+  .kinetic-section {
+    padding: 4rem 0;
+  }
+
+  .about-interests-intro {
+    margin-bottom: 2rem;
+  }
+
+  .about-tech-stack {
+    margin: 2rem 0;
+  }
+
+  .about-projects-grid {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens - further adjustments */
+  .about-hero {
+    padding: 6rem 0 3rem;
+  }
+
+  .about-image-card {
+    padding: 1rem;
+  }
+
+  .about-athletics-content {
+    padding: 1.5rem;
+  }
+
+  .about-athletics-title {
+    font-size: 1.25rem;
+  }
+
+  .kinetic-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

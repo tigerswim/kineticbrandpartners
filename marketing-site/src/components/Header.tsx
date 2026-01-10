@@ -33,7 +33,10 @@ export default function Header() {
           {/* Desktop Navigation */}
           <ul className="kinetic-nav">
             <li>
-              <Link href="/work">Work</Link>
+              <Link href="/about">About Me</Link>
+            </li>
+            <li>
+              <Link href="/work">The Work</Link>
             </li>
             <li>
               <Link href="/resume">Resume</Link>
@@ -71,6 +74,9 @@ export default function Header() {
       {/* Mobile Menu Overlay */}
       <div className={`kinetic-mobile-menu ${isMenuOpen ? "is-open" : ""}`}>
         <nav className="kinetic-mobile-nav">
+          <Link href="/about" onClick={closeMenu}>
+            About Me
+          </Link>
           <Link href="/work" onClick={closeMenu}>
             Work
           </Link>
