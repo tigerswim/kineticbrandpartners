@@ -367,7 +367,7 @@ export default function Home() {
               <span className="kinetic-section-badge">Opportunities</span>
               <h2 className="kinetic-section-title">What I&apos;m Looking For</h2>
             </div>
-            <p className="mb-subtitle" style={{ textAlign: "center", maxWidth: "800px", margin: "0 auto" }}>
+            <p className="mb-subtitle mb-looking-for-text">
               Seeking VP Marketing or CMO roles at consumer brands, tech
               companies, or manufacturing and supply chain businesses. Open to
               Atlanta-based, hybrid, or remote opportunities. Also available for

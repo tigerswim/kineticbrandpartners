@@ -49,6 +49,13 @@
   flex-wrap: wrap;
 }
 
+/* What I'm Looking For Section */
+.mb-looking-for-text {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 /* Hero Visual */
 .mb-hero-visual {
   position: relative;
@@ -308,5 +315,52 @@
 
   .mb-education-row {
     grid-template-columns: 1fr;
+  }
+
+  .mb-contact-card {
+    padding: 3rem 1.5rem;
+  }
+
+  .mb-contact-email {
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 640px) {
+  .mb-hero {
+    padding: 7rem 0 4rem;
+  }
+
+  .mb-hero-visual {
+    max-width: 280px;
+  }
+
+  .mb-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mb-cta-group .kinetic-btn {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .mb-contact-card {
+    padding: 2.5rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .mb-contact-email {
+    font-size: 0.9375rem;
+    display: block;
+    text-align: center;
+  }
+
+  .mb-edu-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
   }
 }

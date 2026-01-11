@@ -183,6 +183,24 @@ The following optimizations have been implemented to reduce CPU and memory usage
 
 **Current state:** Clean, minimal codebase with only actively used files.
 
+## Mobile Responsiveness Update (2026-01)
+
+**Comprehensive mobile fixes** applied across all pages:
+
+**Breakpoints:**
+- 968px: Tablet - grids collapse to single column
+- 768px: Mobile - hamburger menu appears
+- 640px: Small mobile - buttons stack, tighter spacing
+- 480px: Very small - logo shrinks (45px → 36px), minimal padding
+
+**Key fixes:**
+- Contact email: word-break prevents overflow, smaller font on mobile
+- Contact card: Reduced padding (5rem 3rem → 2.5rem 1.25rem)
+- CTA buttons: Stack vertically on small screens
+- Section padding: Reduced from 7rem to 4rem on mobile
+- Card padding: Tightened from 2rem to 1.25rem
+- Education cards: Stack and center on mobile
+
 ## Positioning Update (2026-01)
 
 **Site repositioned** from consultant-first to executive-first positioning:
