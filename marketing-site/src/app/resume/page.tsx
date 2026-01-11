@@ -249,16 +249,16 @@ export default function Resume() {
                   <h3 className="resume-company-name">Manhattan Associates</h3>
                   <p className="resume-company-years">1999–2004 · Atlanta, GA</p>
                   <p className="resume-company-desc">
-                    $215MM provider of supply chain software solutions; led design, testing, implementation, and support projects.
+                    Enterprise supply chain software company; led design, testing, implementation, and support projects. Built foundation in technology, complex B2B sales cycles, and operational excellence.
                   </p>
                 </div>
 
                 {/* Role */}
                 <div className="resume-role">
-                  <h4 className="resume-role-title">Manager, Senior Consultant, Consultant, Support Consultant: Professional Services</h4>
+                  <h4 className="resume-role-title">Manager, Senior Consultant, Consultant, Support Consultant: Implementation Services</h4>
                   <p className="resume-role-years">Mar 1999 – Jun 2004</p>
                   <ul className="resume-role-bullets">
-                    <li><strong>Software Implementation:</strong> Managed warehouse management software projects for major clients, including Michelin and Bic, with international experience at The Diamond Trading Company (DeBeers) in London, UK.</li>
+                    <li><strong>Enterprise Implementations:</strong> Managed warehouse management software projects for Fortune 500 clients, including Michelin and Bic, with international experience at The Diamond Trading Company (DeBeers) in London, UK.</li>
                     <li><strong>System Design:</strong> Developed and deployed a $1MM tracking system at Michelin that reduced operational risk and improved product quality.</li>
                   </ul>
                 </div>

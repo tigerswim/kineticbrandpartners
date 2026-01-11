@@ -76,9 +76,10 @@ public/
 3. **Background** - Work experience with company logos
    - Central Garden & Pet (11 years)
    - Johnson & Johnson (7 years)
-   - Manhattan Associates (5 years)
+   - Manhattan Associates (5 years) - Framed as "Enterprise Tech"
 4. **Education** - MBA and undergrad with university logos
-5. **Contact** - Simple contact section
+5. **What I'm Looking For** - Target roles and industries, availability statement
+6. **Contact** - Simple contact section
 
 #### Work Page (/work)
 - Marketing campaign portfolio with videos and case studies
@@ -137,7 +138,9 @@ public/
 - Professional but approachable
 - Focus on experience and capabilities
 - Quantitative achievements included (team size, P&L scale, results)
-- Clear value proposition for consulting/fractional leadership
+- **Primary positioning**: Marketing Executive seeking full-time VP/CMO roles
+- **Secondary positioning**: Available for selective consulting engagements
+- Target industries: Consumer brands, tech companies, manufacturing, supply chain
 
 ## Deployment
 
@@ -179,6 +182,20 @@ The following optimizations have been implemented to reduce CPU and memory usage
 - All builds verified successful post-cleanup
 
 **Current state:** Clean, minimal codebase with only actively used files.
+
+## Positioning Update (2026-01)
+
+**Site repositioned** from consultant-first to executive-first positioning:
+
+**Changes:**
+- Hero badge: "Consultant / Fractional CMO" → "Marketing Executive"
+- Hero headline: "without the overhead" → "that drives growth"
+- Hero subtitle: Now mentions exploring senior marketing roles + selective consulting
+- Manhattan Associates: "Professional Services" → "Enterprise Tech" (signals tech background)
+- New "What I'm Looking For" section: Specifies target roles (VP Marketing, CMO), industries (consumer, tech, manufacturing, supply chain), and work arrangements (Atlanta, hybrid, remote)
+- Contact section: Updated to mention full-time roles alongside consulting
+
+**Rationale:** Primary goal is landing full-time senior marketing roles; consulting is secondary. Site now serves both hiring managers and consulting prospects with clear priority hierarchy.
 
 ## Design System Implementation (2026-01)
 

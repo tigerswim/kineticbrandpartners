@@ -32,19 +32,18 @@ export default function Home() {
               <div className="mb-hero-content">
                 <div className="kinetic-badge animate-slide-up delay-1">
                   <span className="kinetic-badge-dot"></span>
-                  Consultant / Fractional CMO · Atlanta, GA
+                  Marketing Executive · Atlanta, GA
                 </div>
                 <h1 className="mb-title animate-slide-up delay-2">
-                  Strategic marketing leadership,{" "}
+                  Strategic marketing leadership{" "}
                   <span className="kinetic-title-gradient">
-                    without the overhead
+                    that drives growth
                   </span>
                 </h1>
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years building brands from Fortune 50 to Fortune 1000
-                  companies. Now helping growth-stage companies access senior
-                  marketing leadership and strategic firepower on flexible
-                  terms.
+                  companies. Currently exploring senior marketing roles while
+                  selectively taking on consulting engagements.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
                   <a
@@ -318,10 +317,11 @@ export default function Home() {
                 </div>
                 <div className="mb-exp-content">
                   <h3>Manhattan Associates</h3>
-                  <p className="mb-exp-role">Professional Services · 5 years</p>
+                  <p className="mb-exp-role">Enterprise Tech · 5 years</p>
                   <p className="mb-exp-desc">
-                    Enterprise software implementations for Fortune 500 clients
-                    including Michelin, Bic, and The Diamond Trading Company.
+                    Supply chain software implementations for Fortune 500
+                    clients. Built foundation in technology, complex B2B sales
+                    cycles, and operational excellence.
                   </p>
                 </div>
               </div>
@@ -360,6 +360,22 @@ export default function Home() {
           </div>
         </section>
 
+        {/* What I'm Looking For */}
+        <section className="kinetic-section kinetic-section--gray">
+          <div className="kinetic-container">
+            <div className="kinetic-section-header">
+              <span className="kinetic-section-badge">Opportunities</span>
+              <h2 className="kinetic-section-title">What I&apos;m Looking For</h2>
+            </div>
+            <p className="mb-subtitle" style={{ textAlign: "center", maxWidth: "800px", margin: "0 auto" }}>
+              Seeking VP Marketing or CMO roles at consumer brands, tech
+              companies, or manufacturing and supply chain businesses. Open to
+              Atlanta-based, hybrid, or remote opportunities. Also available for
+              selective consulting and fractional CMO engagements.
+            </p>
+          </div>
+        </section>
+
         {/* Contact */}
         <section id="contact" className="mb-contact">
           <div className="kinetic-container">
@@ -367,8 +383,9 @@ export default function Home() {
               <div className="mb-contact-inner">
                 <h2 className="mb-contact-title">Let&apos;s Talk</h2>
                 <p className="mb-contact-text">
-                  Ready to discuss how I can help—or just have a conversation
-                  about what you&apos;re building.
+                  Ready to discuss opportunities—whether that&apos;s a full-time
+                  role, a consulting engagement, or just a conversation about
+                  what you&apos;re building.
                 </p>
                 <a
                   href="mailto:letstalk@kineticbrandpartners.com"
