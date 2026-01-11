@@ -89,7 +89,9 @@ export default function AboutPage() {
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">Interests</span>
-              <h2 className="kinetic-section-title">Learning by Building</h2>
+              <h2 className="kinetic-section-title">
+                Learning AI through Building
+              </h2>
             </div>
 
             <div className="about-interests-intro animate-slide-up">
