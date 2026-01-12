@@ -167,6 +167,7 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
+                      poster="/Videos/GFANA_Hero30_MP4-poster.jpg"
                       preload="none"
                     >
                       <source
