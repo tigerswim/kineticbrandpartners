@@ -125,6 +125,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Viewport and performance meta tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+
         {/* Resource hints for external services */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

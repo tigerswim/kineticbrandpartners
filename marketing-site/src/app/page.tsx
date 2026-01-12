@@ -11,7 +11,7 @@ import {
   Zap,
   Award,
   Users,
-} from "react-feather";
+} from "@/components/Icons";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
