@@ -70,6 +70,7 @@ export default function WorkPage() {
                       controls
                       className="media-video"
                       poster="/Videos/FTT-banned-ad-poster.jpg"
+                      preload="none"
                     >
                       <source
                         src="/Videos/FTT-banned-ad.mp4"
@@ -87,6 +88,7 @@ export default function WorkPage() {
                       controls
                       className="media-video"
                       poster="/Videos/FTT-summary-video-poster.jpg"
+                      preload="none"
                     >
                       <source
                         src="/Videos/FTT-summary-video.mp4"
@@ -162,7 +164,11 @@ export default function WorkPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Hero Campaign</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video">
+                    <video
+                      controls
+                      className="media-video"
+                      preload="none"
+                    >
                       <source
                         src="/Videos/GFANA_Hero30_MP4.mp4"
                         type="video/mp4"
@@ -179,6 +185,7 @@ export default function WorkPage() {
                       controls
                       className="media-video"
                       poster="/Videos/GFANA_GARDEN15-poster.jpg"
+                      preload="none"
                     >
                       <source
                         src="/Videos/GFANA_GARDEN15.mp4"
@@ -247,6 +254,7 @@ export default function WorkPage() {
                       controls
                       className="media-video"
                       poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                      preload="none"
                     >
                       <source
                         src="/Videos/Thanks-Mom-Cullen.2.mp4"
@@ -262,6 +270,7 @@ export default function WorkPage() {
                         controls
                         className="media-video"
                         poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                        preload="none"
                       >
                         <source
                           src="/Videos/Thanks-Mom-Debbie.mp4"
