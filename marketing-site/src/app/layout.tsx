@@ -144,6 +144,10 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-W556XZSB');
           `}
         </Script>
+        <link
+          href="https://assets.calendly.com/assets/external/widget.css"
+          rel="stylesheet"
+        />
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="lazyOnload"
