@@ -255,17 +255,31 @@
   font-family: 'Newsreader', Georgia, serif;
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.mb-contact-email {
+.mb-contact-subtext {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.mb-contact-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mb-contact-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: var(--white);
   text-decoration: none;
   font-weight: 500;
@@ -274,11 +288,18 @@
   border-radius: var(--radius-sm);
   backdrop-filter: blur(10px);
   transition: all var(--transition-base);
+  border: none;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
 }
 
-.mb-contact-email:hover {
+.mb-contact-btn:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
+}
+
+.mb-contact-icon {
+  font-size: 1.25rem;
 }
 
 /* ============================================================================
@@ -321,10 +342,14 @@
     padding: 3rem 1.5rem;
   }
 
-  .mb-contact-email {
-    font-size: 1rem;
-    padding: 0.875rem 1.25rem;
-    word-break: break-word;
+  .mb-contact-btn {
+    font-size: 0.9375rem;
+    padding: 0.875rem 1.5rem;
+  }
+
+  .mb-contact-buttons {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
@@ -352,10 +377,14 @@
     border-radius: var(--radius-lg);
   }
 
-  .mb-contact-email {
-    font-size: 0.9375rem;
-    display: block;
-    text-align: center;
+  .mb-contact-btn {
+    font-size: 0.875rem;
+    padding: 0.875rem 1.25rem;
+    justify-content: center;
+  }
+
+  .mb-contact-icon {
+    font-size: 1.125rem;
   }
 
   .mb-edu-card {

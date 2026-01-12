@@ -46,11 +46,24 @@ export default function Home() {
                   selectively taking on consulting engagements.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
-                  <a
-                    href="#contact"
+                  <button
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).Calendly) {
+                        (window as any).Calendly.initPopupWidget({
+                          url: 'https://calendly.com/danhoeller/new-meeting'
+                        });
+                      }
+                      return false;
+                    }}
                     className="kinetic-btn kinetic-btn--primary"
                   >
-                    Let&apos;s Talk
+                    Schedule a Meeting
+                  </button>
+                  <a
+                    href="mailto:letstalk@kineticbrandpartners.com"
+                    className="kinetic-btn kinetic-btn--secondary"
+                  >
+                    Send an Email
                   </a>
                   <a
                     href="https://linkedin.com/in/danhoeller"
@@ -387,12 +400,28 @@ export default function Home() {
                   role, a consulting engagement, or just a conversation about
                   what you&apos;re building.
                 </p>
-                <a
-                  href="mailto:letstalk@kineticbrandpartners.com"
-                  className="mb-contact-email"
-                >
-                  ✉️ letstalk@kineticbrandpartners.com
-                </a>
+                <p className="mb-contact-subtext">Choose how to connect:</p>
+                <div className="mb-contact-buttons">
+                  <a
+                    href="mailto:letstalk@kineticbrandpartners.com"
+                    className="mb-contact-btn mb-contact-btn--email"
+                  >
+                    Send Email
+                  </a>
+                  <button
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).Calendly) {
+                        (window as any).Calendly.initPopupWidget({
+                          url: 'https://calendly.com/danhoeller/new-meeting'
+                        });
+                      }
+                      return false;
+                    }}
+                    className="mb-contact-btn mb-contact-btn--calendly"
+                  >
+                    Schedule 30 Min
+                  </button>
+                </div>
               </div>
             </div>
           </div>

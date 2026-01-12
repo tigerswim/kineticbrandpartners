@@ -183,6 +183,28 @@ The following optimizations have been implemented to reduce CPU and memory usage
 
 **Current state:** Clean, minimal codebase with only actively used files.
 
+## Calendly Integration (2026-01)
+
+**Meeting scheduling** added to facilitate conversations with prospects:
+
+**Implementation:**
+- Calendly popup widget integrated via external script
+- 30-minute introduction meeting: `https://calendly.com/danhoeller/new-meeting`
+
+**Hero Section CTAs (3 buttons):**
+1. **Schedule a Meeting** (Primary) - Opens Calendly popup
+2. **Send an Email** (Secondary) - Opens email client
+3. **View LinkedIn** (Secondary) - Opens LinkedIn profile
+
+**Contact Section (2 buttons):**
+- **Send Email** - mailto link
+- **Schedule 30 Min** - Opens Calendly popup
+
+**Mobile Responsive:**
+- Hero: Buttons stack vertically on small screens (< 640px)
+- Contact: Buttons stack vertically on tablet/mobile (< 968px)
+- Touch-friendly sizing maintained
+
 ## Mobile Responsiveness Update (2026-01)
 
 **Comprehensive mobile fixes** applied across all pages:
