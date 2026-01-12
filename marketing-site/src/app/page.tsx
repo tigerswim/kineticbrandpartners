@@ -79,12 +79,13 @@ export default function Home() {
                 <div className="mb-image-container">
                   <div className="mb-image-glow"></div>
                   <Image
-                    src="/images/DJH-CGPT-Sketch.png"
+                    src="/images/DJH-CGPT-Sketch.webp"
                     alt="Dan Hoeller"
                     width={400}
                     height={530}
                     className="mb-headshot"
                     priority
+                    fetchPriority="high"
                   />
                 </div>
               </div>

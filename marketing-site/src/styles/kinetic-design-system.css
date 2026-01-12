@@ -7,7 +7,7 @@
 /* ============================================================================
    FONTS
    ========================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap');
+/* Using system fonts for optimal performance - no external font loading */
 
 /* ============================================================================
    CSS VARIABLES

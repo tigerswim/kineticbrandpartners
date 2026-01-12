@@ -148,10 +148,6 @@ export default function RootLayout({
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="lazyOnload"
         />
-        <link
-          href="https://assets.calendly.com/assets/external/widget.css"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
