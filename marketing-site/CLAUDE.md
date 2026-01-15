@@ -261,3 +261,15 @@ The following optimizations have been implemented to reduce CPU and memory usage
 - Improved visual hierarchy and user experience
 - Mobile-responsive layouts across all pages
 - Reduced need for custom CSS with reusable component classes
+
+## About Page Contact Section (2026-01)
+
+**Updated contact section** to match home page design:
+
+**Before:** Plain blue email hyperlink with emoji (✉️)
+
+**After:** Two styled buttons matching home page pattern:
+- **Send Email** - Opens email client (Mail icon)
+- **Schedule 30 Min** - Opens Calendly popup (Calendar icon)
+
+Uses existing `mb-contact-btn` glassmorphic button styles for consistency.

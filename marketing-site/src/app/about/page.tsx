@@ -6,8 +6,6 @@
 import Image from "next/image";
 import {
   Activity,
-  Briefcase,
-  TrendingUp,
   Award,
   Code,
   Database,
@@ -17,6 +15,8 @@ import {
   ExternalLink,
   GitHub,
   Zap,
+  Mail,
+  Calendar,
 } from "react-feather";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -324,12 +324,29 @@ export default function AboutPage() {
                 <p className="mb-contact-text">
                   Want to chat about projects, ideas, or just say hello?
                 </p>
-                <a
-                  href="mailto:letstalk@kineticbrandpartners.com"
-                  className="mb-contact-email"
-                >
-                  ✉️ letstalk@kineticbrandpartners.com
-                </a>
+                <div className="mb-contact-buttons">
+                  <a
+                    href="mailto:letstalk@kineticbrandpartners.com"
+                    className="mb-contact-btn mb-contact-btn--email"
+                  >
+                    <Mail size={18} />
+                    Send Email
+                  </a>
+                  <button
+                    onClick={() => {
+                      if (typeof window !== "undefined" && (window as any).Calendly) {
+                        (window as any).Calendly.initPopupWidget({
+                          url: "https://calendly.com/danhoeller/new-meeting",
+                        });
+                      }
+                      return false;
+                    }}
+                    className="mb-contact-btn mb-contact-btn--calendly"
+                  >
+                    <Calendar size={18} />
+                    Schedule 30 Min
+                  </button>
+                </div>
               </div>
             </div>
           </div>
