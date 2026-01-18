@@ -149,8 +149,16 @@ Netlify configuration in `netlify.toml`:
 - Build command: `npm run build`
 - Publish directory: `marketing-site/out`
 - Node version: 20
+- **Redirects**: HTTP→HTTPS and www→non-www (301 redirects)
 
 Static export generates files in `out/` directory.
+
+**SEO**:
+- Canonical domain: `https://kineticbrandpartners.com` (non-www)
+- Sitemap: `public/sitemap.xml` (update when adding/removing pages)
+- Cloudflare handles DNS and SSL (orange cloud proxy required for both @ and www records)
+
+For detailed deployment and SEO configuration, see `/DEPLOYMENT.md`
 
 ## Performance Optimizations (2025-11)
 

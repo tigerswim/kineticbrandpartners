@@ -105,7 +105,7 @@ This project is the primary content of the kineticbrandpartners repository.
 
 ### Netlify (Current Setup)
 
-The site is deployed via Netlify:
+The site is deployed via Netlify with Cloudflare for DNS and SSL:
 
 1. **Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
 2. **Base directory**: `marketing-site`
@@ -113,6 +113,24 @@ The site is deployed via Netlify:
 4. **Publish directory**: `marketing-site/out`
 5. **Node version**: 20 (Active LTS)
 6. **Automatic deployment** on push to main branch
+
+### SEO Configuration
+
+**Canonical Domain**: `https://kineticbrandpartners.com` (non-www, HTTPS)
+
+**Redirects** (configured in `netlify.toml`):
+- HTTP → HTTPS (301 redirect)
+- www → non-www (301 redirect)
+
+**Sitemap**: `public/sitemap.xml` - Update when adding/removing pages
+
+**Current Pages**:
+- `/` (home)
+- `/about`
+- `/work`
+- `/resume`
+
+For detailed SEO setup and troubleshooting, see `/DEPLOYMENT.md`
 
 ## Repository
 
