@@ -7,6 +7,21 @@
   GIT_LFS_ENABLED = "1"
   GIT_LFS_SKIP_SMUDGE = "0"
 
+# Force HTTPS - redirect all HTTP to HTTPS
+[[redirects]]
+  from = "http://kineticbrandpartners.com/*"
+  to = "https://kineticbrandpartners.com/:splat"
+  status = 301
+  force = true
+
+# Redirect www to non-www (canonical domain)
+[[redirects]]
+  from = "https://www.kineticbrandpartners.com/*"
+  to = "https://kineticbrandpartners.com/:splat"
+  status = 301
+  force = true
+
+# SPA fallback (must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"
