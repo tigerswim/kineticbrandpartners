@@ -25,7 +25,7 @@ export default function ServicesPage() {
       <Section bg="surface-alt" id="strategic-assessments">
         <h2>Strategic Assessments</h2>
         <p className="mt-4 text-text-secondary">
-          <strong>Who it's for:</strong> Companies needing clarity on product
+          <strong>Who it&apos;s for:</strong> Companies needing clarity on product
           direction, team structure, or technology choices.
         </p>
         <ul className="mt-6 space-y-2 text-text-secondary list-disc list-inside">
@@ -51,7 +51,7 @@ export default function ServicesPage() {
       <Section id="product-market-fit">
         <h2>Product Market Fit & GTM</h2>
         <p className="mt-4 text-text-secondary">
-          <strong>Who it's for:</strong> Companies entering new markets or
+          <strong>Who it&apos;s for:</strong> Companies entering new markets or
           pivoting existing products.
         </p>
         <ul className="mt-6 space-y-2 text-text-secondary list-disc list-inside">
@@ -77,7 +77,7 @@ export default function ServicesPage() {
       <Section bg="surface-alt" id="product-delivery">
         <h2>Product Delivery</h2>
         <p className="mt-4 text-text-secondary">
-          <strong>Who it's for:</strong> Companies building new products or
+          <strong>Who it&apos;s for:</strong> Companies building new products or
           overhauling existing ones.
         </p>
         <ul className="mt-6 space-y-2 text-text-secondary list-disc list-inside">
@@ -103,7 +103,7 @@ export default function ServicesPage() {
       <Section id="project-rollouts">
         <h2>Project Rollouts</h2>
         <p className="mt-4 text-text-secondary">
-          <strong>Who it's for:</strong> Companies launching products or
+          <strong>Who it&apos;s for:</strong> Companies launching products or
           managing large-scale implementations.
         </p>
         <ul className="mt-6 space-y-2 text-text-secondary list-disc list-inside">
@@ -129,7 +129,7 @@ export default function ServicesPage() {
       <Section bg="surface-alt" id="ai-implementation">
         <h2>AI Implementation & Modernization</h2>
         <p className="mt-4 text-text-secondary">
-          <strong>Who it's for:</strong> Companies adopting AI or modernizing
+          <strong>Who it&apos;s for:</strong> Companies adopting AI or modernizing
           legacy platforms.
         </p>
         <ul className="mt-6 space-y-2 text-text-secondary list-disc list-inside">

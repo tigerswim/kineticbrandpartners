@@ -1,6 +1,5 @@
 import { Section } from "@/components/section";
 import { Card } from "@/components/card";
-import { CtaSection } from "@/components/cta-section";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -203,7 +202,7 @@ export default function TalentPage() {
               </tr>
               <tr>
                 <td className="py-3 pr-4">Experience breadth</td>
-                <td className="py-3 px-4">One company's perspective</td>
+                <td className="py-3 px-4">One company&apos;s perspective</td>
                 <td className="py-3 pl-4 text-text-primary font-medium">
                   Cross-industry, multi-company
                 </td>
@@ -218,7 +217,7 @@ export default function TalentPage() {
         <div className="text-center">
           <h2>Tell us what role you need</h2>
           <p className="mt-4 text-lg text-text-secondary">
-            We'll match you with the right expertise for your team.
+            We&apos;ll match you with the right expertise for your team.
           </p>
           <div className="mt-8">
             <a

@@ -97,7 +97,7 @@ export default async function CaseStudyPage({ params }: Props) {
         <div className="max-w-3xl">
           <blockquote className="border-l-4 border-accent pl-6 py-2">
             <p className="text-xl md:text-2xl italic text-text-primary">
-              "{study.quote}"
+              &quot;{study.quote}&quot;
             </p>
             <footer className="mt-4 text-text-muted">
               — {study.quoteAuthor}, {study.quoteTitle}
@@ -111,7 +111,7 @@ export default async function CaseStudyPage({ params }: Props) {
         <div className="text-center max-w-2xl mx-auto">
           <h2>Facing a similar challenge?</h2>
           <p className="mt-4 text-lg text-text-secondary">
-            Let's talk about how we can help your team deliver results.
+            Let&apos;s talk about how we can help your team deliver results.
           </p>
           <div className="mt-8">
             <Button href="/contact">Book a Call</Button>

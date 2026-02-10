@@ -1,5 +1,4 @@
 import { Section } from "@/components/section";
-import { CtaSection } from "@/components/cta-section";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export default function AboutPage() {
         <div className="max-w-3xl">
           <p className="text-2xl md:text-3xl text-text-primary leading-relaxed">
             Future Forward Partners was founded on a simple belief: companies
-            don't need more consultants. They need experienced operators who can
+            don&apos;t need more consultants. They need experienced operators who can
             step in and deliver.
           </p>
         </div>
@@ -114,7 +113,7 @@ export default function AboutPage() {
       <Section bg="surface-alt">
         <div className="max-w-3xl mx-auto">
           <p className="text-lg text-text-secondary leading-relaxed">
-            Beyond Jeff's direct engagement, FFP draws on a curated network of
+            Beyond Jeff&apos;s direct engagement, FFP draws on a curated network of
             senior product managers, designers, architects, and engineers — each
             vetted for Fortune 500 and startup experience. When your challenge
             requires specialized expertise, we bring in the right people.
@@ -125,10 +124,10 @@ export default function AboutPage() {
       {/* CTA */}
       <Section>
         <div className="text-center">
-          <h2>Let's talk about your next product challenge</h2>
+          <h2>Let&apos;s talk about your next product challenge</h2>
           <p className="mt-4 text-lg text-text-secondary max-w-2xl mx-auto">
             Whether you need strategic guidance, hands-on execution, or
-            specialized talent — we're ready to help.
+            specialized talent — we&apos;re ready to help.
           </p>
           <div className="mt-8">
             <a

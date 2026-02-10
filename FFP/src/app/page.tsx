@@ -68,8 +68,8 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center">
           <blockquote className="border-t-2 border-accent pt-8">
             <p className="text-2xl md:text-3xl italic text-text-primary">
-              "Future Forward's product and project management experience
-              enabled us to quickly build a minimum viable product."
+              &quot;Future Forward&apos;s product and project management experience
+              enabled us to quickly build a minimum viable product.&quot;
             </p>
             <footer className="mt-6 text-text-muted">
               Chief Delivery Officer, KMS Technologies
@@ -90,8 +90,8 @@ export default function Home() {
           </div>
           <div className="flex flex-col justify-center">
             <p className="italic text-text-secondary text-lg">
-              "Future Forward's product and project management experience
-              enabled us to quickly build a minimum viable product."
+              &quot;Future Forward&apos;s product and project management experience
+              enabled us to quickly build a minimum viable product.&quot;
             </p>
             <Button
               href="/case-studies/kms-technologies"
