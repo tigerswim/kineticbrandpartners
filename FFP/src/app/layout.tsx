@@ -15,8 +15,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://futureforwardpartners.com"),
   title: "Future Forward Partners — Product Strategy, Management & AI",
   description: "Senior product strategy, management, and AI talent embedded in your team to deliver outcomes.",
+  openGraph: {
+    siteName: "Future Forward Partners",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
