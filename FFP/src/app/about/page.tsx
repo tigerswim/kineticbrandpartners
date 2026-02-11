@@ -1,4 +1,5 @@
 import { Section } from "@/components/section";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,10 +24,16 @@ export default function AboutPage() {
       {/* Jeff Gantt Section */}
       <Section bg="surface-alt">
         <div className="max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Photo placeholder */}
+          {/* Photo */}
           <div className="flex justify-center md:justify-start">
-            <div className="w-48 h-48 bg-bg-surface border border-border rounded-full flex items-center justify-center">
-              <span className="text-5xl text-text-muted font-bold">JG</span>
+            <div className="w-48 h-48 relative rounded-full overflow-hidden border border-border">
+              <Image
+                src="/JeffGantt.jpeg"
+                alt="Jeff Gantt"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
 
