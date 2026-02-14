@@ -29,7 +29,7 @@ export function Header() {
     >
       <div className="mx-auto max-w-content px-6 flex items-center justify-between h-16">
         <Link href="/" className="text-text-primary font-bold text-lg">
-          FFP
+          Future Forward Partners
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

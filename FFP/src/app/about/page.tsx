@@ -13,11 +13,13 @@ export default function AboutPage() {
       {/* Opening Statement */}
       <Section>
         <div className="max-w-3xl">
-          <p className="text-2xl md:text-3xl text-text-primary leading-relaxed">
+          <h3 className="text-lg text-text-primary">
             Future Forward Partners was founded on a simple belief: companies
-            don&apos;t need more consultants. They need experienced operators who can
-            step in and deliver.
-          </p>
+            don&apos;t need more consultants.{" "}
+            <span className="text-[#EB6636]">
+              They need experienced operators who can step in and deliver.
+            </span>
+          </h3>
         </div>
       </Section>
 
