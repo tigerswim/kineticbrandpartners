@@ -9,6 +9,7 @@
   --color-text-secondary: #A1A1A1;
   --color-text-muted: #666666;
   --color-accent: #EB6636;
+  --color-accent-secondary: #22D3EE;
   --color-border: #222222;
 
   /* Typography */
@@ -54,4 +55,159 @@ h3 {
 h4 {
   font-size: 1.125rem;
   line-height: 1.4;
+}
+
+/* Gradient backgrounds */
+.gradient-radial {
+  background: radial-gradient(
+    ellipse at top right,
+    rgba(235, 102, 54, 0.08),
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at bottom left,
+    rgba(34, 211, 238, 0.05),
+    transparent 50%
+  ),
+  #0A0A0A;
+}
+
+.gradient-mesh {
+  background: linear-gradient(
+    135deg,
+    rgba(235, 102, 54, 0.03) 0%,
+    transparent 50%,
+    rgba(34, 211, 238, 0.02) 100%
+  ),
+  #0A0A0A;
+}
+
+/* Noise texture overlay */
+.noise-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.noise-texture > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-4px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+/* Scroll reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays for multiple elements */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Geometric decorative elements */
+.geometric-accent::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(235, 102, 54, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.geometric-lines {
+  position: relative;
+  overflow: hidden;
+}
+
+.geometric-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  background-image:
+    linear-gradient(90deg, #666 1px, transparent 1px),
+    linear-gradient(0deg, #666 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 1;
 }
