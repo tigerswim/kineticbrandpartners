@@ -1,0 +1,1563 @@
+/* ===================================
+   EARNIX PAGE STYLES
+   Brand Colors:
+   - Orange: #F44D2E (CTAs, highlights)
+   - Dark Teal: #03505C (headlines, brand)
+   - Black: #000000 (text)
+   - White: #FFFFFF (background)
+   =================================== */
+
+/* Color Variables */
+.earnix-page {
+  --earnix-orange: #f44d2e;
+  --earnix-orange-hover: #e94d2d;
+  --earnix-teal: #03505c;
+  --earnix-teal-light: #35b0e4;
+  --earnix-black: #000000;
+  --earnix-gray: #999999;
+  --earnix-white: #ffffff;
+  --earnix-bg-light: #f9fafb;
+}
+
+/* Navigation */
+.earnix-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.earnix-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px;
+}
+
+.earnix-nav-links {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.earnix-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--earnix-teal);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.earnix-nav-link:hover {
+  background: var(--earnix-bg-light);
+  color: var(--earnix-orange);
+}
+
+.earnix-nav-link svg {
+  transition: transform 0.2s ease;
+}
+
+.earnix-nav-link:hover svg {
+  transform: translateY(-2px);
+}
+
+.earnix-nav-download {
+  background: linear-gradient(135deg, var(--earnix-orange), var(--earnix-orange-hover));
+  color: var(--earnix-white);
+  box-shadow: 0 2px 8px rgba(244, 77, 46, 0.2);
+}
+
+.earnix-nav-download:hover {
+  background: linear-gradient(135deg, var(--earnix-orange-hover), var(--earnix-orange));
+  color: var(--earnix-white);
+  box-shadow: 0 4px 12px rgba(244, 77, 46, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Hero Section */
+.earnix-hero {
+  padding: 160px 0 80px;
+  position: relative;
+}
+
+.earnix-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.earnix-logo-container {
+  margin-bottom: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.earnix-logo {
+  width: auto;
+  height: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.earnix-badge {
+  background: linear-gradient(135deg, var(--earnix-orange), var(--earnix-orange-hover));
+  color: var(--earnix-white);
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(244, 77, 46, 0.2);
+  letter-spacing: 0.3px;
+}
+
+.earnix-hero-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--earnix-teal);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.earnix-title-gradient {
+  background: linear-gradient(135deg, var(--earnix-orange), var(--earnix-orange-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.earnix-hero-text {
+  font-size: 1.25rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.earnix-hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--earnix-gray);
+}
+
+.earnix-divider {
+  color: var(--earnix-gray);
+}
+
+/* Proof at a Glance Section */
+.earnix-proof-section {
+  padding: 80px 0;
+}
+
+.earnix-proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+
+.earnix-proof-bio {
+  font-size: 1rem;
+  color: var(--earnix-black);
+  line-height: 1.75;
+  opacity: 0.85;
+}
+
+.earnix-proof-bio p + p {
+  margin-top: 16px;
+}
+
+.earnix-proof-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 32px;
+  align-content: start;
+}
+
+.earnix-proof-stat {
+  text-align: left;
+}
+
+.earnix-proof-stats .earnix-result-value {
+  font-size: 1.75rem;
+  margin-bottom: 2px;
+}
+
+.earnix-proof-stats .earnix-result-label {
+  font-size: 0.8125rem;
+}
+
+.earnix-saas-section {
+  padding: 80px 0;
+}
+
+/* Calculator Preview */
+.earnix-calc-preview {
+  display: block;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.earnix-calc-preview:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.earnix-calc-preview-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.earnix-calc-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Fade out bottom to indicate partial view */
+.earnix-calc-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.97));
+  pointer-events: none;
+}
+
+/* Right-edge fade to indicate horizontal crop */
+.earnix-calc-preview-inner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9));
+  pointer-events: none;
+}
+
+.earnix-calc-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.earnix-calc-overlay span {
+  display: inline-block;
+  background: var(--earnix-orange);
+  color: var(--earnix-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(244, 77, 46, 0.3);
+  letter-spacing: 0.2px;
+}
+
+/* Key Insights Section */
+.earnix-insights {
+  padding: 80px 0;
+}
+
+.earnix-accent-badge {
+  background: var(--earnix-teal);
+  color: var(--earnix-white);
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.earnix-section-intro {
+  font-size: 1.125rem;
+  color: var(--earnix-black);
+  opacity: 0.8;
+  max-width: 700px;
+  margin: 16px auto 0;
+  text-align: center;
+}
+
+.earnix-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.earnix-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.earnix-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.earnix-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.earnix-orange {
+  background: linear-gradient(135deg, var(--earnix-orange), var(--earnix-orange-hover));
+  color: var(--earnix-white);
+  box-shadow: 0 4px 12px rgba(244, 77, 46, 0.2);
+}
+
+.earnix-teal {
+  background: linear-gradient(135deg, var(--earnix-teal), var(--earnix-teal-light));
+  color: var(--earnix-white);
+  box-shadow: 0 4px 12px rgba(3, 80, 92, 0.2);
+}
+
+.earnix-card:hover .earnix-card-icon {
+  transform: scale(1.1);
+}
+
+.earnix-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 16px;
+}
+
+.earnix-card-text {
+  font-size: 1rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.earnix-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.earnix-card-tags span {
+  background: var(--earnix-bg-light);
+  color: var(--earnix-teal);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Recommendations Section */
+.earnix-recommendations {
+  padding: 80px 0;
+}
+
+.earnix-recs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.earnix-rec-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-rec-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-left-color: var(--earnix-teal);
+}
+
+.earnix-rec-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--earnix-orange);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.earnix-rec-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 12px;
+}
+
+.earnix-rec-desc {
+  font-size: 1rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.earnix-rec-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.earnix-rec-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  opacity: 0.8;
+}
+
+.earnix-rec-list li svg {
+  color: var(--earnix-orange);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Credentials Section */
+.earnix-credentials {
+  padding: 80px 0;
+  background: var(--earnix-bg-light);
+}
+
+.earnix-credentials-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.earnix-credentials-content {
+  background: var(--earnix-white);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-credentials-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 16px;
+}
+
+.earnix-credentials-text {
+  font-size: 1.0625rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.earnix-credentials-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.earnix-credential-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  opacity: 0.85;
+}
+
+.earnix-credential-item svg {
+  color: var(--earnix-orange);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.earnix-credentials-context {
+  background: linear-gradient(135deg, var(--earnix-teal), #025663);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.earnix-credentials-context::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.earnix-context-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--earnix-white);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.earnix-context-text {
+  font-size: 1rem;
+  color: var(--earnix-white);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  opacity: 0.95;
+  position: relative;
+  z-index: 1;
+}
+
+.earnix-context-text:last-child {
+  margin-bottom: 0;
+}
+
+/* Contact Section */
+.earnix-contact {
+  padding: 80px 0 100px;
+}
+
+.earnix-contact-card {
+  background: var(--earnix-bg-light);
+  border-radius: 20px;
+  padding: 64px 32px;
+  text-align: center;
+  border: 2px solid rgba(244, 77, 46, 0.1);
+}
+
+.earnix-contact-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.earnix-contact-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 16px;
+}
+
+.earnix-contact-text {
+  font-size: 1.125rem;
+  color: var(--earnix-black);
+  opacity: 0.85;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.earnix-contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.earnix-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+.earnix-btn--primary {
+  background: linear-gradient(135deg, var(--earnix-orange), var(--earnix-orange-hover));
+  color: var(--earnix-white);
+  box-shadow: 0 4px 12px rgba(244, 77, 46, 0.25);
+}
+
+.earnix-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 77, 46, 0.35);
+}
+
+.earnix-btn--secondary {
+  background: var(--earnix-white);
+  color: var(--earnix-teal);
+  border: 2px solid var(--earnix-teal);
+}
+
+.earnix-btn--secondary:hover {
+  background: var(--earnix-teal);
+  color: var(--earnix-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(3, 80, 92, 0.25);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .earnix-nav-container {
+    padding: 12px 16px;
+  }
+
+  .earnix-nav-links {
+    gap: 8px;
+  }
+
+  .earnix-nav-link {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+  }
+
+  .earnix-nav-link span {
+    display: none;
+  }
+
+  .earnix-nav-link svg {
+    margin: 0;
+  }
+
+  .earnix-hero {
+    padding: 100px 0 60px;
+  }
+
+  .earnix-hero-title {
+    font-size: 2rem;
+  }
+
+  .earnix-hero-text {
+    font-size: 1.125rem;
+  }
+
+  .earnix-insights-grid,
+  .earnix-recs-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .earnix-proof-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .earnix-proof-grid + .earnix-proof-grid {
+    margin-top: 24px;
+  }
+
+  .earnix-proof-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .earnix-about-card {
+    padding: 40px 24px;
+  }
+
+  .earnix-contact-card {
+    padding: 40px 24px;
+  }
+
+  .earnix-contact-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .earnix-btn {
+    justify-content: center;
+  }
+
+  .earnix-hero-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .earnix-divider {
+    display: none;
+  }
+
+  .earnix-logo {
+    height: 36px;
+  }
+
+  .earnix-logo-container {
+    margin-bottom: 40px;
+  }
+
+  .earnix-credentials-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .earnix-credentials-content,
+  .earnix-credentials-context {
+    padding: 32px 24px;
+  }
+
+  .earnix-proof-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .earnix-card,
+  .earnix-rec-card {
+    padding: 24px;
+  }
+
+  .earnix-card-title {
+    font-size: 1.25rem;
+  }
+
+  .earnix-rec-title {
+    font-size: 1.125rem;
+  }
+}
+
+/* Animations */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.delay-1 {
+  animation-delay: 0.1s;
+}
+
+.delay-2 {
+  animation-delay: 0.2s;
+}
+
+.delay-3 {
+  animation-delay: 0.3s;
+}
+
+.delay-4 {
+  animation-delay: 0.4s;
+}
+
+/* ===================================
+   EARNIX ABOUT PAGE STYLES
+   =================================== */
+
+.earnix-about-professional,
+.earnix-about-education,
+.earnix-about-competencies {
+  padding: 80px 0;
+}
+
+.earnix-section-header-left {
+  max-width: 800px;
+  margin-bottom: 48px;
+}
+
+.earnix-section-header-left .kinetic-section-title {
+  text-align: left;
+  margin-top: 12px;
+}
+
+/* Experience Cards */
+.earnix-experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 32px;
+}
+
+.earnix-exp-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-exp-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.earnix-exp-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.earnix-exp-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 4px;
+}
+
+.earnix-exp-company {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--earnix-black);
+  margin-bottom: 4px;
+}
+
+.earnix-exp-dates {
+  font-size: 0.9375rem;
+  color: var(--earnix-gray);
+}
+
+.earnix-exp-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.earnix-exp-highlights li {
+  padding-left: 24px;
+  margin-bottom: 12px;
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  opacity: 0.85;
+  line-height: 1.6;
+  position: relative;
+}
+
+.earnix-exp-highlights li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--earnix-orange);
+  font-weight: 700;
+}
+
+/* Education Cards */
+.earnix-education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.earnix-edu-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.earnix-edu-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--earnix-teal), var(--earnix-teal-light));
+  color: var(--earnix-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.earnix-edu-degree {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 8px;
+}
+
+.earnix-edu-school {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--earnix-black);
+  margin-bottom: 6px;
+}
+
+.earnix-edu-year {
+  font-size: 0.9375rem;
+  color: var(--earnix-gray);
+  margin-bottom: 12px;
+}
+
+.earnix-edu-note {
+  font-size: 0.875rem;
+  color: var(--earnix-black);
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Competencies Grid */
+.earnix-competencies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.earnix-comp-card {
+  background: var(--earnix-white);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.earnix-comp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.earnix-comp-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.earnix-comp-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 10px;
+}
+
+.earnix-comp-desc {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* Role-by-Role Match Section */
+.earnix-role-match {
+  padding: 80px 0;
+}
+
+.earnix-proof-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.earnix-proof-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-proof-card--teal {
+  border-left-color: var(--earnix-teal);
+}
+
+.earnix-proof-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 14px;
+}
+
+.earnix-proof-card-text {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.earnix-proof-card-metric {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.earnix-proof-card-metric strong {
+  color: var(--earnix-orange);
+}
+
+/* Role Alignment Section */
+.earnix-role-alignment {
+  padding: 80px 0;
+}
+
+.earnix-alignment-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.earnix-alignment-card {
+  background: var(--earnix-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-alignment-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 20px;
+}
+
+.earnix-alignment-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.earnix-alignment-requirement,
+.earnix-alignment-match {
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.earnix-alignment-requirement {
+  background: var(--earnix-bg-light);
+  border: 2px solid rgba(3, 80, 92, 0.1);
+}
+
+.earnix-alignment-match {
+  background: linear-gradient(135deg, rgba(244, 77, 46, 0.05), rgba(244, 77, 46, 0.02));
+  border: 2px solid rgba(244, 77, 46, 0.2);
+}
+
+.earnix-alignment-requirement strong,
+.earnix-alignment-match strong {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 8px;
+}
+
+.earnix-alignment-requirement p,
+.earnix-alignment-match p {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  line-height: 1.6;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.earnix-alignment-grid--narrative {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.earnix-alignment-grid--narrative .earnix-alignment-card {
+  border-left: 4px solid var(--earnix-orange);
+}
+
+.earnix-alignment-grid--narrative .earnix-alignment-card:nth-child(even) {
+  border-left-color: var(--earnix-teal);
+}
+
+.earnix-alignment-narrative {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* Why Earnix Section */
+.earnix-about-why {
+  padding: 80px 0;
+}
+
+.earnix-why-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--earnix-teal), #025663);
+  padding: 64px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.earnix-why-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.earnix-why-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--earnix-white);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.earnix-why-text {
+  font-size: 1.125rem;
+  color: var(--earnix-white);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  opacity: 0.95;
+  position: relative;
+  z-index: 1;
+}
+
+.earnix-why-text:last-child {
+  margin-bottom: 0;
+}
+
+/* Personal Section */
+.earnix-about-personal {
+  padding: 80px 0;
+}
+
+.earnix-personal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.earnix-personal-image {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.earnix-sketch-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.earnix-personal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 20px;
+}
+
+.earnix-personal-text {
+  font-size: 1.0625rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  opacity: 0.85;
+}
+
+.earnix-personal-text:last-child {
+  margin-bottom: 0;
+}
+
+/* ===================================
+   EARNIX WORK PAGE STYLES
+   =================================== */
+
+.earnix-campaign-section {
+  padding: 80px 0;
+}
+
+.earnix-campaign-card {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.earnix-campaign-header {
+  margin-bottom: 32px;
+}
+
+.earnix-campaign-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--earnix-white);
+  margin-bottom: 16px;
+}
+
+.earnix-campaign-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--earnix-teal);
+  margin-bottom: 12px;
+}
+
+.earnix-campaign-meta {
+  font-size: 1.125rem;
+  color: var(--earnix-gray);
+  font-weight: 500;
+}
+
+.earnix-campaign-challenge,
+.earnix-campaign-approach {
+  background: var(--earnix-white);
+  padding: 32px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  border-left: 4px solid var(--earnix-orange);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.earnix-campaign-challenge h3,
+.earnix-campaign-approach h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 12px;
+}
+
+.earnix-campaign-challenge p,
+.earnix-campaign-approach p {
+  font-size: 1.0625rem;
+  color: var(--earnix-black);
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+/* Campaign Media */
+.earnix-campaign-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.earnix-campaign-media-grid--single {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.earnix-media-item {
+  background: var(--earnix-white);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.earnix-media-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--earnix-teal);
+  margin-bottom: 12px;
+}
+
+.earnix-media-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+}
+
+.earnix-media-wrapper--video {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+}
+
+.earnix-media-wrapper--video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.earnix-media-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Campaign Results */
+.earnix-campaign-results {
+  background: var(--earnix-bg-light);
+  padding: 48px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+}
+
+.earnix-results-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.earnix-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+
+.earnix-result-stat {
+  text-align: center;
+}
+
+.earnix-result-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.earnix-result-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--earnix-orange);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.earnix-result-label {
+  font-size: 0.9375rem;
+  color: var(--earnix-black);
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* Campaign Lessons */
+.earnix-campaign-lessons {
+  background: var(--earnix-white);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.earnix-campaign-lessons h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--earnix-teal);
+  margin-bottom: 20px;
+}
+
+.earnix-lessons-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.earnix-lessons-list li {
+  padding-left: 24px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: var(--earnix-black);
+  opacity: 0.85;
+  line-height: 1.7;
+  position: relative;
+}
+
+.earnix-lessons-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--earnix-orange);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.earnix-lessons-list strong {
+  color: var(--earnix-teal);
+  font-weight: 600;
+}
+
+/* Capabilities Summary */
+.earnix-capabilities-summary {
+  padding: 80px 0;
+}
+
+.earnix-capabilities-card {
+  background: linear-gradient(135deg, var(--earnix-teal), #025663);
+  padding: 64px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.earnix-capabilities-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.earnix-capabilities-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--earnix-white);
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.earnix-capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.earnix-capability-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.earnix-capability-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.earnix-capability-item h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--earnix-white);
+  margin-bottom: 8px;
+}
+
+.earnix-capability-item p {
+  font-size: 0.9375rem;
+  color: var(--earnix-white);
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* Responsive - About & Work Pages */
+@media (max-width: 992px) {
+  .earnix-experience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .earnix-personal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .earnix-campaign-media-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .earnix-why-card,
+  .earnix-capabilities-card {
+    padding: 40px 24px;
+  }
+
+  .earnix-campaign-title {
+    font-size: 2rem;
+  }
+
+  .earnix-exp-card,
+  .earnix-campaign-challenge,
+  .earnix-campaign-approach,
+  .earnix-campaign-lessons {
+    padding: 24px;
+  }
+
+  .earnix-campaign-results {
+    padding: 32px 24px;
+  }
+
+  .earnix-results-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .earnix-alignment-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .earnix-alignment-requirement,
+  .earnix-alignment-match {
+    padding: 16px;
+  }
+
+  .earnix-alignment-grid--narrative {
+    grid-template-columns: 1fr;
+  }
+}
