@@ -3,7 +3,6 @@
 
 "use client";
 
-import Image from "next/image";
 import {
   Activity,
   Award,
@@ -54,13 +53,24 @@ export default function AboutPage() {
           <div className="kinetic-container">
             <div className="about-family-grid">
               <div className="about-image-card animate-slide-in">
-                <Image
-                  src="/images/family-sketch.png"
-                  alt="Family sketch"
-                  width={500}
-                  height={400}
-                  className="about-sketch-image"
-                />
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet="/images/family-sketch-mobile.webp 400w, /images/family-sketch.webp 800w"
+                    sizes="(max-width: 768px) 90vw, 500px"
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/family-sketch.png"
+                    alt="Family sketch"
+                    width={500}
+                    height={333}
+                    className="about-sketch-image"
+                    fetchPriority="high"
+                    loading="eager"
+                    decoding="sync"
+                  />
+                </picture>
               </div>
               <div className="about-content-block animate-slide-up">
                 <span className="kinetic-section-badge">Family</span>
@@ -139,12 +149,8 @@ export default function AboutPage() {
               {/* RacePrep Card */}
               <div className="kinetic-card animate-slide-up delay-2">
                 <div className="about-project-favicon">
-                  <Image
-                    src="/raceprep-favicon.png"
-                    alt="RacePrep"
-                    width={48}
-                    height={48}
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
                 </div>
                 <h3 className="about-project-title">RacePrep</h3>
                 <p className="about-project-desc">
@@ -173,12 +179,8 @@ export default function AboutPage() {
               {/* Job Tracker Card */}
               <div className="kinetic-card animate-slide-up delay-3">
                 <div className="about-project-favicon">
-                  <Image
-                    src="/job-tracker-favicon.png"
-                    alt="Job Tracker"
-                    width={48}
-                    height={48}
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
                 </div>
                 <h3 className="about-project-title">Job Tracker</h3>
                 <p className="about-project-desc">
@@ -206,12 +208,8 @@ export default function AboutPage() {
               {/* SaaS Metrics Calculator Card */}
               <div className="kinetic-card animate-slide-up delay-4">
                 <div className="about-project-favicon">
-                  <Image
-                    src="/saas-favicon.svg"
-                    alt="SaaS Metrics Calculator"
-                    width={48}
-                    height={48}
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
                 </div>
                 <h3 className="about-project-title">SaaS Metrics Calculator</h3>
                 <p className="about-project-desc">
@@ -261,13 +259,23 @@ export default function AboutPage() {
               {/* Triathlon Card */}
               <div className="about-athletics-card animate-scale-in delay-1">
                 <div className="about-athletics-image">
-                  <Image
-                    src="/images/Ironman-sketch.png"
-                    alt="Ironman triathlon"
-                    width={500}
-                    height={400}
-                    className="about-sketch-image"
-                  />
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcSet="/images/Ironman-sketch-mobile.webp 400w, /images/Ironman-sketch.webp 800w"
+                      sizes="(max-width: 768px) 90vw, 500px"
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/Ironman-sketch.png"
+                      alt="Ironman triathlon"
+                      width={500}
+                      height={750}
+                      className="about-sketch-image"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
                 </div>
                 <div className="about-athletics-content">
                   <h3 className="about-athletics-title">
@@ -286,13 +294,23 @@ export default function AboutPage() {
               {/* Swimming Card */}
               <div className="about-athletics-card animate-scale-in delay-2">
                 <div className="about-athletics-image">
-                  <Image
-                    src="/images/Clemson-swimming-sketch.png"
-                    alt="Clemson swimming"
-                    width={500}
-                    height={400}
-                    className="about-sketch-image"
-                  />
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcSet="/images/Clemson-swimming-sketch-mobile.webp 400w, /images/Clemson-swimming-sketch.webp 800w"
+                      sizes="(max-width: 768px) 90vw, 500px"
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/Clemson-swimming-sketch.png"
+                      alt="Clemson swimming"
+                      width={500}
+                      height={750}
+                      className="about-sketch-image"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
                 </div>
                 <div className="about-athletics-content">
                   <h3 className="about-athletics-title">
