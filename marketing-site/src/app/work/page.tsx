@@ -4,8 +4,6 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
-import "../../styles/kinetic-design-system.css";
-import "../../styles/work.css";
 
 export const metadata = {
   title: "Work - Kinetic Brand Partners",

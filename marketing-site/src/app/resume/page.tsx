@@ -7,8 +7,6 @@ import type { Metadata } from 'next';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
-import "../../styles/kinetic-design-system.css";
-import "../../styles/resume.css";
 
 export const metadata: Metadata = {
   title: 'Resume | Dan Hoeller | Kinetic Brand Partners',

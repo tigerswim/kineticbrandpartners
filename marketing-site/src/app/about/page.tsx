@@ -21,9 +21,6 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
-import "../../styles/kinetic-design-system.css";
-import "../../styles/mockup-b.css";
-import "../../styles/about.css";
 
 export default function AboutPage() {
   return (
