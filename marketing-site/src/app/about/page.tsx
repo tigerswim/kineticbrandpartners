@@ -56,8 +56,8 @@ export default function AboutPage() {
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet="/images/family-sketch-mobile.webp 400w, /images/family-sketch.webp 800w"
-                    sizes="(max-width: 768px) 90vw, 500px"
+                    srcSet="/images/family-sketch-mobile.webp 400w, /images/family-sketch-560.webp 560w, /images/family-sketch.webp 800w"
+                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
                   />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -179,8 +179,11 @@ export default function AboutPage() {
               {/* Job Tracker Card */}
               <div className="kinetic-card animate-slide-up delay-3">
                 <div className="about-project-favicon">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
+                  <picture>
+                    <source srcSet="/job-tracker-favicon.webp" type="image/webp" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
+                  </picture>
                 </div>
                 <h3 className="about-project-title">Job Tracker</h3>
                 <p className="about-project-desc">
@@ -262,8 +265,8 @@ export default function AboutPage() {
                   <picture>
                     <source
                       type="image/webp"
-                      srcSet="/images/Ironman-sketch-mobile.webp 400w, /images/Ironman-sketch.webp 800w"
-                      sizes="(max-width: 768px) 90vw, 500px"
+                      srcSet="/images/Ironman-sketch-mobile.webp 400w, /images/Ironman-sketch-560.webp 560w, /images/Ironman-sketch.webp 800w"
+                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
                     />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -297,8 +300,8 @@ export default function AboutPage() {
                   <picture>
                     <source
                       type="image/webp"
-                      srcSet="/images/Clemson-swimming-sketch-mobile.webp 400w, /images/Clemson-swimming-sketch.webp 800w"
-                      sizes="(max-width: 768px) 90vw, 500px"
+                      srcSet="/images/Clemson-swimming-sketch-mobile.webp 400w, /images/Clemson-swimming-sketch-560.webp 560w, /images/Clemson-swimming-sketch.webp 800w"
+                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
                     />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
