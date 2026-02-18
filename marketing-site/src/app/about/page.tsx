@@ -1,8 +1,7 @@
 // About Me Page: Personal side beyond the professional
 // Showcases family, interests (AI/coding), and athletics
 
-"use client";
-
+import CalendlyButton from "@/components/CalendlyButton";
 import {
   Activity,
   Award,
@@ -350,20 +349,10 @@ export default function AboutPage() {
                     <Mail size={18} />
                     Send Email
                   </a>
-                  <button
-                    onClick={() => {
-                      if (typeof window !== "undefined" && (window as any).Calendly) {
-                        (window as any).Calendly.initPopupWidget({
-                          url: "https://calendly.com/danhoeller/new-meeting",
-                        });
-                      }
-                      return false;
-                    }}
-                    className="mb-contact-btn mb-contact-btn--calendly"
-                  >
+                  <CalendlyButton className="mb-contact-btn mb-contact-btn--calendly">
                     <Calendar size={18} />
                     Schedule 30 Min
-                  </button>
+                  </CalendlyButton>
                 </div>
               </div>
             </div>

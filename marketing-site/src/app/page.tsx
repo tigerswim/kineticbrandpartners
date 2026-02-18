@@ -1,9 +1,8 @@
 // Homepage: Kinetic Flow
 // Clean white with animated gradient mesh, floating elements, energetic but refined
 
-"use client";
-
 import Image from "next/image";
+import CalendlyButton from "@/components/CalendlyButton";
 import {
   TrendingUp,
   DollarSign,
@@ -44,19 +43,9 @@ export default function Home() {
                   selectively taking on consulting engagements.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
-                  <button
-                    onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).Calendly) {
-                        (window as any).Calendly.initPopupWidget({
-                          url: 'https://calendly.com/danhoeller/new-meeting'
-                        });
-                      }
-                      return false;
-                    }}
-                    className="kinetic-btn kinetic-btn--primary"
-                  >
+                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
-                  </button>
+                  </CalendlyButton>
                   <a
                     href="mailto:letstalk@kineticbrandpartners.com"
                     className="kinetic-btn kinetic-btn--secondary"
@@ -410,19 +399,9 @@ export default function Home() {
                   >
                     Send Email
                   </a>
-                  <button
-                    onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).Calendly) {
-                        (window as any).Calendly.initPopupWidget({
-                          url: 'https://calendly.com/danhoeller/new-meeting'
-                        });
-                      }
-                      return false;
-                    }}
-                    className="mb-contact-btn mb-contact-btn--calendly"
-                  >
+                  <CalendlyButton className="mb-contact-btn mb-contact-btn--calendly">
                     Schedule 30 Min
-                  </button>
+                  </CalendlyButton>
                 </div>
               </div>
             </div>
