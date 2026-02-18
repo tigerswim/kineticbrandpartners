@@ -167,19 +167,10 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-W556XZSB');
           `}
         </Script>
-        <link
-          rel="preload"
-          href="https://assets.calendly.com/assets/external/widget.css"
-          as="style"
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onLoad={"this.onload=null;this.rel='stylesheet'" as any}
-        />
-        <noscript>
-          <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-        </noscript>
+        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
         <script
           type="application/ld+json"
