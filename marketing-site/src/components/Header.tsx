@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Header() {
@@ -20,14 +19,19 @@ export default function Header() {
       <header className="kinetic-header">
         <div className="kinetic-container">
           <Link href="/" onClick={closeMenu}>
-            <Image
-              src="/logos/kinetic-brand-partners.png"
-              alt="Kinetic Brand Partners"
-              width={180}
-              height={45}
-              className="kinetic-logo"
-              priority
-            />
+            <picture>
+              <source srcSet="/logos/kinetic-brand-partners.webp" type="image/webp" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/kinetic-brand-partners.png"
+                alt="Kinetic Brand Partners"
+                width={180}
+                height={45}
+                className="kinetic-logo"
+                fetchPriority="high"
+                decoding="sync"
+              />
+            </picture>
           </Link>
 
           {/* Desktop Navigation */}

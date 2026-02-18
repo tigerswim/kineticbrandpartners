@@ -187,6 +187,13 @@ The following optimizations have been implemented to reduce CPU and memory usage
 **JavaScript:**
 - `browsersListForSwc: true` in `next.config.js` experimental options reduces legacy JS polyfill output (~11KB)
 
+**Phase 2 optimizations (2026-02-18):**
+- **Logo → WebP**: `kinetic-brand-partners.webp` at 180×73px (7.7KB vs 42KB PNG) — fixes actual LCP element
+- **Logo fetchPriority**: Header uses `<picture>` element with WebP source + `fetchPriority="high"` on logo img
+- **Hero srcset fix**: Changed `sizes` to use `85vw` on mobile so browser correctly selects 21KB mobile webp
+- **Preloads updated**: Logo preloaded first (actual LCP), headshot preloaded second with corrected imagesizes
+- **Inline critical CSS**: `src/app/critical.css` read at build time via `fs.readFileSync` and inlined as `<style>` in `<head>` — eliminates three render-blocking CSS chunk requests (~1,130ms)
+
 **Known issue — robots.txt:**
 - Cloudflare automatically prepends a `Content-Signal` block to the deployed robots.txt, which Lighthouse flags as an "unknown directive" (SEO -8 points)
 - Fix: Cloudflare dashboard → Security → Bots → disable automatic robots.txt injection

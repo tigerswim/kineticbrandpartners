@@ -2,6 +2,8 @@
 import '@/app/globals.css'
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import fs from 'fs'
+import path from 'path'
 
 const siteUrl = 'https://kineticbrandpartners.com'
 
@@ -117,6 +119,11 @@ const jsonLd = {
   ],
 }
 
+const criticalCss = fs.readFileSync(
+  path.join(process.cwd(), 'src/app/critical.css'),
+  'utf8'
+)
+
 export default function RootLayout({
   children,
 }: {
@@ -125,11 +132,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Inline critical CSS to eliminate render-blocking chunk requests */}
+        <style dangerouslySetInnerHTML={{ __html: criticalCss }} />
+
         {/* Viewport and performance meta tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
 
-        {/* Preload LCP image - responsive hints so browser fetches the right size */}
+        {/* Preload actual LCP element - logo is first image in DOM (fixed header) */}
+        <link rel="preload" as="image" href="/logos/kinetic-brand-partners.webp" type="image/webp" />
+        {/* Also preload hero headshot for fast above-fold rendering */}
         <link
           rel="preload"
           as="image"
@@ -137,7 +149,7 @@ export default function RootLayout({
           type="image/webp"
           // @ts-expect-error - imagesrcset is valid HTML but not in React types yet
           imagesrcset="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
-          imagesizes="(max-width: 640px) 280px, (max-width: 968px) 350px, 400px"
+          imagesizes="(max-width: 640px) 85vw, (max-width: 968px) 350px, 400px"
         />
 
         {/* Resource hints for external services */}
