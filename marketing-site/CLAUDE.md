@@ -16,7 +16,7 @@ npx tsc --noEmit # Check TypeScript errors
 ## Architecture Overview
 
 ### Tech Stack
-- **Framework**: Next.js 15.5.6 with App Router
+- **Framework**: Next.js 15.5.7 with App Router
 - **Styling**: Kinetic Design System - Custom CSS with dynamic gradients, glassmorphism effects, and animations
 - **Icons**: React Feather (lightweight icon library)
 - **Language**: TypeScript with strict mode
@@ -165,11 +165,32 @@ For detailed deployment and SEO configuration, see `/DEPLOYMENT.md`
 The following optimizations have been implemented to reduce CPU and memory usage during development:
 - **Native file watching**: Optimized webpack watchOptions for macOS (ignores node_modules, .git, .next, out)
 - **Disabled incremental compilation**: Prevents TypeScript memory accumulation during development
-- **Next.js 15.5.6**: Latest version with memory leak fixes and performance improvements
+- **Next.js 15.5.7**: Latest version with memory leak fixes and performance improvements
 
 **Expected dev server performance:**
 - CPU: 5-10% idle, 20-30% during file edits
 - Memory: 200-400 MB (significantly reduced from previous versions)
+
+## PageSpeed Optimizations (2026-02)
+
+**Mobile PageSpeed score: 80 → target 90+** after these changes:
+
+**LCP & FCP improvements:**
+- **Hero image preload**: Added `<link rel="preload" as="image">` with `imagesrcset`/`imagesizes` in `layout.tsx` — browser fetches LCP image immediately instead of waiting for React hydration
+- **Calendly CSS lazy-loaded**: Changed from render-blocking `rel="stylesheet"` to `rel="preload" as="style"` with onLoad swap — saves ~350ms on FCP
+- **Responsive hero image**: Added `srcSet`/`sizes` on hero `<img>` serving `DJH-CGPT-Sketch-mobile.webp` (21KB, 320×480) on mobile vs full `DJH-CGPT-Sketch.webp` (70KB, 533×800) on desktop — saves ~118KB on mobile
+- **Desktop webp re-compressed**: `DJH-CGPT-Sketch.webp` re-encoded at quality 80, down from 92KB → 70KB
+
+**Caching:**
+- Long-lived cache headers added to `netlify.toml` for `/images/*`, `/logos/*`, `/Videos/*` (`max-age=31536000, immutable`) and PDFs (1-day)
+
+**JavaScript:**
+- `browsersListForSwc: true` in `next.config.js` experimental options reduces legacy JS polyfill output (~11KB)
+
+**Known issue — robots.txt:**
+- Cloudflare automatically prepends a `Content-Signal` block to the deployed robots.txt, which Lighthouse flags as an "unknown directive" (SEO -8 points)
+- Fix: Cloudflare dashboard → Security → Bots → disable automatic robots.txt injection
+- Local `public/robots.txt` is clean; this is a Cloudflare-side setting only
 
 ## Code Cleanup & Refactoring (2026-01)
 

@@ -129,6 +129,17 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
 
+        {/* Preload LCP image - responsive hints so browser fetches the right size */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/DJH-CGPT-Sketch.webp"
+          type="image/webp"
+          // @ts-expect-error - imagesrcset is valid HTML but not in React types yet
+          imagesrcset="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
+          imagesizes="(max-width: 640px) 280px, (max-width: 968px) 350px, 400px"
+        />
+
         {/* Resource hints for external services */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -145,9 +156,15 @@ export default function RootLayout({
           `}
         </Script>
         <link
+          rel="preload"
           href="https://assets.calendly.com/assets/external/widget.css"
-          rel="stylesheet"
+          as="style"
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onLoad={"this.onload=null;this.rel='stylesheet'" as any}
         />
+        <noscript>
+          <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+        </noscript>
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="lazyOnload"

@@ -78,14 +78,17 @@ export default function Home() {
               <div className="mb-hero-visual animate-scale-in delay-3">
                 <div className="mb-image-container">
                   <div className="mb-image-glow"></div>
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/images/DJH-CGPT-Sketch.webp"
+                    srcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
+                    sizes="(max-width: 640px) 280px, (max-width: 968px) 350px, 400px"
                     alt="Dan Hoeller"
                     width={400}
                     height={530}
                     className="mb-headshot"
-                    priority
                     fetchPriority="high"
+                    decoding="sync"
                   />
                 </div>
               </div>
