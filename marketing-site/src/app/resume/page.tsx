@@ -235,11 +235,14 @@ export default function Resume() {
             {/* Manhattan Associates */}
             <div className="resume-exp-company">
               <div className="resume-exp-logo">
-                <Image
-                  src="/logos/manhattan-associates.png"
+{/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logos/manhattan-associates-sm.webp"
                   alt="Manhattan Associates"
-                  width={200}
-                  height={160}
+                  width={140}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="resume-exp-content">

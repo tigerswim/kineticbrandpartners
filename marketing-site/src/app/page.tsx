@@ -68,8 +68,8 @@ export default function Home() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/images/DJH-CGPT-Sketch.webp"
-                    srcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
-                    sizes="(max-width: 640px) 85vw, (max-width: 968px) 350px, 400px"
+                    srcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
+                    sizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
                     alt="Dan Hoeller"
                     width={400}
                     height={530}
@@ -312,11 +312,14 @@ export default function Home() {
 
               <div className="mb-exp-card">
                 <div className="mb-exp-logo-wrap">
-                  <Image
-                    src="/logos/manhattan-associates.png"
+{/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/logos/manhattan-associates-sm.webp"
                     alt="Manhattan Associates"
                     width={140}
                     height={35}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="mb-exp-content">

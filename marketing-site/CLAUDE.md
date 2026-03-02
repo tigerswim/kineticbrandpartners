@@ -194,6 +194,16 @@ The following optimizations have been implemented to reduce CPU and memory usage
 - **Preloads updated**: Logo preloaded first (actual LCP), headshot preloaded second with corrected imagesizes
 - **Inline critical CSS**: `src/app/critical.css` read at build time via `fs.readFileSync` and inlined as `<style>` in `<head>` — eliminates three render-blocking CSS chunk requests (~1,130ms)
 
+**Phase 3 optimizations (2026-03-02):**
+- **Homepage headshot medium srcset**: Added `DJH-CGPT-Sketch-medium.webp` (280×421, 20KB) for tablet breakpoint — avoids serving 70KB full image at 280px display
+- **Manhattan Associates logo → WebP**: Created `manhattan-associates-sm.webp` (140×48, 1.1KB vs 7.7KB PNG) — used on homepage and resume
+- **Calendly CSS non-blocking**: Replaced render-blocking `<link rel="stylesheet">` with inline script that appends stylesheet after HTML parse — saves ~750ms
+- **Work page image overhaul** (score 70 → target 90+, LCP 8.8s → target <3s):
+  - `FTT-summary-slide`: 1,196KB JPG 2500×1773 → 56KB WebP 640×454 (95% reduction, was LCP element)
+  - `Gold-shampoo`: 619KB JPG 3536×4715 → 20KB WebP 400×533 (97% reduction)
+  - All video poster images: converted from 1920×1080 JPG to 640×360 WebP (75-84% reduction each)
+  - Removed `next/image` import from work page — all images use native `<img>` with lazy loading
+
 **Known issue — robots.txt:**
 - Cloudflare automatically prepends a `Content-Signal` block to the deployed robots.txt, which Lighthouse flags as an "unknown directive" (SEO -8 points)
 - Fix: Cloudflare dashboard → Security → Bots → disable automatic robots.txt injection

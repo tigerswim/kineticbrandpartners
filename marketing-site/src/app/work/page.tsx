@@ -1,6 +1,5 @@
 // Work page - Marketing campaign portfolio
 
-import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
@@ -67,7 +66,7 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-banned-ad-poster.jpg"
+                      poster="/Videos/FTT-banned-ad-poster.webp"
                       preload="none"
                     >
                       <source
@@ -85,7 +84,7 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-summary-video-poster.jpg"
+                      poster="/Videos/FTT-summary-video-poster.webp"
                       preload="none"
                     >
                       <source
@@ -99,12 +98,15 @@ export default function WorkPage() {
               </div>
 
               {/* Results Summary Image */}
-              <Image
-                src="/Videos/FTT-summary-slide.jpg"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/Videos/FTT-summary-slide.webp"
                 alt="FlipTheTurf Campaign Results Summary"
-                width={1200}
-                height={675}
+                width={640}
+                height={454}
                 className="campaign-image-full"
+                loading="lazy"
+                decoding="async"
               />
 
               {/* Results */}
@@ -165,7 +167,7 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_Hero30_MP4-poster.jpg"
+                      poster="/Videos/GFANA_Hero30_MP4-poster.webp"
                       preload="none"
                     >
                       <source
@@ -183,7 +185,7 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_GARDEN15-poster.jpg"
+                      poster="/Videos/GFANA_GARDEN15-poster.webp"
                       preload="none"
                     >
                       <source
@@ -284,12 +286,15 @@ export default function WorkPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Gold Shampoo</h3>
                   <div className="media-wrapper">
-                    <Image
-                      src="/images/Gold-shampoo.jpg"
+{/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/Gold-shampoo.webp"
                       alt="Johnson's Baby Gold Shampoo Campaign"
-                      width={800}
-                      height={1000}
+                      width={400}
+                      height={533}
                       className="media-image"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -297,12 +302,15 @@ export default function WorkPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Pink Lotion</h3>
                   <div className="media-wrapper">
-                    <Image
+{/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src="/images/Pink-lotion.jpg"
                       alt="Johnson's Baby Pink Lotion Campaign"
-                      width={800}
-                      height={1000}
+                      width={510}
+                      height={661}
                       className="media-image"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 </div>

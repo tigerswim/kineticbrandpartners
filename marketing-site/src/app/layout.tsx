@@ -148,8 +148,8 @@ export default function RootLayout({
           href="/images/DJH-CGPT-Sketch.webp"
           type="image/webp"
           // @ts-expect-error - imagesrcset is valid HTML but not in React types yet
-          imagesrcset="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
-          imagesizes="(max-width: 640px) 85vw, (max-width: 968px) 350px, 400px"
+          imagesrcset="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
+          imagesizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
         />
 
         {/* Resource hints for external services */}
@@ -167,7 +167,12 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-W556XZSB');
           `}
         </Script>
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+        {/* Lazy-load Calendly CSS to avoid render-blocking */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          var l=document.createElement('link');l.rel='stylesheet';
+          l.href='https://assets.calendly.com/assets/external/widget.css';
+          document.head.appendChild(l);
+        ` }} />
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="afterInteractive"
