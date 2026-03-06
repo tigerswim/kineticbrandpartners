@@ -1522,6 +1522,10 @@
 }
 
 @media (max-width: 768px) {
+  .earnix-proof-cards {
+    grid-template-columns: 1fr;
+  }
+
   .earnix-why-card,
   .earnix-capabilities-card {
     padding: 40px 24px;
