@@ -83,7 +83,7 @@ public/
 
 #### Work Page (/work)
 - Marketing campaign portfolio with videos and case studies
-- Featured campaigns: Thanks Mom, Green Frog, Flea & Tick Terminator
+- Featured campaigns: #FlipTheTurf, Pennington Full Season Fertilizer, Johnson's Baby (Thanks Mom)
 - Video embeds with poster images (~88MB total)
 
 #### Resume Page (/resume)

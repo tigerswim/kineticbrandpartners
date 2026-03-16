@@ -131,44 +131,50 @@ export default function WorkPage() {
           </div>
         </section>
 
-        {/* Campaign 2: Grow From a New Angle */}
+        {/* Campaign 2: Pennington Full Season Fertilizer */}
         <section className="kinetic-section">
           <div className="kinetic-container">
             <div className="campaign-card">
               <div className="campaign-header">
-                <h2 className="campaign-title">Grow From a New Angle</h2>
+                <h2 className="campaign-title">Pennington Full Season Fertilizer</h2>
                 <p className="campaign-meta">
-                  Central Garden & Pet · Pennington Brand Platform
+                  Central Garden & Pet · Product Innovation
                 </p>
               </div>
 
               <p className="campaign-description">
-                <strong>The Challenge:</strong> While Pennington focused on
-                grass seed and wild bird seed, these legacy categories couldn't
-                fuel future growth. The brand needed to expand into
-                higher-growth lawn and garden segments and attract millennial
-                homeowners who valued sustainable practices and creative
-                self-expression over conventional lawn uniformity.
+                <strong>The Insight:</strong> Research revealed a clear tension
+                in the lawn care category: Millennial homeowners didn&apos;t
+                understand, and didn&apos;t want to commit to, the traditional
+                4-step fertilizer program promoted by the category leader. The
+                complexity of seasonal applications was a barrier to purchase
+                and adoption, leaving a significant segment of homeowners
+                underserved.
               </p>
               <p className="campaign-description">
-                <strong>The Approach:</strong> Transform Pennington from grass
-                seed legacy brand to innovation partner for outdoor living. By
-                challenging traditional lawn care conventions and championing
-                sustainable, creative approaches, the integrated campaign
-                spanning CTV, social, influencers, search, and OOH positioned
-                Pennington to launch products into higher-growth segments.
+                <strong>The Approach:</strong> Used that insight to define and
+                develop a genuinely differentiated product: Full Season, a
+                one-application-per-season fertilizer that eliminated the
+                complexity of multi-step programs entirely. Led the
+                cross-functional development and go-to-market strategy,
+                positioning the product directly against the unmet need. Brought
+                the business case to Walmart and won distribution. After launch,
+                Walmart&apos;s own sales data showed Full Season indexed higher
+                with Millennial shoppers than the competition — creating a
+                platform for additional product extensions.
               </p>
 
               {/* Videos */}
               <div className="campaign-media-grid campaign-media-grid--2col">
                 <div className="media-item">
-                  <h3 className="media-item-title">Hero Campaign</h3>
+                  <h3 className="media-item-title">Brand Campaign :30</h3>
                   <div className="media-wrapper">
                     <video
                       controls
                       className="media-video"
                       poster="/Videos/GFANA_Hero30_MP4-poster.webp"
                       preload="none"
+                      playsInline
                     >
                       <source
                         src="/Videos/GFANA_Hero30_MP4.mp4"
@@ -180,16 +186,17 @@ export default function WorkPage() {
                 </div>
 
                 <div className="media-item">
-                  <h3 className="media-item-title">Garden Campaign</h3>
+                  <h3 className="media-item-title">Full Season Fertilizer :15</h3>
                   <div className="media-wrapper">
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_GARDEN15-poster.webp"
+                      poster="/Videos/GFANA_FERT15-poster.jpg"
                       preload="none"
+                      playsInline
                     >
                       <source
-                        src="/Videos/GFANA_GARDEN15.mp4"
+                        src="/Videos/GFANA_FERT15.mp4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -204,17 +211,15 @@ export default function WorkPage() {
                 <div className="results-grid">
                   <div className="result-stat">
                     <div className="result-stat-value">8.2%</div>
-                    <div className="result-stat-label">Sales Growth</div>
+                    <div className="result-stat-label">Brand Growth (4x Category Rate)</div>
                   </div>
                   <div className="result-stat">
-                    <div className="result-stat-value">4x</div>
-                    <div className="result-stat-label">
-                      Category Growth Rate
-                    </div>
+                    <div className="result-stat-value">#1</div>
+                    <div className="result-stat-label">Millennial Appeal vs. Competition (Walmart Data)</div>
                   </div>
                   <div className="result-stat">
-                    <div className="result-stat-value">526MM</div>
-                    <div className="result-stat-label">Media Impressions</div>
+                    <div className="result-stat-value">Multi-SKU</div>
+                    <div className="result-stat-label">Platform Expansion Enabled</div>
                   </div>
                 </div>
               </div>
