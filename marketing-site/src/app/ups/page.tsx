@@ -52,10 +52,8 @@ export default function UPSPage() {
                 </h1>
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years building brands from Fortune 50 to Fortune 1000
-                  companies. I started in supply chain consulting, which means I
-                  understand how businesses work before I try to market them. At
-                  UPS, where marketing reports into commercial strategy, that
-                  foundation matters.
+                  companies. Commercially-minded and customer-focused marketer
+                  with a foundation in supply chain software.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
                   <a
@@ -101,6 +99,7 @@ export default function UPSPage() {
         </section>
 
         {/* ── WHY UPS / Q&A ─────────────────────────────────────────────────── */}
+        {/*
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
@@ -110,9 +109,9 @@ export default function UPSPage() {
             <p className="mb-subtitle" style={{ marginBottom: "0.5rem" }}>
               The way I think about this role: it sits at the intersection of
               three things I've spent my career building — supply chain and
-              logistics credibility, brand and marketing leadership, and the
-              ability to connect both to commercial outcomes. Below is how I
-              think about the fit.
+              logistics, brand and marketing leadership, and the ability to
+              connect both to commercial outcomes. Below is how I think about
+              the fit.
             </p>
 
             <div className="qa-accordion">
@@ -122,26 +121,28 @@ export default function UPSPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Honestly, it's the rare role where three different parts of
-                    my career converge at once. I started in supply chain
-                    consulting at Manhattan Associates, implementing software
-                    for Fortune 500 logistics and retail clients. I understand
-                    how these businesses actually work before a single marketing
-                    dollar is spent. Then I spent 18 years building brands and
-                    leading marketing organizations, first at J&J and then at
-                    Central Garden, where I ran the full P&L and owned
-                    everything from brand strategy to digital transformation to
-                    customer marketing.
+                    Most roles want either brand leadership or performance
+                    marketing. This one needs both, and adds a technology
+                    dimension on top. That's an unusual combination to find in
+                    one person, and it happens to describe my career fairly
+                    precisely.
                   </p>
                   <p>
-                    Most marketing roles want one or the other. UPS, with
-                    marketing sitting inside commercial strategy, is
-                    specifically asking for someone who can bridge both. That's
-                    not a constraint I'm adjusting to. It's the environment I've
-                    been operating in my entire career. Add in the AI and
-                    technology dimension, which I've been building into my work
-                    for the past few years, and this role genuinely fits in a
-                    way that's hard to manufacture.
+                    I started in supply chain consulting at Manhattan
+                    Associates, implementing software for Fortune 500 logistics
+                    and retail clients. I learned the supply chain industry
+                    before I ever managed a brand. I then pivoted to marketing.
+                    First at J&J, and then Central Garden & Pet, I've owned
+                    P&Ls, built teams, led digital transformation, and developed
+                    the discipline of connecting brand investment to commercial
+                    outcomes.
+                  </p>
+                  <p>
+                    What makes UPS specifically interesting is the structure.
+                    Marketing sitting inside commercial strategy is an
+                    environment I've been operating in. At Central, marketing
+                    earned its seat by speaking finance's language and
+                    delivering results. That's the job I know how to do.
                   </p>
                 </div>
               </details>
@@ -157,11 +158,11 @@ export default function UPSPage() {
                   </p>
                   <p>
                     <strong>Business results.</strong> The Pennington brand
-                    competes primarily against Scotts Miracle-Gro, the category
-                    800-lb gorilla. Through a brand repositioning targeting
-                    younger consumers, new product launches into fertilizer, a
-                    compelling media campaign, and smart pricing, the brand grew
-                    8.2% in a category that averaged 2%.
+                    competes primarily against Scotts Miracle-Gro, the
+                    category's 800-lb gorilla. Through a brand repositioning
+                    targeting younger consumers, new product launches into
+                    fertilizer, a compelling media campaign, and smart pricing,
+                    the brand grew 8.2% in a category that averaged 2%.
                   </p>
                   <p>
                     <strong>Digital transformation.</strong> When I arrived, the
@@ -196,8 +197,7 @@ export default function UPSPage() {
                     Customer Marketing, and Customer Care. The bigger unlock was
                     raising the bar on what good work looked like. I stayed
                     close enough to the work to model the right behavior and
-                    mentor the team. That's the part that actually changes a
-                    team's trajectory.
+                    mentor the team.
                   </p>
                 </div>
               </details>
@@ -211,8 +211,8 @@ export default function UPSPage() {
                   <p>
                     The right outside hires bring new perspectives and challenge
                     assumptions, but they also respect the culture in which they
-                    are now operating in. They bring this together in a way that
-                    results in lasting change.
+                    are now operating in. Done right, lasting change that
+                    elevates the company is the result.
                   </p>
                   <p>
                     I've built and run marketing organizations at companies
@@ -228,30 +228,19 @@ export default function UPSPage() {
 
               <details className="qa-item">
                 <summary className="qa-question">
-                  You have a B2C background. How does that translate to UPS's
-                  B2B and SMB focus?
+                  Your background is primarily B2C. How does that translate to
+                  this role at UPS?
                 </summary>
                 <div className="qa-answer">
                   <p>
                     It's more mixed than the CPG label suggests. At J&J I worked
                     across Consumer and the Ortho Medical Device division, which
                     is a classic B2B sales environment. At Central Garden, the
-                    grass seed business ran roughly 80/20 B2C to B2B, but the
-                    B2B side, winning placement and programs with Home Depot and
-                    other major retailers, was where a lot of the commercial
-                    leverage lived. I built business cases in retailer
-                    economics, not just product benefits, because that's what
-                    moved the conversation.
-                  </p>
-                  <p>
-                    The SMB space UPS is focused on is really a consumer mindset
-                    applied to a business buyer. These are founders and
-                    operators making decisions quickly, often based on
-                    experience and trust, not procurement processes. The
-                    brand-building skills and performance marketing capability
-                    I've developed translate directly. SMBs need to see UPS as a
-                    growth partner. That's a brand and growth marketing problem,
-                    not just a sales problem.
+                    grass seed business ran roughly 80/20 B2C to B2B. Most
+                    business across Garden are essentially B2B2C. I developed
+                    business cases along with sales stories that won
+                    distribution in retailers and built a MLB program with Home
+                    Depot that delivered 46% POS growth at local stores.
                   </p>
                 </div>
               </details>
@@ -262,30 +251,28 @@ export default function UPSPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    As infrastructure, not a novelty. At Central Garden I
-                    implemented Marketing Mix Modeling and attribution
-                    frameworks that delivered 25% efficiency gains, not because
-                    measurement was trendy, but because we needed to defend and
-                    grow the marketing budget in a finance-driven culture. That
-                    discipline came first.
+                    As infrastructure, not a novelty. It can deliver both
+                    efficiency and effectiveness gains to businesses, but often
+                    the hype around this technology exceeds real life results.
+                    Companies often fail to see AI implementations as a Change
+                    Management project, and therefore miss the human element of
+                    adopting AI.
                   </p>
                   <p>
-                    More recently I've been building AI-enabled workflow
-                    automations for content operations using tools like n8n and
-                    Zapier, and I've gotten genuinely hands-on with how these
-                    tools change what a lean team can produce. The opportunity
-                    at UPS, with $4B in annual tech investment and the NTT DATA
-                    partnership already in place, is to connect that
-                    infrastructure to growth outcomes: smarter targeting, faster
-                    content, better attribution, and results reported in the
-                    language that actually matters to the C-suite, which is
-                    revenue, margin, and customer growth.
+                    Recently I've been building AI-enabled workflow automations
+                    for content operations using tools like n8n and Zapier, and
+                    I've gotten genuinely hands-on with how these tools change
+                    what a lean team can produce. At UPS, I see the opportunity
+                    to connect AI infrastructure to growth outcomes: smarter
+                    targeting, faster content, better attribution, and results
+                    reporting that is faster and oriented to decision-making.
                   </p>
                 </div>
               </details>
             </div>
           </div>
         </section>
+        */}
 
         {/* ── WHAT I BRING ─────────────────────────────────────────────────── */}
         <section className="kinetic-section">
@@ -296,25 +283,11 @@ export default function UPSPage() {
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
               UPS's VP Growth Marketing role requires someone who can run
-              performance marketing, lead a global team, and speak credibly to
-              the C-suite about revenue, not just brand. Here's where I've done
-              exactly that.
+              performance marketing and speak credibly to the C-suite about
+              revenue, not just brand. Here's where I've done exactly that.
             </p>
             <div className="mb-capabilities-grid">
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                    <polyline points="17 6 23 6 23 12" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">
                   Growth Marketing & Performance
                 </h3>
@@ -326,19 +299,6 @@ export default function UPSPage() {
               </div>
 
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <line x1="12" y1="1" x2="12" y2="23" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">P&L Ownership</h3>
                 <p className="kinetic-card-text">
                   Managed portfolios from $20MM to $100MM+, from Gross Sales to
@@ -349,20 +309,6 @@ export default function UPSPage() {
               </div>
 
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                    <line x1="8" y1="21" x2="16" y2="21" />
-                    <line x1="12" y1="17" x2="12" y2="21" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">Digital Transformation</h3>
                 <p className="kinetic-card-text">
                   MarTech implementation, sales enablement tools, e-commerce and
@@ -373,20 +319,6 @@ export default function UPSPage() {
               </div>
 
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                    <path d="M4.93 4.93a10 10 0 0 0 0 14.14" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">
                   Brand with Business Results
                 </h3>
@@ -398,21 +330,6 @@ export default function UPSPage() {
               </div>
 
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">Leadership & Scale</h3>
                 <p className="kinetic-card-text">
                   Built and led a 25-person marketing organization across
@@ -423,18 +340,6 @@ export default function UPSPage() {
               </div>
 
               <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                  </svg>
-                </div>
                 <h3 className="kinetic-card-title">
                   Cross-Functional Credibility
                 </h3>
