@@ -10,6 +10,9 @@ export const metadata = {
   title: "UPS | Dan Hoeller",
   description:
     "Dan Hoeller. VP Growth Marketing candidate for UPS. 15 years building brands and growth programs that translate directly to revenue.",
+  icons: {
+    icon: "/ups/ups-logo.png",
+  },
 };
 
 export default function UPSPage() {
@@ -18,13 +21,15 @@ export default function UPSPage() {
       <GradientMesh />
 
       <main>
-
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="mb-hero">
           <div className="kinetic-container">
             <div className="mb-hero-grid">
               <div className="mb-hero-content">
-                <div style={{ marginBottom: "1.5rem" }} className="animate-slide-up delay-1">
+                <div
+                  style={{ marginBottom: "1.5rem" }}
+                  className="animate-slide-up delay-1"
+                >
                   <img
                     src="/ups/ups-logo.png"
                     alt="UPS"
@@ -32,7 +37,10 @@ export default function UPSPage() {
                     style={{ display: "block", objectFit: "contain" }}
                   />
                 </div>
-                <div className="kinetic-badge animate-slide-up delay-1" style={{ marginBottom: "1.25rem" }}>
+                <div
+                  className="kinetic-badge animate-slide-up delay-1"
+                  style={{ marginBottom: "1.25rem" }}
+                >
                   <span className="kinetic-badge-dot"></span>
                   VP Growth Marketing Candidate · Atlanta, GA
                 </div>
@@ -45,8 +53,8 @@ export default function UPSPage() {
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years building brands from Fortune 50 to Fortune 1000
                   companies. I started in supply chain consulting, which means I
-                  understand how businesses work before I try to market them.
-                  At UPS, where marketing reports into commercial strategy, that
+                  understand how businesses work before I try to market them. At
+                  UPS, where marketing reports into commercial strategy, that
                   foundation matters.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
@@ -77,7 +85,7 @@ export default function UPSPage() {
                   <div className="mb-image-glow"></div>
                   <img
                     src="/images/DJH-CGPT-Sketch.webp"
-                    srcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
+                    srcSet="/images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch.webp 533w"
                     sizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
                     alt="Dan Hoeller"
                     width={400}
@@ -92,7 +100,6 @@ export default function UPSPage() {
           </div>
         </section>
 
-
         {/* ── WHY UPS / Q&A ─────────────────────────────────────────────────── */}
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
@@ -101,155 +108,184 @@ export default function UPSPage() {
               <h2 className="kinetic-section-title">Why UPS</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "0.5rem" }}>
-              UPS eliminated its CMO role and absorbed marketing into commercial
-              strategy. For most candidates that's a yellow flag. For me it's
-              the brief. Below are the questions I expect you're asking, and
-              how I think about them.
+              The way I think about this role: it sits at the intersection of
+              three things I've spent my career building — supply chain and
+              logistics credibility, brand and marketing leadership, and the
+              ability to connect both to commercial outcomes. Below is how I
+              think about the fit.
             </p>
 
             <div className="qa-accordion">
-
               <details className="qa-item">
                 <summary className="qa-question">
-                  UPS just eliminated its CMO role. Why does that excite you rather than concern you?
+                  Why UPS, and why this role specifically?
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    It excites me because it's a brief I've been living. At
-                    Central Garden, marketing didn't have an automatic seat at
-                    the table. We earned it by speaking the language of the
-                    business. I implemented Marketing Mix Modeling and real-time
-                    dashboards not because measurement was trendy, but because
-                    when marketing can quantify its contribution to EBIT, it
-                    changes the conversation entirely. A VP of Growth Marketing
-                    who can translate brand investment into pipeline and margin
-                    language is exactly what a commercial-first structure needs.
-                    That's not a constraint for me. It's the job I want.
+                    Honestly, it's the rare role where three different parts of
+                    my career converge at once. I started in supply chain
+                    consulting at Manhattan Associates, implementing software
+                    for Fortune 500 logistics and retail clients. I understand
+                    how these businesses actually work before a single marketing
+                    dollar is spent. Then I spent 18 years building brands and
+                    leading marketing organizations, first at J&J and then at
+                    Central Garden, where I ran the full P&L and owned
+                    everything from brand strategy to digital transformation to
+                    customer marketing.
+                  </p>
+                  <p>
+                    Most marketing roles want one or the other. UPS, with
+                    marketing sitting inside commercial strategy, is
+                    specifically asking for someone who can bridge both. That's
+                    not a constraint I'm adjusting to. It's the environment I've
+                    been operating in my entire career. Add in the AI and
+                    technology dimension, which I've been building into my work
+                    for the past few years, and this role genuinely fits in a
+                    way that's hard to manufacture.
                   </p>
                 </div>
               </details>
 
               <details className="qa-item">
                 <summary className="qa-question">
-                  The Digital Access Program went from $150M to $4B+. How would you think about scaling it further?
+                  What were your biggest results at Central Garden?
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    The DAP trajectory is one of the most impressive growth
-                    marketing stories in B2B logistics. The flywheel (embedded
-                    rate access through Shopify, BigCommerce, WooCommerce) is
-                    smart distribution. To scale it, I'd look at three levers:
-                    deepening activation within existing platform integrations
-                    (conversion, not just access), expanding into underrepresented
-                    SMB verticals where logistics is a pain point, and building
-                    retention loops so acquired SMBs grow their UPS volume over
-                    time. At Central Garden, I secured $7MM in incremental
-                    revenue with Home Depot by building the business case around
-                    retailer economics, not just product benefits. The same logic
-                    applies here. SMBs need to see UPS as a growth partner, not
-                    a vendor.
+                    A few that I'm most proud of, because they were genuinely
+                    hard to pull off:
+                  </p>
+                  <p>
+                    <strong>Business results.</strong> The Pennington brand
+                    competes primarily against Scotts Miracle-Gro, the category
+                    800-lb gorilla. Through a brand repositioning targeting
+                    younger consumers, new product launches into fertilizer, a
+                    compelling media campaign, and smart pricing, the brand grew
+                    8.2% in a category that averaged 2%.
+                  </p>
+                  <p>
+                    <strong>Digital transformation.</strong> When I arrived, the
+                    marketing mix was almost entirely traditional media. We
+                    rebuilt it from the ground up, shifting to a fully digital
+                    model with real-time attribution and Marketing Mix Modeling
+                    that delivered 25% efficiency gains. That's not a small
+                    number on a nine-figure budget.
+                  </p>
+                  <p>
+                    <strong>Brand planning as a business process.</strong> I
+                    integrated brand planning into the operating plan cycle so
+                    marketing wasn't presenting after the financial decisions
+                    were already made. That changed the conversation with
+                    finance and commercial leadership entirely.
+                  </p>
+                  <p>
+                    <strong>#FlipTheTurf.</strong> Grass seed is about as
+                    low-involvement as a category gets. We made it matter
+                    nationally by partnering with Von Miller on a campaign
+                    specifically designed to get banned by the NFL, which turned
+                    the league's own reaction into earned media. 3.95 billion
+                    impressions, a 10-point brand awareness lift, two Clio
+                    Awards. The campaign worked because it was rooted in a real
+                    consumer issue, not just a brand brief.
+                  </p>
+                  <p>
+                    <strong>Building the team.</strong> I started with two
+                    people in the Grass Seed business unit, and was promoted
+                    multiple times to eventually lead a 25-person organization
+                    across Consumer Insights, Digital, Creative, Innovation,
+                    Customer Marketing, and Customer Care. The bigger unlock was
+                    raising the bar on what good work looked like. I stayed
+                    close enough to the work to model the right behavior and
+                    mentor the team. That's the part that actually changes a
+                    team's trajectory.
                   </p>
                 </div>
               </details>
 
               <details className="qa-item">
                 <summary className="qa-question">
-                  2026 is described as UPS's "inflection point." What does growth marketing look like in that moment?
+                  UPS is known for developing talent internally. Why should they
+                  consider an external hire?
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    It looks like offense, but grounded in operational reality.
-                    UPS has spent two years earning margin discipline and trust.
-                    The Amazon exit, the network reconfiguration, the Andlauer
-                    acquisition. These are not cost stories, they're positioning
-                    stories. Growth marketing's job at the inflection point is to
-                    convert that repositioning into customer acquisition: SMBs
-                    who fill the volume gap at higher margins, healthcare shippers
-                    who need a premium logistics partner, B2B customers who've
-                    been watching UPS get sharper. "Better Not Bigger" is a
-                    strategy, but it also needs to be a market-facing message
-                    that attracts the right customers. Data-driven targeting,
-                    performance marketing, and brand campaigns that reinforce
-                    trust would all run in parallel.
+                    The right outside hires bring new perspectives and challenge
+                    assumptions, but they also respect the culture in which they
+                    are now operating in. They bring this together in a way that
+                    results in lasting change.
+                  </p>
+                  <p>
+                    I've built and run marketing organizations at companies
+                    where marketing had to earn its budget. I've done the
+                    digital transformation work, operated in B2B and B2C
+                    simultaneously, and have had full P&L accountability.
+                    Central had many employees with long tenures and a strong
+                    POV; I worked with them to enact new processes and ways of
+                    thinking that have become SOPs.
                   </p>
                 </div>
               </details>
 
               <details className="qa-item">
                 <summary className="qa-question">
-                  You come from CPG. How does that translate to a complex global enterprise like UPS?
+                  You have a B2C background. How does that translate to UPS's
+                  B2B and SMB focus?
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    My career started in supply chain consulting at Manhattan
-                    Associates, implementing software for Fortune 500 clients.
-                    I understood complex B2B organizations before I ever
-                    managed a brand. At J&J, I operated inside one of the most
-                    matrixed enterprises in the world, owning an $80MM+ brand
-                    portfolio across Consumer and Medical Device divisions. At
-                    Central Garden, I built and led a 25-person organization
-                    across Insights, Digital, Creative, Innovation, Customer
-                    Marketing, and Customer Care, player-coach style, setting
-                    enterprise strategy in the morning and giving meaningful
-                    creative feedback in the afternoon. CPG taught me how to
-                    build brands that move products. The enterprise experience
-                    taught me how to build programs that earn institutional
-                    trust. UPS needs both.
+                    It's more mixed than the CPG label suggests. At J&J I worked
+                    across Consumer and the Ortho Medical Device division, which
+                    is a classic B2B sales environment. At Central Garden, the
+                    grass seed business ran roughly 80/20 B2C to B2B, but the
+                    B2B side, winning placement and programs with Home Depot and
+                    other major retailers, was where a lot of the commercial
+                    leverage lived. I built business cases in retailer
+                    economics, not just product benefits, because that's what
+                    moved the conversation.
+                  </p>
+                  <p>
+                    The SMB space UPS is focused on is really a consumer mindset
+                    applied to a business buyer. These are founders and
+                    operators making decisions quickly, often based on
+                    experience and trust, not procurement processes. The
+                    brand-building skills and performance marketing capability
+                    I've developed translate directly. SMBs need to see UPS as a
+                    growth partner. That's a brand and growth marketing problem,
+                    not just a sales problem.
                   </p>
                 </div>
               </details>
 
               <details className="qa-item">
                 <summary className="qa-question">
-                  How do you think about data and marketing technology in growth marketing?
+                  How do you think about AI and marketing technology?
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    As infrastructure, not decoration. At Central Garden I
-                    implemented Marketing Mix Modeling and attribution frameworks
-                    that delivered 25% efficiency gains. Not because we were
-                    chasing a trend, but because we needed to defend and grow the
-                    marketing budget in a finance-driven culture. I've also built
-                    AI-enabled workflow automations using tools like n8n and
-                    Zapier for content operations. The NTT DATA partnership and
-                    UPS's $4B annual tech investment signal that the
-                    infrastructure is being built. The growth marketing leader's
-                    job is to use it: CRM, CDP, automation platforms, driving
-                    acquisition, retention, and lifetime value, and to report
-                    results in the language the C-suite actually speaks: revenue,
-                    margin, and customer growth.
+                    As infrastructure, not a novelty. At Central Garden I
+                    implemented Marketing Mix Modeling and attribution
+                    frameworks that delivered 25% efficiency gains, not because
+                    measurement was trendy, but because we needed to defend and
+                    grow the marketing budget in a finance-driven culture. That
+                    discipline came first.
                   </p>
-                </div>
-              </details>
-
-              <details className="qa-item">
-                <summary className="qa-question">
-                  What does success look like in the first 90 days?
-                </summary>
-                <div className="qa-answer">
                   <p>
-                    Three things. First, understand the business from the inside
-                    First, I'd spend time with the commercial team to understand how
-                    growth targets are set and measured, and where marketing is
-                    currently creating or losing value. Second, audit the existing
-                    growth marketing stack: DAP, digital channels, CRM,
-                    attribution: what's working, what's underperforming, and
-                    what's missing. Third, identify the one or two initiatives
-                    that can show measurable commercial impact within the first
-                    two quarters, and build the business case for them clearly
-                    enough that finance and commercial leadership see marketing as
-                    a driver, not a cost center. I don't arrive with a
-                    pre-written plan. I arrive with rigorous questions and a
-                    commitment to earn the trust of the organization before
-                    making big moves.
+                    More recently I've been building AI-enabled workflow
+                    automations for content operations using tools like n8n and
+                    Zapier, and I've gotten genuinely hands-on with how these
+                    tools change what a lean team can produce. The opportunity
+                    at UPS, with $4B in annual tech investment and the NTT DATA
+                    partnership already in place, is to connect that
+                    infrastructure to growth outcomes: smarter targeting, faster
+                    content, better attribution, and results reported in the
+                    language that actually matters to the C-suite, which is
+                    revenue, margin, and customer growth.
                   </p>
                 </div>
               </details>
-
             </div>
           </div>
         </section>
-
 
         {/* ── WHAT I BRING ─────────────────────────────────────────────────── */}
         <section className="kinetic-section">
@@ -261,26 +297,47 @@ export default function UPSPage() {
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
               UPS's VP Growth Marketing role requires someone who can run
               performance marketing, lead a global team, and speak credibly to
-              the C-suite about revenue, not just brand. Here's where I've
-              done exactly that.
+              the C-suite about revenue, not just brand. Here's where I've done
+              exactly that.
             </p>
             <div className="mb-capabilities-grid">
-
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                    <polyline points="17 6 23 6 23 12" />
+                  </svg>
                 </div>
-                <h3 className="kinetic-card-title">Growth Marketing & Performance</h3>
+                <h3 className="kinetic-card-title">
+                  Growth Marketing & Performance
+                </h3>
                 <p className="kinetic-card-text">
                   Data-driven acquisition, retention, and lifecycle programs.
-                  Marketing Mix Modeling, attribution frameworks, KPI dashboards.
-                  25% efficiency gains through optimization.
+                  Marketing Mix Modeling, attribution frameworks, KPI
+                  dashboards. 25% efficiency gains through optimization.
                 </p>
               </div>
 
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <line x1="12" y1="1" x2="12" y2="23" />
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
                 </div>
                 <h3 className="kinetic-card-title">P&L Ownership</h3>
                 <p className="kinetic-card-text">
@@ -293,7 +350,18 @@ export default function UPSPage() {
 
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
                 </div>
                 <h3 className="kinetic-card-title">Digital Transformation</h3>
                 <p className="kinetic-card-text">
@@ -306,19 +374,44 @@ export default function UPSPage() {
 
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                    <path d="M4.93 4.93a10 10 0 0 0 0 14.14" />
+                  </svg>
                 </div>
-                <h3 className="kinetic-card-title">Brand with Business Results</h3>
+                <h3 className="kinetic-card-title">
+                  Brand with Business Results
+                </h3>
                 <p className="kinetic-card-text">
-                  Clio Award-winning campaigns. 3.95B impressions. 10-point brand
-                  awareness lifts translating to 8.2% revenue growth. Brand
-                  investment that connects directly to EBIT.
+                  Clio Award-winning campaigns. 3.95B impressions. 10-point
+                  brand awareness lifts translating to 8.2% revenue growth.
+                  Brand investment that connects directly to EBIT.
                 </p>
               </div>
 
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
                 </div>
                 <h3 className="kinetic-card-title">Leadership & Scale</h3>
                 <p className="kinetic-card-text">
@@ -331,9 +424,20 @@ export default function UPSPage() {
 
               <div className="kinetic-card">
                 <div className="kinetic-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
                 </div>
-                <h3 className="kinetic-card-title">Cross-Functional Credibility</h3>
+                <h3 className="kinetic-card-title">
+                  Cross-Functional Credibility
+                </h3>
                 <p className="kinetic-card-text">
                   Started in supply chain consulting. Spent 7 years inside J&J's
                   matrixed enterprise. Built business cases that moved retailers
@@ -341,18 +445,18 @@ export default function UPSPage() {
                   where marketing has to earn its budget.
                 </p>
               </div>
-
             </div>
           </div>
         </section>
-
 
         {/* ── SELECTED WORK ────────────────────────────────────────────────── */}
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">Selected Work</span>
-              <h2 className="kinetic-section-title">Making An Impact On The Business</h2>
+              <h2 className="kinetic-section-title">
+                Making An Impact On The Business
+              </h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2.5rem" }}>
               From Clio-winning creative to data-driven digital campaigns,
@@ -364,24 +468,26 @@ export default function UPSPage() {
             <div className="campaign-card" style={{ marginBottom: "3rem" }}>
               <div className="campaign-header">
                 <h2 className="campaign-title">#FlipTheTurf</h2>
-                <p className="campaign-meta">Central Garden &amp; Pet · Pennington Grass Seed</p>
+                <p className="campaign-meta">
+                  Central Garden &amp; Pet · Pennington Grass Seed
+                </p>
               </div>
               <div className="ftt-two-col">
                 <div className="ftt-text">
                   <p className="campaign-description">
                     <strong>The Challenge:</strong> Grass seed is the ultimate
-                    low-involvement purchase. Yet artificial turf was causing a surge
-                    in player injuries, and Pennington had no natural platform to
-                    enter the national sports conversation. The brand needed to make
-                    millions of people suddenly care about something they'd never
-                    thought twice about.
+                    low-involvement purchase. Yet artificial turf was causing a
+                    surge in player injuries, and Pennington had no natural
+                    platform to enter the national sports conversation. The
+                    brand needed to make millions of people suddenly care about
+                    something they'd never thought twice about.
                   </p>
                   <p className="campaign-description">
-                    <strong>The Approach:</strong> Partner with NFL star Von Miller
-                    on a deliberately provocative anti-turf campaign designed to get
-                    banned by the league. This turned the NFL's censorship into free
-                    media coverage, sparking a grassroots movement among players and
-                    fans.
+                    <strong>The Approach:</strong> Partner with NFL star Von
+                    Miller on a deliberately provocative anti-turf campaign
+                    designed to get banned by the league. This turned the NFL's
+                    censorship into free media coverage, sparking a grassroots
+                    movement among players and fans.
                   </p>
                 </div>
                 <div className="ftt-video">
@@ -389,7 +495,11 @@ export default function UPSPage() {
                     poster="/Videos/FTT-banned-ad-poster.jpg"
                     controls
                     playsInline
-                    style={{ width: "100%", borderRadius: "8px", display: "block" }}
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
+                      display: "block",
+                    }}
                   >
                     <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
                   </video>
@@ -404,7 +514,9 @@ export default function UPSPage() {
                   </div>
                   <div className="result-stat">
                     <div className="result-stat-value">10pt</div>
-                    <div className="result-stat-label">Brand Awareness Lift</div>
+                    <div className="result-stat-label">
+                      Brand Awareness Lift
+                    </div>
                   </div>
                   <div className="result-stat">
                     <div className="result-stat-value">2x</div>
@@ -417,26 +529,31 @@ export default function UPSPage() {
             {/* Full Season Fertilizer */}
             <div className="campaign-card" style={{ marginBottom: "3rem" }}>
               <div className="campaign-header">
-                <h2 className="campaign-title">Pennington Full Season Fertilizer</h2>
-                <p className="campaign-meta">Central Garden &amp; Pet · Product Innovation</p>
+                <h2 className="campaign-title">
+                  Pennington Full Season Fertilizer
+                </h2>
+                <p className="campaign-meta">
+                  Central Garden &amp; Pet · Product Innovation
+                </p>
               </div>
               <div className="ftt-two-col">
                 <div className="ftt-text">
                   <p className="campaign-description">
                     <strong>The Insight:</strong> Millennial homeowners didn't
-                    understand, and didn't want to commit to, the traditional 4-step
-                    fertilizer program. The complexity was a barrier to purchase and
-                    adoption, leaving a significant segment underserved.
+                    understand, and didn't want to commit to, the traditional
+                    4-step fertilizer program. The complexity was a barrier to
+                    purchase and adoption, leaving a significant segment
+                    underserved.
                   </p>
                   <p className="campaign-description">
-                    <strong>The Approach:</strong> Used that insight to define and
-                    develop a genuinely differentiated product: Full Season, a
-                    one-application-per-season fertilizer that eliminated complexity
-                    entirely. Led cross-functional development and go-to-market
-                    strategy, brought the business case to Walmart and won
-                    distribution. After launch, Walmart's own sales data showed Full
-                    Season indexed higher with Millennial shoppers than the
-                    competition.
+                    <strong>The Approach:</strong> Used that insight to define
+                    and develop a genuinely differentiated product: Full Season,
+                    a one-application-per-season fertilizer that eliminated
+                    complexity entirely. Led cross-functional development and
+                    go-to-market strategy, brought the business case to Walmart
+                    and won distribution. After launch, Walmart's own sales data
+                    showed Full Season indexed higher with Millennial shoppers
+                    than the competition.
                   </p>
                 </div>
                 <div className="ftt-video">
@@ -444,7 +561,11 @@ export default function UPSPage() {
                     poster="/Videos/GFANA_FERT15-poster.jpg"
                     controls
                     playsInline
-                    style={{ width: "100%", borderRadius: "8px", display: "block" }}
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
+                      display: "block",
+                    }}
                   >
                     <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
                   </video>
@@ -455,15 +576,21 @@ export default function UPSPage() {
                 <div className="results-grid">
                   <div className="result-stat">
                     <div className="result-stat-value">8.2%</div>
-                    <div className="result-stat-label">Brand Growth (4x Category Rate)</div>
+                    <div className="result-stat-label">
+                      Brand Growth (4x Category Rate)
+                    </div>
                   </div>
                   <div className="result-stat">
                     <div className="result-stat-value">#1</div>
-                    <div className="result-stat-label">Millennial Appeal vs. Competition (Walmart Data)</div>
+                    <div className="result-stat-label">
+                      Millennial Appeal vs. Competition (Walmart Data)
+                    </div>
                   </div>
                   <div className="result-stat">
                     <div className="result-stat-value">Multi-SKU</div>
-                    <div className="result-stat-label">Platform Expansion Enabled</div>
+                    <div className="result-stat-label">
+                      Platform Expansion Enabled
+                    </div>
                   </div>
                 </div>
               </div>
@@ -473,21 +600,25 @@ export default function UPSPage() {
             <div className="campaign-card">
               <div className="campaign-header">
                 <h2 className="campaign-title">Johnson's Baby: Thanks, Mom</h2>
-                <p className="campaign-meta">Johnson &amp; Johnson · Baby Care</p>
+                <p className="campaign-meta">
+                  Johnson &amp; Johnson · Baby Care
+                </p>
               </div>
               <div className="ftt-two-col">
                 <div className="ftt-text">
                   <p className="campaign-description">
                     <strong>The Challenge:</strong> In a commoditized baby care
-                    aisle, Johnson's Baby needed to reinforce its emotional equity
-                    while driving measurable sales growth against a $400MM portfolio.
+                    aisle, Johnson's Baby needed to reinforce its emotional
+                    equity while driving measurable sales growth against a
+                    $400MM portfolio.
                   </p>
                   <p className="campaign-description">
-                    <strong>The Approach:</strong> Launch "Thanks, Mom," an Olympic
-                    campaign where athletes thanked their mothers on the world stage.
-                    The campaign was so compelling that Debbie Phelps, Michael
-                    Phelps' mom, asked to participate. Paired with emotional print
-                    and digital activations reinforcing the mother-baby bond.
+                    <strong>The Approach:</strong> Launch "Thanks, Mom," an
+                    Olympic campaign where athletes thanked their mothers on the
+                    world stage. The campaign was so compelling that Debbie
+                    Phelps, Michael Phelps' mom, asked to participate. Paired
+                    with emotional print and digital activations reinforcing the
+                    mother-baby bond.
                   </p>
                 </div>
                 <div className="ftt-video thanks-mom-videos">
@@ -495,17 +626,31 @@ export default function UPSPage() {
                     poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
                     controls
                     playsInline
-                    style={{ width: "100%", borderRadius: "8px", display: "block" }}
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
+                      display: "block",
+                    }}
                   >
-                    <source src="/Videos/Thanks-Mom-Cullen.2.mp4" type="video/mp4" />
+                    <source
+                      src="/Videos/Thanks-Mom-Cullen.2.mp4"
+                      type="video/mp4"
+                    />
                   </video>
                   <video
                     poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
                     controls
                     playsInline
-                    style={{ width: "100%", borderRadius: "8px", display: "block" }}
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
+                      display: "block",
+                    }}
                   >
-                    <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
+                    <source
+                      src="/Videos/Thanks-Mom-Debbie.mp4"
+                      type="video/mp4"
+                    />
                   </video>
                 </div>
               </div>
@@ -527,10 +672,8 @@ export default function UPSPage() {
                 </div>
               </div>
             </div>
-
           </div>
         </section>
-
 
         {/* ── BACKGROUND ───────────────────────────────────────────────────── */}
         <section className="kinetic-section">
@@ -541,7 +684,6 @@ export default function UPSPage() {
             </div>
 
             <div className="mb-experience-grid">
-
               <div className="mb-exp-card">
                 <div className="mb-exp-logo-wrap">
                   <svg
@@ -644,11 +786,12 @@ export default function UPSPage() {
                   <h3>Central Garden &amp; Pet</h3>
                   <p className="mb-exp-role">SVP Marketing · 11 years</p>
                   <p className="mb-exp-desc">
-                    Led marketing for the $1.5B Garden segment. Built and managed
-                    a 25-person team across Consumer Insights, Digital, Creative,
-                    Innovation, Customer Marketing, and Customer Care. Full
-                    responsibility for brand development, portfolio P&amp;L, and
-                    commercial growth across a multi-brand portfolio.
+                    Led marketing for the $1.5B Garden segment. Built and
+                    managed a 25-person team across Consumer Insights, Digital,
+                    Creative, Innovation, Customer Marketing, and Customer Care.
+                    Full responsibility for brand development, portfolio
+                    P&amp;L, and commercial growth across a multi-brand
+                    portfolio.
                   </p>
                 </div>
               </div>
@@ -692,7 +835,10 @@ export default function UPSPage() {
 
               <div className="mb-exp-card">
                 <div className="mb-exp-logo-wrap">
-                  <img src="/logos/manhattan-associates.png" alt="Manhattan Associates" />
+                  <img
+                    src="/logos/manhattan-associates.png"
+                    alt="Manhattan Associates"
+                  />
                 </div>
                 <div className="mb-exp-content">
                   <h3>Manhattan Associates</h3>
@@ -705,7 +851,6 @@ export default function UPSPage() {
                   </p>
                 </div>
               </div>
-
             </div>
 
             {/* Education */}
@@ -725,7 +870,8 @@ export default function UPSPage() {
                 </div>
                 <div className="mb-edu-text">
                   <strong>BS Management</strong>
-                  Clemson University · Walk-on swimmer, 4-year letterman, co-captain
+                  Clemson University · Walk-on swimmer, 4-year letterman,
+                  co-captain
                 </div>
               </div>
             </div>
@@ -733,7 +879,10 @@ export default function UPSPage() {
             {/* Awards — integrated as edu-style cards */}
             <div className="mb-education-row" style={{ marginTop: "1.5rem" }}>
               <div className="mb-edu-card">
-                <div className="mb-edu-logo" style={{ fontSize: "2rem", justifyContent: "center" }}>
+                <div
+                  className="mb-edu-logo"
+                  style={{ fontSize: "2rem", justifyContent: "center" }}
+                >
                   🏆
                 </div>
                 <div className="mb-edu-text">
@@ -742,7 +891,10 @@ export default function UPSPage() {
                 </div>
               </div>
               <div className="mb-edu-card">
-                <div className="mb-edu-logo" style={{ fontSize: "2rem", justifyContent: "center" }}>
+                <div
+                  className="mb-edu-logo"
+                  style={{ fontSize: "2rem", justifyContent: "center" }}
+                >
                   🏆
                 </div>
                 <div className="mb-edu-text">
@@ -751,19 +903,23 @@ export default function UPSPage() {
                 </div>
               </div>
             </div>
-
           </div>
         </section>
-
 
         {/* ── CONTACT ──────────────────────────────────────────────────────── */}
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container" style={{ textAlign: "center" }}>
-            <div className="kinetic-section-header" style={{ justifyContent: "center" }}>
+            <div
+              className="kinetic-section-header"
+              style={{ justifyContent: "center" }}
+            >
               <span className="kinetic-section-badge">Let's Talk</span>
               <h2 className="kinetic-section-title">Ready When You Are</h2>
             </div>
-            <p className="mb-subtitle" style={{ maxWidth: "540px", margin: "0 auto 2rem" }}>
+            <p
+              className="mb-subtitle"
+              style={{ maxWidth: "540px", margin: "0 auto 2rem" }}
+            >
               Growth marketing at UPS's inflection point is exactly the kind of
               brief I want. Pick a time or send a note.
             </p>
@@ -783,7 +939,6 @@ export default function UPSPage() {
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

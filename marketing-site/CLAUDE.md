@@ -96,9 +96,31 @@ public/
 - Consistent navigation across all pages
 
 ### Contact Information
-- **Primary**: letstalk@kineticbrandpartners.com
+- **Primary (KBP site)**: letstalk@kineticbrandpartners.com — used on the core Kinetic Brand Partners marketing site
+- **Direct (company-specific pages)**: danhoeller@gmail.com — used on company-targeted candidate pages (e.g., `/ups`) for direct outreach
 - **LinkedIn**: linkedin.com/in/danhoeller
 - **Resume**: PDF download available in header
+
+### Company-Specific Candidate Pages (e.g., `/ups`)
+
+These are targeted pages for specific employers. When creating a new one:
+
+1. **Route**: Create `src/app/[company]/page.tsx` and `src/app/[company]/page.css`
+2. **Wrapper classes**: Use `className="kinetic-page company-page"` on the root div
+3. **Brand colors**: Override CSS variables in `page.css` scoped to `.company-page`
+4. **Favicon**: Always set a company favicon in the `metadata` export:
+   ```tsx
+   export const metadata = {
+     title: "[Company] | Dan Hoeller",
+     description: "...",
+     icons: {
+       icon: "/[company]/[company]-logo.png",
+     },
+   };
+   ```
+   Place the logo at `public/[company]/[company]-logo.png`
+5. **Email**: Use `danhoeller@gmail.com` (not `letstalk@kineticbrandpartners.com`)
+6. **Reference**: See `/ups` page as the canonical example
 
 ## Design System
 
