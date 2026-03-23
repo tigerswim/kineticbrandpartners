@@ -282,9 +282,9 @@ export default function UPSPage() {
               <h2 className="kinetic-section-title">What I Bring</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              UPS's VP Growth Marketing role requires someone who can run
-              performance marketing and speak credibly to the C-suite about
-              revenue, not just brand. Here's where I've done exactly that.
+              Most marketing leaders are strong on one end of the spectrum.
+              Brand or performance. Creative or commercial. I have the breadth
+              that allows me to flex wherever business needs dictate.
             </p>
             <div className="mb-capabilities-grid">
               <div className="kinetic-card">
@@ -292,29 +292,31 @@ export default function UPSPage() {
                   Growth Marketing & Performance
                 </h3>
                 <p className="kinetic-card-text">
-                  Data-driven acquisition, retention, and lifecycle programs.
-                  Marketing Mix Modeling, attribution frameworks, KPI
-                  dashboards. 25% efficiency gains through optimization.
+                  Paid search, paid social, programmatic display, SEO,
+                  influencer, and partnership programs. Marketing Mix Modeling
+                  and KPI dashboards driving 25% efficiency gains. Website
+                  relaunch delivering 295% session growth.
                 </p>
               </div>
 
               <div className="kinetic-card">
                 <h3 className="kinetic-card-title">P&L Ownership</h3>
                 <p className="kinetic-card-text">
-                  Managed portfolios from $20MM to $100MM+, from Gross Sales to
-                  EBIT. Recommended a strategic brand sale at J&J because it was
-                  the right business decision, even though it shrank my
-                  portfolio.
+                  Managed portfolios from $20MM to $250MM+, from Gross Sales to
+                  EBIT. 98.8% EBIT growth in 2016. $7MM in incremental revenue
+                  secured with The Home Depot through data-driven business cases
+                  and executive-level negotiations.
                 </p>
               </div>
 
               <div className="kinetic-card">
                 <h3 className="kinetic-card-title">Digital Transformation</h3>
                 <p className="kinetic-card-text">
-                  MarTech implementation, sales enablement tools, e-commerce and
-                  DTC channel builds. Led digital transformation at Central
-                  Garden: learned the platforms, understood the data, built test
-                  campaigns, then scaled what worked.
+                  MarTech implementation including Sitecore CMS, Salsify PIM,
+                  DTC channel builds, and custom iPad sales apps deployed to
+                  150+ field reps. Led marketing's digital transformation at
+                  Central, converting media from traditional TV/Radio to 100%
+                  digital campaigns and adding measurement programs.
                 </p>
               </div>
 
