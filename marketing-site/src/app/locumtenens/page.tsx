@@ -12,6 +12,9 @@ export const metadata = {
   title: "LocumTenens.com | Dan Hoeller",
   description:
     "Dan Hoeller — VP Marketing candidate for LocumTenens.com. 15 years building brands from Fortune 50 to Fortune 1000.",
+  icons: {
+    icon: "/lt/favicon.png",
+  },
 };
 
 export default function LocumTenensPage() {
