@@ -147,9 +147,8 @@ export default function RootLayout({
           as="image"
           href="/images/DJH-CGPT-Sketch.webp"
           type="image/webp"
-          // @ts-expect-error - imagesrcset is valid HTML but not in React types yet
-          imagesrcset="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
-          imagesizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
+          imageSrcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
+          imageSizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
         />
 
         {/* Resource hints for external services */}
