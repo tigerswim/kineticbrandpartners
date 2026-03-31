@@ -5,6 +5,7 @@
 // Font: Source Sans Pro / system-ui
 
 import GradientMesh from "@/components/GradientMesh";
+import CalendlyButton from "@/components/CalendlyButton";
 import "./page.css";
 
 export const metadata = {
@@ -56,9 +57,9 @@ export default function LocumTenensPage() {
                 </p>
 
                 <div className="mb-cta-group animate-slide-up delay-4">
-                  <a href="https://calendly.com/danhoeller/30min" className="kinetic-btn kinetic-btn--primary">
+                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
-                  </a>
+                  </CalendlyButton>
                   <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
                     Send an Email
                   </a>
@@ -716,9 +717,9 @@ export default function LocumTenensPage() {
               anything on this page. Pick the way that works best for you.
             </p>
             <div className="mb-cta-group" style={{ justifyContent: "center" }}>
-              <a href="https://calendly.com/danhoeller/30min" className="kinetic-btn kinetic-btn--primary">
+              <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                 Schedule 30 Min
-              </a>
+              </CalendlyButton>
               <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
                 Send an Email
               </a>

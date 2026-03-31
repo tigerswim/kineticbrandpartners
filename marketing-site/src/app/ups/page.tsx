@@ -4,6 +4,7 @@
 // UPS brown #351C15, UPS gold #FFB500, Roboto
 
 import GradientMesh from "@/components/GradientMesh";
+import CalendlyButton from "@/components/CalendlyButton";
 import "./page.css";
 
 export const metadata = {
@@ -56,12 +57,9 @@ export default function UPSPage() {
                   with a foundation in supply chain software.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
-                  <a
-                    href="https://calendly.com/danhoeller/30min"
-                    className="kinetic-btn kinetic-btn--primary"
-                  >
+                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
-                  </a>
+                  </CalendlyButton>
                   <a
                     href="mailto:danhoeller@gmail.com"
                     className="kinetic-btn kinetic-btn--secondary"
@@ -831,12 +829,9 @@ export default function UPSPage() {
               brief I want. Pick a time or send a note.
             </p>
             <div className="mb-cta-group" style={{ justifyContent: "center" }}>
-              <a
-                href="https://calendly.com/danhoeller/30min"
-                className="kinetic-btn kinetic-btn--primary"
-              >
+              <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                 Schedule 30 Min
-              </a>
+              </CalendlyButton>
               <a
                 href="mailto:danhoeller@gmail.com"
                 className="kinetic-btn kinetic-btn--secondary"
