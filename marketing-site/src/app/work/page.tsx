@@ -20,7 +20,6 @@ export default function WorkPage() {
         {/* Hero */}
         <section className="work-hero">
           <div className="kinetic-container">
-            <p className="work-hero-eyebrow">Selected Work</p>
             <h1 className="work-hero-title">Making An <span className="kinetic-title-gradient">Impact</span> On The Business</h1>
             <p className="work-hero-subtitle">
               From Clio-winning creative to data-driven digital campaigns,

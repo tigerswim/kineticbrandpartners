@@ -48,7 +48,7 @@ export default function Resume() {
           <div className="kinetic-container">
             <h2 className="kinetic-section-title">Executive Summary</h2>
             <p className="resume-summary">
-              P&amp;L-focused marketing executive with 15+ years of experience driving growth, brand transformation, and digital innovation for top brands in the CPG and Lawn &amp; Garden industries. Strong track record in creating award-winning campaigns that leverage data-driven insights and creative storytelling to deliver sales growth. Strengths include setting strategic vision, bringing a holistic business perspective to decision-making, championing the consumer, and building and leading successful teams with a player-coach management style.
+              Marketing executive with 15+ years connecting marketing investments to revenue outcomes across B2B2C, CPG, and B2B markets. Grew a $250MM brand at 4x the category rate, unlocked $7MM in incremental retail revenue, and improved marketing efficiency 25% — with P&amp;L management experience at J&amp;J, commercial leadership at Central Garden &amp; Pet, and a technical foundation built at Manhattan Associates.
             </p>
           </div>
         </section>
@@ -322,7 +322,7 @@ export default function Resume() {
               <div className="kinetic-card">
                 <h3 className="kinetic-card-title">Athletics &amp; Interests</h3>
                 <p className="kinetic-card-text">
-                  Triathlete and Ironman finisher. Avid road and MTB cyclist. DIY enthusiast. Experimenting with using AI for "vibe coding" of an app for triathletes for race preparation.
+                  Triathlete and Ironman finisher. Avid road and MTB cyclist. Active AI builder: built a personal CRM, marketing automations (Zapier, n8n), and multiple websites using AI-assisted development with Claude Code.
                 </p>
               </div>
             </div>

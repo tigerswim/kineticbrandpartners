@@ -31,9 +31,6 @@ export default function AboutPage() {
         <section className="about-hero">
           <div className="kinetic-container">
             <div className="about-hero-content">
-              <div className="kinetic-badge animate-slide-up">
-                <span>The Whole Person</span>
-              </div>
               <h1 className="about-hero-title animate-slide-up delay-1">
                 Beyond the{" "}
                 <span className="kinetic-title-gradient">resume</span>
@@ -72,8 +69,7 @@ export default function AboutPage() {
                 </picture>
               </div>
               <div className="about-content-block animate-slide-up">
-                <span className="kinetic-section-badge">Family</span>
-                <h2 className="kinetic-section-title">What matters most</h2>
+                <h2 className="kinetic-section-title mb-section-title--left">What matters most</h2>
                 <div className="about-text-content">
                   <p>
                     Along with my amazing wife, we wrangle these three
@@ -93,12 +89,7 @@ export default function AboutPage() {
         {/* Interests Section - AI/Coding Projects */}
         <section className="kinetic-section kinetic-section--gray about-interests">
           <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Interests</span>
-              <h2 className="kinetic-section-title">
-                Learning AI through Building
-              </h2>
-            </div>
+            <h2 className="kinetic-section-title mb-section-title--left">Learning AI through Building</h2>
 
             <div className="about-interests-intro animate-slide-up">
               <p>
@@ -241,10 +232,7 @@ export default function AboutPage() {
         {/* Athletics Section */}
         <section className="kinetic-section about-athletics">
           <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Athletics</span>
-              <h2 className="kinetic-section-title">Athletic Journey</h2>
-            </div>
+            <h2 className="kinetic-section-title mb-section-title--left">Athletic Journey</h2>
 
             <div className="about-interests-intro animate-slide-up">
               <p>

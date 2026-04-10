@@ -1732,8 +1732,8 @@ html {
 /* Interests Section */
 .about-interests-intro {
   max-width: 800px;
-  margin: 0 auto 3rem;
-  text-align: center;
+  margin: 0 0 3rem;
+  text-align: left;
 }
 
 .about-interests-intro p {
@@ -1745,7 +1745,7 @@ html {
 /* Tech Stack */
 .about-tech-stack {
   margin: 3rem 0;
-  text-align: center;
+  text-align: left;
 }
 
 .about-tech-stack h3 {
@@ -1761,7 +1761,7 @@ html {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .about-tech-badge {
