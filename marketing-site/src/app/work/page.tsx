@@ -21,7 +21,7 @@ export default function WorkPage() {
         <section className="work-hero">
           <div className="kinetic-container">
             <p className="work-hero-eyebrow">Selected Work</p>
-            <h1 className="work-hero-title">Making An Impact On The Business</h1>
+            <h1 className="work-hero-title">Making An <span className="kinetic-title-gradient">Impact</span> On The Business</h1>
             <p className="work-hero-subtitle">
               From Clio-winning creative to data-driven digital campaigns,
               here's a selection of marketing work that delivered measurable
