@@ -36,12 +36,9 @@
   background: var(--color-secondary);
 }
 
-/* Title gradient */
+/* Title accent color */
 .locumtenens-page .kinetic-title-gradient {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-secondary);
 }
 
 /* Primary button */
@@ -51,19 +48,6 @@
 
 .locumtenens-page .kinetic-btn--primary:hover {
   background: var(--color-secondary);
-}
-
-/* Section badge */
-.locumtenens-page .kinetic-section-badge {
-  color: var(--color-secondary);
-  background: rgba(0, 118, 187, 0.08);
-  border-color: rgba(0, 118, 187, 0.2);
-}
-
-/* Icon boxes */
-.locumtenens-page .kinetic-icon-box {
-  color: var(--color-secondary);
-  background: rgba(0, 118, 187, 0.08);
 }
 
 /* Experience role color */
@@ -78,10 +62,7 @@
 }
 
 .locumtenens-page .result-stat-value {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-primary);
 }
 
 /* Q&A Accordion */

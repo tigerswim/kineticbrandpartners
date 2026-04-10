@@ -1,16 +1,7 @@
 // Homepage: Kinetic Flow
-// Clean white with animated gradient mesh, floating elements, energetic but refined
 
 import Image from "next/image";
 import CalendlyButton from "@/components/CalendlyButton";
-import {
-  TrendingUp,
-  DollarSign,
-  BarChart2,
-  Zap,
-  Award,
-  Users,
-} from "@/components/Icons";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientMesh from "@/components/GradientMesh";
@@ -46,20 +37,23 @@ export default function Home() {
                   <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
                   </CalendlyButton>
-                  <a
-                    href="mailto:letstalk@kineticbrandpartners.com"
-                    className="kinetic-btn kinetic-btn--secondary"
-                  >
-                    Send an Email
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/danhoeller"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="kinetic-btn kinetic-btn--secondary"
-                  >
-                    View LinkedIn →
-                  </a>
+                  <div className="mb-cta-links">
+                    <a
+                      href="mailto:letstalk@kineticbrandpartners.com"
+                      className="mb-cta-link"
+                    >
+                      Send an Email
+                    </a>
+                    <span className="mb-cta-divider">·</span>
+                    <a
+                      href="https://linkedin.com/in/danhoeller"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-cta-link"
+                    >
+                      LinkedIn
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="mb-hero-visual animate-scale-in delay-3">
@@ -86,85 +80,61 @@ export default function Home() {
         {/* Capabilities */}
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Capabilities</span>
-              <h2 className="kinetic-section-title">What I Bring</h2>
-            </div>
-            <div className="mb-capabilities-grid">
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <TrendingUp />
-                </div>
-                <h3 className="kinetic-card-title">Leadership & Scale</h3>
-                <p className="kinetic-card-text">
-                  Built and led 25-person marketing org spanning Consumer
+            <h2 className="kinetic-section-title mb-section-title--left">
+              What I Bring
+            </h2>
+            <dl className="mb-capability-list">
+              <div className="mb-capability-row">
+                <dt>Leadership &amp; Scale</dt>
+                <dd>
+                  Built and led a 25-person marketing org spanning Consumer
                   Insights, Digital, Creative, Innovation, and Customer
                   Marketing.
-                </p>
+                </dd>
               </div>
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <DollarSign />
-                </div>
-                <h3 className="kinetic-card-title">P&L Ownership</h3>
-                <p className="kinetic-card-text">
-                  Managed portfolios from $20MM to $100MM+, from Gross Sales to
-                  EBIT.
-                </p>
+              <div className="mb-capability-row">
+                <dt>P&amp;L Ownership</dt>
+                <dd>
+                  Managed portfolios from $20MM to $100MM+, full responsibility
+                  from Gross Sales to EBIT.
+                </dd>
               </div>
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <BarChart2 />
-                </div>
-                <h3 className="kinetic-card-title">Data-Driven Marketing</h3>
-                <p className="kinetic-card-text">
+              <div className="mb-capability-row">
+                <dt>Data-Driven Marketing</dt>
+                <dd>
                   Marketing Mix Modeling, attribution frameworks, KPI
                   dashboards. 25% efficiency gains through optimization.
-                </p>
+                </dd>
               </div>
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <Zap />
-                </div>
-                <h3 className="kinetic-card-title">Digital Transformation</h3>
-                <p className="kinetic-card-text">
+              <div className="mb-capability-row">
+                <dt>Digital Transformation</dt>
+                <dd>
                   MarTech implementation, sales enablement tools, e-commerce/DTC
                   builds. "Best in Class" retailer recognition.
-                </p>
+                </dd>
               </div>
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <Award />
-                </div>
-                <h3 className="kinetic-card-title">Creative Excellence</h3>
-                <p className="kinetic-card-text">
+              <div className="mb-capability-row">
+                <dt>Creative Excellence</dt>
+                <dd>
                   Clio Award-winning campaigns. 3.95B impressions. 10-point
                   brand awareness lifts. Strategy-grounded creative.
-                </p>
+                </dd>
               </div>
-              <div className="kinetic-card">
-                <div className="kinetic-icon-box">
-                  <Users />
-                </div>
-                <h3 className="kinetic-card-title">
-                  Cross-Functional Leadership
-                </h3>
-                <p className="kinetic-card-text">
+              <div className="mb-capability-row">
+                <dt>Cross-Functional Leadership</dt>
+                <dd>
                   Player-coach style. Agency selection and management. Change
                   management across matrixed orgs.
-                </p>
+                </dd>
               </div>
-            </div>
+            </dl>
           </div>
         </section>
 
         {/* Experience */}
         <section className="kinetic-section">
           <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Experience</span>
-              <h2 className="kinetic-section-title">Background</h2>
-            </div>
+            <h2 className="kinetic-section-title mb-section-title--left">Where I&apos;ve Worked</h2>
             <div className="mb-experience-grid">
               <div className="mb-exp-card">
                 <div className="mb-exp-logo-wrap">
@@ -312,7 +282,7 @@ export default function Home() {
 
               <div className="mb-exp-card">
                 <div className="mb-exp-logo-wrap">
-{/* eslint-disable-next-line @next/next/no-img-element */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/logos/manhattan-associates-sm.webp"
                     alt="Manhattan Associates"
@@ -370,16 +340,18 @@ export default function Home() {
         {/* What I'm Looking For */}
         <section className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Opportunities</span>
-              <h2 className="kinetic-section-title">What I&apos;m Looking For</h2>
+            <div className="mb-looking-for">
+              <h2 className="kinetic-section-title mb-section-title--left">
+                What I&apos;m Looking For
+              </h2>
+              <p className="mb-subtitle mb-looking-for-text">
+                Seeking VP Marketing or CMO roles across B2C and B2B at
+                consumer, healthcare, tech, manufacturing, or supply chain
+                companies. Open to Atlanta-based or remote opportunities. Also
+                available for selective consulting and fractional CMO
+                engagements.
+              </p>
             </div>
-            <p className="mb-subtitle mb-looking-for-text">
-              Seeking VP Marketing or CMO roles at consumer brands, tech
-              companies, or manufacturing and supply chain businesses. Open to
-              Atlanta-based, hybrid, or remote opportunities. Also available for
-              selective consulting and fractional CMO engagements.
-            </p>
           </div>
         </section>
 
@@ -390,21 +362,19 @@ export default function Home() {
               <div className="mb-contact-inner">
                 <h2 className="mb-contact-title">Let&apos;s Talk</h2>
                 <p className="mb-contact-text">
-                  Ready to discuss opportunities—whether that&apos;s a full-time
-                  role, a consulting engagement, or just a conversation about
-                  what you&apos;re building.
+                  Open to VP Marketing and CMO conversations. Let's discuss
+                  what's next.
                 </p>
-                <p className="mb-contact-subtext">Choose how to connect:</p>
                 <div className="mb-contact-buttons">
+                  <CalendlyButton className="mb-contact-btn mb-contact-btn--calendly">
+                    Schedule 30 Min
+                  </CalendlyButton>
                   <a
                     href="mailto:letstalk@kineticbrandpartners.com"
                     className="mb-contact-btn mb-contact-btn--email"
                   >
                     Send Email
                   </a>
-                  <CalendlyButton className="mb-contact-btn mb-contact-btn--calendly">
-                    Schedule 30 Min
-                  </CalendlyButton>
                 </div>
               </div>
             </div>
