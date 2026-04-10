@@ -151,6 +151,10 @@ export default function RootLayout({
           imageSizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
         />
 
+        {/* Google Fonts preconnect for Hanken Grotesk + Figtree */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
         {/* Resource hints for external services */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

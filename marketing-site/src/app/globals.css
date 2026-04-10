@@ -10,7 +10,7 @@
 /* ============================================================================
    FONTS
    ========================================================================= */
-/* Using system fonts for optimal performance - no external font loading */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Figtree:wght@400;500&display=swap');
 
 /* ============================================================================
    CSS VARIABLES
@@ -89,7 +89,7 @@ html {
    BASE STYLES
    ========================================================================= */
 .kinetic-page {
-  font-family: 'Outfit', -apple-system, sans-serif;
+  font-family: 'Hanken Grotesk', -apple-system, sans-serif;
   background: var(--white);
   color: var(--gray-800);
   min-height: 100vh;
@@ -103,29 +103,6 @@ html {
 /* ============================================================================
    ANIMATIONS
    ========================================================================= */
-@keyframes gradientMove {
-  0% { transform: translate(0%, 0%) rotate(0deg); }
-  25% { transform: translate(5%, 5%) rotate(90deg); }
-  50% { transform: translate(0%, 10%) rotate(180deg); }
-  75% { transform: translate(-5%, 5%) rotate(270deg); }
-  100% { transform: translate(0%, 0%) rotate(360deg); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(3deg); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -200,35 +177,28 @@ html {
 .kinetic-gradient-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
+  filter: blur(120px);
+  opacity: 0.18;
 }
 
 .kinetic-gradient-blob--1 {
-  width: 600px;
-  height: 600px;
-  background: linear-gradient(135deg, rgba(13, 148, 136, 0.3), rgba(20, 184, 166, 0.2));
-  top: -200px;
-  right: -100px;
-  animation: gradientMove 20s ease-in-out infinite;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, oklch(72% 0.12 180), transparent 70%);
+  top: -250px;
+  right: -150px;
 }
 
 .kinetic-gradient-blob--2 {
-  width: 500px;
-  height: 500px;
-  background: linear-gradient(135deg, rgba(26, 54, 93, 0.2), rgba(45, 74, 111, 0.15));
-  bottom: -150px;
-  left: -100px;
-  animation: gradientMove 25s ease-in-out infinite reverse;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, oklch(30% 0.06 240), transparent 70%);
+  bottom: -200px;
+  left: -150px;
 }
 
 .kinetic-gradient-blob--3 {
-  width: 400px;
-  height: 400px;
-  background: linear-gradient(135deg, rgba(13, 148, 136, 0.15), transparent);
-  top: 40%;
-  left: 30%;
-  animation: pulse 15s ease-in-out infinite;
+  display: none;
 }
 
 /* ============================================================================
@@ -252,9 +222,9 @@ html {
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 .kinetic-header .kinetic-container {
@@ -349,11 +319,10 @@ html {
   right: -100%;
   width: 280px;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(20px);
+  background: #fff;
   z-index: 100;
   transition: right 0.3s ease;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.08);
 }
 
 .kinetic-mobile-menu.is-open {
@@ -455,14 +424,11 @@ html {
    TYPOGRAPHY
    ========================================================================= */
 .kinetic-title-gradient {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--teal);
 }
 
 .kinetic-serif {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
 }
 
 /* ============================================================================
@@ -486,7 +452,6 @@ html {
   height: 6px;
   background: var(--teal);
   border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 /* ============================================================================
@@ -504,7 +469,7 @@ html {
   transition: all var(--transition-base);
   cursor: pointer;
   border: none;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hanken Grotesk', sans-serif;
 }
 
 .kinetic-btn--primary {
@@ -741,7 +706,7 @@ html {
 }
 
 .mb-subtitle {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
   font-size: 1.25rem;
   line-height: 1.7;
   color: var(--gray-600);
@@ -751,15 +716,92 @@ html {
 
 .mb-cta-group {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
-/* What I'm Looking For Section */
+.mb-cta-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mb-cta-link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.mb-cta-link:hover {
+  color: var(--teal);
+}
+
+.mb-cta-divider {
+  color: var(--gray-300);
+  font-size: 0.9375rem;
+  user-select: none;
+}
+
+/* Capability list */
+.mb-capability-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--gray-200);
+}
+
+.mb-capability-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.mb-capability-row:nth-child(odd) {
+  padding-right: 3rem;
+}
+
+.mb-capability-row:nth-child(even) {
+  padding-left: 3rem;
+  border-left: 1px solid var(--gray-200);
+}
+
+.mb-capability-row dt {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  list-style: none;
+}
+
+.mb-capability-row dd {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+/* Section title left-aligned variant */
+.mb-section-title--left {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+/* What I'm Looking For */
+.mb-looking-for {
+  max-width: 680px;
+}
+
 .mb-looking-for-text {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  margin: 0;
 }
 
 /* Hero Visual */
@@ -769,19 +811,10 @@ html {
 
 .mb-image-container {
   position: relative;
-  animation: float 6s ease-in-out infinite;
 }
 
 .mb-image-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(13, 148, 136, 0.2) 0%, transparent 70%);
-  filter: blur(40px);
-  z-index: -1;
+  display: none;
 }
 
 .mb-headshot {
@@ -789,13 +822,6 @@ html {
   height: auto;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
-}
-
-/* Capabilities Grid */
-.mb-capabilities-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
 }
 
 /* Experience Cards */
@@ -919,22 +945,11 @@ html {
 }
 
 .mb-contact-card {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   border-radius: var(--radius-2xl);
   padding: 5rem 3rem;
   position: relative;
   overflow: hidden;
-}
-
-.mb-contact-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C%2Fg%3E%3C/svg%3E");
-  opacity: 0.3;
 }
 
 .mb-contact-inner {
@@ -950,7 +965,7 @@ html {
 }
 
 .mb-contact-text {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1.5rem;
@@ -988,7 +1003,7 @@ html {
   transition: all var(--transition-base);
   border: none;
   cursor: pointer;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hanken Grotesk', sans-serif;
 }
 
 .mb-contact-btn:hover {
@@ -1018,11 +1033,19 @@ html {
   }
 
   .mb-cta-group {
-    justify-content: center;
+    align-items: center;
   }
 
-  .mb-capabilities-grid {
+  .mb-capability-list {
     grid-template-columns: 1fr;
+  }
+
+  .mb-capability-row {
+    grid-template-columns: 180px 1fr;
+    gap: 1.5rem;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    border-left: none !important;
   }
 
   .mb-exp-card {
@@ -1059,13 +1082,21 @@ html {
   }
 
   .mb-cta-group {
-    flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .mb-cta-group .kinetic-btn {
     text-align: center;
     justify-content: center;
+  }
+
+  .mb-capability-row {
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+
+  .mb-capability-row dt {
+    font-size: 0.875rem;
   }
 
   .mb-contact-card {
@@ -1120,7 +1151,7 @@ html {
 }
 
 .work-hero-subtitle {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
   font-size: 1.25rem;
   line-height: 1.7;
   color: var(--gray-600);
@@ -1262,10 +1293,7 @@ html {
 .result-stat-value {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--navy), var(--teal));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--navy);
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -1290,7 +1318,7 @@ html {
 }
 
 .work-cta-text {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
   font-size: 1.125rem;
   line-height: 1.7;
   color: var(--gray-600);
@@ -1642,7 +1670,7 @@ html {
 }
 
 .about-hero-text {
-  font-family: "Newsreader", serif;
+  font-family: 'Figtree', -apple-system, sans-serif;
   font-size: 1.25rem;
   line-height: 1.7;
   color: var(--gray-600);

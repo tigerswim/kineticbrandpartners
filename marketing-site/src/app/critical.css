@@ -47,7 +47,7 @@
 body{margin:0;padding:0}
 
 .kinetic-page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Hanken Grotesk', -apple-system, sans-serif;
   background: #fff;
   color: var(--gray-800);
   min-height: 100vh;
@@ -68,9 +68,9 @@ body{margin:0;padding:0}
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(226,232,240,0.5);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226,232,240,0.6);
 }
 .kinetic-header .kinetic-container {
   display: flex;
@@ -131,23 +131,21 @@ body{margin:0;padding:0}
 .kinetic-gradient-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
+  filter: blur(120px);
+  opacity: 0.18;
 }
 .kinetic-gradient-blob--1 {
-  width: 600px; height: 600px;
-  background: linear-gradient(135deg, rgba(13,148,136,0.3), rgba(20,184,166,0.2));
-  top: -200px; right: -100px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, oklch(72% 0.12 180), transparent 70%);
+  top: -250px; right: -150px;
 }
 .kinetic-gradient-blob--2 {
-  width: 500px; height: 500px;
-  background: linear-gradient(135deg, rgba(26,54,93,0.2), rgba(45,74,111,0.15));
-  bottom: -150px; left: -100px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, oklch(30% 0.06 240), transparent 70%);
+  bottom: -200px; left: -150px;
 }
 .kinetic-gradient-blob--3 {
-  width: 400px; height: 400px;
-  background: linear-gradient(135deg, rgba(13,148,136,0.15), transparent);
-  top: 40%; left: 30%;
+  display: none;
 }
 
 .kinetic-badge {
@@ -169,10 +167,7 @@ body{margin:0;padding:0}
 }
 
 .kinetic-title-gradient {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--teal);
 }
 
 .mb-hero {
@@ -214,13 +209,7 @@ body{margin:0;padding:0}
   position: relative;
 }
 .mb-image-glow {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%; height: 120%;
-  background: radial-gradient(circle, rgba(13,148,136,0.2) 0%, transparent 70%);
-  filter: blur(40px);
-  z-index: -1;
+  display: none;
 }
 .mb-headshot {
   width: 100%;
