@@ -1,0 +1,349 @@
+/* LocumTenens Candidate Page
+   Primary: #336195 (navy blue)
+   Secondary: #0076bb (bright blue)
+   Accent: #00953b (green)
+   Font: Source Sans Pro / system-ui
+*/
+
+.locumtenens-page {
+  --color-primary: #336195;
+  --color-secondary: #0076bb;
+  --color-accent: #00953b;
+  --font-primary: "Source Sans Pro", "Helvetica Neue", system-ui, sans-serif;
+}
+
+/* Override gradient blobs */
+.locumtenens-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(0, 118, 187, 0.2), rgba(0, 118, 187, 0.1));
+}
+
+.locumtenens-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(51, 97, 149, 0.15), rgba(51, 97, 149, 0.08));
+}
+
+.locumtenens-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(0, 149, 59, 0.1), transparent);
+}
+
+/* Badge */
+.locumtenens-page .kinetic-badge {
+  color: var(--color-primary);
+  border-color: rgba(51, 97, 149, 0.25);
+  background: rgba(51, 97, 149, 0.07);
+}
+
+.locumtenens-page .kinetic-badge-dot {
+  background: var(--color-secondary);
+}
+
+/* Title accent color */
+.locumtenens-page .kinetic-title-gradient {
+  color: var(--color-secondary);
+}
+
+/* Primary button */
+.locumtenens-page .kinetic-btn--primary {
+  background: var(--color-primary);
+}
+
+.locumtenens-page .kinetic-btn--primary:hover {
+  background: var(--color-secondary);
+}
+
+/* Experience role color */
+.locumtenens-page .mb-exp-role {
+  color: var(--color-secondary);
+}
+
+/* Result stats */
+.locumtenens-page .result-stat {
+  background: linear-gradient(135deg, rgba(51, 97, 149, 0.05), rgba(0, 118, 187, 0.08));
+  border-color: rgba(0, 118, 187, 0.2);
+}
+
+.locumtenens-page .result-stat-value {
+  color: var(--color-primary);
+}
+
+/* Q&A Accordion */
+.qa-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.qa-item {
+  border: 1px solid rgba(51, 97, 149, 0.2);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.qa-question {
+  padding: 1.25rem 1.5rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-primary);
+  transition: background 0.15s ease;
+}
+
+.qa-question::-webkit-details-marker {
+  display: none;
+}
+
+.qa-question::after {
+  content: "+";
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-secondary);
+  flex-shrink: 0;
+  margin-left: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.qa-item[open] .qa-question::after {
+  transform: rotate(45deg);
+}
+
+.qa-item[open] .qa-question {
+  background: rgba(51, 97, 149, 0.04);
+}
+
+.qa-answer {
+  padding: 0 1.5rem 1.25rem;
+  color: #4b5563;
+  line-height: 1.7;
+  font-size: 0.975rem;
+}
+
+.qa-answer p {
+  margin: 0;
+}
+
+/* DISC Profile */
+.disc-profile {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .disc-profile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.disc-style-card {
+  background: #fff;
+  border: 1px solid rgba(51, 97, 149, 0.18);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.disc-style-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.disc-style-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.25rem;
+}
+
+.disc-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.disc-score-bar {
+  display: grid;
+  grid-template-columns: 18px 1fr 28px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.disc-letter {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.disc-bar-track {
+  height: 8px;
+  background: rgba(51, 97, 149, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.disc-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.disc-bar--d { background: var(--color-primary); }
+.disc-bar--i { background: var(--color-secondary); }
+.disc-bar--s { background: var(--color-secondary); opacity: 0.85; }
+.disc-bar--c { background: rgba(51, 97, 149, 0.4); }
+
+.disc-score-num {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: right;
+}
+
+.disc-style-note {
+  font-size: 0.82rem;
+  color: #6b7280;
+  line-height: 1.5;
+  border-top: 1px solid rgba(51, 97, 149, 0.12);
+  padding-top: 1rem;
+  margin: 0;
+}
+
+.disc-traits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .disc-traits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.disc-trait-card {
+  background: #fff;
+  border: 1px solid rgba(51, 97, 149, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.disc-trait-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 0.6rem 0;
+}
+
+.disc-trait-text {
+  font-size: 0.93rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Hero logo */
+.lt-hero-logo {
+  margin-bottom: 1.5rem;
+}
+
+/* Image glow using company color */
+.locumtenens-page .mb-image-glow {
+  background: radial-gradient(circle, rgba(0, 118, 187, 0.18) 0%, transparent 70%);
+}
+
+/* Sticky page nav */
+.locumtenens-page {
+  scroll-behavior: smooth;
+}
+
+.locumtenens-page section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Reuse the main marketing-site .kinetic-header look on /locumtenens,
+   with the LT logo on the left (click = back to top) and a right-aligned
+   anchor nav. Kept visible on mobile since this page has no hamburger. */
+.lt-header-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: transform var(--transition-base);
+}
+
+.lt-header-brand:hover {
+  transform: scale(1.02);
+}
+
+.lt-header-brand img {
+  display: block;
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.locumtenens-page .lt-nav {
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.locumtenens-page .lt-nav a:hover {
+  color: var(--color-secondary);
+}
+
+/* Offset main so the fixed header doesn't cover the hero,
+   and lay out sections with flex so we can reorder via CSS order. */
+.locumtenens-page main {
+  display: flex;
+  flex-direction: column;
+  padding-top: 90px;
+}
+
+@media (max-width: 768px) {
+  .locumtenens-page main {
+    padding-top: 76px;
+  }
+}
+
+/* Visual section order (decoupled from JSX source order):
+   Hero -> What I'm Hearing -> What I Bring -> DISC
+        -> Selected Work -> Background -> Contact */
+.locumtenens-page main > .mb-hero { order: 1; }
+.locumtenens-page main > #hearing { order: 2; }
+.locumtenens-page main > #bring { order: 3; }
+.locumtenens-page main > #disc { order: 4; }
+.locumtenens-page main > #work { order: 5; }
+.locumtenens-page main > #background { order: 6; }
+.locumtenens-page main > #contact { order: 7; }
+
+/* Keep the anchor nav visible on mobile (the global .kinetic-nav
+   rule hides it in favor of a hamburger, but this page doesn't use one). */
+@media (max-width: 768px) {
+  .locumtenens-page .lt-header .lt-nav {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tinted section -- used for "What I'm Hearing" so it reads as a
+   distinct beat without breaking the white/gray alternation around it. */
+.locumtenens-page .lt-section--tint {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 118, 187, 0.04) 0%,
+    rgba(51, 97, 149, 0.06) 100%
+  );
+  border-top: 1px solid rgba(51, 97, 149, 0.08);
+  border-bottom: 1px solid rgba(51, 97, 149, 0.08);
+}
