@@ -1,185 +1,82 @@
-# Kinetic Brand Partners - Development Workspace
+# Kinetic Brand Partners — Marketing Website
 
-This directory contains multiple projects for Kinetic Brand Partners and related applications.
+The official marketing website for Kinetic Brand Partners, built with Next.js and deployed via Netlify.
 
-## 📁 Projects
+**Live site**: [kineticbrandpartners.com](https://kineticbrandpartners.com)
+**Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
 
-### job-tracker
-**Job Application & Contact Management System**
+---
 
-A comprehensive job tracking and professional networking application built with Next.js, TypeScript, and Supabase.
+## Tech Stack
 
-- **Repository**: Standalone repository (`https://github.com/tigerswim/job-tracker.git`)
-- **Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS 4, Supabase
+- **Framework**: Next.js (static export)
+- **Language**: TypeScript
+- **Styling**: Custom CSS design system
 - **Deployment**: Netlify
-- **Port**: 3001 (development)
-- **Location**: Separate repository (not in this workspace)
-
-**Key Features:**
-- Job application tracking with status management
-- Contact relationship management
-- Interaction logging and communication history
-- Smart reminder system with email notifications
-- Analytics and reporting dashboard
-
-[→ View job-tracker on GitHub](https://github.com/tigerswim/job-tracker)
 
 ---
 
-### [marketing-site/](marketing-site/)
-**Kinetic Brand Partners Marketing Website**
+## Quick Start
 
-The official marketing website showcasing services, team, and brand development approach.
-
-- **Repository**: Part of this monorepo (`https://github.com/tigerswim/kineticbrandpartners.git`)
-- **Tech Stack**: Next.js, TypeScript, Tailwind CSS
-- **Deployment**: Netlify
-- **Port**: 3000 (development)
-
-**Key Features:**
-- Modern responsive design
-- Service portfolio showcase
-- Team profiles and company information
-- Optimized for performance and SEO
-
-[→ View marketing-site README](marketing-site/README.md)
-
----
-
-### [RacePrep/](RacePrep/)
-**Triathlon Training & Race Analytics**
-
-Mobile-first triathlon tracking application for beginner to intermediate triathletes.
-
-- **Repository**: Standalone (`https://github.com/tigerswim/raceprep.git`)
-- **Tech Stack**: React Native, Expo, TypeScript, Supabase
-- **Platform**: iOS & Android
-- **Status**: Active development (Phase 2 complete, Phase 3 in progress)
-
-**Key Features:**
-- Comprehensive race analysis with transition tracking
-- Strava integration for training data
-- Race discovery and planning tools
-- Performance analytics and predictions
-- Beautiful mobile experience with dark theme
-
-[→ View RacePrep README](RacePrep/README.md)
-
----
-
-### [sagenet-website/](sagenet-website/)
-**SageNet Corporate Website**
-
-Corporate website project for SageNet network infrastructure services.
-
-- **Repository**: Standalone (`https://github.com/tigerswim/sagenet-website.git`)
-- **Status**: Build files only (source in separate repository)
-
----
-
-## 🚀 Quick Start
-
-### Clone the Monorepo
 ```bash
-git clone https://github.com/tigerswim/kineticbrandpartners.git
-cd kineticbrandpartners
+npm install
+npm run dev       # http://localhost:3000
 ```
 
-### Install Dependencies (per project)
 ```bash
-# Job Tracker
-cd job-tracker && npm install
-
-# Marketing Site
-cd ../marketing-site && npm install
-
-# RacePrep (separate repo)
-cd ../RacePrep && npm install
+npm run build     # Production build
+npm run lint      # Linter
+npx tsc --noEmit  # Type check
 ```
-
-### Development Servers
-```bash
-# Job Tracker (port 3001)
-cd job-tracker && npm run dev
-
-# Marketing Site (port 3000)
-cd marketing-site && npm run dev
-
-# RacePrep (Expo)
-cd RacePrep && npx expo start
-```
-
-## 🗂️ Repository Structure
-
-```
-kineticbrandpartners/ (this repository)
-├── marketing-site/        # Marketing website
-│   ├── src/              # Source code
-│   ├── public/           # Static assets
-│   └── package.json      # Dependencies
-│
-└── README.md             # This file
-
-Separate repositories (may be in workspace directory):
-├── job-tracker/          # Standalone repo: github.com/tigerswim/job-tracker
-├── RacePrep/             # Standalone repo: github.com/tigerswim/raceprep
-└── sagenet-website/      # Standalone repo: github.com/tigerswim/sagenet-website
-```
-
-## 🔗 Git Repositories
-
-| Project | Repository URL | Type |
-|---------|---------------|------|
-| job-tracker | `https://github.com/tigerswim/job-tracker.git` | Standalone |
-| marketing-site | `https://github.com/tigerswim/kineticbrandpartners.git` | This repo |
-| RacePrep | `https://github.com/tigerswim/raceprep.git` | Standalone |
-| sagenet-website | `https://github.com/tigerswim/sagenet-website.git` | Standalone |
-
-## 📝 Development Notes
-
-### This Repository (marketing-site only)
-- Contains only the marketing-site project
-- Deployed via Netlify
-- Simple single-project repository
-
-### Standalone Projects (job-tracker, RacePrep, sagenet-website)
-- Have their own git repositories
-- Managed independently
-- May be located in this workspace directory for convenience
-- Push/pull from their respective remotes
-
-## 🛠️ Technology Stack Overview
-
-### Frontend Frameworks
-- **Next.js 15** (job-tracker, marketing-site)
-- **React Native / Expo** (RacePrep)
-
-### Styling
-- **Tailwind CSS 4** (job-tracker, marketing-site)
-- **React Native StyleSheet** (RacePrep)
-
-### Database & Backend
-- **Supabase** (PostgreSQL, Auth, Real-time)
-- **Netlify Functions** (serverless)
-
-### Deployment
-- **Netlify** (job-tracker, marketing-site)
-- **Expo EAS** (RacePrep mobile apps)
-
-## 📚 Additional Resources
-
-- **job-tracker Documentation**: [job-tracker/docs/](job-tracker/docs/)
-- **RacePrep Documentation**: [RacePrep/DOCUMENTATION_INDEX.md](RacePrep/DOCUMENTATION_INDEX.md)
-- **Development Plans**: See individual project READMEs
-
-## 🤝 Contributing
-
-Each project has its own contribution guidelines. See individual README files for details.
-
-## 📄 License
-
-All projects are private and proprietary. All rights reserved.
 
 ---
 
-**Last Updated**: October 2025
+## Repository Structure
+
+```
+├── src/
+│   ├── app/                  # Pages and routes
+│   │   ├── page.tsx          # Home (/)
+│   │   ├── about/            # /about
+│   │   ├── work/             # /work
+│   │   ├── resume/           # /resume
+│   │   ├── locumtenens/      # /locumtenens (candidate page)
+│   │   ├── earnix/           # /earnix (candidate page)
+│   │   └── ups/              # /ups (candidate page)
+│   ├── components/           # Shared components
+│   └── styles/               # Global styles and design system
+├── public/                   # Static assets
+│   ├── images/               # Photos and illustrations
+│   ├── Videos/               # Campaign videos
+│   ├── logos/                # Brand logos
+│   └── locumtenens/          # LT-specific assets
+├── package.json
+├── next.config.js
+├── tsconfig.json
+└── netlify.toml
+```
+
+---
+
+## Deployment
+
+Pushes to `main` auto-deploy to Netlify.
+
+**Netlify settings:**
+| Setting | Value |
+|---|---|
+| Base directory | *(blank — repo root)* |
+| Build command | `npm run build` |
+| Publish directory | `out` |
+| Node version | 20 |
+
+---
+
+## Notes
+
+- `FFP/` and `impeccable/` are separate projects nested here for local convenience. They are excluded from the TypeScript build and should not be modified as part of marketing-site work.
+- Large video originals (`public/Videos/originals-backup/`) and `.mov`/`.mpg` files are gitignored — keep them local only.
+
+---
+
+**Last Updated**: April 2026

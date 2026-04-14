@@ -22,9 +22,9 @@ This repository contains only the **marketing-site** project:
 
 **Netlify Site Settings:**
 1. **Repository**: `https://github.com/tigerswim/kineticbrandpartners.git`
-2. **Base directory**: `marketing-site`
+2. **Base directory**: *(blank — repo root)*
 3. **Build command**: `npm run build`
-4. **Publish directory**: `marketing-site/out`
+4. **Publish directory**: `out`
 5. **Node version**: 20 (Active LTS)
 
 **Configuration File**: `marketing-site/netlify.toml` (within project directory)
@@ -64,9 +64,9 @@ Site Settings → Build & Deploy → Continuous Deployment → Build settings
 ```
 
 **Settings:**
-- Base directory: `marketing-site`
+- Base directory: *(blank — repo root)*
 - Build command: `npm run build`
-- Publish directory: `marketing-site/out`
+- Publish directory: `out`
 
 ### Step 3: Set Node Version
 
@@ -166,24 +166,15 @@ curl -I https://www.kineticbrandpartners.com
 
 ## Troubleshooting
 
-### "Base directory does not exist" Error
-
-**Problem**: Netlify can't find the base directory.
-
-**Solution**:
-1. Check base directory is set in Netlify dashboard (not just netlify.toml)
-2. Verify `marketing-site/` directory exists in your repository
-3. Ensure the path is relative to repository root (`marketing-site`, not `/marketing-site`)
-
 ### Build Fails with "Cannot find package.json"
 
-**Problem**: Build is running from wrong directory.
+**Problem**: Netlify base directory is misconfigured.
 
 **Solution**:
-1. Set base directory to `marketing-site` in Netlify dashboard
-2. Verify netlify.toml exists in `marketing-site/netlify.toml`
-3. Check that `marketing-site/package.json` exists
-4. Ensure build command doesn't include `cd` commands
+1. In Netlify dashboard go to **Site Settings → Build & Deploy → Build settings**
+2. Ensure **Base directory** is blank (repo root — not `marketing-site`)
+3. Ensure **Publish directory** is `out` (not `marketing-site/out`)
+4. Verify `package.json` exists at the repo root
 
 ### Google Indexing Fails
 
@@ -211,9 +202,10 @@ curl -I https://www.kineticbrandpartners.com
 ## Deployment Checklist
 
 ### Before Deploying marketing-site:
-- [ ] Base directory set to `marketing-site` in Netlify dashboard
+- [ ] Base directory blank (repo root) in Netlify dashboard
+- [ ] Publish directory set to `out` in Netlify dashboard
 - [ ] Node version set to 20 in Netlify dashboard
-- [ ] Build succeeds locally: `cd marketing-site && npm run build`
+- [ ] Build succeeds locally: `npm run build`
 - [ ] All assets are committed to repository
 - [ ] Custom domain configured (if applicable)
 - [ ] Sitemap updated with all current pages
