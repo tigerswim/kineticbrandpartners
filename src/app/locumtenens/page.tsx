@@ -6,6 +6,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
+import LTMobileMenu from "@/components/LTMobileMenu";
 import "./page.css";
 
 export const metadata = {
@@ -31,6 +32,8 @@ export default function LocumTenensPage() {
               height={32}
             />
           </a>
+
+          {/* Desktop nav */}
           <ul className="kinetic-nav lt-nav">
             <li><a href="#hearing">What I'm Hearing</a></li>
             <li><a href="#bring">What I Bring</a></li>
@@ -39,6 +42,9 @@ export default function LocumTenensPage() {
             <li><a href="#background">Background</a></li>
             <li><a href="#contact" className="kinetic-nav-cta">Contact</a></li>
           </ul>
+
+          {/* Mobile hamburger + overlay (client component) */}
+          <LTMobileMenu />
         </div>
       </header>
 
