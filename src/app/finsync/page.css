@@ -1,0 +1,124 @@
+/* FINSYNC Candidate Page
+   Primary: #1A2E5C (deep navy)
+   Secondary: #009EC3 (FINSYNC teal/cyan)
+   Font: Inter
+*/
+
+.company-page {
+  --color-primary: #1A2E5C;
+  --color-secondary: #009EC3;
+  --font-primary: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ── Font ──────────────────────────────────────────────────── */
+.company-page {
+  font-family: var(--font-primary);
+}
+
+/* ── Badge dot ─────────────────────────────────────────────── */
+.company-page .kinetic-badge-dot {
+  background-color: var(--color-secondary);
+}
+
+/* ── Gradient title ────────────────────────────────────────── */
+.company-page .kinetic-title-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Primary button ────────────────────────────────────────── */
+.company-page .kinetic-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.company-page .kinetic-btn--primary:hover {
+  background: #142248;
+}
+
+/* ── Section badge ─────────────────────────────────────────── */
+.company-page .kinetic-section-badge {
+  color: var(--color-secondary);
+  border-color: rgba(0, 158, 195, 0.25);
+  background: rgba(0, 158, 195, 0.06);
+}
+
+/* ── Experience role color ─────────────────────────────────── */
+.company-page .mb-exp-role {
+  color: var(--color-secondary);
+}
+
+/* ── Result stats ──────────────────────────────────────────── */
+.company-page .result-stat {
+  background: linear-gradient(135deg, rgba(26, 46, 92, 0.05), rgba(0, 158, 195, 0.08));
+  border-color: rgba(0, 158, 195, 0.2);
+}
+.company-page .result-stat-value {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient blobs ────────────────────────────────────────── */
+.company-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(0, 158, 195, 0.18), rgba(0, 158, 195, 0.1));
+}
+.company-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(26, 46, 92, 0.12), rgba(26, 46, 92, 0.07));
+}
+.company-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(0, 158, 195, 0.08), transparent);
+}
+
+/* ── Image glow ────────────────────────────────────────────── */
+.company-page .mb-image-glow {
+  background: radial-gradient(circle, rgba(0, 158, 195, 0.25) 0%, transparent 70%);
+}
+
+/* ── Hero CTA buttons side-by-side ─────────────────────────── */
+.company-page .mb-cta-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── Campaign two-column layout ────────────────────────────── */
+.ftt-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ftt-video video {
+  box-shadow: 0 4px 20px rgba(26, 46, 92, 0.15);
+}
+
+.thanks-mom-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.thanks-mom-videos video {
+  height: 180px;
+  object-fit: cover;
+}
+
+@media (max-width: 480px) {
+  .thanks-mom-videos {
+    grid-template-columns: 1fr;
+  }
+  .thanks-mom-videos video {
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .ftt-two-col {
+    grid-template-columns: 1fr;
+  }
+}
