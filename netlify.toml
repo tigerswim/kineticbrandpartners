@@ -5,3 +5,16 @@
 # This file intentionally minimal - configuration is in:
 # - job-tracker/netlify.toml
 # - marketing-site/netlify.toml
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Fallback for unknown routes (Next.js static export)
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
