@@ -50,9 +50,9 @@ export default function FinsyncPage() {
                 </h1>
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years building brands from Fortune 50 to Fortune 1000. My
-                  career has been about proving that brand and business aren't
-                  separate conversations. Every role I've had ended with a
-                  revenue number, not just a campaign.
+                  career has been about proving that brand and business are
+                  intertwined, and I'm the kind of marketer who loves both the
+                  strategy and the roll-up-your-sleeves work.
                 </p>
                 <div className="mb-cta-group animate-slide-up delay-4">
                   <CalendlyButton className="kinetic-btn kinetic-btn--primary">
@@ -103,73 +103,67 @@ export default function FinsyncPage() {
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
               FINSYNC needs a marketer who can build demand gen from scratch,
-              run two audiences simultaneously (bank partners and SMB owners),
-              and treat marketing as a revenue function first. That's a
-              description of how I've worked for 15 years.
+              speak to two audiences simultaneously (bank partners and SMB
+              owners), and recognize that marketing is a revenue function first.
+              That's a description of how I've worked for 15 years.
             </p>
             <dl className="mb-capability-list">
               <div className="mb-capability-row">
                 <dt>Full-Funnel Demand Generation</dt>
                 <dd>
-                  Built top-of-funnel programs across SEO/content, paid digital,
-                  email nurture, and events. Implemented Marketing Mix Modeling
-                  that improved spend efficiency 25%. Launched a Shopify DTC
-                  channel and a Contently content program averaging 2:10
-                  time-on-article and +155% first-page SEO growth. Every program
-                  tied to a pipeline number, not just a channel metric.
+                  Digital-first media plans from awareness generating social
+                  campaigns to conversion-driving paid search. Created
+                  partnerships with 9 MLB teams, optimized SEO, produced events,
+                  and more. Marketing Mix Modeling improved spend efficiency
+                  25%. Website relaunch: +295% sessions.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>Multi-Audience GTM and Channel Partners</dt>
                 <dd>
-                  Led a $20MM sales agency agreement at J&amp;J Ortho
-                  Diagnostics: built the partner-facing materials (a custom iPad
-                  sales tool for 150+ field reps) and the end-user clinical
-                  positioning at the same time. Two audiences, one budget, one
-                  campaign architecture. That's the same problem FINSYNC has
-                  with bank partners and SMB owners.
+                  At Pennington, the consumer chose us off the shelf, but the
+                  retailer decided if we were on it in the first place. I built
+                  programs that worked for both. One business case I put
+                  together unlocked $7MM in incremental annual revenue at Home
+                  Depot alone.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>Brand Repositioning Under Competitive Pressure</dt>
                 <dd>
-                  Led the full repositioning of Pennington against Scotts
-                  Miracle-Gro on a fraction of the category leader's budget:
-                  new identity, new messaging framework, new campaign
-                  architecture. The brand grew 8.2% at 4x the category rate.
-                  Out-positioning instead of out-spending is a skill FINSYNC
-                  needs against QuickBooks and Wave.
+                  Repositioned Pennington against Scotts Miracle-Gro on a
+                  fraction of their budget. New identity, new messaging,
+                  integrated campaign. Revenue grew 8.2% in 2024 at 4x the
+                  category rate.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>MarTech, Analytics, and Attribution</dt>
                 <dd>
-                  Marketing Mix Modeling implementation, KPI dashboard builds,
-                  A/B testing frameworks, and website relaunches (295% session
-                  growth). Comfortable owning the martech stack — including
-                  HubSpot for CRM and marketing automation — and building
-                  reporting that connects marketing spend to EBIT.
+                  Deployed Marketing Mix Modeling, built live KPI dashboards,
+                  ran A/B testing programs. I'm comfortable owning the full
+                  martech stack (I'm a techie at heart) and presenting
+                  marketing's contribution to senior leadership and board-level
+                  audiences.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>Leadership and Building from Scratch</dt>
                 <dd>
-                  Inherited and unified a 25-person marketing organization
-                  spanning six functions. Built the Innovation function within
-                  it from nothing. Launched the company's first DTC site and
-                  first content program with no existing infrastructure. These
-                  are origination stories, not optimization stories.
+                  Inherited and unified 25 people across six functions. Built
+                  the Innovation function from nothing. Launched the company's
+                  first DTC channel and first content program. None of those had
+                  a playbook.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>AI-Native and Product-Aware</dt>
                 <dd>
-                  Builds AI workflows daily using Claude Code, Zapier, and n8n.
-                  Served on the enterprise AI Governance Team at Central Garden.
-                  Built working SaaS tools including a SaaS metrics calculator
-                  (MRR, CAC, LTV, churn, NRR) — partly to understand the
-                  metrics from the inside, not just talk about them. FINSYNC's
-                  Fynn AI assistant isn't a curiosity; it's the product.
+                  I build AI workflows using Claude Code, Zapier, and n8n
+                  because it makes the work faster and helps me focus on areas
+                  that are truly impactful. Sat on an enterprise AI Governance
+                  Team. Built a SaaS metrics calculator partly to understand the
+                  math from the inside.
                 </dd>
               </div>
             </dl>
@@ -189,67 +183,6 @@ export default function FinsyncPage() {
               Three campaigns. Each one started with a real business problem,
               not a creative brief.
             </p>
-
-            {/* #FlipTheTurf */}
-            <div className="campaign-card" style={{ marginBottom: "3rem" }}>
-              <div className="campaign-header">
-                <h2 className="campaign-title">#FlipTheTurf</h2>
-                <p className="campaign-meta">
-                  Central Garden &amp; Pet · Pennington Grass Seed
-                </p>
-              </div>
-              <div className="ftt-two-col">
-                <div className="ftt-text">
-                  <p className="campaign-description">
-                    <strong>The Challenge:</strong> Grass seed is the ultimate
-                    low-involvement purchase. Yet artificial turf was causing a
-                    surge in player injuries, and Pennington had no natural
-                    platform to enter the national sports conversation. The brand
-                    needed to make millions of people suddenly care about
-                    something they'd never thought twice about.
-                  </p>
-                  <p className="campaign-description">
-                    <strong>The Approach:</strong> Partner with NFL star Von
-                    Miller on a deliberately provocative anti-turf campaign
-                    designed to get banned by the league. This turned the NFL's
-                    censorship into free media coverage, sparking a grassroots
-                    movement among players and fans. We had a fraction of the
-                    category leader's budget and a lot more nerve.
-                  </p>
-                </div>
-                <div className="ftt-video">
-                  <video
-                    poster="/Videos/FTT-banned-ad-poster.jpg"
-                    controls
-                    playsInline
-                    style={{
-                      width: "100%",
-                      borderRadius: "8px",
-                      display: "block",
-                    }}
-                  >
-                    <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
-                  </video>
-                </div>
-              </div>
-              <div className="campaign-results">
-                <h3 className="results-title">The Impact</h3>
-                <div className="results-grid">
-                  <div className="result-stat">
-                    <div className="result-stat-value">3.95B</div>
-                    <div className="result-stat-label">Impressions</div>
-                  </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">31K+</div>
-                    <div className="result-stat-label">Petition Signatures</div>
-                  </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">2x</div>
-                    <div className="result-stat-label">Clio Award Winner</div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             {/* Full Season Fertilizer */}
             <div className="campaign-card" style={{ marginBottom: "3rem" }}>
@@ -313,6 +246,67 @@ export default function FinsyncPage() {
                     <div className="result-stat-label">
                       Incremental Revenue — Home Depot
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* #FlipTheTurf */}
+            <div className="campaign-card" style={{ marginBottom: "3rem" }}>
+              <div className="campaign-header">
+                <h2 className="campaign-title">#FlipTheTurf</h2>
+                <p className="campaign-meta">
+                  Central Garden &amp; Pet · Pennington Grass Seed
+                </p>
+              </div>
+              <div className="ftt-two-col">
+                <div className="ftt-text">
+                  <p className="campaign-description">
+                    <strong>The Challenge:</strong> Grass seed is the ultimate
+                    low-involvement purchase. Yet artificial turf was causing a
+                    surge in player injuries, and Pennington had no natural
+                    platform to enter the national sports conversation. The
+                    brand needed to make millions of people suddenly care about
+                    something they'd never thought twice about.
+                  </p>
+                  <p className="campaign-description">
+                    <strong>The Approach:</strong> Partner with NFL star Von
+                    Miller on a deliberately provocative anti-turf campaign
+                    designed to get banned by the league. This turned the NFL's
+                    censorship into free media coverage, sparking a grassroots
+                    movement among players and fans. We had a fraction of the
+                    category leader's budget and a lot more nerve.
+                  </p>
+                </div>
+                <div className="ftt-video">
+                  <video
+                    poster="/Videos/FTT-banned-ad-poster.jpg"
+                    controls
+                    playsInline
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
+                      display: "block",
+                    }}
+                  >
+                    <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </div>
+              <div className="campaign-results">
+                <h3 className="results-title">The Impact</h3>
+                <div className="results-grid">
+                  <div className="result-stat">
+                    <div className="result-stat-value">3.95B</div>
+                    <div className="result-stat-label">Impressions</div>
+                  </div>
+                  <div className="result-stat">
+                    <div className="result-stat-value">31K+</div>
+                    <div className="result-stat-label">Petition Signatures</div>
+                  </div>
+                  <div className="result-stat">
+                    <div className="result-stat-value">2x</div>
+                    <div className="result-stat-label">Clio Award Winner</div>
                   </div>
                 </div>
               </div>
@@ -647,9 +641,8 @@ export default function FinsyncPage() {
               className="mb-subtitle"
               style={{ maxWidth: "540px", margin: "0 auto 2rem" }}
             >
-              I have questions about FINSYNC's funnel, the bank partner
-              marketing motion, and how the team is measured. Happy to talk
-              through any of it. Pick a time or send a note.
+              Let's talk about FINSYNC's funnel, how bank partners are
+              integrated, and how the team is measured.
             </p>
             <div className="mb-cta-group" style={{ justifyContent: "center" }}>
               <CalendlyButton className="kinetic-btn kinetic-btn--primary">
