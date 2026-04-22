@@ -61,7 +61,7 @@ export default function WayneSandersonPage() {
 
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years building brands from Fortune 50 to Fortune 1000, with a supply-chain
-                  grounding that understands how operational constraints shape commercial calendars.
+                  grounding that understands how operational constraints shape the commercial business.
                 </p>
 
                 <div className="mb-cta-group animate-slide-up delay-4">
@@ -102,8 +102,8 @@ export default function WayneSandersonPage() {
           <div className="kinetic-container">
             <h2 className="kinetic-section-title mb-section-title--left">What I Bring</h2>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              A player-coach who builds the capability, then stays close enough to the
-              work to catch issues before they become commercial problems.
+              A player-coach who builds capabilities and stays close enough to the
+              work to catch issues before they become larger issues.
             </p>
             <dl className="mb-capability-list">
               <div className="mb-capability-row">
