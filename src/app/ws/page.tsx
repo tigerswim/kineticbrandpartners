@@ -5,6 +5,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
+import WSMobileMenu from "@/components/WSMobileMenu";
 import "./page.css";
 
 export const metadata = {
@@ -33,6 +34,8 @@ export default function WayneSandersonPage() {
             <li><a href="#background">Background</a></li>
             <li><a href="#contact" className="kinetic-nav-cta">Contact</a></li>
           </ul>
+
+          <WSMobileMenu />
         </div>
       </header>
 
@@ -85,7 +88,8 @@ export default function WayneSandersonPage() {
                     height={530}
                     className="mb-headshot"
                     fetchPriority="high"
-                    decoding="sync"
+                    decoding="async"
+                    loading="eager"
                   />
                 </div>
               </div>
