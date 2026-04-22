@@ -1,0 +1,295 @@
+/* Wayne-Sanderson Farms Candidate Page
+   Primary: #CE2027 (WSF red)
+   Secondary: #1A1A1A (near-black)
+   Accent: #8B6F3E (warm tan)
+   Font: system sans
+*/
+
+.wsf-page {
+  --color-primary: #CE2027;
+  --color-secondary: #1A1A1A;
+  --color-accent: #8B6F3E;
+  --font-primary: "Inter", "Helvetica Neue", system-ui, sans-serif;
+}
+
+/* Override gradient blobs */
+.wsf-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(206, 32, 39, 0.18), rgba(206, 32, 39, 0.08));
+}
+
+.wsf-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.12), rgba(26, 26, 26, 0.05));
+}
+
+.wsf-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(139, 111, 62, 0.1), transparent);
+}
+
+/* Badge */
+.wsf-page .kinetic-badge {
+  color: var(--color-primary);
+  border-color: rgba(206, 32, 39, 0.25);
+  background: rgba(206, 32, 39, 0.06);
+}
+
+.wsf-page .kinetic-badge-dot {
+  background: var(--color-primary);
+}
+
+/* Title accent */
+.wsf-page .kinetic-title-gradient {
+  color: var(--color-primary);
+}
+
+/* Primary button */
+.wsf-page .kinetic-btn--primary {
+  background: var(--color-primary);
+}
+
+.wsf-page .kinetic-btn--primary:hover {
+  background: #a51a20;
+}
+
+/* Experience role color */
+.wsf-page .mb-exp-role {
+  color: var(--color-primary);
+}
+
+/* Result stats */
+.wsf-page .result-stat {
+  background: linear-gradient(135deg, rgba(206, 32, 39, 0.05), rgba(26, 26, 26, 0.06));
+  border-color: rgba(206, 32, 39, 0.2);
+}
+
+.wsf-page .result-stat-value {
+  color: var(--color-primary);
+}
+
+/* DISC Profile */
+.disc-profile {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .disc-profile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.disc-style-card {
+  background: #fff;
+  border: 1px solid rgba(206, 32, 39, 0.18);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.disc-style-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.disc-style-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.disc-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.disc-score-bar {
+  display: grid;
+  grid-template-columns: 18px 1fr 28px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.disc-letter {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.disc-bar-track {
+  height: 8px;
+  background: rgba(26, 26, 26, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.disc-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.disc-bar--d { background: var(--color-primary); }
+.disc-bar--i { background: var(--color-primary); opacity: 0.8; }
+.disc-bar--s { background: var(--color-secondary); opacity: 0.75; }
+.disc-bar--c { background: rgba(26, 26, 26, 0.4); }
+
+.disc-score-num {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: right;
+}
+
+.disc-style-note {
+  font-size: 0.82rem;
+  color: #6b7280;
+  line-height: 1.5;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+  padding-top: 1rem;
+  margin: 0;
+}
+
+.disc-traits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .disc-traits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.disc-trait-card {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.disc-trait-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin: 0 0 0.6rem 0;
+}
+
+.disc-trait-text {
+  font-size: 0.93rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Hero logo */
+.wsf-hero-logo {
+  margin-bottom: 1.5rem;
+}
+
+.wsf-hero-logo img {
+  max-height: 64px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Image glow */
+.wsf-page .mb-image-glow {
+  background: radial-gradient(circle, rgba(206, 32, 39, 0.15) 0%, transparent 70%);
+}
+
+/* Smooth scroll + scroll-margin for anchor nav */
+.wsf-page {
+  scroll-behavior: smooth;
+}
+
+.wsf-page section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Header brand (reuses locumtenens pattern) */
+.wsf-header-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: transform var(--transition-base);
+}
+
+.wsf-header-brand:hover {
+  transform: scale(1.02);
+}
+
+.wsf-header-brand img {
+  display: block;
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.wsf-page .wsf-nav {
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.wsf-page .wsf-nav a:hover {
+  color: var(--color-primary);
+}
+
+.wsf-page main {
+  display: flex;
+  flex-direction: column;
+  padding-top: 90px;
+}
+
+@media (max-width: 768px) {
+  .wsf-page main {
+    padding-top: 76px;
+  }
+}
+
+/* Visual section order:
+   Hero -> What I Bring -> Selected Work -> Background -> Contact */
+.wsf-page main > .mb-hero { order: 1; }
+.wsf-page main > #bring { order: 2; }
+.wsf-page main > #work { order: 3; }
+.wsf-page main > #background { order: 4; }
+.wsf-page main > #contact { order: 5; }
+
+/* Header Contact CTA in brand colors */
+.wsf-page .kinetic-nav-cta {
+  background: var(--color-primary);
+  color: #fff !important;
+}
+
+.wsf-page .kinetic-nav-cta:hover {
+  background: #a51a20;
+  box-shadow: 0 8px 25px rgba(206, 32, 39, 0.3);
+  color: #fff !important;
+}
+
+.wsf-page .kinetic-mobile-nav a.kinetic-nav-cta,
+.wsf-page .kinetic-mobile-nav a.kinetic-nav-cta:hover {
+  background: var(--color-primary);
+  color: #fff !important;
+}
+
+/* Tinted section used for "What I See" */
+.wsf-page .wsf-section--tint {
+  background: linear-gradient(
+    180deg,
+    rgba(206, 32, 39, 0.03) 0%,
+    rgba(26, 26, 26, 0.04) 100%
+  );
+  border-top: 1px solid rgba(26, 26, 26, 0.06);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+}
