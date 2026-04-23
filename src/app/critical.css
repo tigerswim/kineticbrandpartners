@@ -114,7 +114,7 @@ body{margin:0;padding:0}
 }
 .kinetic-nav a:hover { color: var(--teal); }
 .kinetic-nav-cta {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   color: #fff !important;
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-full);
@@ -233,7 +233,7 @@ body{margin:0;padding:0}
   font-family: inherit;
 }
 .kinetic-btn--primary {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   color: #fff;
   box-shadow: var(--shadow-sm);
 }

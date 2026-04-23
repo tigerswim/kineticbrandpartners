@@ -38,7 +38,7 @@ export default function Header() {
             </a>
           </li>
           <li>
-            <a href="#contact" className="kinetic-nav-cta">Contact</a>
+            <a href="/#contact" className="kinetic-nav-cta">Contact</a>
           </li>
         </ul>
 

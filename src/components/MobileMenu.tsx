@@ -35,7 +35,7 @@ export default function MobileMenu() {
           >
             LinkedIn
           </a>
-          <a href="#contact" onClick={closeMenu} className="kinetic-nav-cta">
+          <a href="/#contact" onClick={closeMenu} className="kinetic-nav-cta">
             Contact
           </a>
         </nav>

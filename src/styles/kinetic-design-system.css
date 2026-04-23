@@ -278,7 +278,7 @@
 }
 
 .kinetic-nav-cta {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   color: var(--white) !important;
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-full);
@@ -365,7 +365,7 @@
 }
 
 .kinetic-mobile-nav a.kinetic-nav-cta {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   color: var(--white) !important;
   text-align: center;
   padding: 1rem;
@@ -375,7 +375,7 @@
 .kinetic-mobile-nav a.kinetic-nav-cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
 }
 
 /* Menu Backdrop */
@@ -490,7 +490,7 @@
 }
 
 .kinetic-btn--primary {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+  background: var(--navy);
   color: var(--white);
   box-shadow: var(--shadow-sm);
 }
