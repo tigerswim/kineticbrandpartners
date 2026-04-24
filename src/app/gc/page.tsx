@@ -6,6 +6,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import GCMobileMenu from "@/components/GCMobileMenu";
+import CalendlyButton from "@/components/CalendlyButton";
 import "./page.css";
 
 export const metadata = {
@@ -70,9 +71,9 @@ export default function GCPage() {
                   and shows up in the results. That is what I bring to GameChanger.
                 </p>
                 <div className="mb-cta-group gc-cta-group animate-slide-up delay-4">
-                  <a href="https://calendly.com/danhoeller/30min" className="kinetic-btn kinetic-btn--primary">
+                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
-                  </a>
+                  </CalendlyButton>
                   <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
                     Send an Email
                   </a>
@@ -710,9 +711,9 @@ export default function GCPage() {
               Pick a time on the calendar or send a note. Either works.
             </p>
             <div className="mb-cta-group gc-cta-group" style={{ justifyContent: "center" }}>
-              <a href="https://calendly.com/danhoeller/30min" className="kinetic-btn kinetic-btn--primary">
+              <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                 Schedule 30 Min
-              </a>
+              </CalendlyButton>
               <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
                 Send an Email
               </a>
