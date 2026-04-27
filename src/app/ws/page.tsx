@@ -314,7 +314,7 @@ export default function WayneSandersonPage() {
                   <h3 className="media-item-title">Thanks Mom - Cullen</h3>
                   <div className="media-wrapper">
                     <video controls className="media-video" poster="/Videos/Thanks-Mom-Cullen-poster.jpg" preload="none">
-                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4" type="video/mp4" />
+                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>

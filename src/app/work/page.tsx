@@ -262,7 +262,7 @@ export default function WorkPage() {
                       preload="none"
                     >
                       <source
-                        src="/Videos/Thanks-Mom-Cullen.2.mp4"
+                        src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.

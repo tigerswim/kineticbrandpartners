@@ -348,7 +348,7 @@ export default function FinsyncPage() {
                     }}
                   >
                     <source
-                      src="/Videos/Thanks-Mom-Cullen.2.mp4"
+                      src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
                       type="video/mp4"
                     />
                   </video>

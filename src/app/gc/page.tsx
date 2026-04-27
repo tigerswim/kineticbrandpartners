@@ -359,16 +359,16 @@ export default function GCPage() {
               <div className="campaign-media-grid campaign-media-grid--2col" style={{ marginBottom: "2rem" }}>
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom - Cullen</h3>
-                  <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Cullen-poster.jpg" preload="none">
-                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4" type="video/mp4" />
+                  <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
+                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Cullen-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
+                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom - Debbie</h3>
-                  <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Debbie-poster.jpg" preload="none">
+                  <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
+                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Debbie-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
                       <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
                     </video>
                   </div>
