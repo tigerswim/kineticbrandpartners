@@ -134,6 +134,8 @@ export default function EarnixPage() {
                     width={600}
                     height={400}
                     className="earnix-calc-image"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 600px"
+                    loading="lazy"
                   />
                   <div className="earnix-calc-fade" />
                   <div className="earnix-calc-overlay">

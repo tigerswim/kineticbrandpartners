@@ -511,7 +511,7 @@ export default function GCPage() {
             <div className="mb-education-row" style={{ marginTop: "2.5rem" }}>
               <div className="mb-edu-card">
                 <div className="mb-edu-logo">
-                  <img src="/logos/uva-darden.png" alt="UVA Darden" width={64} height={64} />
+                  <img src="/logos/uva-darden.png" alt="UVA Darden" width={64} height={64} loading="lazy" decoding="async" />
                 </div>
                 <div className="mb-edu-text">
                   <strong>MBA</strong>
@@ -520,7 +520,7 @@ export default function GCPage() {
               </div>
               <div className="mb-edu-card">
                 <div className="mb-edu-logo">
-                  <img src="/logos/clemson.png" alt="Clemson University" width={64} height={64} />
+                  <img src="/logos/clemson.png" alt="Clemson University" width={64} height={64} loading="lazy" decoding="async" />
                 </div>
                 <div className="mb-edu-text">
                   <strong>BS, Management</strong>
