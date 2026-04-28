@@ -158,9 +158,6 @@ export default function RootLayout({
         {/* Resource hints for external services */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://assets.calendly.com" />
-        <link rel="dns-prefetch" href="https://assets.calendly.com" />
-
         <Script id="gtm-head" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -170,16 +167,6 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-W556XZSB');
           `}
         </Script>
-        {/* Lazy-load Calendly CSS to avoid render-blocking */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          var l=document.createElement('link');l.rel='stylesheet';
-          l.href='https://assets.calendly.com/assets/external/widget.css';
-          document.head.appendChild(l);
-        ` }} />
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="afterInteractive"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
