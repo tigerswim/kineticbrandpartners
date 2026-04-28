@@ -594,6 +594,8 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+  .gc-whole-row .gc-whole-content          { order: 2; }
+  .gc-whole-row .gc-whole-visual           { order: 1; }
   .gc-whole-row--reverse .gc-whole-content { order: 2; }
   .gc-whole-row--reverse .gc-whole-visual  { order: 1; }
 }
