@@ -4,6 +4,7 @@
 // Primary: #F05023 (KEH orange) | Secondary: #2D3F45 (KEH charcoal)
 
 import GradientMesh from "@/components/GradientMesh";
+import CalendlyButton from "@/components/CalendlyButton";
 import "./page.css";
 
 export const metadata = {
@@ -65,18 +66,15 @@ export default function KEHPage() {
 
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years running P&amp;Ls, launching channels, and scaling
-                  businesses that needed an owner, not a manager. From Fortune 50
-                  brand portfolios to growth-stage operators, the through-line is
+                  businesses that needed an owner, not a manager. Fortune 50
+                  brand portfolios to growth-stage operators, it&apos;s always
                   the same: get into the details, find the real lever, and push.
                 </p>
 
                 <div className="mb-cta-group keh-cta-group animate-slide-up delay-4">
-                  <a
-                    href="https://calendly.com/danhoeller/30min"
-                    className="kinetic-btn kinetic-btn--primary"
-                  >
+                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                     Schedule a Meeting
-                  </a>
+                  </CalendlyButton>
                   <a
                     href="mailto:danhoeller@gmail.com"
                     className="kinetic-btn kinetic-btn--secondary"
@@ -123,9 +121,9 @@ export default function KEHPage() {
               <h2 className="kinetic-section-title">Three Problems I&apos;m Built to Solve</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              KEH has built real, revenue-generating business lines that have
-              outgrown their informal management. Here is how I think about the
-              three biggest ones.
+              KEH has built real businesses inside the business. Good ones, with
+              genuine demand. None of them have had a real owner yet. Here is
+              how I think about the three biggest opportunities.
             </p>
 
             <div className="qa-accordion">
@@ -137,27 +135,26 @@ export default function KEHPage() {
                 <div className="qa-answer">
                   <p>
                     Repair Services, Outlet/Secondary Channels, and Enterprise
-                    all have real demand and real revenue, but no P&amp;L owner
-                    pushing on their potential. The problem is not that these
-                    businesses are broken. They have been running on autopilot
-                    inside a company built around a different core.
+                    all have real demand and real revenue. Nobody has been
+                    steering them. They have grown inside a company built around
+                    a different core, and the gap between what they are and what
+                    they could be is the whole opportunity.
                   </p>
                   <p>
-                    My approach: start with a 60-day diagnostic. For each
-                    business line, get clear on revenue and gross profit
-                    trajectory, what the ceiling looks like if someone pushes,
-                    and what would have to be true to 2x it. Then build a simple
-                    operating rhythm: weekly numbers, monthly P&amp;L review,
-                    quarterly roadmap. Year one is not about transforming
-                    everything. It is about establishing what "owned" means for
-                    each area and finding the one or two highest-impact levers
-                    per business.
+                    My approach: start with a 60-day diagnostic, not a plan.
+                    For each business, get clear on the actual revenue and gross
+                    profit trajectory, the ceiling if someone pushes, and what
+                    would have to be true to 2x it. Then build a rhythm: weekly
+                    numbers, monthly P&amp;L review, quarterly roadmap. Year one
+                    is not about transforming everything. It is about figuring
+                    out what "owned" actually means for each area and finding the
+                    one or two levers that matter most.
                   </p>
                   <p>
-                    At Central Garden &amp; Pet, I led a $1.5B segment across
-                    multiple brands at different stages of maturity, building
-                    accountability structures that let the team move fast without
-                    losing financial control.
+                    At Central Garden &amp; Pet, I ran a $1.5B segment across
+                    multiple brands at very different stages of maturity. Getting
+                    the operating cadence right there was what let the team move
+                    fast without losing financial control.
                   </p>
                 </div>
               </details>
@@ -168,29 +165,29 @@ export default function KEHPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Studios, networks, universities, corporate AV, and rental
-                    houses are buyers who want volume, reliability, and a real
-                    relationship. KEH serves them informally today. There is no
-                    program, no pricing structure, no dedicated sales motion. The
-                    revenue potential is significant, but capturing it means
-                    building something from scratch.
+                    Studios, networks, universities, corporate AV, rental
+                    houses. These buyers want volume, reliability, and an actual
+                    relationship. KEH is already selling to some of them
+                    informally. There is no program, no pricing structure, no
+                    sales motion. There is real money sitting there, but only if
+                    someone builds the structure to go get it.
                   </p>
                   <p>
-                    My approach: do not try to build a full enterprise sales org
-                    on day one. Run a structured discovery sprint first. Which
-                    segments have the highest gear volume needs and the lowest
-                    current coverage? Where is KEH already doing informal
-                    enterprise volume that can be formalized? Build a pilot for 5
-                    to 10 anchor accounts, test the value proposition, learn what
-                    buyers actually need in terms of pricing, grading guarantees,
-                    and account management, then design the repeatable model from
-                    that.
+                    My approach: resist the urge to build a full enterprise sales
+                    org on day one. Run a discovery sprint first. Which segments
+                    have the highest gear volume needs and the lowest current
+                    coverage? Where is KEH already doing informal enterprise
+                    volume that could be formalized? Build a pilot for five to
+                    ten anchor accounts, test the value proposition, learn what
+                    buyers actually need in terms of pricing and account
+                    management, then design the repeatable model from what works.
                   </p>
                   <p>
                     At Central Garden &amp; Pet, I built the retailer pitch that
                     won $7MM in incremental revenue at Home Depot by translating
-                    consumer insights into retailer economics. Same logic applies
-                    here.
+                    consumer data into retailer economics. The logic is the same
+                    here: understand what the buyer needs, then build the
+                    commercial case around that.
                   </p>
                 </div>
               </details>
@@ -201,32 +198,28 @@ export default function KEHPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Repair Services is expanding into third-party work with
-                    individuals and national accounts. That is a fundamentally
-                    different business than internal service: different pricing
-                    logic, different customer expectations, different turnaround
-                    commitments. The risk is not that the business cannot grow.
-                    It is that scaling third-party revenue on top of an operation
-                    built for internal service creates quality and throughput
-                    problems that damage KEH&apos;s core reputation.
+                    Repair Services built its operation to serve KEH internally.
+                    Third-party work is a different business: different pricing,
+                    different customer expectations, different turnaround
+                    commitments. Growing third-party revenue on top of an
+                    internal-service operation without separating them first is
+                    how you create quality problems that damage the brand.
                   </p>
                   <p>
-                    My approach: treat third-party Repair as a separate P&amp;L
-                    from day one. Before scaling national account partnerships,
-                    get the unit economics right on individual orders first. What
-                    is the target turnaround time, margin per repair, and
-                    satisfaction threshold that makes scaling safe? Build a
-                    simple intake and tracking system if one does not exist. Then
-                    use those proof points to approach national accounts with a
-                    defined service offering, not a conversation about what might
-                    be possible.
+                    My approach: ring-fence third-party Repair as its own P&amp;L
+                    before trying to scale it. Get the unit economics right on
+                    individual orders first. What is the target turnaround time,
+                    margin per repair, and customer satisfaction floor that makes
+                    national account growth safe? Build a simple intake and
+                    tracking system if one does not exist. Then use those proof
+                    points to walk into national account conversations with a
+                    real service offering, not a pitch about potential.
                   </p>
                   <p>
-                    At Manhattan Associates, I spent five years implementing
-                    complex supply chain software for Fortune 500 clients with
-                    tight accountability to delivery timelines. Operational
-                    discipline at that level of complexity is a skill I built
-                    before moving into brand leadership.
+                    At Manhattan Associates, five years implementing supply chain
+                    software for Fortune 500 clients taught me how to hold
+                    delivery commitments under pressure. That is the kind of
+                    operational discipline this business line needs as it scales.
                   </p>
                 </div>
               </details>
@@ -244,9 +237,9 @@ export default function KEHPage() {
               <h2 className="kinetic-section-title">What I Bring</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              The role calls for someone equally comfortable in strategy and
-              execution. That is exactly how I am wired. I do not ask my teams
-              to navigate territory I have not walked myself.
+              This role needs someone equally comfortable in strategy and
+              execution. I&apos;m wired that way. I don&apos;t ask my teams to
+              navigate territory I haven&apos;t walked myself.
             </p>
             <dl className="mb-capability-list">
               <div className="mb-capability-row">
@@ -312,8 +305,10 @@ export default function KEHPage() {
               <h2 className="kinetic-section-title">Making an Impact on the Business</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2.5rem" }}>
-              From product innovation that won major retail distribution to
-              award-winning campaigns that moved brand metrics and business results.
+              Product launches that won Walmart and Home Depot distribution,
+              campaigns that earned Clio Awards and a J&amp;J Global Burke Award,
+              and work that moved brand metrics and bottom-line results at the
+              same time.
             </p>
 
             {/* Campaign: Full Season Fertilizer */}
@@ -480,10 +475,9 @@ export default function KEHPage() {
               <div className="campaign-media-grid campaign-media-grid--2col">
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom &ndash; Cullen</h3>
-                  <div className="media-wrapper">
+                  <div className="keh-thanks-mom-wrapper">
                     <video
                       controls
-                      className="media-video"
                       poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
                       preload="none"
                     >
@@ -494,10 +488,9 @@ export default function KEHPage() {
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom &ndash; Debbie</h3>
-                  <div className="media-wrapper">
+                  <div className="keh-thanks-mom-wrapper">
                     <video
                       controls
-                      className="media-video"
                       poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
                       preload="none"
                     >
@@ -701,8 +694,9 @@ export default function KEHPage() {
               <h2 className="kinetic-section-title">Building on the Side</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              I learn by doing. These are three tools I built from scratch using
-              AI-assisted coding to solve real problems. No courses, just shipping.
+              When I want to understand something, I build it. These are three
+              tools I shipped from scratch using AI-assisted coding to solve
+              problems I actually had.
             </p>
             <div className="about-projects-grid">
 
@@ -799,16 +793,13 @@ export default function KEHPage() {
               className="mb-subtitle"
               style={{ maxWidth: "540px", margin: "0 auto 2rem" }}
             >
-              If the problems above sound familiar, I would like to talk about
-              what solving them together looks like.
+              If those problems sound familiar, I&apos;d like to talk about what
+              working on them together looks like.
             </p>
             <div className="mb-cta-group keh-cta-group" style={{ justifyContent: "center" }}>
-              <a
-                href="https://calendly.com/danhoeller/30min"
-                className="kinetic-btn kinetic-btn--primary"
-              >
+              <CalendlyButton className="kinetic-btn kinetic-btn--primary">
                 Schedule 30 Min
-              </a>
+              </CalendlyButton>
               <a
                 href="mailto:danhoeller@gmail.com"
                 className="kinetic-btn kinetic-btn--secondary"
