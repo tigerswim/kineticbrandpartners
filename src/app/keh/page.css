@@ -77,16 +77,176 @@
   background: radial-gradient(circle, rgba(240, 80, 35, 0.2) 0%, transparent 70%);
 }
 
-/* ── Pain points accordion ─────────────────────────────────── */
+/* ── CTA buttons: row layout ───────────────────────────────── */
+.company-page .keh-cta-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ── Accordion (pain points) ───────────────────────────────── */
+.company-page .qa-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .company-page .qa-item {
-  border-color: rgba(240, 80, 35, 0.15);
+  background: #ffffff;
+  border: 1px solid rgba(240, 80, 35, 0.18);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+
 .company-page .qa-item[open] {
-  border-color: rgba(240, 80, 35, 0.3);
+  border-color: rgba(240, 80, 35, 0.4);
+  box-shadow: 0 4px 20px rgba(240, 80, 35, 0.08);
 }
+
 .company-page .qa-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
   color: var(--color-secondary);
+  cursor: pointer;
+  list-style: none;
+  gap: 1rem;
+  user-select: none;
 }
+
+.company-page .qa-question::-webkit-details-marker {
+  display: none;
+}
+
 .company-page .qa-question::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.375rem;
+  font-weight: 400;
   color: var(--color-primary);
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.company-page .qa-item[open] .qa-question::after {
+  transform: rotate(45deg);
+}
+
+.company-page .qa-answer {
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid rgba(240, 80, 35, 0.1);
+}
+
+.company-page .qa-answer p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #444;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.company-page .qa-answer p:first-child {
+  margin-top: 1.25rem;
+}
+
+/* ── Sticky nav ────────────────────────────────────────────── */
+.keh-header,
+.company-page .kinetic-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  background: rgba(45, 63, 69, 0.97) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.keh-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  gap: 2rem;
+}
+
+.keh-header-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.keh-header-brand img {
+  display: block;
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  /* invert to white for dark nav background */
+  filter: brightness(0) invert(1);
+}
+
+.keh-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.keh-nav li a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.keh-nav li a:hover {
+  color: #ffffff;
+}
+
+.keh-nav li a.keh-nav-cta {
+  background: var(--color-primary);
+  color: #ffffff;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.keh-nav li a.keh-nav-cta:hover {
+  background: #c93d12;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .keh-nav { display: none; }
+}
+
+/* ── Scroll offset for fixed header ────────────────────────── */
+.company-page main {
+  padding-top: 60px;
+}
+
+.company-page section[id] {
+  scroll-margin-top: 76px;
+}
+
+/* ── Side project icons ────────────────────────────────────── */
+.keh-project-icon {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.keh-project-icon img {
+  border-radius: 8px;
 }

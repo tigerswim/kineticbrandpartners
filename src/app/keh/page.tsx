@@ -10,6 +10,9 @@ export const metadata = {
   title: "KEH Camera | Dan Hoeller",
   description:
     "P&L leader and general manager with 15+ years building and scaling commercial operations from Fortune 50 to growth-stage companies.",
+  icons: {
+    icon: "/keh/keh-favicon.jpeg",
+  },
 };
 
 export default function KEHPage() {
@@ -17,7 +20,23 @@ export default function KEHPage() {
     <div className="kinetic-page company-page">
       <GradientMesh />
 
-      <main>
+      {/* ── STICKY NAV ──────────────────────────────────────────── */}
+      <header className="kinetic-header keh-header" aria-label="Page sections">
+        <div className="kinetic-container keh-header-inner">
+          <a href="#top" className="keh-header-brand" aria-label="Back to top">
+            <img src="/keh/keh-logo.png" alt="KEH Camera" height={32} />
+          </a>
+          <ul className="keh-nav">
+            <li><a href="#why">Three Problems</a></li>
+            <li><a href="#bring">What I Bring</a></li>
+            <li><a href="#work">Selected Work</a></li>
+            <li><a href="#background">Background</a></li>
+            <li><a href="#contact" className="keh-nav-cta">Let&apos;s Talk</a></li>
+          </ul>
+        </div>
+      </header>
+
+      <main id="top">
 
         {/* ── SECTION 1: HERO ───────────────────────────────────── */}
         <section className="mb-hero">
@@ -36,7 +55,7 @@ export default function KEHPage() {
 
                 <div className="kinetic-badge animate-slide-up delay-1" style={{ marginBottom: "1.25rem" }}>
                   <span className="kinetic-badge-dot"></span>
-                  Multi Area General Manager Candidate · Atlanta, GA
+                  Multi Area General Manager Candidate &middot; Atlanta, GA
                 </div>
 
                 <h1 className="mb-title animate-slide-up delay-2">
@@ -45,13 +64,13 @@ export default function KEHPage() {
                 </h1>
 
                 <p className="mb-subtitle animate-slide-up delay-3">
-                  15 years running P&amp;Ls, launching new channels, and scaling
+                  15 years running P&amp;Ls, launching channels, and scaling
                   businesses that needed an owner, not a manager. From Fortune 50
                   brand portfolios to growth-stage operators, the through-line is
                   the same: get into the details, find the real lever, and push.
                 </p>
 
-                <div className="mb-cta-group animate-slide-up delay-4">
+                <div className="mb-cta-group keh-cta-group animate-slide-up delay-4">
                   <a
                     href="https://calendly.com/danhoeller/30min"
                     className="kinetic-btn kinetic-btn--primary"
@@ -70,7 +89,7 @@ export default function KEHPage() {
                     rel="noopener noreferrer"
                     className="kinetic-btn kinetic-btn--secondary"
                   >
-                    View LinkedIn →
+                    View LinkedIn &rarr;
                   </a>
                 </div>
               </div>
@@ -97,16 +116,16 @@ export default function KEHPage() {
 
 
         {/* ── SECTION 2: THREE PAIN POINTS ──────────────────────── */}
-        <section className="kinetic-section kinetic-section--gray">
+        <section id="why" className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">The Real Work</span>
               <h2 className="kinetic-section-title">Three Problems I&apos;m Built to Solve</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              KEH has built real, revenue-generating business lines that have outgrown
-              their informal management. Here is how I think about the three biggest
-              ones.
+              KEH has built real, revenue-generating business lines that have
+              outgrown their informal management. Here is how I think about the
+              three biggest ones.
             </p>
 
             <div className="qa-accordion">
@@ -117,26 +136,28 @@ export default function KEHPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    KEH has Repair Services, Outlet/Secondary Channels, and Enterprise
-                    that all have real demand and real revenue but have never had a P&amp;L
-                    owner focused on their potential. The problem is not that these
-                    businesses are broken. It is that they have been running on autopilot
-                    inside a company built for a different core.
+                    Repair Services, Outlet/Secondary Channels, and Enterprise
+                    all have real demand and real revenue, but no P&amp;L owner
+                    pushing on their potential. The problem is not that these
+                    businesses are broken. They have been running on autopilot
+                    inside a company built around a different core.
                   </p>
                   <p>
-                    My approach: start with a 60-day diagnostic, not a 100-day plan. For
-                    each business line, get clear on actual revenue and gross profit
-                    trajectory, the ceiling if someone pushes, and what would have to be
-                    true to 2x it. Then build a simple operating rhythm: weekly numbers,
-                    monthly P&amp;L review, quarterly roadmap. Year one is not about
-                    transforming everything. It is about establishing what "owned" means
-                    for each area and finding the one or two highest-impact levers per
-                    business.
+                    My approach: start with a 60-day diagnostic. For each
+                    business line, get clear on revenue and gross profit
+                    trajectory, what the ceiling looks like if someone pushes,
+                    and what would have to be true to 2x it. Then build a simple
+                    operating rhythm: weekly numbers, monthly P&amp;L review,
+                    quarterly roadmap. Year one is not about transforming
+                    everything. It is about establishing what "owned" means for
+                    each area and finding the one or two highest-impact levers
+                    per business.
                   </p>
                   <p>
-                    At Central Garden &amp; Pet, I led a $1.5B segment across multiple
-                    brands at different stages of maturity, building accountability
-                    structures that let the team move fast without losing financial control.
+                    At Central Garden &amp; Pet, I led a $1.5B segment across
+                    multiple brands at different stages of maturity, building
+                    accountability structures that let the team move fast without
+                    losing financial control.
                   </p>
                 </div>
               </details>
@@ -147,25 +168,29 @@ export default function KEHPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Studios, networks, universities, corporate AV, and rental houses are
-                    buyers who want volume, reliability, and a relationship. KEH sells to
-                    them informally today. There is no program, no pricing structure, no
-                    dedicated sales motion. The revenue potential is significant, but it
-                    requires building something from scratch.
+                    Studios, networks, universities, corporate AV, and rental
+                    houses are buyers who want volume, reliability, and a real
+                    relationship. KEH serves them informally today. There is no
+                    program, no pricing structure, no dedicated sales motion. The
+                    revenue potential is significant, but capturing it means
+                    building something from scratch.
                   </p>
                   <p>
-                    My approach: do not try to build a full enterprise sales org on day one.
-                    Run a structured discovery sprint first. Which segments have the highest
-                    gear volume needs and the lowest current coverage? Where is KEH already
-                    doing enterprise-ish volume informally that can be formalized? Build a
-                    pilot program for 5 to 10 anchor accounts, test the value proposition,
-                    learn what buyers actually need in terms of pricing, grading guarantees,
-                    and account management, then design the repeatable model from that.
+                    My approach: do not try to build a full enterprise sales org
+                    on day one. Run a structured discovery sprint first. Which
+                    segments have the highest gear volume needs and the lowest
+                    current coverage? Where is KEH already doing informal
+                    enterprise volume that can be formalized? Build a pilot for 5
+                    to 10 anchor accounts, test the value proposition, learn what
+                    buyers actually need in terms of pricing, grading guarantees,
+                    and account management, then design the repeatable model from
+                    that.
                   </p>
                   <p>
-                    At Central Garden &amp; Pet, I built the retailer pitch that won $7MM in
-                    incremental revenue at Home Depot by translating consumer insights into
-                    retailer economics. The same logic applies here.
+                    At Central Garden &amp; Pet, I built the retailer pitch that
+                    won $7MM in incremental revenue at Home Depot by translating
+                    consumer insights into retailer economics. Same logic applies
+                    here.
                   </p>
                 </div>
               </details>
@@ -176,29 +201,32 @@ export default function KEHPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Repair Services has grown significantly and is expanding into third-party
-                    work. That is a fundamentally different business than internal service:
-                    different pricing logic, different customer expectations, different
-                    turnaround commitments. The risk is not that the business cannot grow.
-                    It is that scaling third-party revenue on top of an operation built for
-                    internal service creates quality and throughput problems that damage
-                    KEH&apos;s core reputation.
+                    Repair Services is expanding into third-party work with
+                    individuals and national accounts. That is a fundamentally
+                    different business than internal service: different pricing
+                    logic, different customer expectations, different turnaround
+                    commitments. The risk is not that the business cannot grow.
+                    It is that scaling third-party revenue on top of an operation
+                    built for internal service creates quality and throughput
+                    problems that damage KEH&apos;s core reputation.
                   </p>
                   <p>
-                    My approach: treat third-party Repair as a separate P&amp;L from day
-                    one. Before scaling national account partnerships, get the unit economics
-                    right on individual orders first. What is the target turnaround time,
-                    margin per repair, and customer satisfaction threshold that makes scaling
-                    safe? Build a simple intake and tracking system if one does not exist.
-                    Then use those proof points to approach national accounts with a defined
-                    service offering, not a conversation about what might be possible.
+                    My approach: treat third-party Repair as a separate P&amp;L
+                    from day one. Before scaling national account partnerships,
+                    get the unit economics right on individual orders first. What
+                    is the target turnaround time, margin per repair, and
+                    satisfaction threshold that makes scaling safe? Build a
+                    simple intake and tracking system if one does not exist. Then
+                    use those proof points to approach national accounts with a
+                    defined service offering, not a conversation about what might
+                    be possible.
                   </p>
                   <p>
-                    At Manhattan Associates, I spent five years implementing complex supply
-                    chain software for Fortune 500 clients with tight accountability to
-                    delivery timelines. Operational discipline at that level of complexity
-                    is a skill I built before moving into brand leadership, and it applies
-                    directly here.
+                    At Manhattan Associates, I spent five years implementing
+                    complex supply chain software for Fortune 500 clients with
+                    tight accountability to delivery timelines. Operational
+                    discipline at that level of complexity is a skill I built
+                    before moving into brand leadership.
                   </p>
                 </div>
               </details>
@@ -209,7 +237,7 @@ export default function KEHPage() {
 
 
         {/* ── SECTION 3: WHAT I BRING ───────────────────────────── */}
-        <section className="kinetic-section">
+        <section id="bring" className="kinetic-section">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">Capabilities</span>
@@ -217,33 +245,33 @@ export default function KEHPage() {
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
               The role calls for someone equally comfortable in strategy and
-              execution. That is exactly how I am wired: I never ask my teams to
-              navigate territory I have not walked myself.
+              execution. That is exactly how I am wired. I do not ask my teams
+              to navigate territory I have not walked myself.
             </p>
             <dl className="mb-capability-list">
               <div className="mb-capability-row">
                 <dt>P&amp;L Ownership</dt>
                 <dd>
-                  Managed portfolios from $20MM to $100MM+, full responsibility
-                  from Gross Sales to EBIT. Accountable for targets, not just
-                  activity.
+                  Managed portfolios from $20MM to $100MM+, with full
+                  responsibility from gross sales to EBIT. Accountable for
+                  targets, not just activity.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>Business Building</dt>
                 <dd>
-                  Launched new products, won new distribution channels, and built
-                  go-to-market programs from scratch inside established companies.
-                  The Full Season Fertilizer launch won Walmart distribution and
+                  Launched new products, won new distribution channels, and
+                  built go-to-market programs from scratch inside established
+                  companies. Full Season Fertilizer won Walmart distribution and
                   delivered 8.2% brand growth at 4x the category rate.
                 </dd>
               </div>
               <div className="mb-capability-row">
                 <dt>Cross-Functional Leadership</dt>
                 <dd>
-                  Player-coach style. Built and led a 25-person organization across
-                  Insights, Innovation, Digital, Creative, Customer Marketing, and
-                  Customer Care. Influence without reliance on a large team.
+                  Player-coach style. Built and managed a 25-person organization
+                  across Insights, Innovation, Digital, Creative, Customer
+                  Marketing, and Customer Care. Influence without a large team.
                 </dd>
               </div>
               <div className="mb-capability-row">
@@ -255,11 +283,11 @@ export default function KEHPage() {
                 </dd>
               </div>
               <div className="mb-capability-row">
-                <dt>Data-Driven Operations</dt>
+                <dt>Operating Cadence</dt>
                 <dd>
                   Marketing Mix Modeling, attribution frameworks, KPI dashboards.
                   25% efficiency gains through channel optimization. Built
-                  operating cadence that made performance visible and accountable.
+                  operating rhythm that made performance visible and accountable.
                 </dd>
               </div>
               <div className="mb-capability-row">
@@ -267,8 +295,8 @@ export default function KEHPage() {
                 <dd>
                   Started in supply chain software consulting at Manhattan
                   Associates. Five years implementing complex systems for Fortune
-                  500 clients taught me how businesses actually work before I ever
-                  led one.
+                  500 clients taught me how businesses actually work before I
+                  ever led one.
                 </dd>
               </div>
             </dl>
@@ -277,7 +305,7 @@ export default function KEHPage() {
 
 
         {/* ── SECTION 4: SELECTED WORK ──────────────────────────── */}
-        <section className="kinetic-section kinetic-section--gray">
+        <section id="work" className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">Selected Work</span>
@@ -292,21 +320,56 @@ export default function KEHPage() {
             <div className="campaign-card" style={{ marginBottom: "3rem" }}>
               <div className="campaign-header">
                 <h2 className="campaign-title">Pennington Full Season Fertilizer</h2>
-                <p className="campaign-meta">Central Garden &amp; Pet · Product Innovation &amp; GTM</p>
+                <p className="campaign-meta">Central Garden &amp; Pet &middot; Product Innovation &amp; GTM</p>
               </div>
               <p className="campaign-description">
                 <strong>The Insight:</strong> Millennial homeowners did not want to
-                commit to a four-step seasonal fertilizer program. The complexity was a
-                purchase barrier, leaving a significant segment underserved.
+                commit to a four-step seasonal fertilizer program. The complexity
+                was a purchase barrier, leaving a significant segment underserved.
               </p>
               <p className="campaign-description">
-                <strong>The Approach:</strong> Used that insight to define and develop a
-                genuinely differentiated product: Full Season, a one-application-per-season
-                fertilizer that eliminated multi-step complexity. Led the cross-functional
-                development and go-to-market strategy, built the business case for Walmart,
-                and won distribution. Walmart&apos;s own sales data confirmed Full Season
+                <strong>The Approach:</strong> Used that insight to define and
+                develop a genuinely differentiated product: Full Season, a
+                one-application-per-season fertilizer that eliminated multi-step
+                complexity. Led the cross-functional development and go-to-market
+                strategy, built the business case for Walmart, and won
+                distribution. Walmart&apos;s own sales data confirmed Full Season
                 indexed higher with Millennial shoppers than the competition.
               </p>
+
+              <div className="campaign-media-grid campaign-media-grid--2col">
+                <div className="media-item">
+                  <h3 className="media-item-title">Brand Campaign :30</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/GFANA_Hero30_MP4-poster.webp"
+                      preload="none"
+                      playsInline
+                    >
+                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+                <div className="media-item">
+                  <h3 className="media-item-title">Full Season :15</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/GFANA_FERT15-poster.jpg"
+                      preload="none"
+                      playsInline
+                    >
+                      <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
               <div className="campaign-results">
                 <h3 className="results-title">The Impact</h3>
                 <div className="results-grid">
@@ -330,21 +393,52 @@ export default function KEHPage() {
             <div className="campaign-card" style={{ marginBottom: "3rem" }}>
               <div className="campaign-header">
                 <h2 className="campaign-title">#FlipTheTurf</h2>
-                <p className="campaign-meta">Central Garden &amp; Pet · Pennington Grass Seed</p>
+                <p className="campaign-meta">Central Garden &amp; Pet &middot; Pennington Grass Seed</p>
               </div>
               <p className="campaign-description">
                 <strong>The Challenge:</strong> Grass seed is a low-involvement
-                purchase. Artificial turf was causing player injuries, and Pennington
-                had no natural platform to enter the national sports conversation. The
-                brand needed to make millions of people suddenly care about something
-                they had never thought twice about.
+                purchase. Artificial turf was causing player injuries, and
+                Pennington had no natural platform to enter the national sports
+                conversation.
               </p>
               <p className="campaign-description">
-                <strong>The Approach:</strong> Partner with NFL star Von Miller on a
-                deliberately provocative anti-turf campaign designed to get banned by
-                the league. The NFL&apos;s censorship became free media coverage,
-                sparking a grassroots movement among players and fans.
+                <strong>The Approach:</strong> Partner with NFL star Von Miller on
+                a deliberately provocative anti-turf campaign designed to get
+                banned by the league. The NFL&apos;s censorship became free media
+                coverage, sparking a grassroots movement among players and fans.
               </p>
+
+              <div className="campaign-media-grid campaign-media-grid--2col">
+                <div className="media-item">
+                  <h3 className="media-item-title">Banned Ad</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/FTT-banned-ad-poster.webp"
+                      preload="none"
+                    >
+                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+                <div className="media-item">
+                  <h3 className="media-item-title">Campaign Summary</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/FTT-summary-video-poster.webp"
+                      preload="none"
+                    >
+                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
               <div className="campaign-results">
                 <h3 className="results-title">The Impact</h3>
                 <div className="results-grid">
@@ -368,7 +462,7 @@ export default function KEHPage() {
             <div className="campaign-card">
               <div className="campaign-header">
                 <h2 className="campaign-title">Thanks, Mom</h2>
-                <p className="campaign-meta">Johnson &amp; Johnson · Baby Care</p>
+                <p className="campaign-meta">Johnson &amp; Johnson &middot; Baby Care</p>
               </div>
               <p className="campaign-description">
                 <strong>The Challenge:</strong> In a commoditized baby care aisle,
@@ -379,8 +473,41 @@ export default function KEHPage() {
                 <strong>The Approach:</strong> An Olympic campaign where athletes
                 thanked their mothers on the world stage. The campaign was so
                 compelling that Debbie Phelps, Michael Phelps&apos; mom,{" "}
-                <em>asked</em> to participate. Won J&amp;J&apos;s Global Burke Award.
+                <em>asked</em> to participate. Won J&amp;J&apos;s Global Burke
+                Award.
               </p>
+
+              <div className="campaign-media-grid campaign-media-grid--2col">
+                <div className="media-item">
+                  <h3 className="media-item-title">Thanks Mom &ndash; Cullen</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                      preload="none"
+                    >
+                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+                <div className="media-item">
+                  <h3 className="media-item-title">Thanks Mom &ndash; Debbie</h3>
+                  <div className="media-wrapper">
+                    <video
+                      controls
+                      className="media-video"
+                      poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                      preload="none"
+                    >
+                      <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
               <div className="campaign-results">
                 <h3 className="results-title">The Impact</h3>
                 <div className="results-grid">
@@ -405,7 +532,7 @@ export default function KEHPage() {
 
 
         {/* ── SECTION 5: BACKGROUND ─────────────────────────────── */}
-        <section className="kinetic-section">
+        <section id="background" className="kinetic-section">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">Experience</span>
@@ -449,12 +576,12 @@ export default function KEHPage() {
                 </div>
                 <div className="mb-exp-content">
                   <h3>Central Garden &amp; Pet</h3>
-                  <p className="mb-exp-role">SVP Marketing · 11 years</p>
+                  <p className="mb-exp-role">SVP Marketing &middot; 11 years</p>
                   <p className="mb-exp-desc">
-                    Led marketing for the $1.5B Garden segment. Built and managed a
-                    25-person team across Insights, Innovation, Digital, Creative,
-                    Customer Marketing, and Customer Care. Full P&amp;L accountability
-                    across a multi-brand portfolio.
+                    Led marketing for the $1.5B Garden segment. Managed a
+                    25-person organization across Insights, Innovation, Digital,
+                    Creative, Customer Marketing, and Customer Care. Full
+                    P&amp;L accountability across a multi-brand portfolio.
                   </p>
                 </div>
               </div>
@@ -483,7 +610,7 @@ export default function KEHPage() {
                 </div>
                 <div className="mb-exp-content">
                   <h3>Johnson &amp; Johnson</h3>
-                  <p className="mb-exp-role">Brand Management · 7 years</p>
+                  <p className="mb-exp-role">Brand Management &middot; 7 years</p>
                   <p className="mb-exp-desc">
                     Consumer and Medical Device divisions. Multiple brands,
                     $80MM+ portfolio responsibility. Award-winning campaigns
@@ -506,7 +633,7 @@ export default function KEHPage() {
                 </div>
                 <div className="mb-exp-content">
                   <h3>Manhattan Associates</h3>
-                  <p className="mb-exp-role">Enterprise Tech · 5 years</p>
+                  <p className="mb-exp-role">Enterprise Tech &middot; 5 years</p>
                   <p className="mb-exp-desc">
                     Supply chain software implementations for Fortune 500 clients.
                     Built the operational foundation that preceded every leadership
@@ -535,7 +662,7 @@ export default function KEHPage() {
                 </div>
                 <p className="mb-edu-text">
                   <strong>BS, Management</strong>
-                  Clemson University · Walk-on swimmer, 4-year letterman, co-captain senior year
+                  Clemson University &middot; Walk-on swimmer, 4-year letterman, co-captain senior year
                 </p>
               </div>
             </div>
@@ -548,7 +675,7 @@ export default function KEHPage() {
                 </div>
                 <p className="mb-edu-text">
                   <strong>Two Clio Sports Awards</strong>
-                  #FlipTheTurf Campaign · Central Garden &amp; Pet
+                  #FlipTheTurf Campaign &middot; Central Garden &amp; Pet
                 </p>
               </div>
               <div className="mb-edu-card">
@@ -557,7 +684,7 @@ export default function KEHPage() {
                 </div>
                 <p className="mb-edu-text">
                   <strong>J&amp;J Global Burke Award</strong>
-                  Thanks, Mom Campaign · Johnson &amp; Johnson
+                  Thanks, Mom Campaign &middot; Johnson &amp; Johnson
                 </p>
               </div>
             </div>
@@ -580,6 +707,9 @@ export default function KEHPage() {
             <div className="about-projects-grid">
 
               <div className="kinetic-card">
+                <div className="keh-project-icon">
+                  <img src="/raceprep-favicon.png" alt="RacePrep" width={32} height={32} />
+                </div>
                 <h3 className="about-project-title">RacePrep</h3>
                 <p className="about-project-desc">
                   A triathlon training app built to surface swim, bike, and run
@@ -598,11 +728,14 @@ export default function KEHPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Live →
+                  View Live &rarr;
                 </a>
               </div>
 
               <div className="kinetic-card">
+                <div className="keh-project-icon">
+                  <img src="/job-tracker-favicon.png" alt="Job Tracker" width={32} height={32} />
+                </div>
                 <h3 className="about-project-title">Job Tracker</h3>
                 <p className="about-project-desc">
                   A CRM-style job search tool I built to track every contact and
@@ -621,11 +754,14 @@ export default function KEHPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Live →
+                  View Live &rarr;
                 </a>
               </div>
 
               <div className="kinetic-card">
+                <div className="keh-project-icon">
+                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={32} height={32} />
+                </div>
                 <h3 className="about-project-title">SaaS Metrics Calculator</h3>
                 <p className="about-project-desc">
                   A dashboard for modeling SaaS KPIs and seeing how they respond
@@ -643,7 +779,7 @@ export default function KEHPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Live →
+                  View Live &rarr;
                 </a>
               </div>
 
@@ -652,37 +788,8 @@ export default function KEHPage() {
         </section>
 
 
-        {/* ── SECTION 7: THE WHOLE PERSON ───────────────────────── */}
-        <section className="kinetic-section">
-          <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Beyond Work</span>
-              <h2 className="kinetic-section-title">The Whole Person</h2>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginTop: "1.5rem" }}>
-              <div>
-                <h3 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Triathlon</h3>
-                <p className="mb-exp-desc">
-                  Half and full Ironman distances. There is nothing like a race
-                  on the calendar to focus your training. It is also where I do
-                  some of my best thinking.
-                </p>
-              </div>
-              <div>
-                <h3 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Collegiate Swimming</h3>
-                <p className="mb-exp-desc">
-                  Walked on at Clemson, became a 4-year letterman and co-captain
-                  senior year. I learned that determination beats talent more
-                  often than most people expect.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ── SECTION 8: CONTACT ────────────────────────────────── */}
-        <section className="kinetic-section kinetic-section--gray">
+        {/* ── SECTION 7: CONTACT ────────────────────────────────── */}
+        <section id="contact" className="kinetic-section">
           <div className="kinetic-container" style={{ textAlign: "center" }}>
             <div className="kinetic-section-header" style={{ justifyContent: "center" }}>
               <span className="kinetic-section-badge">Let&apos;s Talk</span>
@@ -695,7 +802,7 @@ export default function KEHPage() {
               If the problems above sound familiar, I would like to talk about
               what solving them together looks like.
             </p>
-            <div className="mb-cta-group" style={{ justifyContent: "center" }}>
+            <div className="mb-cta-group keh-cta-group" style={{ justifyContent: "center" }}>
               <a
                 href="https://calendly.com/danhoeller/30min"
                 className="kinetic-btn kinetic-btn--primary"
