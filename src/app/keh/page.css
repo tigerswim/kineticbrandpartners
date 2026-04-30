@@ -1,0 +1,92 @@
+/* KEH Camera Candidate Page
+   Primary:   #F05023 (KEH orange)
+   Secondary: #2D3F45 (KEH charcoal)
+   Font:      DM Sans
+*/
+
+.company-page {
+  --color-primary: #F05023;
+  --color-secondary: #2D3F45;
+  --font-primary: "DM Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* ── Font ──────────────────────────────────────────────────── */
+.company-page {
+  font-family: var(--font-primary);
+}
+
+/* ── Badge dot ─────────────────────────────────────────────── */
+.company-page .kinetic-badge-dot {
+  background-color: var(--color-primary);
+}
+
+/* ── Gradient title ────────────────────────────────────────── */
+.company-page .kinetic-title-gradient {
+  background: linear-gradient(135deg, var(--color-primary), #c93d12);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Primary button ────────────────────────────────────────── */
+.company-page .kinetic-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.company-page .kinetic-btn--primary:hover {
+  background: #c93d12;
+}
+
+/* ── Section badge ─────────────────────────────────────────── */
+.company-page .kinetic-section-badge {
+  color: var(--color-primary);
+  border-color: rgba(240, 80, 35, 0.25);
+  background: rgba(240, 80, 35, 0.06);
+}
+
+/* ── Experience role color ─────────────────────────────────── */
+.company-page .mb-exp-role {
+  color: var(--color-primary);
+}
+
+/* ── Result stats ──────────────────────────────────────────── */
+.company-page .result-stat {
+  background: linear-gradient(135deg, rgba(240, 80, 35, 0.05), rgba(45, 63, 69, 0.08));
+  border-color: rgba(240, 80, 35, 0.2);
+}
+.company-page .result-stat-value {
+  background: linear-gradient(135deg, var(--color-primary), #c93d12);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient blobs ────────────────────────────────────────── */
+.company-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(45, 63, 69, 0.18), rgba(45, 63, 69, 0.1));
+}
+.company-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(240, 80, 35, 0.12), rgba(240, 80, 35, 0.06));
+}
+.company-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(45, 63, 69, 0.08), transparent);
+}
+
+/* ── Image glow ────────────────────────────────────────────── */
+.company-page .mb-image-glow {
+  background: radial-gradient(circle, rgba(240, 80, 35, 0.2) 0%, transparent 70%);
+}
+
+/* ── Pain points accordion ─────────────────────────────────── */
+.company-page .qa-item {
+  border-color: rgba(240, 80, 35, 0.15);
+}
+.company-page .qa-item[open] {
+  border-color: rgba(240, 80, 35, 0.3);
+}
+.company-page .qa-question {
+  color: var(--color-secondary);
+}
+.company-page .qa-question::after {
+  color: var(--color-primary);
+}
