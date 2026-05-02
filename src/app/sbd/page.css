@@ -234,12 +234,12 @@
 
 .sbd-page .sbd-slash-accent {
   position: absolute;
-  top: -8px;
-  left: -6px;
-  width: 44px;
-  height: 72px;
+  top: -4px;
+  left: -4px;
+  width: 36px;
+  height: 80px;
   background: #ffd20a;
-  clip-path: polygon(28% 0%, 100% 0%, 72% 100%, 0% 100%);
+  clip-path: polygon(42% 0%, 100% 0%, 58% 100%, 0% 100%);
   z-index: 0;
 }
 
