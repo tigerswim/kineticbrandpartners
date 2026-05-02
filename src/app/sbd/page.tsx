@@ -82,7 +82,6 @@ export default function SBDPage() {
               </div>
               <div className="mb-hero-visual animate-scale-in delay-3">
                 <div className="mb-image-container">
-                  <div className="sbd-slash" aria-hidden="true"></div>
                   <div className="mb-image-glow"></div>
                   <img
                     src="/images/DJH-CGPT-Sketch.webp"

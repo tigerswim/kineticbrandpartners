@@ -225,22 +225,28 @@
   z-index: 1;
 }
 
-/* ===== THE SLASH — SBD's key visual identity element ===== */
-/* Derived from logo angle (~14° skew), always SBD Yellow, never contains text */
-.sbd-page .mb-image-container {
+/* ===== THE SLASH — SBD section divider ===== */
+/* Diagonal yellow wedge cuts across the bottom of the hero,
+   transitioning into the gray section below — the canonical SBD layout device */
+.sbd-page .mb-hero {
   position: relative;
+  padding-bottom: 10rem;
 }
 
-.sbd-page .sbd-slash {
+.sbd-page .mb-hero::after {
+  content: "";
   position: absolute;
-  top: -24px;
-  right: -32px;
-  width: 80px;
-  height: calc(100% + 48px);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
   background: #ffd20a;
-  transform: skewX(-14deg);
-  z-index: 0;
+  clip-path: polygon(0 100%, 100% 0%, 100% 100%);
   pointer-events: none;
+}
+
+.sbd-page .mb-image-container {
+  position: relative;
 }
 
 /* ===== BUTTONS — force row layout, override globals.css column default ===== */
