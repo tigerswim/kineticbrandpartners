@@ -51,7 +51,7 @@ export default function SBDPage() {
                   VP Marketing Activation Candidate · Atlanta, GA
                 </div>
                 <div className="sbd-title-block animate-slide-up delay-2">
-                  <div className="sbd-slash-accent" aria-hidden="true"></div>
+                  <img src="/sbd/sbd-slash.png" alt="" aria-hidden="true" className="sbd-slash-accent" />
                   <h1 className="mb-title">
                     Marketing that{" "}
                     <span className="kinetic-title-gradient">
