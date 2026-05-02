@@ -213,11 +213,33 @@
 /* SBD brand: subtly desaturated with cooling tint */
 .sbd-page .mb-headshot {
   filter: saturate(0.82) hue-rotate(-8deg);
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== IMAGE GLOW ===== */
 .sbd-page .mb-image-glow {
   background: radial-gradient(ellipse at center, rgba(0, 111, 255, 0.12), transparent 70%);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== THE SLASH — SBD's key visual identity element ===== */
+/* Derived from logo angle (~14° skew), always SBD Yellow, never contains text */
+.sbd-page .mb-image-container {
+  position: relative;
+}
+
+.sbd-page .sbd-slash {
+  position: absolute;
+  top: -24px;
+  right: -32px;
+  width: 80px;
+  height: calc(100% + 48px);
+  background: #ffd20a;
+  transform: skewX(-14deg);
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* ===== BUTTONS — force row layout, override globals.css column default ===== */
