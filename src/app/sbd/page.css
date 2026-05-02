@@ -125,7 +125,7 @@
   color: #000000;
   border: none;
   border-radius: 0;
-  clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 88% 100%, 0% 100%);
   padding-left: 1.25rem;
   padding-right: 2rem;
   font-weight: 700;
@@ -242,7 +242,7 @@
 
 .sbd-page .sbd-slash-accent {
   position: absolute;
-  bottom: 8px;           /* aligns with button row baseline */
+  bottom: 64px;          /* sits above button row with whitespace gap */
   left: 0;
   width: 55%;            /* scales with content column width */
   max-width: 340px;
