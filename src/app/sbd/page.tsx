@@ -3,6 +3,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
+import SBDSlash from "@/components/SBDSlash";
 import "./page.css";
 
 export const metadata = {
@@ -53,7 +54,7 @@ export default function SBDPage() {
                   VP Marketing Activation Candidate · Atlanta, GA
                 </div>
                 <div className="sbd-hero-slash-wrapper">
-                  <img src="/sbd/sbd-slash.png" alt="" aria-hidden="true" className="sbd-slash-accent" />
+                  <SBDSlash />
                   <div className="sbd-title-block animate-slide-up delay-2">
                     <h1 className="mb-title">
                       Marketing that{" "}
