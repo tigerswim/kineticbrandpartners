@@ -22,12 +22,14 @@ export default function SBDPage() {
       {/* Sticky Nav */}
       <header className="kinetic-header sbd-nav">
         <div className="kinetic-container sbd-nav-inner">
-          <img
-            src="/sbd/SBD_Yellow_Primary.png"
-            alt="Stanley Black & Decker"
-            height={36}
-            className="sbd-nav-logo"
-          />
+          <a href="#" aria-label="Stanley Black & Decker — back to top">
+            <img
+              src="/sbd/SBD_Yellow_Primary.png"
+              alt="Stanley Black & Decker"
+              height={36}
+              className="sbd-nav-logo"
+            />
+          </a>
           <div className="sbd-nav-links">
             <a href="#why-sbd" className="sbd-nav-link">Why SBD</a>
             <a href="#what-i-bring" className="sbd-nav-link">What I Bring</a>
