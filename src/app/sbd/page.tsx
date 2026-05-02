@@ -52,28 +52,30 @@ export default function SBDPage() {
                   <span className="kinetic-badge-dot"></span>
                   VP Marketing Activation Candidate · Atlanta, GA
                 </div>
-                <div className="sbd-title-block animate-slide-up delay-2">
+                <div className="sbd-hero-slash-wrapper">
                   <img src="/sbd/sbd-slash.png" alt="" aria-hidden="true" className="sbd-slash-accent" />
-                  <h1 className="mb-title">
-                    Marketing that{" "}
-                    <span className="kinetic-title-gradient">
-                      moves the business
-                    </span>
-                  </h1>
-                </div>
-                <p className="mb-subtitle animate-slide-up delay-3">
-                  15 years running marketing at Fortune 50 and Fortune 1000 companies. Deep in retail channel strategy, comfortable with big media budgets, and allergic to activation that can't explain what it's actually doing for the business.
-                </p>
-                <div className="mb-cta-group animate-slide-up delay-4">
-                  <CalendlyButton className="kinetic-btn kinetic-btn--primary">
-                    Schedule a Meeting
-                  </CalendlyButton>
-                  <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
-                    Send an Email
-                  </a>
-                  <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" className="kinetic-btn kinetic-btn--secondary">
-                    View LinkedIn →
-                  </a>
+                  <div className="sbd-title-block animate-slide-up delay-2">
+                    <h1 className="mb-title">
+                      Marketing that{" "}
+                      <span className="kinetic-title-gradient">
+                        moves the business
+                      </span>
+                    </h1>
+                  </div>
+                  <p className="mb-subtitle animate-slide-up delay-3">
+                    15 years running marketing at Fortune 50 and Fortune 1000 companies. Deep in retail channel strategy, comfortable with big media budgets, and allergic to activation that can't explain what it's actually doing for the business.
+                  </p>
+                  <div className="mb-cta-group animate-slide-up delay-4">
+                    <CalendlyButton className="kinetic-btn kinetic-btn--primary">
+                      Schedule a Meeting
+                    </CalendlyButton>
+                    <a href="mailto:danhoeller@gmail.com" className="kinetic-btn kinetic-btn--secondary">
+                      Send an Email
+                    </a>
+                    <a href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer" className="kinetic-btn kinetic-btn--secondary">
+                      View LinkedIn →
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="mb-hero-visual animate-scale-in delay-3">

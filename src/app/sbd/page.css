@@ -232,18 +232,20 @@
 }
 
 /* ===== THE SLASH — identity accent mark ===== */
-/* Mirrors the SBD business card: slash sits top-left of the name block,
-   partially behind the headline text. Angle matches logo (~20% offset). */
-.sbd-page .sbd-title-block {
+/* Wrapper spans headline + body + CTA. Slash is anchored to the bottom of the
+   wrapper so its right edge always aligns above the primary button, at any
+   screen size. Width is % of wrapper so it scales proportionally. */
+.sbd-page .sbd-hero-slash-wrapper {
   position: relative;
   margin-top: 3rem;
 }
 
 .sbd-page .sbd-slash-accent {
   position: absolute;
-  top: -20px;
-  left: -100px;
-  width: 340px;
+  bottom: 8px;           /* aligns with button row baseline */
+  left: 0;
+  width: 55%;            /* scales with content column width */
+  max-width: 340px;
   height: auto;
   z-index: 0;
   pointer-events: none;
@@ -251,9 +253,18 @@
   opacity: 0.92;
 }
 
-.sbd-page .sbd-title-block .mb-title {
+/* All text and buttons sit above the slash */
+.sbd-page .sbd-title-block,
+.sbd-page .sbd-hero-slash-wrapper .mb-subtitle,
+.sbd-page .sbd-hero-slash-wrapper .mb-cta-group {
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .sbd-page .sbd-slash-accent {
+    width: 70%;
+  }
 }
 
 .sbd-page .mb-image-container {
