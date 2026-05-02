@@ -11,7 +11,11 @@ export default function SBDSlash() {
       const slash = slashRef.current;
       if (!btn || !slash) return;
       const btnWidth = btn.offsetWidth;
-      slash.style.width = btnWidth + "px";
+      // PNG geometry (measured): yellow shape bottom-right is at 47% of image width.
+      // Button clip-path bottom-right corner is at 88% of button width.
+      // So: 0.47 * imageWidth = 0.88 * btnWidth → imageWidth = btnWidth * (0.88 / 0.47)
+      const imageWidth = btnWidth * (0.88 / 0.47);
+      slash.style.width = Math.round(imageWidth) + "px";
     }
 
     sync();
