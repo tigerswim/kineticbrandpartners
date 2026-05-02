@@ -59,6 +59,7 @@ export default function SBDPage() {
                   <span className="kinetic-badge-dot"></span>
                   VP Marketing Activation Candidate · Atlanta, GA
                 </div>
+                <div className="sbd-slash-accent" aria-hidden="true"></div>
                 <h1 className="mb-title animate-slide-up delay-2">
                   Marketing that{" "}
                   <span className="kinetic-title-gradient">

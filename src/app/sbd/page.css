@@ -225,24 +225,15 @@
   z-index: 1;
 }
 
-/* ===== THE SLASH — SBD section divider ===== */
-/* Diagonal yellow wedge cuts across the bottom of the hero,
-   transitioning into the gray section below — the canonical SBD layout device */
-.sbd-page .mb-hero {
-  position: relative;
-  padding-bottom: 10rem;
-}
-
-.sbd-page .mb-hero::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
+/* ===== THE SLASH — identity accent mark ===== */
+/* Mirrors the business card usage: compact skewed yellow shape
+   anchored above the hero title, marking the identity block */
+.sbd-page .sbd-slash-accent {
+  width: 48px;
+  height: 56px;
   background: #ffd20a;
-  clip-path: polygon(0 100%, 100% 0%, 100% 100%);
-  pointer-events: none;
+  clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
+  margin-bottom: 0.75rem;
 }
 
 .sbd-page .mb-image-container {
