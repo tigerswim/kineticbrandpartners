@@ -1,0 +1,250 @@
+/* Stanley Black & Decker Candidate Page
+   Primary: SBD Yellow #ffd20a (PMS 109C)
+   Secondary: Black #000000
+   Accent Blue: #006fff
+   Steel Gray: #343843
+   Font: Montserrat (open-source Proxima Nova substitute)
+*/
+
+.sbd-page {
+  --color-primary: #ffd20a;
+  --color-secondary: #000000;
+  --color-accent-blue: #006fff;
+  --color-accent: #343843;
+  --color-gray-1: #343843;
+  --color-gray-2: #575c69;
+  --color-gray-3: #737a8a;
+  --color-gray-4: #a3a6b0;
+  --font-primary: "Montserrat", "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-family: var(--font-primary);
+}
+
+/* ===== NAV ===== */
+.sbd-nav {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #000000 !important;
+  /* no height — let padding control it so nothing overflows */
+}
+
+.sbd-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  /* kinetic-container adds horizontal padding; override vertical here */
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.sbd-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.sbd-nav-link {
+  color: #cccfd4;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.sbd-nav-link:hover {
+  color: #ffd20a;
+}
+
+.sbd-nav-link--cta {
+  background: #ffd20a;
+  color: #000000 !important;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.sbd-nav-link--cta:hover {
+  background: #e6b800;
+  color: #000000 !important;
+}
+
+@media (max-width: 640px) {
+  .sbd-nav-links {
+    gap: 0.75rem;
+  }
+  .sbd-nav-link:not(.sbd-nav-link--cta) {
+    display: none;
+  }
+}
+
+/* ===== GRADIENT BLOBS — override teal defaults ===== */
+.sbd-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(255, 205, 0, 0.18), rgba(255, 205, 0, 0.08));
+}
+
+.sbd-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(52, 56, 67, 0.12), rgba(52, 56, 67, 0.06));
+}
+
+.sbd-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(255, 205, 0, 0.08), transparent);
+}
+
+/* ===== BADGE & BADGE DOT ===== */
+.sbd-page .kinetic-badge {
+  border-color: rgba(255, 205, 0, 0.4);
+  background: rgba(255, 205, 0, 0.08);
+  color: #343843;
+}
+
+.sbd-page .kinetic-badge-dot {
+  background: #ffd20a;
+}
+
+/* ===== SECTION BADGES ===== */
+.sbd-page .kinetic-section-badge {
+  background: rgba(255, 205, 0, 0.12);
+  color: #343843;
+  border: 1px solid rgba(255, 205, 0, 0.4);
+}
+
+/* ===== TITLE EMPHASIS ===== */
+.sbd-page .kinetic-title-gradient {
+  color: #000000;
+  font-weight: 800;
+}
+
+/* ===== BUTTONS ===== */
+.sbd-page .kinetic-btn--primary {
+  background: #ffd20a;
+  color: #000000;
+  border-color: #ffd20a;
+}
+
+.sbd-page .kinetic-btn--primary:hover {
+  background: #e6b800;
+  border-color: #e6b800;
+}
+
+.sbd-page .kinetic-btn--secondary {
+  border-color: #343843;
+  color: #343843;
+}
+
+.sbd-page .kinetic-btn--secondary:hover {
+  background: #343843;
+  color: #ffffff;
+}
+
+/* ===== RESULT STATS — override teal gradient ===== */
+.sbd-page .result-stat {
+  background: linear-gradient(135deg, rgba(255, 205, 0, 0.06), rgba(52, 56, 67, 0.08));
+  border-color: rgba(255, 205, 0, 0.25);
+}
+
+.sbd-page .result-stat-value {
+  color: #000000;
+}
+
+/* ===== EXPERIENCE ROLE COLOR — override teal ===== */
+.sbd-page .mb-exp-role {
+  color: #343843;
+}
+
+/* ===== KINETIC CARDS ===== */
+.sbd-page .kinetic-card {
+  border-top: 3px solid #ffd20a;
+}
+
+.sbd-page .kinetic-icon-box {
+  background: rgba(255, 205, 0, 0.12);
+  color: #343843;
+}
+
+.sbd-page .kinetic-card-title {
+  color: #000000;
+}
+
+/* ===== ACCORDION ===== */
+.sbd-page .qa-item {
+  border-bottom: 1px solid rgba(52, 56, 67, 0.2);
+}
+
+.sbd-page .qa-question {
+  font-weight: 600;
+  color: #000000;
+  padding: 1.25rem 0;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sbd-page .qa-question::after {
+  content: "+";
+  font-size: 1.5rem;
+  color: #ffd20a;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.sbd-page details[open] .qa-question::after {
+  content: "\2212";
+}
+
+.sbd-page .qa-answer {
+  padding: 0 0 1.25rem;
+  color: #575c69;
+  line-height: 1.7;
+}
+
+.sbd-page .qa-answer p + p {
+  margin-top: 0.75rem;
+}
+
+/* ===== IMAGE GLOW ===== */
+.sbd-page .mb-image-glow {
+  background: radial-gradient(ellipse at center, rgba(255, 205, 0, 0.25), transparent 70%);
+}
+
+/* ===== BUTTONS — force row layout, override globals.css column default ===== */
+.sbd-page .mb-cta-group {
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ===== CAPABILITY TABLE — override default teal dt color ===== */
+.sbd-page .mb-capability-row dt {
+  color: #000000;
+}
+
+@media (max-width: 640px) {
+  .sbd-page .mb-cta-group {
+    flex-direction: column !important;
+    align-items: flex-start;
+  }
+}
+
+/* ===== SIDE PROJECTS — override teal tech tags ===== */
+.sbd-page .about-project-tech span {
+  background: rgba(52, 56, 67, 0.08);
+  color: #343843;
+}
+
+.sbd-page .about-projects-grid .kinetic-btn--secondary {
+  margin-top: auto;
+}
+
+/* ===== NAV LOGO ===== */
+.sbd-nav-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
