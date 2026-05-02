@@ -46,26 +46,19 @@ export default function SBDPage() {
             <div className="mb-hero-grid">
               <div className="mb-hero-content">
 
-                <div style={{ marginBottom: "1.5rem" }} className="animate-slide-up delay-1">
-                  <img
-                    src="/sbd/sbd-logo-yellow-stacked.png"
-                    alt="Stanley Black & Decker"
-                    height={88}
-                    style={{ display: "block", objectFit: "contain" }}
-                  />
-                </div>
-
                 <div className="kinetic-badge animate-slide-up delay-1" style={{ marginBottom: "1.25rem" }}>
                   <span className="kinetic-badge-dot"></span>
                   VP Marketing Activation Candidate · Atlanta, GA
                 </div>
-                <div className="sbd-slash-accent" aria-hidden="true"></div>
-                <h1 className="mb-title animate-slide-up delay-2">
-                  Marketing that{" "}
-                  <span className="kinetic-title-gradient">
-                    moves the business
-                  </span>
-                </h1>
+                <div className="sbd-title-block animate-slide-up delay-2">
+                  <div className="sbd-slash-accent" aria-hidden="true"></div>
+                  <h1 className="mb-title">
+                    Marketing that{" "}
+                    <span className="kinetic-title-gradient">
+                      moves the business
+                    </span>
+                  </h1>
+                </div>
                 <p className="mb-subtitle animate-slide-up delay-3">
                   15 years running marketing at Fortune 50 and Fortune 1000 companies. Deep in retail channel strategy, comfortable with big media budgets, and allergic to activation that can't explain what it's actually doing for the business.
                 </p>

@@ -226,14 +226,26 @@
 }
 
 /* ===== THE SLASH — identity accent mark ===== */
-/* Mirrors the business card usage: compact skewed yellow shape
-   anchored above the hero title, marking the identity block */
+/* Mirrors the SBD business card: slash sits top-left of the name block,
+   partially behind the headline text. Angle matches logo (~20% offset). */
+.sbd-page .sbd-title-block {
+  position: relative;
+}
+
 .sbd-page .sbd-slash-accent {
-  width: 48px;
-  height: 56px;
+  position: absolute;
+  top: -8px;
+  left: -6px;
+  width: 44px;
+  height: 72px;
   background: #ffd20a;
-  clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
-  margin-bottom: 0.75rem;
+  clip-path: polygon(28% 0%, 100% 0%, 72% 100%, 0% 100%);
+  z-index: 0;
+}
+
+.sbd-page .sbd-title-block .mb-title {
+  position: relative;
+  z-index: 1;
 }
 
 .sbd-page .mb-image-container {
