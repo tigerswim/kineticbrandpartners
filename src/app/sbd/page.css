@@ -119,13 +119,15 @@
 }
 
 /* ===== BUTTONS ===== */
+/* Left side = 90° vertical, right side = same angle as slash PNG (~20% offset) */
 .sbd-page .kinetic-btn--primary {
   background: #ffd20a;
   color: #000000;
   border: none;
-  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  border-radius: 0;
+  clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%);
+  padding-left: 1.25rem;
+  padding-right: 2rem;
   font-weight: 700;
 }
 
@@ -240,7 +242,7 @@
 .sbd-page .sbd-slash-accent {
   position: absolute;
   top: -20px;
-  left: 20px;
+  left: -150px;
   width: 340px;
   height: auto;
   z-index: 0;
