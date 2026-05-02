@@ -11,6 +11,7 @@ export default function SBDSlash() {
       const slash = slashRef.current;
       if (!btn || !slash) return;
       const btnWidth = btn.offsetWidth;
+      if (btnWidth === 0) return;
       // PNG geometry (measured): yellow shape bottom-right is at 47% of image width.
       // Button clip-path bottom-right corner is at 88% of button width.
       // So: 0.47 * imageWidth = 0.88 * btnWidth → imageWidth = btnWidth * (0.88 / 0.47)
@@ -18,9 +19,14 @@ export default function SBDSlash() {
       slash.style.width = Math.round(imageWidth) + "px";
     }
 
+    // Run immediately, then again after layout settles (fonts, Calendly widget)
     sync();
+    const t = setTimeout(sync, 300);
     window.addEventListener("resize", sync);
-    return () => window.removeEventListener("resize", sync);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", sync);
+    };
   }, []);
 
   return (

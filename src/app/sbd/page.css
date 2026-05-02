@@ -247,8 +247,8 @@
   position: absolute;
   bottom: 116px;
   left: 0;
-  /* width injected by JS — falls back to button's approximate natural width */
-  width: 200px;
+  /* width injected by JS; fallback = ~198px btn × (0.88/0.47) ≈ 371px */
+  width: 371px;
   height: auto;
   z-index: 0;
   pointer-events: none;
