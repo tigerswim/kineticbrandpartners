@@ -35,14 +35,18 @@ export default function SBDSlash() {
       btn.style.clipPath = `polygon(0% 0%, 100% 0%, ${rightBottomPct.toFixed(2)}% 100%, 0% 100%)`;
 
       // Now size the slash so its right edge is collinear with the button's right edge.
-      // Slash bottom-right corner sits at (PNG_BOTTOM_RIGHT_PCT × imageWidth, slashBottom).
-      // Button top-right corner sits at (btnWidth, btnTop).
-      // For collinearity:
-      //   PNG_BOTTOM_RIGHT_PCT × imageWidth + gap × PNG_INV_SLOPE = btnWidth
-      // We measure the actual gap from the rendered slash bottom to the button top.
+      // Slash right edge: as y increases (down), x decreases (top-right is at 100%,
+      // bottom-right is at 47%). Same direction as button right edge.
+      //
+      // Slash bottom-right corner sits at (0.47 × imageWidth, slashBottom).
+      // Extending DOWN through gap g, x continues to decrease by g × PNG_INV_SLOPE.
+      // That landing point must equal button top-right: (btnWidth, btnTop).
+      //
+      //   (0.47 × imageWidth) - g × PNG_INV_SLOPE = btnWidth
+      //   imageWidth = (btnWidth + g × PNG_INV_SLOPE) / 0.47
       const gapPx = btn.getBoundingClientRect().top - slash.getBoundingClientRect().bottom;
       const safeGap = Math.max(0, gapPx);
-      const imageWidth = (btnWidth - safeGap * PNG_INV_SLOPE) / PNG_BOTTOM_RIGHT_PCT;
+      const imageWidth = (btnWidth + safeGap * PNG_INV_SLOPE) / PNG_BOTTOM_RIGHT_PCT;
 
       slash.style.width = Math.round(imageWidth) + "px";
     }
