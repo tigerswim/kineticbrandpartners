@@ -122,12 +122,16 @@
 .sbd-page .kinetic-btn--primary {
   background: #ffd20a;
   color: #000000;
-  border-color: #ffd20a;
+  border: none;
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-weight: 700;
 }
 
 .sbd-page .kinetic-btn--primary:hover {
   background: #e6b800;
-  border-color: #e6b800;
+  border: none;
 }
 
 .sbd-page .kinetic-btn--secondary {
@@ -236,7 +240,7 @@
 .sbd-page .sbd-slash-accent {
   position: absolute;
   top: -20px;
-  left: 80px;
+  left: 20px;
   width: 340px;
   height: auto;
   z-index: 0;
