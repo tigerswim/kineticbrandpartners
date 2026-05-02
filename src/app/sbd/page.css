@@ -82,21 +82,21 @@
 
 /* ===== GRADIENT BLOBS — override teal defaults ===== */
 .sbd-page .kinetic-gradient-blob--1 {
-  background: linear-gradient(135deg, rgba(255, 205, 0, 0.18), rgba(255, 205, 0, 0.08));
+  background: linear-gradient(135deg, rgba(0, 111, 255, 0.08), rgba(0, 111, 255, 0.03));
 }
 
 .sbd-page .kinetic-gradient-blob--2 {
-  background: linear-gradient(135deg, rgba(52, 56, 67, 0.12), rgba(52, 56, 67, 0.06));
+  background: linear-gradient(135deg, rgba(52, 56, 67, 0.10), rgba(52, 56, 67, 0.04));
 }
 
 .sbd-page .kinetic-gradient-blob--3 {
-  background: linear-gradient(135deg, rgba(255, 205, 0, 0.08), transparent);
+  background: linear-gradient(135deg, rgba(0, 111, 255, 0.05), transparent);
 }
 
 /* ===== BADGE & BADGE DOT ===== */
 .sbd-page .kinetic-badge {
-  border-color: rgba(255, 205, 0, 0.4);
-  background: rgba(255, 205, 0, 0.08);
+  border-color: rgba(0, 111, 255, 0.35);
+  background: rgba(0, 111, 255, 0.06);
   color: #343843;
 }
 
@@ -106,9 +106,10 @@
 
 /* ===== SECTION BADGES ===== */
 .sbd-page .kinetic-section-badge {
-  background: rgba(255, 205, 0, 0.12);
-  color: #343843;
-  border: 1px solid rgba(255, 205, 0, 0.4);
+  background: #ffd20a;
+  color: #000000;
+  border: 1px solid #ffd20a;
+  font-weight: 700;
 }
 
 /* ===== TITLE EMPHASIS ===== */
@@ -141,8 +142,8 @@
 
 /* ===== RESULT STATS — override teal gradient ===== */
 .sbd-page .result-stat {
-  background: linear-gradient(135deg, rgba(255, 205, 0, 0.06), rgba(52, 56, 67, 0.08));
-  border-color: rgba(255, 205, 0, 0.25);
+  background: #f8f8f8;
+  border-color: rgba(52, 56, 67, 0.2);
 }
 
 .sbd-page .result-stat-value {
@@ -160,7 +161,7 @@
 }
 
 .sbd-page .kinetic-icon-box {
-  background: rgba(255, 205, 0, 0.12);
+  background: rgba(52, 56, 67, 0.08);
   color: #343843;
 }
 
@@ -209,7 +210,7 @@
 
 /* ===== IMAGE GLOW ===== */
 .sbd-page .mb-image-glow {
-  background: radial-gradient(ellipse at center, rgba(255, 205, 0, 0.25), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(0, 111, 255, 0.12), transparent 70%);
 }
 
 /* ===== BUTTONS — force row layout, override globals.css column default ===== */
