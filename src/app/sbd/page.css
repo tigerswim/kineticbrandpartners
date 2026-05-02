@@ -55,7 +55,7 @@
 }
 
 .sbd-nav-link:hover {
-  color: #ffd20a;
+  color: #006fff;
 }
 
 .sbd-nav-link--cta {
@@ -136,7 +136,8 @@
 }
 
 .sbd-page .kinetic-btn--secondary:hover {
-  background: #343843;
+  background: #006fff;
+  border-color: #006fff;
   color: #ffffff;
 }
 
@@ -208,6 +209,12 @@
   margin-top: 0.75rem;
 }
 
+/* ===== HEADSHOT PHOTO TREATMENT ===== */
+/* SBD brand: subtly desaturated with cooling tint */
+.sbd-page .mb-headshot {
+  filter: saturate(0.82) hue-rotate(-8deg);
+}
+
 /* ===== IMAGE GLOW ===== */
 .sbd-page .mb-image-glow {
   background: radial-gradient(ellipse at center, rgba(0, 111, 255, 0.12), transparent 70%);
@@ -222,7 +229,7 @@
 
 /* ===== CAPABILITY TABLE — override default teal dt color ===== */
 .sbd-page .mb-capability-row dt {
-  color: #000000;
+  color: #006fff;
 }
 
 @media (max-width: 640px) {
@@ -248,4 +255,12 @@
   width: auto;
   object-fit: contain;
   display: block;
+}
+
+/* ===== FOCUS STATES ===== */
+.sbd-page a:focus-visible,
+.sbd-page button:focus-visible,
+.sbd-page .kinetic-btn:focus-visible {
+  outline: 2px solid #006fff;
+  outline-offset: 3px;
 }
