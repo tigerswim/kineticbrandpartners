@@ -240,12 +240,15 @@
   margin-top: 3rem;
 }
 
+/* Slash stretches from left:0 to the right edge of the primary button.
+   right: calc(100% - Npx) means "stop N pixels from the left" — i.e. N = btn width.
+   "Schedule a Meeting" at default font renders ~198px. Adjust per breakpoint. */
 .sbd-page .sbd-slash-accent {
   position: absolute;
-  bottom: 64px;          /* sits above button row with whitespace gap */
+  bottom: 120px;
   left: 0;
-  width: 55%;            /* scales with content column width */
-  max-width: 340px;
+  right: calc(100% - 198px);
+  width: auto;
   height: auto;
   z-index: 0;
   pointer-events: none;
@@ -261,9 +264,16 @@
   z-index: 1;
 }
 
+@media (max-width: 860px) {
+  .sbd-page .sbd-slash-accent {
+    right: calc(100% - 185px);
+  }
+}
+
 @media (max-width: 640px) {
   .sbd-page .sbd-slash-accent {
-    width: 70%;
+    right: calc(100% - 170px);
+    bottom: 108px;
   }
 }
 
