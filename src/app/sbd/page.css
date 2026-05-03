@@ -71,13 +71,111 @@
   color: #000000 !important;
 }
 
-@media (max-width: 640px) {
-  .sbd-nav-links {
-    gap: 0.75rem;
-  }
-  .sbd-nav-link:not(.sbd-nav-link--cta) {
+/* Logo variants — show horizontal on desktop, stacked on mobile */
+.sbd-nav-logo--mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sbd-nav-logo--desktop {
     display: none;
   }
+  .sbd-nav-logo--mobile {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+  /* Hide the desktop nav links — hamburger takes over */
+  .sbd-nav-links {
+    display: none;
+  }
+}
+
+/* ===== HAMBURGER ===== */
+.sbd-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+  z-index: 101;
+  flex-shrink: 0;
+}
+
+.sbd-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #ffd20a;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center;
+}
+
+.sbd-bar--open-1 {
+  transform: translateY(7px) rotate(45deg);
+}
+.sbd-bar--open-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.sbd-bar--open-3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .sbd-hamburger {
+    display: flex;
+  }
+}
+
+/* ===== MOBILE MENU OVERLAY ===== */
+.sbd-mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sbd-mobile-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.sbd-mobile-menu a {
+  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.sbd-mobile-menu a:hover {
+  color: #ffd20a;
+}
+
+.sbd-mobile-cta {
+  display: inline-block;
+  background: #ffd20a;
+  color: #000000 !important;
+  padding: 0.75rem 2rem;
+  font-weight: 700 !important;
+  margin-top: 0.5rem;
 }
 
 /* ===== GRADIENT BLOBS — override teal defaults ===== */
@@ -245,15 +343,23 @@
    Bottom sits above the button row with a gap. */
 .sbd-page .sbd-slash-accent {
   position: absolute;
-  bottom: 116px;
+  bottom: 96px;
   left: 0;
-  /* width injected by JS; fallback = ~198px btn × (0.88/0.47) ≈ 371px */
-  width: 371px;
+  /* width and left are injected by JS for exact button alignment;
+     these are pre-JS fallbacks based on a ~198px button at default font */
+  width: 421px;
   height: auto;
   z-index: 0;
   pointer-events: none;
   display: block;
   opacity: 0.92;
+}
+
+/* Hide slash on mobile — layout doesn't have room for it to read clearly */
+@media (max-width: 768px) {
+  .sbd-page .sbd-slash-accent {
+    display: none;
+  }
 }
 
 /* All text and buttons sit above the slash */

@@ -4,6 +4,7 @@
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
 import SBDSlash from "@/components/SBDSlash";
+import SBDMobileMenu from "@/components/SBDMobileMenu";
 import "./page.css";
 
 export const metadata = {
@@ -28,7 +29,13 @@ export default function SBDPage() {
               src="/sbd/SBD_Yellow_Primary.png"
               alt="Stanley Black & Decker"
               height={36}
-              className="sbd-nav-logo"
+              className="sbd-nav-logo sbd-nav-logo--desktop"
+            />
+            <img
+              src="/sbd/sbd-logo-yellow-stacked.png"
+              alt="Stanley Black & Decker"
+              height={40}
+              className="sbd-nav-logo sbd-nav-logo--mobile"
             />
           </a>
           <div className="sbd-nav-links">
@@ -38,6 +45,7 @@ export default function SBDPage() {
             <a href="#background" className="sbd-nav-link">Background</a>
             <a href="#contact" className="sbd-nav-link sbd-nav-link--cta">Let's Talk</a>
           </div>
+          <SBDMobileMenu />
         </div>
       </header>
 
