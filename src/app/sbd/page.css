@@ -71,21 +71,8 @@
   color: #000000 !important;
 }
 
-/* Logo variants — show horizontal on desktop, stacked on mobile */
-.sbd-nav-logo--mobile {
-  display: none;
-}
-
+/* Hide the desktop nav links on mobile — hamburger takes over */
 @media (max-width: 768px) {
-  .sbd-nav-logo--desktop {
-    display: none;
-  }
-  .sbd-nav-logo--mobile {
-    display: block;
-    height: 40px;
-    width: auto;
-  }
-  /* Hide the desktop nav links — hamburger takes over */
   .sbd-nav-links {
     display: none;
   }
@@ -408,7 +395,23 @@
   height: 40px;
   width: auto;
   object-fit: contain;
+}
+
+/* Show horizontal on desktop, stacked on mobile */
+.sbd-nav-logo--desktop {
   display: block;
+}
+.sbd-nav-logo--mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sbd-nav-logo--desktop {
+    display: none;
+  }
+  .sbd-nav-logo--mobile {
+    display: block;
+  }
 }
 
 /* ===== FOCUS STATES ===== */
