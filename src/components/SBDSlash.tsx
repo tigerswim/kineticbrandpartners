@@ -18,13 +18,26 @@ export default function SBDSlash() {
     const PNG_BOTTOM_RIGHT_PCT = 0.47;
     const PNG_INV_SLOPE = 0.5765;
 
+    const SLASH_BTN_GAP_PX = 24;
+
     function sync() {
       const btn = document.querySelector<HTMLElement>(".sbd-page .kinetic-btn--primary");
       const slash = slashRef.current;
-      if (!btn || !slash) return;
+      const wrapper = slash?.parentElement;
+      if (!btn || !slash || !wrapper) return;
       const btnWidth = btn.offsetWidth;
       const btnHeight = btn.offsetHeight;
       if (btnWidth === 0 || btnHeight === 0) return;
+
+      // Anchor slash bottom to the primary button's top (with a small gap),
+      // not a fixed CSS offset from the wrapper bottom. This keeps the slash
+      // aligned with the button even when the CTA row wraps and the button
+      // shifts up within the wrapper.
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const btnTopInWrapper = btn.getBoundingClientRect().top - wrapperRect.top;
+      const slashBottomFromWrapperBottom =
+        wrapperRect.height - (btnTopInWrapper - SLASH_BTN_GAP_PX);
+      slash.style.bottom = Math.round(slashBottomFromWrapperBottom) + "px";
 
       // Set the button's clip-path so its right edge is parallel to the slash.
       // Right edge runs from top-right (100%, 0) down to (btnWidth - dx, btnHeight)
@@ -65,9 +78,8 @@ export default function SBDSlash() {
       // Clip the top of the slash so it doesn't extend above the headline.
       // Without this, the slash's natural height (≈ 0.92 × width) reaches up
       // past the title and overlaps the badge pill above the wrapper.
-      const wrapper = slash.parentElement;
-      const title = wrapper?.querySelector<HTMLElement>(".sbd-title-block");
-      if (wrapper && title) {
+      const title = wrapper.querySelector<HTMLElement>(".sbd-title-block");
+      if (title) {
         const wrapperTop = wrapper.getBoundingClientRect().top;
         const titleTop = title.getBoundingClientRect().top;
         const slashRect = slash.getBoundingClientRect();

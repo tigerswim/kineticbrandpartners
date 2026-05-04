@@ -342,8 +342,10 @@
   opacity: 0.92;
 }
 
-/* Hide slash on mobile — layout doesn't have room for it to read clearly */
-@media (max-width: 768px) {
+/* Hide slash below the two-column hero breakpoint. Once the hero stacks
+   (image centered above text), the left-anchored slash no longer aligns
+   with anything meaningful. */
+@media (max-width: 968px) {
   .sbd-page .sbd-slash-accent {
     display: none;
   }
