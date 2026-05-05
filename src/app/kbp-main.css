@@ -1,0 +1,1158 @@
+/* ============================================================================
+   KBP-MAIN — design refresh for the main-site pages only.
+   Imported by /, /about, /work. Candidate pages do NOT import this.
+   Every rule is scoped under .kbp-main so token + class overrides cannot
+   leak to candidate pages that share the same .kinetic-page root.
+   ========================================================================= */
+
+.kbp-main {
+  /* Brand — pulled directly from the KBP logo */
+  --navy: oklch(28% 0.09 252);     /* "Kinetic" wordmark deep navy */
+  --teal: oklch(58% 0.13 180);     /* logo's right-side teal */
+  --teal-light: oklch(72% 0.13 195); /* logo's bright cyan in "netic" */
+  --teal-bright: oklch(80% 0.14 200); /* lifted highlight tone */
+
+  /* Cool-tinted neutrals — biased toward the logo's hue family (~250) */
+  --white: oklch(99% 0.004 250);
+  --off-white: oklch(98% 0.005 250);
+  --gray-50: oklch(96.5% 0.007 245);
+  --gray-100: oklch(93% 0.009 245);
+  --gray-200: oklch(87% 0.011 245);
+  --gray-300: oklch(78% 0.013 248);
+  --gray-400: oklch(65% 0.016 250);
+  --gray-500: oklch(53% 0.018 252);
+  --gray-600: oklch(42% 0.020 252);
+  --gray-700: oklch(32% 0.020 252);
+  --gray-800: oklch(22% 0.018 252);
+  --gray-900: oklch(13% 0.015 252);
+
+  /* Brand accent — the bright cyan from "netic", used sparingly (~10%) */
+  --accent: oklch(68% 0.13 195);
+  --accent-deep: oklch(52% 0.13 188);
+  --paper: oklch(97% 0.012 220);   /* cool ivory backdrop, not warm cream */
+  --ink: oklch(20% 0.06 252);      /* the wordmark navy itself */
+
+  /* Type — fall back to system if next/font hasn't injected yet */
+  --font-display: var(--font-display-var, 'Bricolage Grotesque'), 'Helvetica Neue', sans-serif;
+  --font-text: var(--font-text-var, 'Manrope'), -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Tightened radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Easing */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-base: 0.35s var(--ease-out-quint);
+  --transition-slow: 0.5s var(--ease-out-quint);
+
+  font-family: var(--font-text);
+  background: var(--white);
+  color: var(--gray-800);
+}
+
+.kbp-main h1,
+.kbp-main h2,
+.kbp-main h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.kbp-main p,
+.kbp-main dd,
+.kbp-main li,
+.kbp-main a,
+.kbp-main button,
+.kbp-main input,
+.kbp-main textarea {
+  font-family: var(--font-text);
+}
+
+/* Header glass on the cream/white surfaces */
+.kbp-main .kinetic-header {
+  background: color-mix(in oklch, var(--white) 90%, transparent);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.kbp-main .kinetic-nav-cta {
+  background: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1.125rem;
+  transition: background var(--transition-base) !important;
+}
+
+.kbp-main .kinetic-nav-cta:hover {
+  background: var(--accent);
+}
+
+/* ============================================================================
+   SCROLL REVEAL
+   ========================================================================= */
+.kbp-main [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.kbp-main [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Headline word-by-word reveal.
+   The mask uses overflow: clip + clip-margin on the inline-block so descenders
+   (g, h, p, y) stay visible at large display sizes. The inner <i> translates
+   from below; the literal " " between words lives outside .kw so it survives
+   the inline-block whitespace collapse. */
+.kbp-main .kw {
+  display: inline-flex;
+  overflow: clip;
+  overflow-clip-margin: 0.4em;
+  vertical-align: baseline;
+  line-height: 1.05;
+}
+
+.kbp-main .kw > i {
+  display: inline-block;
+  font-style: inherit;
+  line-height: inherit;
+  transform: translateY(110%);
+  transition: transform 0.95s var(--ease-out-quint);
+  transition-delay: calc(var(--w, 0) * 70ms);
+}
+
+.kbp-main.is-loaded .kw > i {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kbp-main [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .kbp-main .kw > i { transform: none !important; }
+}
+
+/* ============================================================================
+   TYPE-LED HERO — Direction #1 + #4
+   No headshot in the hero. Big display type. Cream background.
+   ========================================================================= */
+.kbp-main .mb-hero {
+  min-height: 92vh;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  margin: 0;
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background portrait — anchored to the right side, sits behind type,
+   masked to fade into the white background at the content edge. */
+.kbp-main .mb-hero-bg {
+  position: absolute;
+  right: -2%;
+  top: 0;
+  bottom: 0;
+  width: clamp(360px, 46%, 640px);
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/images/DJH-CGPT-Sketch.webp');
+  background-size: cover;
+  background-position: center 18%;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.9) 38%, rgba(0,0,0,1) 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.9) 38%, rgba(0,0,0,1) 100%);
+  opacity: 0.95;
+  filter: saturate(0.92) contrast(0.98);
+}
+
+/* Mobile: drop the background portrait entirely so the type stays legible.
+   The dedicated portrait moment lives lower on the page. */
+@media (max-width: 968px) {
+  .kbp-main .mb-hero-bg { display: none; }
+}
+
+.kbp-main .mb-hero .kinetic-container {
+  display: grid;
+  align-content: center;
+  padding-top: 9rem;
+  padding-bottom: 4rem;
+  width: 100%;
+}
+
+/* Override the legacy 2-col grid */
+.kbp-main .mb-hero-grid {
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
+
+.kbp-main .mb-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: min(880px, 60%);
+}
+
+@media (max-width: 968px) {
+  .kbp-main .mb-hero-content { max-width: 100%; }
+}
+
+/* Hero portrait is now a small floating element, not the focal point */
+.kbp-main .mb-hero-visual {
+  display: none;
+}
+
+/* Eyebrow badge — squared, ink, with accent dot */
+.kbp-main .kinetic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.375rem 0.875rem;
+  background: transparent;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kbp-main .kinetic-badge-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: kbpPulse 2.4s var(--ease-out-quint) infinite;
+}
+
+@keyframes kbpPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kbp-main .kinetic-badge-dot { animation: none; }
+}
+
+/* The big type. Lead is the dominant weight; italic emphasis follows at ~55% size. */
+.kbp-main .mb-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 6.25rem);
+  font-weight: 700;
+  line-height: 0.98;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  margin: 1.5rem 0 1.5rem 0;
+  max-width: 16ch;
+}
+
+/* Default: inline accent for short emphasis ("resume", "Impact") in about/work heroes.
+   Uses --accent-deep so the brand teal has enough contrast at large display sizes. */
+.kbp-main .kinetic-title-gradient {
+  color: var(--accent-deep);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Homepage hero — emphasis sits on its own line at the same size as the lead */
+.kbp-main .mb-title .kinetic-title-gradient {
+  display: block;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin-top: 0.1em;
+  max-width: 16ch;
+}
+
+.kbp-main .mb-subtitle {
+  font-family: var(--font-text);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--gray-700);
+  margin: 0 0 1.25rem 0;
+  font-weight: 400;
+  max-width: 56ch;
+}
+
+.kbp-main .mb-now {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  line-height: 1.55;
+  margin: 1rem 0 2rem 0;
+  max-width: 60ch;
+  border-top: 1px solid var(--gray-300);
+  padding-top: 1rem;
+  position: relative;
+}
+
+.kbp-main .mb-now::before {
+  content: 'NOW';
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent-deep);
+  margin-right: 0.875rem;
+  vertical-align: 0.05em;
+}
+
+.kbp-main .mb-now strong { display: none; }
+
+.kbp-main .mb-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.kbp-main .mb-cta-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .kbp-main .mb-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .kbp-main .mb-cta-group .kinetic-btn {
+    justify-content: center;
+    width: 100%;
+  }
+  .kbp-main .mb-cta-links {
+    justify-content: center;
+  }
+}
+
+/* ============================================================================
+   BUTTONS
+   ========================================================================= */
+.kbp-main .kinetic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1.5rem;
+  font-family: var(--font-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
+  cursor: pointer;
+  border: none;
+  letter-spacing: 0.01em;
+}
+
+.kbp-main .kinetic-btn .arrow,
+.kbp-main .kinetic-btn svg {
+  transition: transform var(--transition-base);
+}
+
+.kbp-main .kinetic-btn:hover .arrow,
+.kbp-main .kinetic-btn:hover svg {
+  transform: translateX(4px);
+}
+
+.kbp-main .kinetic-btn--primary {
+  background: var(--ink);
+  color: var(--white);
+  box-shadow: none;
+}
+
+.kbp-main .kinetic-btn--primary:hover {
+  background: var(--accent);
+}
+
+.kbp-main .kinetic-btn--secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--gray-300);
+}
+
+.kbp-main .kinetic-btn--secondary:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.kbp-main .mb-cta-link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--gray-700);
+  text-decoration: none;
+  transition: color var(--transition-base);
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.kbp-main .mb-cta-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.kbp-main .mb-cta-link:hover { color: var(--accent-deep); }
+.kbp-main .mb-cta-link:hover::after { transform: scaleX(1); }
+.kbp-main .mb-cta-divider { color: var(--gray-400); }
+
+/* ============================================================================
+   INTRO PULL-QUOTE — text-only voice section between hero and capabilities
+   On mobile, the sketch headshot sits behind the quote as an atmospheric layer.
+   ========================================================================= */
+.kbp-main .kbp-intro {
+  background: var(--white);
+  padding: 6rem 0 5rem;
+  border-top: 1px solid var(--gray-200);
+  position: relative;
+  overflow: hidden;
+}
+
+.kbp-main .kbp-intro .kinetic-container {
+  position: relative;
+  z-index: 1;
+}
+
+.kbp-main .kbp-intro-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.018em;
+  max-width: 32ch;
+  margin: 0;
+  position: relative;
+}
+
+.kbp-main .kbp-intro-mark {
+  display: inline-block;
+  color: var(--accent-deep);
+  font-style: italic;
+  font-weight: 600;
+  margin-right: 0.15em;
+  line-height: 0;
+  vertical-align: -0.25em;
+  font-size: 1.4em;
+}
+
+/* Mobile: bleed the sketch portrait behind the quote */
+@media (max-width: 968px) {
+  .kbp-main .kbp-intro {
+    padding: 4rem 0 3rem;
+    background-image: url('/images/DJH-CGPT-Sketch.webp');
+    background-size: cover;
+    background-position: center 20%;
+    background-repeat: no-repeat;
+  }
+  .kbp-main .kbp-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklch, var(--white) 78%, transparent);
+    z-index: 0;
+  }
+  .kbp-main .kbp-intro-quote {
+    max-width: 100%;
+  }
+}
+
+/* ============================================================================
+   PORTRAIT SECTION — magazine treatment (kept for /about page if used)
+   ========================================================================= */
+.kbp-main .kbp-portrait {
+  background: var(--white);
+  padding: 0;
+  position: relative;
+}
+
+.kbp-main .kbp-portrait-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
+  min-height: 70vh;
+}
+
+.kbp-main .kbp-portrait-image {
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.kbp-main .kbp-portrait-image img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+  filter: contrast(1.02) saturate(0.95);
+}
+
+.kbp-main .kbp-portrait-caption {
+  padding: 4rem 3rem 4rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--gray-200);
+}
+
+.kbp-main .kbp-portrait-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 1.5rem;
+}
+
+.kbp-main .kbp-portrait-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 1rem 0;
+}
+
+.kbp-main .kbp-portrait-bio {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+  max-width: 48ch;
+  margin: 0;
+}
+
+.kbp-main .kbp-portrait-bio + .kbp-portrait-bio {
+  margin-top: 1rem;
+}
+
+@media (max-width: 968px) {
+  .kbp-main .kbp-portrait-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .kbp-main .kbp-portrait-image { padding: 2rem 1.5rem; }
+  .kbp-main .kbp-portrait-caption {
+    padding: 2.5rem 1.5rem 3rem;
+    border-left: none;
+    border-top: 1px solid var(--gray-200);
+  }
+}
+
+/* ============================================================================
+   SECTIONS
+   ========================================================================= */
+.kbp-main .kinetic-section {
+  padding: var(--space-4xl) 0;
+}
+
+.kbp-main .kinetic-section--gray {
+  background: var(--gray-50);
+}
+
+.kbp-main .kinetic-section--compact {
+  padding: var(--space-2xl) 0;
+}
+
+.kbp-main .kinetic-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.kbp-main .mb-section-title--left {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+/* Section eyebrow shared across pages */
+.kbp-main .kbp-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 1rem;
+}
+
+/* ============================================================================
+   CAPABILITIES — numbered editorial list
+   ========================================================================= */
+.kbp-main .mb-capability-list {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--gray-300);
+  counter-reset: capability;
+}
+
+.kbp-main .mb-capability-row {
+  display: grid !important;
+  grid-template-columns: 5.5rem minmax(0, 1fr) minmax(0, 1.6fr) !important;
+  gap: 2.5rem !important;
+  align-items: baseline !important;
+  padding: 2.25rem 0 !important;
+  border-bottom: 1px solid var(--gray-200) !important;
+  border-left: none !important;
+  counter-increment: capability;
+  position: relative;
+}
+
+.kbp-main .mb-capability-row::before {
+  content: counter(capability, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-300);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.kbp-main .mb-capability-row dt {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  list-style: none;
+}
+
+.kbp-main .mb-capability-row dd {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--gray-700);
+  margin: 0;
+  max-width: 60ch;
+}
+
+@media (max-width: 768px) {
+  .kbp-main .mb-capability-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* ============================================================================
+   EXPERIENCE — minimal CV-timeline
+   ========================================================================= */
+.kbp-main .mb-experience-grid {
+  display: block;
+  border-top: 1px solid var(--gray-300);
+  margin-top: 0.5rem;
+}
+
+.kbp-main .mb-exp-card {
+  display: grid !important;
+  grid-template-columns: 6rem 1.2fr 1fr !important;
+  gap: 2.5rem !important;
+  align-items: start !important;
+  padding: 2rem 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--gray-200) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.kbp-main .mb-exp-card:hover {
+  background: color-mix(in oklch, var(--accent) 2%, transparent) !important;
+  box-shadow: none !important;
+  border-color: var(--gray-200) !important;
+}
+
+.kbp-main .mb-exp-years {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  letter-spacing: 0.04em;
+  align-self: start;
+  padding-top: 0.5rem;
+}
+
+.kbp-main .mb-exp-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Default: Central logo renders at 38px tall, aspect-driven width */
+.kbp-main .mb-exp-logo-wrap img,
+.kbp-main .mb-exp-logo-wrap svg {
+  width: auto;
+  height: 38px;
+  max-width: none;
+  display: block;
+  opacity: 0.9;
+  transition: opacity var(--transition-base);
+}
+
+/* Match J&J and Manhattan to the same horizontal width (5% shorter than J&J's natural 38px-tall length) */
+.kbp-main .mb-exp-logo-wrap img[alt="Manhattan Associates"],
+.kbp-main .mb-exp-logo-wrap svg[aria-label="Johnson & Johnson"] {
+  width: 200px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .kbp-main .mb-exp-logo-wrap img,
+  .kbp-main .mb-exp-logo-wrap svg {
+    height: 32px;
+  }
+  .kbp-main .mb-exp-logo-wrap img[alt="Manhattan Associates"],
+  .kbp-main .mb-exp-logo-wrap svg[aria-label="Johnson & Johnson"] {
+    width: 168px;
+    height: auto;
+  }
+}
+
+.kbp-main .mb-exp-card:hover .mb-exp-logo-wrap img,
+.kbp-main .mb-exp-card:hover .mb-exp-logo-wrap svg {
+  opacity: 1;
+}
+
+.kbp-main .mb-exp-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.015em;
+}
+
+.kbp-main .mb-exp-role {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-deep);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.kbp-main .mb-exp-desc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--gray-700);
+  margin: 0;
+  align-self: start;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .kbp-main .mb-exp-card {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+}
+
+/* ============================================================================
+   EDUCATION
+   ========================================================================= */
+.kbp-main .mb-education-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin-top: 4rem;
+  border-top: 1px solid var(--gray-300);
+}
+
+.kbp-main .mb-edu-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: transparent;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  border: none !important;
+  border-bottom: 1px solid var(--gray-200) !important;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
+}
+
+.kbp-main .mb-edu-card:nth-child(2n) {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--gray-200) !important;
+}
+
+.kbp-main .mb-edu-card:hover {
+  border-bottom-color: var(--ink) !important;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .kbp-main .mb-education-row { grid-template-columns: 1fr; }
+  .kbp-main .mb-edu-card:nth-child(2n) {
+    padding-left: 0;
+    border-left: none !important;
+  }
+}
+
+/* ============================================================================
+   LOOKING-FOR + CONTACT
+   ========================================================================= */
+.kbp-main .mb-looking-for-text {
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--gray-700);
+  max-width: 65ch;
+}
+
+.kbp-main .mb-contact {
+  padding: 6rem 0 8rem;
+}
+
+.kbp-main .mb-contact-card {
+  background: var(--ink);
+  border-radius: var(--radius-md);
+  padding: 4.5rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.kbp-main .mb-contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top right, color-mix(in oklch, var(--accent) 60%, transparent), transparent 65%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.kbp-main .mb-contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+
+.kbp-main .mb-contact-text {
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.kbp-main .mb-contact-btn {
+  font-family: var(--font-text);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: background var(--transition-base), border-color var(--transition-base);
+}
+
+.kbp-main .mb-contact-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: none;
+}
+
+/* ============================================================================
+   ABOUT PAGE accents (scoped)
+   ========================================================================= */
+.kbp-main .about-hero {
+  text-align: left;
+  padding: 9rem 0 4rem;
+}
+
+.kbp-main .about-hero-content {
+  max-width: none;
+  margin: 0;
+}
+
+.kbp-main .about-hero-text {
+  font-family: var(--font-text);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+  max-width: 65ch;
+  margin: 0;
+}
+
+.kbp-main .about-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  color: var(--ink);
+  max-width: 14ch;
+  margin: 0 0 1.5rem 0;
+}
+
+.kbp-main .about-tech-badge {
+  border-radius: var(--radius-sm);
+  border-color: var(--gray-300);
+}
+
+.kbp-main .about-project-tech span {
+  background: color-mix(in oklch, var(--accent) 8%, transparent);
+  color: var(--accent-deep);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+
+.kbp-main .kinetic-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  transition: border-color var(--transition-base);
+}
+
+.kbp-main .kinetic-card::before { display: none !important; }
+
+.kbp-main .kinetic-card:hover {
+  border-color: var(--ink);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================================================
+   WORK PAGE accents (scoped)
+   ========================================================================= */
+.kbp-main .work-hero {
+  text-align: left;
+  padding: 9rem 0 4rem;
+}
+
+.kbp-main .work-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  color: var(--ink);
+  max-width: 16ch;
+  margin: 0 0 1.5rem 0;
+}
+
+.kbp-main .work-hero-subtitle {
+  font-family: var(--font-text);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+  max-width: 65ch;
+  margin: 0;
+}
+
+.kbp-main .campaign-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+}
+
+.kbp-main .campaign-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.kbp-main .campaign-meta {
+  font-family: var(--font-text);
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+.kbp-main .result-stat {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid var(--gray-300);
+  padding: 1.75rem 0;
+  text-align: left;
+}
+
+.kbp-main .result-stat:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  border-color: var(--gray-300);
+}
+
+.kbp-main .result-stat-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.75rem;
+  color: var(--ink);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  letter-spacing: -0.025em;
+}
+
+.kbp-main .result-stat-label {
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.kbp-main .work-cta-title {
+  font-family: var(--font-display);
+}
+
+.kbp-main .work-cta-text {
+  font-family: var(--font-text);
+}
+
+/* ============================================================================
+   RESUME PAGE — content-dense, dial down hero & section title scale
+   ========================================================================= */
+.kbp-main .resume-hero {
+  padding: 9rem 0 3rem;
+  text-align: left;
+}
+
+.kbp-main .resume-hero-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 1rem;
+}
+
+.kbp-main .resume-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 0.75rem 0;
+}
+
+.kbp-main .resume-hero-subtitle {
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  color: var(--gray-700);
+  margin-bottom: 2rem;
+}
+
+.kbp-main .resume-hero-cta {
+  display: flex;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* Tighter section rhythm for the dense CV format */
+.kbp-main .resume-hero ~ .kinetic-section,
+.kbp-main .resume-hero + .kinetic-section,
+.kbp-main main:has(.resume-hero) .kinetic-section {
+  padding: 3rem 0;
+}
+
+.kbp-main main:has(.resume-hero) .kinetic-section .kinetic-section-title {
+  font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+  margin-bottom: 1.25rem;
+}
+
+.kbp-main .resume-summary {
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--gray-700);
+  max-width: 70ch;
+}
+
+.kbp-main main:has(.resume-hero) .kinetic-card {
+  padding: 1.5rem 1.75rem;
+}
+
+.kbp-main main:has(.resume-hero) .kinetic-card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.kbp-main main:has(.resume-hero) .kinetic-card-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+}
+
+/* Resume experience blocks */
+.kbp-main .resume-company-name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.kbp-main .resume-company-years {
+  font-family: var(--font-text);
+  color: var(--accent-deep);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.kbp-main .resume-role-title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.kbp-main .resume-role-bullets li::before {
+  background: var(--accent);
+}
+
+.kbp-main .resume-edu-text strong {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 768px) {
+  .kbp-main .mb-hero .kinetic-container {
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+  }
+  .kbp-main .mb-now {
+    font-size: 0.8125rem;
+  }
+  .kbp-main .mb-cta-group .mb-cta-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

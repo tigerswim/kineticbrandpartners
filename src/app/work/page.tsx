@@ -1,8 +1,9 @@
 // Work page - Marketing campaign portfolio
 
+import "@/app/kbp-main.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GradientMesh from "@/components/GradientMesh";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata = {
   title: "Work - Kinetic Brand Partners",
@@ -12,16 +13,16 @@ export const metadata = {
 
 export default function WorkPage() {
   return (
-    <div className="kinetic-page">
-      <GradientMesh />
+    <div className="kinetic-page kbp-main">
+      <ScrollReveal />
       <Header />
 
       <main>
         {/* Hero */}
         <section className="work-hero">
           <div className="kinetic-container">
-            <h1 className="work-hero-title">Making An <span className="kinetic-title-gradient">Impact</span> On The Business</h1>
-            <p className="work-hero-subtitle">
+            <h1 className="work-hero-title" data-reveal>Making An <span className="kinetic-title-gradient">Impact</span> On The Business</h1>
+            <p className="work-hero-subtitle" data-reveal style={{ ['--reveal-delay' as string]: '180ms' }}>
               From Clio-winning creative to data-driven digital campaigns,
               here's a selection of marketing work that delivered measurable
               impact and cultural resonance.

@@ -83,18 +83,36 @@ Uses `.env.local` if needed (never commit this file):
 
 ## Tech Stack
 
-- **Framework**: Next.js (static export)
+- **Framework**: Next.js 15 (static export)
 - **Language**: TypeScript
-- **Styling**: CSS modules + custom design system (`src/styles/kinetic-design-system.css`)
+- **Fonts**: Bricolage Grotesque (display) + Manrope (text), loaded via `next/font/google`
+- **Styling**: Plain CSS — `src/app/globals.css` (legacy candidate-page styles) + `src/app/kbp-main.css` (main-site refresh, scoped under `.kbp-main`)
 - **Deployment**: Netlify
+
+## Design System
+
+Two parallel design surfaces live in this repo:
+
+1. **Main site** — `/`, `/about`, `/work`, `/resume`. Uses the **KBP refresh** (Bricolage + Manrope, navy/teal palette pulled from the logo). Each main-site page imports `kbp-main.css` and adds `kbp-main` to its root `<div>`. All refresh tokens, component overrides, and motion are scoped under `.kbp-main` so they cannot leak to candidate pages.
+
+2. **Candidate pages** — `/sbd`, `/gc`, `/ups`, `/ws`, `/keh`, `/locumtenens`, `/finsync`, `/earnix`. These keep the **legacy Kinetic Flow** styles in `globals.css` plus per-page brand overrides in `src/app/<page>/page.css`. Do not edit `kbp-main.css` for candidate-page changes.
+
+**Brand color tokens** (in `kbp-main.css`, under `.kbp-main`):
+- `--ink`: navy from the "Kinetic" wordmark
+- `--accent`: bright cyan from the "netic" highlight (used for backgrounds, dots, hover bgs)
+- `--accent-deep`: deeper teal from the wordmark's right edge (used for **all** accent text — eyebrows, italic emphasis, role labels)
+- Neutrals are tinted toward hue 250 (the logo's blue-violet axis) for cohesion
+
+**Motion**: `ScrollReveal` (IntersectionObserver-driven) toggles `is-revealed` on `[data-reveal]` elements. `HeroHeadline` animates the homepage hero word-by-word on load. Both honor `prefers-reduced-motion`.
 
 ## Best Practices
 
 1. Run `npm run build` locally before pushing — Netlify will fail if the build breaks
 2. Keep large video files out of git (use `.gitignore`; originals stay local only)
 3. `FFP/` and `impeccable/` are excluded from builds — don't edit them for marketing-site work
-4. Candidate pages (`/locumtenens`, `/earnix`, `/ups`) each have their own `page.css` for brand-specific overrides
+4. Candidate pages each have their own `page.css` for brand-specific overrides — make changes there, not in `kbp-main.css` or `globals.css`
+5. When adding a new main-site page, import `@/app/kbp-main.css` and put `kbp-main` on the root `<div>` alongside `kinetic-page`
 
 ---
 
-**Last Updated**: April 2026
+**Last Updated**: May 2026

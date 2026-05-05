@@ -1,12 +1,13 @@
 // Resume page - Full professional resume with PDF download
 // Uses shared Kinetic Design System
 
+import "@/app/kbp-main.css";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from 'next';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GradientMesh from "@/components/GradientMesh";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: 'Resume | Dan Hoeller | Kinetic Brand Partners',
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
 
 export default function Resume() {
   return (
-    <div className="kinetic-page">
-      <GradientMesh />
+    <div className="kinetic-page kbp-main">
+      <ScrollReveal />
       <Header />
 
       <main>

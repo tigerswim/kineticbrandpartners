@@ -2,8 +2,23 @@
 import '@/app/globals.css'
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Bricolage_Grotesque, Manrope } from 'next/font/google'
 import fs from 'fs'
 import path from 'path'
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display-var',
+  weight: ['400', '500', '600', '700', '800'],
+})
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-text-var',
+  weight: ['400', '500', '600', '700'],
+})
 
 const siteUrl = 'https://kineticbrandpartners.com'
 
@@ -130,7 +145,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bricolage.variable} ${manrope.variable}`}>
       <head>
         {/* Inline critical CSS to eliminate render-blocking chunk requests */}
         <style dangerouslySetInnerHTML={{ __html: criticalCss }} />
@@ -149,14 +164,6 @@ export default function RootLayout({
           type="image/webp"
           imageSrcSet="/images/DJH-CGPT-Sketch-mobile.webp 320w, /images/DJH-CGPT-Sketch-medium.webp 280w, /images/DJH-CGPT-Sketch.webp 533w"
           imageSizes="(max-width: 640px) 85vw, (max-width: 968px) 280px, 400px"
-        />
-
-        {/* Google Fonts preconnect for Hanken Grotesk + Figtree */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
         />
 
         {/* Resource hints for external services */}

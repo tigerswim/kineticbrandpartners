@@ -1,6 +1,7 @@
 // About Me Page: Personal side beyond the professional
 // Showcases family, interests (AI/coding), and athletics
 
+import "@/app/kbp-main.css";
 import CalendlyButton from "@/components/CalendlyButton";
 import {
   Activity,
@@ -18,12 +19,12 @@ import {
 } from "react-feather";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GradientMesh from "@/components/GradientMesh";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function AboutPage() {
   return (
-    <div className="kinetic-page">
-      <GradientMesh />
+    <div className="kinetic-page kbp-main">
+      <ScrollReveal />
       <Header />
 
       <main>
@@ -31,11 +32,11 @@ export default function AboutPage() {
         <section className="about-hero">
           <div className="kinetic-container">
             <div className="about-hero-content">
-              <h1 className="about-hero-title animate-slide-up delay-1">
+              <h1 className="about-hero-title" data-reveal>
                 Beyond the{" "}
                 <span className="kinetic-title-gradient">resume</span>
               </h1>
-              <p className="about-hero-text animate-slide-up delay-2">
+              <p className="about-hero-text" data-reveal style={{ ['--reveal-delay' as string]: '180ms' }}>
                 There&apos;s more to life than work of course, and I&apos;m
                 lucky to have an incredible family. I love learning by doing,
                 endurance sports, and cheering on my favorite teams.
