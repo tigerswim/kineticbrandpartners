@@ -68,11 +68,10 @@ export default function Home() {
           <div className="kinetic-container">
             <p className="kbp-intro-quote">
               <span className="kbp-intro-mark">&ldquo;</span>
-              Player-coach who&apos;s scaled marketing orgs from three to
+              Player-coach who&apos;s led marketing orgs from three to
               twenty-five, run $20MM to $100MM+ P&amp;Ls, and shipped
               Clio-winning work that moved both brand health and the top
-              line. Equally at home in a strategy offsite and a media war
-              room.
+              line. Equally at home in a strategy offsite and hands-on keyboard work.
             </p>
           </div>
         </section>
