@@ -331,8 +331,10 @@
     max-width: 420px;
   }
   .kbp-main .mb-cta-links {
+    display: flex;
     justify-content: center;
     width: 100%;
+    max-width: 420px;
   }
 }
 
