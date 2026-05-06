@@ -57,7 +57,9 @@ export default function AshleyPage() {
                 </div>
 
                 <h1 className="mb-title animate-slide-up delay-2">
-                  A builder who stays close to the work
+                  Strategy in the morning.{" "}
+                  <span className="ashley-accent">Real work</span>{" "}
+                  in the afternoon.
                 </h1>
 
                 <p className="mb-subtitle animate-slide-up delay-3">
@@ -230,18 +232,19 @@ export default function AshleyPage() {
               <h2 className="kinetic-section-title">What I Bring</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              I have built functions and teams at every stage of my career, and I
-              have never stopped being a practitioner. I can set strategy in the
-              morning and give real creative feedback in the afternoon.
+              I have built and led functions at every stage of my career, and I
+              have never stopped being a practitioner. Strategy in the morning,
+              real creative feedback in the afternoon.
             </p>
             <dl className="mb-capability-list">
               <div className="mb-capability-row">
                 <dt>Leadership &amp; Scale</dt>
                 <dd>
-                  Built and led a 25-person marketing organization spanning Consumer
+                  Led and unified a 25-person marketing organization spanning Consumer
                   Insights, Digital, Creative, Innovation, and Customer Marketing.
-                  Hired leaders, established operating rhythms, and stayed close to
-                  the work throughout.
+                  Built the Innovation function within it from the ground up. Hired
+                  leaders, established operating rhythms, and stayed in the details
+                  throughout.
                 </dd>
               </div>
               <div className="mb-capability-row">
@@ -570,9 +573,10 @@ export default function AshleyPage() {
                   <h3>Central Garden &amp; Pet</h3>
                   <p className="mb-exp-role">SVP Marketing &middot; 11 years</p>
                   <p className="mb-exp-desc">
-                    Led marketing for the $1.5B Garden segment. Built and managed a
-                    25-person organization spanning Consumer Insights, Innovation,
-                    Digital, Creative, Customer Marketing, and Customer Care. Full
+                    Led marketing for the $1.5B Garden segment. Inherited and
+                    unified a 25-person organization spanning Consumer Insights,
+                    Innovation, Digital, Creative, Customer Marketing, and Customer
+                    Care; built the Innovation function within it from scratch. Full
                     brand development accountability across a multi-brand portfolio.
                   </p>
                 </div>

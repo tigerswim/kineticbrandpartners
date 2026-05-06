@@ -17,8 +17,8 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: #f68c2c !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #ffffff !important;
+  border-bottom: 2px solid #f68c2c;
 }
 
 .ashley-header-inner {
@@ -43,7 +43,7 @@
 }
 
 .ashley-nav a {
-  color: rgba(255, 255, 255, 0.9);
+  color: #1a202c;
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 600;
@@ -51,11 +51,11 @@
 }
 
 .ashley-nav a:hover {
-  color: #fff;
+  color: #f68c2c;
 }
 
 .ashley-nav-cta {
-  background: #215387;
+  background: #f68c2c;
   color: #fff !important;
   padding: 0.45rem 1.1rem;
   border-radius: 6px;
@@ -63,7 +63,7 @@
 }
 
 .ashley-nav-cta:hover {
-  background: #1a4270;
+  background: #d97820;
   color: #fff !important;
 }
 
@@ -74,13 +74,13 @@
 
 /* ── GRADIENT BLOBS ──────────────────────────────────────── */
 .company-page .kinetic-gradient-blob--1 {
-  background: linear-gradient(135deg, rgba(33, 83, 135, 0.25), rgba(33, 83, 135, 0.15));
+  background: rgba(33, 83, 135, 0.08);
 }
 .company-page .kinetic-gradient-blob--2 {
-  background: linear-gradient(135deg, rgba(246, 140, 44, 0.15), rgba(246, 140, 44, 0.1));
+  background: rgba(246, 140, 44, 0.07);
 }
 .company-page .kinetic-gradient-blob--3 {
-  background: linear-gradient(135deg, rgba(33, 83, 135, 0.1), transparent);
+  background: rgba(33, 83, 135, 0.05);
 }
 
 /* ── BADGE DOT ───────────────────────────────────────────── */
@@ -88,16 +88,17 @@
   background-color: #f68c2c;
 }
 
-/* ── RESULT STATS ────────────────────────────────────────── */
+/* ── RESULT STATS — no gradients ─────────────────────────── */
 .company-page .result-stat {
-  background: linear-gradient(135deg, rgba(246, 140, 44, 0.05), rgba(33, 83, 135, 0.08));
-  border-color: rgba(33, 83, 135, 0.2);
+  background: rgba(246, 140, 44, 0.06);
+  border-color: rgba(246, 140, 44, 0.2);
 }
 .company-page .result-stat-value {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+  color: #f68c2c;
 }
 
 /* ── EXPERIENCE ROLE COLOR ───────────────────────────────── */
@@ -149,6 +150,11 @@
 /* ── CAMPAIGN TITLE ──────────────────────────────────────── */
 .company-page .campaign-title {
   color: var(--color-secondary);
+}
+
+/* ── ACCENT WORD IN HEADLINE ─────────────────────────────── */
+.company-page .ashley-accent {
+  color: #f68c2c;
 }
 
 /* ── QA ACCORDION ────────────────────────────────────────── */
@@ -220,8 +226,7 @@
   margin-top: 1.25rem;
 }
 
-/* ── IMAGE GLOW ──────────────────────────────────────────── */
+/* ── IMAGE GLOW — subtle, no gradient ───────────────────── */
 .company-page .mb-image-glow {
-  background: radial-gradient(circle, rgba(246, 140, 44, 0.15) 0%, transparent 70%);
+  background: rgba(246, 140, 44, 0.08);
 }
-
