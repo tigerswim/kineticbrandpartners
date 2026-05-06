@@ -17,8 +17,8 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: #1a202c !important;
-  border-bottom: 1px solid rgba(246, 140, 44, 0.2);
+  background-color: #f68c2c !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .ashley-header-inner {
@@ -43,27 +43,27 @@
 }
 
 .ashley-nav a {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 0.2s;
 }
 
 .ashley-nav a:hover {
-  color: #f68c2c;
+  color: #fff;
 }
 
 .ashley-nav-cta {
-  background: #f68c2c;
+  background: #215387;
   color: #fff !important;
   padding: 0.45rem 1.1rem;
   border-radius: 6px;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 .ashley-nav-cta:hover {
-  background: #d97820;
+  background: #1a4270;
   color: #fff !important;
 }
 
@@ -151,12 +151,73 @@
   color: var(--color-secondary);
 }
 
-/* ── TITLE GRADIENT ──────────────────────────────────────── */
-.company-page .kinetic-title-gradient {
-  background: linear-gradient(135deg, #f68c2c, #215387);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── QA ACCORDION ────────────────────────────────────────── */
+.company-page .qa-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.company-page .qa-item {
+  background: #ffffff;
+  border: 1px solid rgba(246, 140, 44, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.company-page .qa-item[open] {
+  border-color: rgba(33, 83, 135, 0.4);
+  box-shadow: 0 4px 20px rgba(33, 83, 135, 0.08);
+}
+
+.company-page .qa-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #215387;
+  cursor: pointer;
+  list-style: none;
+  gap: 1rem;
+  user-select: none;
+}
+
+.company-page .qa-question::-webkit-details-marker {
+  display: none;
+}
+
+.company-page .qa-question::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.375rem;
+  font-weight: 400;
+  color: #f68c2c;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.company-page .qa-item[open] .qa-question::after {
+  transform: rotate(45deg);
+}
+
+.company-page .qa-answer {
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid rgba(246, 140, 44, 0.12);
+}
+
+.company-page .qa-answer p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #444;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.company-page .qa-answer p:first-child {
+  margin-top: 1.25rem;
 }
 
 /* ── IMAGE GLOW ──────────────────────────────────────────── */
@@ -164,10 +225,3 @@
   background: radial-gradient(circle, rgba(246, 140, 44, 0.15) 0%, transparent 70%);
 }
 
-/* ── QA ACCORDION ────────────────────────────────────────── */
-.company-page .qa-item summary {
-  color: var(--color-secondary);
-}
-.company-page .qa-item[open] summary {
-  color: var(--color-primary);
-}

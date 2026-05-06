@@ -57,14 +57,13 @@ export default function AshleyPage() {
                 </div>
 
                 <h1 className="mb-title animate-slide-up delay-2">
-                  A builder who stays{" "}
-                  <span className="kinetic-title-gradient">close to the work</span>
+                  A builder who stays close to the work
                 </h1>
 
                 <p className="mb-subtitle animate-slide-up delay-3">
-                  15 years building brand functions, leading cross-functional teams,
-                  and translating product vision into consumer language that actually
-                  moves people. From Fortune 50 to Fortune 1000 -- always a
+                  15 years building brand functions, leading teams, and translating
+                  product vision into consumer language that earns shelf space and
+                  drives sales. From Fortune 50 to Fortune 1000; always a
                   player-coach, never just a director.
                 </p>
 
@@ -131,29 +130,25 @@ export default function AshleyPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    Ashley&apos;s Merchandising and Design teams create exceptional
-                    products, but without a Product Marketing function, the story
-                    that makes those products compelling often gets lost between the
-                    design studio and the consumer-facing asset. Creative teams
-                    receive incomplete briefs. The same product gets described
-                    differently across channels. No one is accountable for making
-                    sure the product intent survives the handoff.
+                    Without a Product Marketing function, the story that makes a
+                    product compelling tends to get lost between the design studio
+                    and the consumer-facing asset. Creative teams get incomplete
+                    briefs. The same product gets described differently by Sales,
+                    e-commerce, and Retail Marketing. Nobody is accountable for
+                    making sure the product intent survives the handoff.
                   </p>
                   <p>
-                    My approach: start with an audit of where the handoffs currently
-                    break. Interview Merchandising, Design, Creative, and Sales to
-                    understand what information is missing, misunderstood, or arriving
-                    too late. From there, build the brief and messaging framework as
-                    a living tool -- one that Merchandising finds useful to fill out
-                    and Creative finds useful to activate from. The first version does
-                    not need to be perfect; it needs to get used. Real adoption tells
-                    you what to fix.
+                    My approach: start by auditing where the handoffs break. Talk to
+                    Merchandising, Design, Creative, and Sales to understand what
+                    information arrives late, incomplete, or not at all. Then build
+                    the brief and messaging framework as a working tool, not a
+                    governance document. The first version does not need to be
+                    perfect; it needs to get used. Adoption tells you what to fix.
                   </p>
                   <p>
-                    At Central Garden &amp; Pet, translating product intent into
-                    consumer language across a $1.5B multi-brand portfolio taught me
-                    that the framework only works if the people filling it in own
-                    the outcome too.
+                    At Central Garden &amp; Pet, I learned that the framework only
+                    works when the people filling it in own the outcome too. That
+                    took time to get right across a $1.5B multi-brand portfolio.
                   </p>
                 </div>
               </details>
@@ -164,27 +159,28 @@ export default function AshleyPage() {
                 </summary>
                 <div className="qa-answer">
                   <p>
-                    At a company the size of Ashley, the same product can be
-                    described by Sales, Retail Marketing, e-commerce, and Creative
-                    in four different ways. There is no single authoritative record.
-                    This creates confusion for retail partners, inconsistency in
-                    consumer-facing materials, and legal exposure from unsubstantiated
-                    claims. The problem compounds as the product catalog grows.
+                    At a company Ashley&apos;s size, the same product can be
+                    described four different ways by four different teams. There is
+                    no single authoritative record. That creates confusion for retail
+                    partners, inconsistency in consumer-facing materials, and legal
+                    exposure from claims no one formally approved. The problem
+                    compounds as the catalog grows.
                   </p>
                   <p>
-                    My approach: build the product guide infrastructure before trying
-                    to govern it. Work with Legal and Insights to define what a
-                    complete product record looks like -- the core claims, the proof
-                    points, the approved language -- then pilot it on one category
-                    before rolling it across the portfolio. The system has to be
-                    easier to use than the workaround; otherwise people will keep
-                    writing their own copy. Ownership and access controls matter as
-                    much as content quality.
+                    My approach: build the infrastructure before trying to govern it.
+                    Work with Legal and Insights to define what a complete product
+                    record actually looks like, then pilot it on one category before
+                    rolling across the portfolio. The system has to be easier to use
+                    than the workaround; otherwise people will keep writing their own
+                    copy. Access controls and clear ownership matter as much as the
+                    content itself.
                   </p>
                   <p>
-                    At Johnson &amp; Johnson, I regularly translated clinical data
-                    into consumer claims language that was both motivating and legally
-                    defensible -- the same discipline this function requires at scale.
+                    At Johnson &amp; Johnson, I worked with clinical teams regularly
+                    to turn research findings into consumer claims language that was
+                    motivating, accurate, and legally defensible. That is not a
+                    trivial thing to do at scale, and it is exactly what this
+                    function requires.
                   </p>
                 </div>
               </details>
@@ -196,28 +192,27 @@ export default function AshleyPage() {
                 <div className="qa-answer">
                   <p>
                     Ashley invests in consumer research. But at most large
-                    manufacturers, those insights sit in decks that get presented
-                    once and rarely shape ongoing decisions. Merchandising selects
-                    products based on trend and instinct. Creative interprets briefs
-                    without grounding in what consumers actually said. The insights
-                    roadmap is reactive -- studying what someone already decided to
-                    do, rather than shaping what gets decided next.
+                    manufacturers, those findings land in a presentation, get
+                    discussed once, and rarely shape the decisions that follow.
+                    Merchandising selects products based on trend and instinct.
+                    Creative writes briefs without grounding in what consumers
+                    actually said. The insights team ends up studying what someone
+                    already decided, rather than shaping what gets decided next.
                   </p>
                   <p>
-                    My approach: reframe Insights as a roadmap, not a report. Start
-                    with a prioritization conversation: which decisions in the next
-                    12 months would most benefit from consumer input? Build the intake
-                    process so stakeholders learn to ask for insights before decisions
-                    are made, not after. Socialize findings in formats that drive
-                    action -- one-pagers, decision memos, brief-ready summaries --
-                    not 80-slide decks. The goal is to make it harder to move forward
-                    without consumer input than to move forward with it.
+                    My approach: treat Insights as a roadmap, not a report. Start
+                    with a prioritization question: which decisions in the next 12
+                    months would most benefit from consumer input, and what does
+                    good input actually look like for each? Build the intake process
+                    so stakeholders learn to ask before they decide, not after.
+                    Deliver findings in formats that drive action: one-pagers,
+                    decision memos, brief-ready summaries. Not 80-slide decks.
                   </p>
                   <p>
-                    When research findings shaped the Full Season Fertilizer
+                    When consumer research shaped the Full Season Fertilizer
                     positioning at Central Garden &amp; Pet, the result was 8.2%
-                    brand growth at 4x the category rate and the #1 Millennial appeal
-                    score at Walmart.
+                    brand growth at 4x the category rate and the #1 Millennial
+                    appeal score at Walmart.
                   </p>
                 </div>
               </details>
@@ -235,7 +230,7 @@ export default function AshleyPage() {
               <h2 className="kinetic-section-title">What I Bring</h2>
             </div>
             <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              I have built functions and teams at every stage of my career -- and I
+              I have built functions and teams at every stage of my career, and I
               have never stopped being a practitioner. I can set strategy in the
               morning and give real creative feedback in the afternoon.
             </p>
@@ -254,8 +249,8 @@ export default function AshleyPage() {
                 <dd>
                   Translated product innovation into consumer language across a
                   $1.5B multi-brand portfolio. Built brief and messaging frameworks
-                  that connected Merchandising intent to Creative execution -- and
-                  got used because they were genuinely useful.
+                  that connected Merchandising intent to Creative execution, and
+                  got used because they were actually useful.
                 </dd>
               </div>
               <div className="mb-capability-row">
@@ -326,7 +321,7 @@ export default function AshleyPage() {
               </p>
               <p className="campaign-description">
                 <strong>The Approach:</strong> Used that insight to define and develop
-                a genuinely differentiated product -- Full Season, a
+                a genuinely differentiated product: Full Season, a
                 one-application-per-season fertilizer that eliminated multi-step
                 complexity entirely. Led the cross-functional development and
                 go-to-market strategy, built the business case for Walmart, and won
