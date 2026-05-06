@@ -1,0 +1,173 @@
+/* Ashley Furniture Candidate Page
+   Primary: #f68c2c (Ashley orange)
+   Secondary: #215387 (Ashley blue)
+   Font: Helvetica, sans-serif
+*/
+
+.company-page {
+  --color-primary: #f68c2c;
+  --color-secondary: #215387;
+  --font-primary: Helvetica, Arial, sans-serif;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.ashley-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #1a202c !important;
+  border-bottom: 1px solid rgba(246, 140, 44, 0.2);
+}
+
+.ashley-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.ashley-header-brand img {
+  display: block;
+}
+
+.ashley-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ashley-nav a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.ashley-nav a:hover {
+  color: #f68c2c;
+}
+
+.ashley-nav-cta {
+  background: #f68c2c;
+  color: #fff !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 600 !important;
+}
+
+.ashley-nav-cta:hover {
+  background: #d97820;
+  color: #fff !important;
+}
+
+/* Offset content below fixed nav */
+.company-page main {
+  padding-top: 64px;
+}
+
+/* ── GRADIENT BLOBS ──────────────────────────────────────── */
+.company-page .kinetic-gradient-blob--1 {
+  background: linear-gradient(135deg, rgba(33, 83, 135, 0.25), rgba(33, 83, 135, 0.15));
+}
+.company-page .kinetic-gradient-blob--2 {
+  background: linear-gradient(135deg, rgba(246, 140, 44, 0.15), rgba(246, 140, 44, 0.1));
+}
+.company-page .kinetic-gradient-blob--3 {
+  background: linear-gradient(135deg, rgba(33, 83, 135, 0.1), transparent);
+}
+
+/* ── BADGE DOT ───────────────────────────────────────────── */
+.company-page .kinetic-badge-dot {
+  background-color: #f68c2c;
+}
+
+/* ── RESULT STATS ────────────────────────────────────────── */
+.company-page .result-stat {
+  background: linear-gradient(135deg, rgba(246, 140, 44, 0.05), rgba(33, 83, 135, 0.08));
+  border-color: rgba(33, 83, 135, 0.2);
+}
+.company-page .result-stat-value {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── EXPERIENCE ROLE COLOR ───────────────────────────────── */
+.company-page .mb-exp-role {
+  color: var(--color-secondary);
+}
+
+/* ── CAPABILITY LIST ─────────────────────────────────────── */
+.company-page .mb-capability-row dt {
+  color: var(--color-secondary);
+}
+
+/* ── BUTTONS SIDE BY SIDE ────────────────────────────────── */
+.company-page .mb-cta-group {
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .company-page .mb-cta-group {
+    flex-direction: column !important;
+    align-items: flex-start;
+  }
+}
+
+/* ── PRIMARY BUTTON ──────────────────────────────────────── */
+.company-page .kinetic-btn--primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.company-page .kinetic-btn--primary:hover {
+  background: #d97820;
+  border-color: #d97820;
+}
+
+/* ── SIDE PROJECTS TECH TAGS ─────────────────────────────── */
+.company-page .about-project-tech span {
+  background: rgba(246, 140, 44, 0.08);
+  color: #f68c2c;
+}
+
+/* ── SECTION BADGE ───────────────────────────────────────── */
+.company-page .kinetic-section-badge {
+  color: var(--color-primary);
+  border-color: rgba(246, 140, 44, 0.25);
+  background: rgba(246, 140, 44, 0.06);
+}
+
+/* ── CAMPAIGN TITLE ──────────────────────────────────────── */
+.company-page .campaign-title {
+  color: var(--color-secondary);
+}
+
+/* ── TITLE GRADIENT ──────────────────────────────────────── */
+.company-page .kinetic-title-gradient {
+  background: linear-gradient(135deg, #f68c2c, #215387);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── IMAGE GLOW ──────────────────────────────────────────── */
+.company-page .mb-image-glow {
+  background: radial-gradient(circle, rgba(246, 140, 44, 0.15) 0%, transparent 70%);
+}
+
+/* ── QA ACCORDION ────────────────────────────────────────── */
+.company-page .qa-item summary {
+  color: var(--color-secondary);
+}
+.company-page .qa-item[open] summary {
+  color: var(--color-primary);
+}
