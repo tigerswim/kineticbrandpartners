@@ -57,9 +57,8 @@ export default function AshleyPage() {
                 </div>
 
                 <h1 className="mb-title animate-slide-up delay-2">
-                  Strategy in the morning.{" "}
-                  <span className="ashley-accent">Real work</span>{" "}
-                  in the afternoon.
+                  Building the function that connects the product{" "}
+                  to the <span className="ashley-accent">story</span>.
                 </h1>
 
                 <p className="mb-subtitle animate-slide-up delay-3">
