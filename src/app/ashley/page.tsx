@@ -5,6 +5,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
+import AshleyMobileMenu from "@/components/AshleyMobileMenu";
 import "./page.css";
 
 export const metadata = {
@@ -31,6 +32,7 @@ export default function AshleyPage() {
             <li><a href="#background">Background</a></li>
             <li><a href="#contact" className="ashley-nav-cta">Let&apos;s Talk</a></li>
           </ul>
+          <AshleyMobileMenu />
         </div>
       </header>
 
@@ -474,12 +476,13 @@ export default function AshleyPage() {
               <div className="campaign-media-grid campaign-media-grid--2col">
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom &ndash; Cullen</h3>
-                  <div className="media-wrapper">
+                  <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
                     <video
                       controls
                       className="media-video"
                       poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
                       preload="none"
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     >
                       <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                       Your browser does not support the video tag.
@@ -488,12 +491,13 @@ export default function AshleyPage() {
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom &ndash; Debbie</h3>
-                  <div className="media-wrapper">
+                  <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
                     <video
                       controls
                       className="media-video"
                       poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
                       preload="none"
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     >
                       <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
                       Your browser does not support the video tag.

@@ -67,6 +67,84 @@
   color: #fff !important;
 }
 
+@media (max-width: 768px) {
+  .ashley-nav { display: none; }
+}
+
+/* ── Hamburger ───────────────────────────────────────────── */
+.ashley-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .ashley-hamburger { display: flex; }
+}
+
+.ashley-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #1a202c;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+.ashley-bar--open-1 { transform: translateY(7px) rotate(45deg); }
+.ashley-bar--open-2 { opacity: 0; }
+.ashley-bar--open-3 { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile menu overlay ─────────────────────────────────── */
+.ashley-mobile-menu {
+  position: fixed;
+  inset: 64px 0 0 0;
+  background: #ffffff;
+  z-index: 99;
+  display: flex;
+  align-items: flex-start;
+  padding: 2rem 1.5rem;
+  border-top: 2px solid #f68c2c;
+}
+
+.ashley-mobile-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.ashley-mobile-menu li a {
+  display: block;
+  padding: 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: color 0.2s;
+}
+
+.ashley-mobile-menu li a:hover { color: #f68c2c; }
+
+.ashley-mobile-menu li a.ashley-mobile-cta {
+  color: #f68c2c;
+  border-bottom: none;
+  margin-top: 1rem;
+}
+
 /* Offset content below fixed nav */
 .company-page main {
   padding-top: 64px;

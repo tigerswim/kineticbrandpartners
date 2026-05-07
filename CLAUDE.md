@@ -95,7 +95,11 @@ Two parallel design surfaces live in this repo:
 
 1. **Main site** — `/`, `/about`, `/work`, `/resume`. Uses the **KBP refresh** (Bricolage + Manrope, navy/teal palette pulled from the logo). Each main-site page imports `kbp-main.css` and adds `kbp-main` to its root `<div>`. All refresh tokens, component overrides, and motion are scoped under `.kbp-main` so they cannot leak to candidate pages.
 
-2. **Candidate pages** — `/sbd`, `/gc`, `/ups`, `/ws`, `/keh`, `/locumtenens`, `/finsync`, `/earnix`. These keep the **legacy Kinetic Flow** styles in `globals.css` plus per-page brand overrides in `src/app/<page>/page.css`. Do not edit `kbp-main.css` for candidate-page changes.
+2. **Candidate pages** — `/sbd`, `/gc`, `/ups`, `/ws`, `/keh`, `/locumtenens`, `/finsync`, `/earnix`, `/ashley`. These keep the **legacy Kinetic Flow** styles in `globals.css` plus per-page brand overrides in `src/app/<page>/page.css`. Do not edit `kbp-main.css` for candidate-page changes.
+
+   **Every new candidate page requires:**
+   - **Hamburger menu** — create a `<Company>MobileMenu` client component (pattern: `src/components/AshleyMobileMenu.tsx`). The desktop nav hides at `max-width: 768px`; the hamburger shows. The overlay uses the page's brand colors (light pages: white background, dark text, brand-color accent; dark pages: dark background, white text). Place `<CompanyMobileMenu />` in the header alongside the desktop `<ul>`.
+   - **Thanks Mom video height matching** — the two Thanks Mom videos (Cullen: 352×240, Debbie: 320×240) have different aspect ratios. Set `style={{ aspectRatio: "352/240" }}` on **both** `.media-wrapper` divs, and `style={{ height: "100%", objectFit: "contain" }}` on both `<video>` elements. This makes them render at the same height with minimal letterboxing.
 
 **Brand color tokens** (in `kbp-main.css`, under `.kbp-main`):
 - `--ink`: navy from the "Kinetic" wordmark
