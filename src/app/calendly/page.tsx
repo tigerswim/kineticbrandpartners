@@ -5,6 +5,7 @@
 
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
+import CalendlyMobileMenu from "@/components/CalendlyMobileMenu";
 import "./page.css";
 
 export const metadata = {
@@ -38,6 +39,7 @@ export default function CalendlyPage() {
               height={28}
             />
           </a>
+          <CalendlyMobileMenu />
           <ul className="calendly-nav">
             <li>
               <a href="#why">The Move</a>

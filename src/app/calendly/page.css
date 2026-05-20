@@ -344,11 +344,90 @@
   opacity: 0.5;
 }
 
+/* ── Hamburger button ───────────────────────────────────────────────────── */
+
+.calendly-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.calendly-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.calendly-bar--open-1 { transform: translateY(7px) rotate(45deg); }
+.calendly-bar--open-2 { opacity: 0; }
+.calendly-bar--open-3 { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile menu overlay ────────────────────────────────────────────────── */
+
+.calendly-mobile-menu {
+  position: fixed;
+  inset: 60px 0 0 0;
+  background: var(--color-secondary);
+  z-index: 99;
+  display: flex;
+  align-items: flex-start;
+  padding: 2rem 1.5rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.calendly-mobile-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.calendly-mobile-menu li a {
+  display: block;
+  padding: 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: color 0.2s;
+}
+
+.calendly-mobile-menu li a:hover {
+  color: #fff;
+}
+
+.calendly-mobile-cta {
+  color: #fff !important;
+  border-bottom: none !important;
+  margin-top: 1rem;
+}
+
 /* ── Mobile ─────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
   .calendly-nav {
     display: none;
+  }
+
+  .calendly-hamburger {
+    display: flex;
   }
 
   .company-page main {
@@ -395,14 +474,5 @@
   .cpg-saas-proof,
   .cpg-saas-concept {
     font-size: 0.875rem;
-  }
-
-  /* Nav: hide text links but keep logo visible */
-  .calendly-nav li:not(:last-child) {
-    display: none;
-  }
-
-  .calendly-nav-cta {
-    display: inline-block;
   }
 }
