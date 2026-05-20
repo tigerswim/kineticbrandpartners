@@ -40,7 +40,7 @@ export default function CalendlyPage() {
           </a>
           <ul className="calendly-nav">
             <li>
-              <a href="#why">Three Problems</a>
+              <a href="#why">The Move</a>
             </li>
             <li>
               <a href="#bring">What I Bring</a>
