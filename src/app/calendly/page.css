@@ -72,6 +72,7 @@
 
 .calendly-header {
   background: var(--color-primary) !important;
+  z-index: 201 !important;
 }
 
 .calendly-header-inner {
@@ -380,12 +381,13 @@
 .calendly-mobile-menu {
   position: fixed;
   inset: 60px 0 0 0;
-  background: var(--color-secondary);
-  z-index: 99;
+  background: #004796;
+  z-index: 200;
   display: flex;
   align-items: flex-start;
   padding: 2rem 1.5rem;
   border-top: 2px solid rgba(255, 255, 255, 0.15);
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 .calendly-mobile-menu ul {
@@ -403,10 +405,11 @@
   padding: 1rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   transition: color 0.2s;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 .calendly-mobile-menu li a:hover {
