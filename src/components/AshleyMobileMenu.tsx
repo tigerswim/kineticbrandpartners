@@ -29,9 +29,11 @@ export default function AshleyMobileMenu() {
         <div className="ashley-mobile-menu">
           <ul>
             <li><a href="#why" onClick={close}>Hypotheses</a></li>
+            <li><a href="#first90" onClick={close}>First 90 Days</a></li>
             <li><a href="#bring" onClick={close}>What I Bring</a></li>
             <li><a href="#work" onClick={close}>Selected Work</a></li>
             <li><a href="#background" onClick={close}>Background</a></li>
+            <li><a href="#side-projects" onClick={close}>Side Projects</a></li>
             <li><a href="#contact" className="ashley-mobile-cta" onClick={close}>Let&apos;s Talk</a></li>
           </ul>
         </div>,
