@@ -33,7 +33,6 @@ export default function AshleyMobileMenu() {
             <li><a href="#bring" onClick={close}>What I Bring</a></li>
             <li><a href="#work" onClick={close}>Selected Work</a></li>
             <li><a href="#background" onClick={close}>Background</a></li>
-            <li><a href="#side-projects" onClick={close}>Side Projects</a></li>
             <li><a href="#contact" className="ashley-mobile-cta" onClick={close}>Let&apos;s Talk</a></li>
           </ul>
         </div>,

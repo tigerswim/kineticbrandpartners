@@ -55,9 +55,6 @@ export default function AshleyPage() {
               <a href="#background">Background</a>
             </li>
             <li>
-              <a href="#side-projects">Side Projects</a>
-            </li>
-            <li>
               <a href="#contact" className="ashley-nav-cta">
                 Let&apos;s Talk
               </a>
@@ -188,13 +185,15 @@ export default function AshleyPage() {
                     </p>
                   </div>
                 </div>
-                <p className="brief-proof">
-                  <strong>Central Garden &amp; Pet.</strong> I led the team to
-                  develop a new briefing template that better detailed the
-                  business context, consumer perspective, and brand needs for
-                  each new piece of content. This team effort led to fewer
-                  revision cycles and better work.
-                </p>
+                <div className="brief-field">
+                  <span className="brief-col-label">Recent Results</span>
+                  <p className="brief-proof">
+                    I led the team to develop a new briefing template that
+                    better detailed the business context, consumer perspective,
+                    and brand needs for each new piece of content. This team
+                    effort led to fewer revision cycles and better work.
+                  </p>
+                </div>
               </article>
 
               {/* ── Col 02 ── */}
@@ -225,12 +224,15 @@ export default function AshleyPage() {
                     </p>
                   </div>
                 </div>
-                <p className="brief-proof">
-                  <strong>Central Garden &amp; Pet.</strong> Built a shared
-                  process with Creative, Digital, Customer Marketing, and Brand
-                  for Product Detail Page content: who does what, in what order.
-                  Home Depot and Lowe&apos;s called the output best in class.
-                </p>
+                <div className="brief-field">
+                  <span className="brief-col-label">Recent Results</span>
+                  <p className="brief-proof">
+                    Built a shared process with Creative, Digital, Customer
+                    Marketing, and Brand for Product Detail Page content: who
+                    does what, in what order. Home Depot and Lowe&apos;s called
+                    the output best in class.
+                  </p>
+                </div>
               </article>
 
               {/* ── Col 03 ── */}
@@ -262,12 +264,14 @@ export default function AshleyPage() {
                     </p>
                   </div>
                 </div>
-                <p className="brief-proof">
-                  <strong>Central Garden &amp; Pet.</strong> Consumer Insights
-                  shaped Full Season Fertilizer from the start. Result: 8.2%
-                  brand growth at 4x the category rate, #1 Millennial appeal at
-                  Walmart.
-                </p>
+                <div className="brief-field">
+                  <span className="brief-col-label">Recent Results</span>
+                  <p className="brief-proof">
+                    Consumer Insights shaped Full Season Fertilizer from the
+                    start. Result: 8.2% brand growth at 4x the category rate, #1
+                    Millennial appeal at Walmart.
+                  </p>
+                </div>
               </article>
             </div>
           </div>
@@ -284,8 +288,8 @@ export default function AshleyPage() {
             </div>
             <p className="mb-subtitle brief-intro">
               Validate hypotheses. Begin earning trust throughout the
-              organization by delivering value first, then architecting the
-              function around what the business needs.
+              organization by delivering value. Architect Product Marketing
+              around what the business needs.
             </p>
 
             <ol className="first90-timeline">
@@ -293,15 +297,14 @@ export default function AshleyPage() {
                 <div className="first90-marker" aria-hidden="true">
                   <span>1</span>
                 </div>
-                <span className="first90-phase-label">Days 1&ndash;30</span>
-                <h3 className="first90-headline">Listen &amp; Learn.</h3>
+                <h3 className="first90-headline">Listen.</h3>
                 <p className="first90-body">
                   Spend time learning the business from cross functional
                   partners so that I understand the broader context of the work.
                   Sit with Merchandising, Design, Creative, and Marketing one
-                  team at a time. Walk markets. Watch a brief handoff. Map where
-                  the data lives across the organization. Understand and
-                  document current workflows and KPIs.
+                  team at a time. Walk markets. Watch a product brief handoff.
+                  Map where the data lives across the organization. Understand
+                  and document current workflows and KPIs.
                 </p>
               </li>
 
@@ -309,7 +312,6 @@ export default function AshleyPage() {
                 <div className="first90-marker" aria-hidden="true">
                   <span>2</span>
                 </div>
-                <span className="first90-phase-label">Days 31&ndash;60</span>
                 <h3 className="first90-headline">Pilot.</h3>
                 <p className="first90-body">
                   Take what works in Bedding and run a structured pilot in one
@@ -325,7 +327,6 @@ export default function AshleyPage() {
                 <div className="first90-marker" aria-hidden="true">
                   <span>3</span>
                 </div>
-                <span className="first90-phase-label">Days 61&ndash;90</span>
                 <h3 className="first90-headline">Prioritize.</h3>
                 <p className="first90-body">
                   Run the Insights prioritization conversation. Which groups
@@ -392,6 +393,16 @@ export default function AshleyPage() {
                   time. Drove alignment in matrixed organizations without always
                   having direct authority over the people whose work depended on
                   it.
+                </dd>
+              </div>
+              <div className="mb-capability-row reveal">
+                <dt>Hands-On Builder</dt>
+                <dd>
+                  When I want to understand something, I build it. Shipped three
+                  production tools using AI-assisted coding: a triathlon
+                  training app, a CRM-style contact tracker, and a SaaS metrics
+                  dashboard. The same mindset I&apos;d bring to standing up
+                  Product Marketing from zero.
                 </dd>
               </div>
             </dl>
@@ -505,185 +516,227 @@ export default function AshleyPage() {
               </div>
             </div>
 
-            {/* Campaign: #FlipTheTurf */}
-            <div
-              className="campaign-card reveal"
+            {/* Campaign: #FlipTheTurf — collapsed */}
+            <details
+              className="campaign-card campaign-card--collapsible reveal"
               style={{ marginBottom: "3rem" }}
             >
-              <div className="campaign-header">
-                <h2 className="campaign-title">#FlipTheTurf</h2>
-                <p className="campaign-meta">
-                  Central Garden &amp; Pet &middot; Pennington Grass Seed
-                </p>
-              </div>
-              <p className="campaign-description">
-                <strong>The Challenge:</strong> Grass seed is a low-involvement
-                purchase. Artificial turf was causing player injuries, and
-                Pennington had no natural platform to enter the national sports
-                conversation. The brand needed to make millions of people
-                suddenly care about something they had never thought twice
-                about.
-              </p>
-              <p className="campaign-description">
-                <strong>The Approach:</strong> Partner with NFL star Von Miller
-                on a deliberately provocative anti-turf campaign designed to get
-                banned by the league. The NFL&apos;s censorship became free
-                media coverage, sparking a grassroots movement among players and
-                fans.
-              </p>
-
-              <div className="campaign-media-grid campaign-media-grid--2col">
-                <div className="media-item">
-                  <h3 className="media-item-title">Banned Ad</h3>
-                  <div className="media-wrapper">
-                    <video
-                      controls
-                      className="media-video"
-                      poster="/Videos/FTT-banned-ad-poster.webp"
-                      preload="none"
-                    >
-                      <source
-                        src="/Videos/FTT-banned-ad.mp4"
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+              <summary className="campaign-summary">
+                <div className="campaign-summary-text">
+                  <h2 className="campaign-title">#FlipTheTurf</h2>
+                  <p className="campaign-meta">
+                    Central Garden &amp; Pet &middot; Pennington Grass Seed
+                    &middot; 3.95B impressions &middot; 2x Clio Sports
+                  </p>
                 </div>
-                <div className="media-item">
-                  <h3 className="media-item-title">Campaign Summary</h3>
-                  <div className="media-wrapper">
-                    <video
-                      controls
-                      className="media-video"
-                      poster="/Videos/FTT-summary-video-poster.webp"
-                      preload="none"
-                    >
-                      <source
-                        src="/Videos/FTT-summary-video.mp4"
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-              </div>
-
-              <div className="campaign-results">
-                <h3 className="results-title">The Impact</h3>
-                <div className="results-grid">
-                  <div className="result-stat">
-                    <div className="result-stat-value">3.95B</div>
-                    <div className="result-stat-label">Impressions</div>
-                  </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">31K+</div>
-                    <div className="result-stat-label">Petition Signatures</div>
-                  </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">2x</div>
-                    <div className="result-stat-label">Clio Award Winner</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Campaign: Thanks Mom */}
-            <div className="campaign-card reveal">
-              <div className="campaign-header">
-                <h2 className="campaign-title">Thanks, Mom</h2>
-                <p className="campaign-meta">
-                  Johnson &amp; Johnson &middot; Baby Care
-                </p>
-              </div>
-              <p className="campaign-description">
-                <strong>The Challenge:</strong> In a commoditized baby care
-                aisle, Johnson&apos;s Baby needed to reinforce its emotional
-                equity while driving measurable sales results.
-              </p>
-              <p className="campaign-description">
-                <strong>The Approach:</strong> An Olympic campaign where
-                athletes thanked their mothers on the world stage. The campaign
-                was so compelling that Debbie Phelps, Michael Phelps&apos; mom,{" "}
-                <em>asked</em> to participate. Won J&amp;J&apos;s Global Burke
-                Award.
-              </p>
-
-              <div className="campaign-media-grid campaign-media-grid--2col">
-                <div className="media-item">
-                  <h3 className="media-item-title">
-                    Thanks Mom &ndash; Cullen
-                  </h3>
-                  <div
-                    className="media-wrapper"
-                    style={{ aspectRatio: "352/240" }}
+                <span className="campaign-summary-toggle" aria-hidden="true">
+                  <span className="campaign-summary-toggle-label">Expand</span>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.25"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <video
-                      controls
-                      className="media-video"
-                      poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
-                      preload="none"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
-                    >
-                      <source
-                        src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-                <div className="media-item">
-                  <h3 className="media-item-title">
-                    Thanks Mom &ndash; Debbie
-                  </h3>
-                  <div
-                    className="media-wrapper"
-                    style={{ aspectRatio: "352/240" }}
-                  >
-                    <video
-                      controls
-                      className="media-video"
-                      poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
-                      preload="none"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
-                    >
-                      <source
-                        src="/Videos/Thanks-Mom-Debbie.mp4"
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-              </div>
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </summary>
+              <div className="campaign-body">
+                <p className="campaign-description">
+                  <strong>The Challenge:</strong> Grass seed is a
+                  low-involvement purchase. Artificial turf was causing player
+                  injuries, and Pennington had no natural platform to enter the
+                  national sports conversation. The brand needed to make
+                  millions of people suddenly care about something they had
+                  never thought twice about.
+                </p>
+                <p className="campaign-description">
+                  <strong>The Approach:</strong> Partner with NFL star Von
+                  Miller on a deliberately provocative anti-turf campaign
+                  designed to get banned by the league. The NFL&apos;s
+                  censorship became free media coverage, sparking a grassroots
+                  movement among players and fans.
+                </p>
 
-              <div className="campaign-results">
-                <h3 className="results-title">The Impact</h3>
-                <div className="results-grid">
-                  <div className="result-stat">
-                    <div className="result-stat-value">$400MM</div>
-                    <div className="result-stat-label">Portfolio P&amp;L</div>
+                <div className="campaign-media-grid campaign-media-grid--2col">
+                  <div className="media-item">
+                    <h3 className="media-item-title">Banned Ad</h3>
+                    <div className="media-wrapper">
+                      <video
+                        controls
+                        className="media-video"
+                        poster="/Videos/FTT-banned-ad-poster.webp"
+                        preload="none"
+                      >
+                        <source
+                          src="/Videos/FTT-banned-ad.mp4"
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
                   </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">9.8%</div>
-                    <div className="result-stat-label">Sales Growth</div>
+                  <div className="media-item">
+                    <h3 className="media-item-title">Campaign Summary</h3>
+                    <div className="media-wrapper">
+                      <video
+                        controls
+                        className="media-video"
+                        poster="/Videos/FTT-summary-video-poster.webp"
+                        preload="none"
+                      >
+                        <source
+                          src="/Videos/FTT-summary-video.mp4"
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
                   </div>
-                  <div className="result-stat">
-                    <div className="result-stat-value">290MM</div>
-                    <div className="result-stat-label">Impressions</div>
+                </div>
+
+                <div className="campaign-results">
+                  <h3 className="results-title">The Impact</h3>
+                  <div className="results-grid">
+                    <div className="result-stat">
+                      <div className="result-stat-value">3.95B</div>
+                      <div className="result-stat-label">Impressions</div>
+                    </div>
+                    <div className="result-stat">
+                      <div className="result-stat-value">31K+</div>
+                      <div className="result-stat-label">
+                        Petition Signatures
+                      </div>
+                    </div>
+                    <div className="result-stat">
+                      <div className="result-stat-value">2x</div>
+                      <div className="result-stat-label">Clio Award Winner</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </details>
+
+            {/* Campaign: Thanks Mom — collapsed */}
+            <details className="campaign-card campaign-card--collapsible reveal">
+              <summary className="campaign-summary">
+                <div className="campaign-summary-text">
+                  <h2 className="campaign-title">Thanks, Mom</h2>
+                  <p className="campaign-meta">
+                    Johnson &amp; Johnson &middot; Baby Care &middot; $400MM
+                    P&amp;L &middot; J&amp;J Global Burke Award
+                  </p>
+                </div>
+                <span className="campaign-summary-toggle" aria-hidden="true">
+                  <span className="campaign-summary-toggle-label">Expand</span>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.25"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </summary>
+              <div className="campaign-body">
+                <p className="campaign-description">
+                  <strong>The Challenge:</strong> In a commoditized baby care
+                  aisle, Johnson&apos;s Baby needed to reinforce its emotional
+                  equity while driving measurable sales results.
+                </p>
+                <p className="campaign-description">
+                  <strong>The Approach:</strong> An Olympic campaign where
+                  athletes thanked their mothers on the world stage. The
+                  campaign was so compelling that Debbie Phelps, Michael
+                  Phelps&apos; mom, <em>asked</em> to participate. Won
+                  J&amp;J&apos;s Global Burke Award.
+                </p>
+
+                <div className="campaign-media-grid campaign-media-grid--2col">
+                  <div className="media-item">
+                    <h3 className="media-item-title">
+                      Thanks Mom &ndash; Cullen
+                    </h3>
+                    <div
+                      className="media-wrapper"
+                      style={{ aspectRatio: "352/240" }}
+                    >
+                      <video
+                        controls
+                        className="media-video"
+                        poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                        preload="none"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      >
+                        <source
+                          src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  </div>
+                  <div className="media-item">
+                    <h3 className="media-item-title">
+                      Thanks Mom &ndash; Debbie
+                    </h3>
+                    <div
+                      className="media-wrapper"
+                      style={{ aspectRatio: "352/240" }}
+                    >
+                      <video
+                        controls
+                        className="media-video"
+                        poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                        preload="none"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      >
+                        <source
+                          src="/Videos/Thanks-Mom-Debbie.mp4"
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="campaign-results">
+                  <h3 className="results-title">The Impact</h3>
+                  <div className="results-grid">
+                    <div className="result-stat">
+                      <div className="result-stat-value">$400MM</div>
+                      <div className="result-stat-label">Portfolio P&amp;L</div>
+                    </div>
+                    <div className="result-stat">
+                      <div className="result-stat-value">9.8%</div>
+                      <div className="result-stat-label">Sales Growth</div>
+                    </div>
+                    <div className="result-stat">
+                      <div className="result-stat-value">290MM</div>
+                      <div className="result-stat-label">Impressions</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
         </section>
 
@@ -984,120 +1037,7 @@ export default function AshleyPage() {
           </div>
         </section>
 
-        {/* ── SECTION 6: SIDE PROJECTS ──────────────────────────── */}
-        <section id="side-projects" className="kinetic-section">
-          <div className="kinetic-container">
-            <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">Side Projects</span>
-              <h2 className="kinetic-section-title">Building on the Side</h2>
-            </div>
-            <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              When I want to understand something, I build it. These are three
-              tools I shipped from scratch using AI-assisted coding. The same
-              mindset I would bring to standing up a new Product Marketing
-              function.
-            </p>
-            <div className="about-projects-grid">
-              <div className="kinetic-card reveal">
-                <div className="about-project-favicon">
-                  <img
-                    src="/raceprep-favicon.png"
-                    alt="RacePrep"
-                    width={48}
-                    height={48}
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="about-project-title">RacePrep</h3>
-                <p className="about-project-desc">
-                  A triathlon training app built to surface swim, bike, and run
-                  data beyond what Strava shows. Taught me relational data
-                  design and the discipline of building something people
-                  actually use.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>Supabase</span>
-                  <span>TypeScript</span>
-                  <span>APIs</span>
-                </div>
-                <a
-                  href="https://raceprep.kineticbrandpartners.com/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live &rarr;
-                </a>
-              </div>
-
-              <div className="kinetic-card reveal">
-                <div className="about-project-favicon">
-                  <img
-                    src="/job-tracker-favicon.png"
-                    alt="Job Tracker"
-                    width={48}
-                    height={48}
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="about-project-title">Job Tracker</h3>
-                <p className="about-project-desc">
-                  A CRM-style job search tool built to track every contact and
-                  connection in one place. Job hunting is a sales process; I
-                  built a tool that treats it like one.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>Supabase</span>
-                  <span>OAuth</span>
-                  <span>n8n</span>
-                </div>
-                <a
-                  href="https://job-tracker.kineticbrandpartners.com/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live &rarr;
-                </a>
-              </div>
-
-              <div className="kinetic-card reveal">
-                <div className="about-project-favicon">
-                  <img
-                    src="/saas-favicon.svg"
-                    alt="SaaS Metrics Calculator"
-                    width={48}
-                    height={48}
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="about-project-title">SaaS Metrics Calculator</h3>
-                <p className="about-project-desc">
-                  A dashboard for modeling SaaS KPIs and seeing how they respond
-                  to different assumptions. Role-based views show each user only
-                  what matters to their decisions.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>TypeScript</span>
-                  <span>Netlify</span>
-                </div>
-                <a
-                  href="https://saas-metrics-calculator.netlify.app/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live &rarr;
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── SECTION 7: CONTACT ────────────────────────────────── */}
+        {/* ── SECTION 6: CONTACT ────────────────────────────────── */}
         <section id="contact" className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container" style={{ textAlign: "center" }}>
             <div
@@ -1111,8 +1051,7 @@ export default function AshleyPage() {
               className="mb-subtitle"
               style={{ maxWidth: "540px", margin: "0 auto 2rem" }}
             >
-              If those challenges sound familiar, I would like to talk about
-              what building this function together looks like.
+              Let's talk about what building this function together looks like.
             </p>
             <div className="mb-cta-group" style={{ justifyContent: "center" }}>
               <CalendlyButton className="kinetic-btn kinetic-btn--primary">
