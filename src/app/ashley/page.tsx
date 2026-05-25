@@ -122,7 +122,7 @@ export default function AshleyPage() {
               <h2 className="kinetic-section-title">What I&apos;ve heard. What I think. How I&apos;d start.</h2>
             </div>
             <p className="mb-subtitle brief-intro">
-              I&apos;ve spent time with the people closest to this. Three problems that aren&apos;t solved by adding headcount.
+              I&apos;ve had a number of great conversations throughout the interview process. Three opportunity areas have stood out.
             </p>
 
             <div className="brief-cols">
@@ -130,15 +130,15 @@ export default function AshleyPage() {
               {/* ── Col 01 ── */}
               <article className="brief-col">
                 <span className="brief-num" aria-hidden="true">01</span>
-                <h3 className="brief-headline">No one owns the handoff between product vision and Creative</h3>
+                <h3 className="brief-headline">The raw material for strong briefs is already available.</h3>
                 <div className="brief-detail">
                   <div className="brief-field">
                     <span className="brief-col-label">What I heard</span>
-                    <p className="brief-heard">No PM function connecting Merchandising to Creative. Briefs arrive late or thin. Design intent gets compressed into a spec sheet, and different teams describe the same product differently.</p>
+                    <p className="brief-heard">Merchandising and Design know how to create beautiful furniture that meets consumer needs. Creative and Marketing know how to package it with an engaging message. This role exists to bridge those groups.</p>
                   </div>
                   <div className="brief-field">
                     <span className="brief-col-label">First move</span>
-                    <p className="brief-move">Ask Merchandising one question: what do you wish Creative understood before starting? Those answers are the brief. Co-design it with the people who fill it in.</p>
+                    <p className="brief-move">Sit down with each side separately. Ask Merchandising what they wish Creative understood before the project starts. Ask Creative what they never get told. Those two lists together are the brief.</p>
                   </div>
                 </div>
                 <p className="brief-proof"><strong>Central Garden &amp; Pet, $1.5B portfolio.</strong> Built a briefing template from scratch with Digital and Creative — not for them, with them. Fewer revision cycles. Better work.</p>
@@ -147,32 +147,32 @@ export default function AshleyPage() {
               {/* ── Col 02 ── */}
               <article className="brief-col">
                 <span className="brief-num" aria-hidden="true">02</span>
-                <h3 className="brief-headline">600+ SKU launches a year is a content operation, not a marketing problem</h3>
+                <h3 className="brief-headline">600+ SKUs a year need a repeatable process.</h3>
                 <div className="brief-detail">
                   <div className="brief-field">
                     <span className="brief-col-label">What I heard</span>
-                    <p className="brief-heard">No systematic process for content at that volume. What gets produced doesn&apos;t feed back into what gets built next. Unstructured specs produce generic copy regardless of the tool doing the writing.</p>
+                    <p className="brief-heard">No consistent content standard exists across categories. Each team works from its own version of the product story. Bedding has a process that works, and the foundation is there to build from it.</p>
                   </div>
                   <div className="brief-field">
                     <span className="brief-col-label">First move</span>
-                    <p className="brief-move">Run five structured PIM records and five unstructured ones through the same content prompt. The output difference makes the case in an afternoon.</p>
+                    <p className="brief-move">Understand what makes the Bedding process work. Then sit with each new category team and find where it breaks. Adapt from there. The point is a system that holds, not a template that gets ignored after month two.</p>
                   </div>
                 </div>
-                <p className="brief-proof"><strong>Central Garden &amp; Pet.</strong> Built a shared process with Creative, Digital, Customer Marketing, and Brand for PDP content — who does what, in what order. Retailers called the output best in class.</p>
+                <p className="brief-proof"><strong>Central Garden &amp; Pet.</strong> Built a shared process with Creative, Digital, Customer Marketing, and Brand for PDP content: who does what, in what order. Home Depot and Lowe&apos;s called the output best in class.</p>
               </article>
 
               {/* ── Col 03 ── */}
               <article className="brief-col">
                 <span className="brief-num" aria-hidden="true">03</span>
-                <h3 className="brief-headline">Consumer insights exist, but they arrive after the decision, not before it</h3>
+                <h3 className="brief-headline">Good research exists. It just isn&apos;t driving decisions yet.</h3>
                 <div className="brief-detail">
                   <div className="brief-field">
                     <span className="brief-col-label">What I heard</span>
-                    <p className="brief-heard">A research capability exists inside Ashley. Without a structured path into the planning cycle, it gets pulled in after decisions are made — as validation, not input. The capability is there. The timing isn&apos;t.</p>
+                    <p className="brief-heard">There&apos;s a real Insights team doing real work. What&apos;s missing is a connection between that work and the decisions being made. Which categories to prioritize, where the market is shifting, what white space the competition isn&apos;t filling. Those are questions Insights should be answering before the choices get made, not validating after.</p>
                   </div>
                   <div className="brief-field">
                     <span className="brief-col-label">First move</span>
-                    <p className="brief-move">Sync a research calendar to the four-market cycle. PM publishes open questions 6&ndash;8 weeks before each market. Merchandising routes through PM, not directly to Insights.</p>
+                    <p className="brief-move">Start with a prioritization conversation: which decisions in the next 12 months would change with better consumer data? The answers to that set the research agenda. Insights runs toward real questions, not open-ended standing reports.</p>
                   </div>
                 </div>
                 <p className="brief-proof"><strong>Central Garden &amp; Pet.</strong> Consumer Insights shaped Full Season Fertilizer from the start. Result: 8.2% brand growth at 4x the category rate, #1 Millennial appeal at Walmart.</p>
