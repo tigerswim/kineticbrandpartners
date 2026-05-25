@@ -5,10 +5,10 @@ import { useEffect } from "react";
 export default function AshleyScrollReveal() {
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const cols = document.querySelectorAll<HTMLElement>(".brief-col");
+    const targets = document.querySelectorAll<HTMLElement>(".brief-col, .reveal");
 
     if (prefersReduced) {
-      cols.forEach((c) => c.classList.add("is-visible"));
+      targets.forEach((c) => c.classList.add("is-visible"));
       return;
     }
 
@@ -24,12 +24,12 @@ export default function AshleyScrollReveal() {
       { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
 
-    cols.forEach((col) => {
-      const rect = col.getBoundingClientRect();
+    targets.forEach((el) => {
+      const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.92) {
-        requestAnimationFrame(() => col.classList.add("is-visible"));
+        requestAnimationFrame(() => el.classList.add("is-visible"));
       } else {
-        io.observe(col);
+        io.observe(el);
       }
     });
 

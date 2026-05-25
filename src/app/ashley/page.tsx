@@ -283,61 +283,58 @@ export default function AshleyPage() {
               </h2>
             </div>
             <p className="mb-subtitle brief-intro">
-              Diagnosis before prescription. The goal is to earn trust by being
-              useful first, then build the function around what the business
-              actually needs.
+              Validate hypotheses. Begin earning trust throughout the
+              organization by delivering value first, then architecting the
+              function around what the business needs.
             </p>
 
-            <div className="brief-cols">
-              <article className="brief-col">
-                <span className="brief-num" aria-hidden="true">
-                  01
-                </span>
-                <h3 className="brief-headline">Days 1&ndash;30. Listen.</h3>
-                <div className="brief-detail">
-                  <p className="brief-heard">
-                    Sit with Merchandising, Design, Creative, Sales, and
-                    Insights one team at a time. Walk a market. Watch a brief
-                    get handed off. Document where the product story currently
-                    breaks and where it already works. No new templates, no new
-                    meetings.
-                  </p>
+            <ol className="first90-timeline">
+              <li className="first90-phase reveal">
+                <div className="first90-marker" aria-hidden="true">
+                  <span>1</span>
                 </div>
-              </article>
+                <span className="first90-phase-label">Days 1&ndash;30</span>
+                <h3 className="first90-headline">Listen &amp; Learn.</h3>
+                <p className="first90-body">
+                  Spend time learning the business from cross functional
+                  partners so that I understand the broader context of the work.
+                  Sit with Merchandising, Design, Creative, and Marketing one
+                  team at a time. Walk markets. Watch a brief handoff. Map where
+                  the data lives across the organization. Understand and
+                  document current workflows and KPIs.
+                </p>
+              </li>
 
-              <article className="brief-col">
-                <span className="brief-num" aria-hidden="true">
-                  02
-                </span>
-                <h3 className="brief-headline">Days 31&ndash;60. Pilot.</h3>
-                <div className="brief-detail">
-                  <p className="brief-heard">
-                    Take what works in Bedding and run a structured pilot in one
-                    casegoods category. Co-design the brief with the team that
-                    has to fill it in. Measure what changes: fewer revision
-                    cycles, faster handoffs, clearer asset output. Earn the
-                    right to scale.
-                  </p>
+              <li className="first90-phase reveal">
+                <div className="first90-marker" aria-hidden="true">
+                  <span>2</span>
                 </div>
-              </article>
+                <span className="first90-phase-label">Days 31&ndash;60</span>
+                <h3 className="first90-headline">Pilot.</h3>
+                <p className="first90-body">
+                  Take what works in Bedding and run a structured pilot in one
+                  Casegoods product line. Co-design the brief with the team that
+                  has to fill it in and the team that works from it. Measure
+                  what changes in terms of revision cycles, process speed, etc.,
+                  and further optimize. Determine if/how AI can speed up the
+                  process further.
+                </p>
+              </li>
 
-              <article className="brief-col">
-                <span className="brief-num" aria-hidden="true">
-                  03
-                </span>
-                <h3 className="brief-headline">
-                  Days 61&ndash;90. Prioritize.
-                </h3>
-                <div className="brief-detail">
-                  <p className="brief-heard">
-                    Run the Insights prioritization conversation. Which
-                    decisions in the next 12 months would change with better
-                    consumer data? Translate the answers into a research agenda
-                    Merchandising, Creative, and Sales all see at the same time.
-                  </p>
+              <li className="first90-phase reveal">
+                <div className="first90-marker" aria-hidden="true">
+                  <span>3</span>
                 </div>
-              </article>
-            </div>
+                <span className="first90-phase-label">Days 61&ndash;90</span>
+                <h3 className="first90-headline">Prioritize.</h3>
+                <p className="first90-body">
+                  Run the Insights prioritization conversation. Which groups
+                  need to learn what Insights can offer? Which decisions in the
+                  next 12 months would change with better consumer data?
+                  Translate the answers into a research agenda.
+                </p>
+              </li>
+            </ol>
           </div>
         </section>
 
@@ -354,7 +351,7 @@ export default function AshleyPage() {
               real creative feedback in the afternoon.
             </p>
             <dl className="mb-capability-list">
-              <div className="mb-capability-row">
+              <div className="mb-capability-row reveal">
                 <dt>Function Building</dt>
                 <dd>
                   Led and unified a 25-person marketing organization spanning
@@ -364,7 +361,7 @@ export default function AshleyPage() {
                   stayed in the work.
                 </dd>
               </div>
-              <div className="mb-capability-row">
+              <div className="mb-capability-row reveal">
                 <dt>Product Storytelling</dt>
                 <dd>
                   Translated product innovation into consumer language across a
@@ -375,7 +372,7 @@ export default function AshleyPage() {
                   defensible.
                 </dd>
               </div>
-              <div className="mb-capability-row">
+              <div className="mb-capability-row reveal">
                 <dt>Consumer Insights Leadership</dt>
                 <dd>
                   Owned the Consumer Insights function at Central Garden &amp;
@@ -387,7 +384,7 @@ export default function AshleyPage() {
                   work.
                 </dd>
               </div>
-              <div className="mb-capability-row">
+              <div className="mb-capability-row reveal">
                 <dt>Cross-Functional Influence</dt>
                 <dd>
                   Player-coach style. Built trusted relationships with
@@ -417,7 +414,10 @@ export default function AshleyPage() {
             </p>
 
             {/* Campaign: Full Season Fertilizer */}
-            <div className="campaign-card" style={{ marginBottom: "3rem" }}>
+            <div
+              className="campaign-card reveal"
+              style={{ marginBottom: "3rem" }}
+            >
               <div className="campaign-header">
                 <h2 className="campaign-title">
                   Pennington Full Season Fertilizer
@@ -496,9 +496,9 @@ export default function AshleyPage() {
                     </div>
                   </div>
                   <div className="result-stat">
-                    <div className="result-stat-value">$7MM</div>
+                    <div className="result-stat-value">$250MM</div>
                     <div className="result-stat-label">
-                      Incremental Revenue, Home Depot
+                      Pennington Brand Repositioned
                     </div>
                   </div>
                 </div>
@@ -506,7 +506,10 @@ export default function AshleyPage() {
             </div>
 
             {/* Campaign: #FlipTheTurf */}
-            <div className="campaign-card" style={{ marginBottom: "3rem" }}>
+            <div
+              className="campaign-card reveal"
+              style={{ marginBottom: "3rem" }}
+            >
               <div className="campaign-header">
                 <h2 className="campaign-title">#FlipTheTurf</h2>
                 <p className="campaign-meta">
@@ -586,7 +589,7 @@ export default function AshleyPage() {
             </div>
 
             {/* Campaign: Thanks Mom */}
-            <div className="campaign-card">
+            <div className="campaign-card reveal">
               <div className="campaign-header">
                 <h2 className="campaign-title">Thanks, Mom</h2>
                 <p className="campaign-meta">
@@ -697,7 +700,7 @@ export default function AshleyPage() {
 
             <div className="mb-experience-grid">
               {/* Central Garden & Pet */}
-              <div className="mb-exp-card">
+              <div className="mb-exp-card reveal">
                 <div className="mb-exp-logo-wrap">
                   <svg
                     viewBox="0 0 453.29 164.44"
@@ -810,7 +813,7 @@ export default function AshleyPage() {
               </div>
 
               {/* Johnson & Johnson */}
-              <div className="mb-exp-card">
+              <div className="mb-exp-card reveal">
                 <div className="mb-exp-logo-wrap">
                   <svg
                     viewBox="0 0 1000 181.354"
@@ -850,7 +853,7 @@ export default function AshleyPage() {
               </div>
 
               {/* Manhattan Associates */}
-              <div className="mb-exp-card">
+              <div className="mb-exp-card reveal">
                 <div className="mb-exp-logo-wrap">
                   <img
                     src="/logos/manhattan-associates.png"
@@ -878,7 +881,7 @@ export default function AshleyPage() {
 
             {/* Education */}
             <div className="mb-education-row" style={{ marginTop: "2.5rem" }}>
-              <div className="mb-edu-card">
+              <div className="mb-edu-card reveal">
                 <div className="mb-edu-logo">
                   <img
                     src="/logos/uva-darden.png"
@@ -892,7 +895,7 @@ export default function AshleyPage() {
                   University of Virginia, Darden School of Business
                 </p>
               </div>
-              <div className="mb-edu-card">
+              <div className="mb-edu-card reveal">
                 <div className="mb-edu-logo">
                   <img
                     src="/logos/clemson.png"
@@ -911,7 +914,7 @@ export default function AshleyPage() {
 
             {/* Awards */}
             <div className="mb-education-row" style={{ marginTop: "1.5rem" }}>
-              <div className="mb-edu-card">
+              <div className="mb-edu-card reveal">
                 <div
                   className="mb-edu-logo"
                   style={{
@@ -944,7 +947,7 @@ export default function AshleyPage() {
                   #FlipTheTurf Campaign &middot; Central Garden &amp; Pet
                 </p>
               </div>
-              <div className="mb-edu-card">
+              <div className="mb-edu-card reveal">
                 <div
                   className="mb-edu-logo"
                   style={{
@@ -995,7 +998,7 @@ export default function AshleyPage() {
               function.
             </p>
             <div className="about-projects-grid">
-              <div className="kinetic-card">
+              <div className="kinetic-card reveal">
                 <div className="about-project-favicon">
                   <img
                     src="/raceprep-favicon.png"
@@ -1028,7 +1031,7 @@ export default function AshleyPage() {
                 </a>
               </div>
 
-              <div className="kinetic-card">
+              <div className="kinetic-card reveal">
                 <div className="about-project-favicon">
                   <img
                     src="/job-tracker-favicon.png"
@@ -1060,7 +1063,7 @@ export default function AshleyPage() {
                 </a>
               </div>
 
-              <div className="kinetic-card">
+              <div className="kinetic-card reveal">
                 <div className="about-project-favicon">
                   <img
                     src="/saas-favicon.svg"
