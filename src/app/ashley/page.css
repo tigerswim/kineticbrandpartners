@@ -320,169 +320,152 @@
   margin-top: 1.25rem;
 }
 
-/* ── DIAGNOSIS CARDS ─────────────────────────────────────── */
+/* ── BARLOW CONDENSED — display font for brief numbers/headlines ── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap');
 
-.diag-intro {
-  text-align: center;
-  max-width: 56ch;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2.5rem;
+/* ── THE REAL WORK — Three-Column Layout ─────────────────── */
+
+.brief-intro {
+  margin-bottom: 3rem;
 }
 
-.diag-cards {
+/* Three equal columns on desktop */
+.brief-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Each column */
+.brief-col {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.125rem;
+  padding: 0.25rem 0.75rem 1.25rem;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease;
 }
 
-.diag-card {
-  background: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 2px 16px rgba(33, 83, 135, 0.08);
+.brief-col:hover {
+  background-color: oklch(94.5% 0.009 240);
 }
 
-/* ── Top band: number + headline ── */
-.diag-top {
-  display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
-  padding: 1.25rem 2.25rem;
-  background: oklch(31% 0.08 240);
+.brief-col.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.diag-num {
-  font-size: 0.6875rem;
+.brief-col:nth-child(2) { transition-delay: 0.1s; }
+.brief-col:nth-child(3) { transition-delay: 0.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .brief-col {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Number */
+.brief-num {
+  font-family: 'Barlow Condensed', Helvetica, Arial, sans-serif;
+  font-size: 2.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  line-height: 1;
   color: #f68c2c;
-  white-space: nowrap;
-  flex-shrink: 0;
-  padding-top: 0.2em;
+  user-select: none;
 }
 
-.diag-headline {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.3;
+/* Headline */
+.brief-headline {
+  font-family: 'Barlow Condensed', Helvetica, Arial, sans-serif;
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: oklch(28% 0.04 240);
   margin: 0;
 }
 
-/* ── Bottom: What I Heard (left) + First Move (right) — equal columns ── */
-.diag-bottom {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid rgba(33, 83, 135, 0.08);
+/* Stacked heard / first-move fields */
+.brief-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.diag-col {
-  padding: 1.5rem 2rem 1.75rem;
+.brief-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-.diag-col--heard {
-  border-right: 1px solid rgba(33, 83, 135, 0.08);
-}
-
-.diag-col--move {
-  /* no special treatment — same white background as heard */
-}
-
-/* Labels */
-.diag-label {
-  font-size: 0.6875rem;
+.brief-col-label {
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #9ca3af;
-  margin: 0 0 0.5rem 0;
-  display: block;
+  color: oklch(62% 0.02 240);
 }
 
-.diag-prose {
+.brief-heard {
   font-size: 0.9375rem;
   line-height: 1.65;
-  color: #4a5568;
+  color: oklch(46% 0.024 240);
   margin: 0;
 }
 
-.diag-action {
+.brief-move {
   font-size: 0.9375rem;
   line-height: 1.65;
-  color: #1a202c;
   font-weight: 500;
+  color: oklch(24% 0.04 240);
   margin: 0;
 }
 
-/* ── Proof footer strip ── */
-.diag-footer {
-  background: oklch(97% 0.012 240);
-  border-top: 2px solid rgba(246, 140, 44, 0.2);
-  padding: 1rem 2rem 1.25rem;
-  display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
-}
-
-.diag-proof-eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #f68c2c;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin: 0;
-  padding-top: 0.15em;
-}
-
-.diag-proof-body {
+/* Proof — italic, visually subordinate */
+.brief-proof {
   font-size: 0.875rem;
   line-height: 1.6;
-  color: #4a5568;
+  color: oklch(52% 0.02 240);
   margin: 0;
+  font-style: italic;
+  padding-top: 0.25rem;
 }
 
-.diag-proof-body strong {
-  color: #1a202c;
+.brief-proof strong {
+  font-style: normal;
   font-weight: 600;
+  color: oklch(36% 0.032 240);
 }
 
-/* ── Section background ── */
-#why.kinetic-section--gray {
-  background: #edf0f4;
-}
 
-/* ── Mobile ── */
-@media (max-width: 700px) {
-  .diag-top {
-    padding: 1rem 1.25rem;
-    gap: 0.875rem;
-  }
-
-  .diag-headline {
-    font-size: 1rem;
-  }
-
-  .diag-bottom {
+/* ── Tablet + Mobile: single column ── */
+@media (max-width: 768px) {
+  .brief-cols {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
-  .diag-col {
-    padding: 1.25rem;
+  .brief-col {
+    padding: 1.75rem 0;
+    border-radius: 0;
   }
 
-  .diag-col--heard {
-    border-right: none;
-    border-bottom: 1px solid rgba(33, 83, 135, 0.08);
+  .brief-col + .brief-col {
+    border-top: 1px solid oklch(88% 0.016 240);
   }
 
-  .diag-footer {
-    padding: 1rem 1.25rem 1.25rem;
-    flex-direction: column;
-    gap: 0.5rem;
+  .brief-col:hover {
+    background-color: transparent;
+  }
+
+  .brief-num {
+    font-size: 2.25rem;
   }
 }
 

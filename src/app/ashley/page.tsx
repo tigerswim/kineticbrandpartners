@@ -6,6 +6,7 @@
 import GradientMesh from "@/components/GradientMesh";
 import CalendlyButton from "@/components/CalendlyButton";
 import AshleyMobileMenu from "@/components/AshleyMobileMenu";
+import AshleyScrollReveal from "@/components/AshleyScrollReveal";
 import "./page.css";
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function AshleyPage() {
   return (
     <div className="kinetic-page company-page">
       <GradientMesh />
+      <AshleyScrollReveal />
 
       {/* ── STICKY NAV ──────────────────────────────────────────── */}
       <header className="kinetic-header ashley-header" aria-label="Page sections">
@@ -26,7 +28,7 @@ export default function AshleyPage() {
             <img src="/ashley/ashley-logo.png" alt="Ashley Furniture Industries" height={36} />
           </a>
           <ul className="ashley-nav">
-            <li><a href="#why">The Real Work</a></li>
+            <li><a href="#why">Hypotheses</a></li>
             <li><a href="#bring">What I Bring</a></li>
             <li><a href="#work">Selected Work</a></li>
             <li><a href="#background">Background</a></li>
@@ -116,79 +118,64 @@ export default function AshleyPage() {
         <section id="why" className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
-              <span className="kinetic-section-badge">The Real Work</span>
+              <span className="kinetic-section-badge">Hypotheses</span>
               <h2 className="kinetic-section-title">What I&apos;ve heard. What I think. How I&apos;d start.</h2>
             </div>
-            <p className="mb-subtitle diag-intro">
+            <p className="mb-subtitle brief-intro">
               I&apos;ve spent time with the people closest to this. Three problems that aren&apos;t solved by adding headcount.
             </p>
 
-            <div className="diag-cards">
+            <div className="brief-cols">
 
-              {/* ── Card 01: Handoff Gap ── */}
-              <article className="diag-card">
-                <div className="diag-top">
-                  <span className="diag-num" aria-hidden="true">01</span>
-                  <h3 className="diag-headline">No one owns the handoff between product vision and Creative</h3>
-                </div>
-                <div className="diag-bottom">
-                  <div className="diag-col diag-col--heard">
-                    <p className="diag-label">What I heard</p>
-                    <p className="diag-prose">No PM function connecting Merchandising to Creative. Briefs arrive late or thin. Design intent gets compressed into a spec sheet, and different teams describe the same product differently.</p>
+              {/* ── Col 01 ── */}
+              <article className="brief-col">
+                <span className="brief-num" aria-hidden="true">01</span>
+                <h3 className="brief-headline">No one owns the handoff between product vision and Creative</h3>
+                <div className="brief-detail">
+                  <div className="brief-field">
+                    <span className="brief-col-label">What I heard</span>
+                    <p className="brief-heard">No PM function connecting Merchandising to Creative. Briefs arrive late or thin. Design intent gets compressed into a spec sheet, and different teams describe the same product differently.</p>
                   </div>
-                  <div className="diag-col diag-col--move">
-                    <p className="diag-label">First move</p>
-                    <p className="diag-action">Ask Merchandising one question: what do you wish Creative understood before starting? Those answers are the brief. Co-design it with the people who fill it in.</p>
+                  <div className="brief-field">
+                    <span className="brief-col-label">First move</span>
+                    <p className="brief-move">Ask Merchandising one question: what do you wish Creative understood before starting? Those answers are the brief. Co-design it with the people who fill it in.</p>
                   </div>
                 </div>
-                <div className="diag-footer">
-                  <p className="diag-proof-eyebrow">Proof</p>
-                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet, $1.5B portfolio.</strong> Sat down with Digital and Creative to build a briefing template from scratch — not for them, with them. That changed the dynamic: teams could push back on thin briefs because they&apos;d helped write the standard. Fewer revision cycles. Better work.</p>
-                </div>
+                <p className="brief-proof"><strong>Central Garden &amp; Pet, $1.5B portfolio.</strong> Built a briefing template from scratch with Digital and Creative — not for them, with them. Fewer revision cycles. Better work.</p>
               </article>
 
-              {/* ── Card 02: Content at Scale ── */}
-              <article className="diag-card">
-                <div className="diag-top">
-                  <span className="diag-num" aria-hidden="true">02</span>
-                  <h3 className="diag-headline">600+ SKU launches a year is a content operation, not a marketing problem</h3>
-                </div>
-                <div className="diag-bottom">
-                  <div className="diag-col diag-col--heard">
-                    <p className="diag-label">What I heard</p>
-                    <p className="diag-prose">No systematic process for content at that volume. What gets produced doesn&apos;t feed back into what gets built next. Unstructured specs produce generic copy regardless of the tool doing the writing.</p>
+              {/* ── Col 02 ── */}
+              <article className="brief-col">
+                <span className="brief-num" aria-hidden="true">02</span>
+                <h3 className="brief-headline">600+ SKU launches a year is a content operation, not a marketing problem</h3>
+                <div className="brief-detail">
+                  <div className="brief-field">
+                    <span className="brief-col-label">What I heard</span>
+                    <p className="brief-heard">No systematic process for content at that volume. What gets produced doesn&apos;t feed back into what gets built next. Unstructured specs produce generic copy regardless of the tool doing the writing.</p>
                   </div>
-                  <div className="diag-col diag-col--move">
-                    <p className="diag-label">First move</p>
-                    <p className="diag-action">Run five structured PIM records and five unstructured ones through the same content prompt. The output difference makes the case in an afternoon.</p>
+                  <div className="brief-field">
+                    <span className="brief-col-label">First move</span>
+                    <p className="brief-move">Run five structured PIM records and five unstructured ones through the same content prompt. The output difference makes the case in an afternoon.</p>
                   </div>
                 </div>
-                <div className="diag-footer">
-                  <p className="diag-proof-eyebrow">Proof</p>
-                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet.</strong> Built a shared process with Creative, Digital, Customer Marketing, and Brand for Product Detail Page content — who does what, in what order. Retailers noticed. The content got called out as best in class.</p>
-                </div>
+                <p className="brief-proof"><strong>Central Garden &amp; Pet.</strong> Built a shared process with Creative, Digital, Customer Marketing, and Brand for PDP content — who does what, in what order. Retailers called the output best in class.</p>
               </article>
 
-              {/* ── Card 03: Insights Timing ── */}
-              <article className="diag-card">
-                <div className="diag-top">
-                  <span className="diag-num" aria-hidden="true">03</span>
-                  <h3 className="diag-headline">Consumer insights exist, but they arrive after the decision, not before it</h3>
-                </div>
-                <div className="diag-bottom">
-                  <div className="diag-col diag-col--heard">
-                    <p className="diag-label">What I heard</p>
-                    <p className="diag-prose">A research capability exists inside Ashley. Without a structured path into the planning cycle, it gets pulled in after decisions are made — as validation, not input. The capability is there. The timing isn&apos;t.</p>
+              {/* ── Col 03 ── */}
+              <article className="brief-col">
+                <span className="brief-num" aria-hidden="true">03</span>
+                <h3 className="brief-headline">Consumer insights exist, but they arrive after the decision, not before it</h3>
+                <div className="brief-detail">
+                  <div className="brief-field">
+                    <span className="brief-col-label">What I heard</span>
+                    <p className="brief-heard">A research capability exists inside Ashley. Without a structured path into the planning cycle, it gets pulled in after decisions are made — as validation, not input. The capability is there. The timing isn&apos;t.</p>
                   </div>
-                  <div className="diag-col diag-col--move">
-                    <p className="diag-label">First move</p>
-                    <p className="diag-action">Sync a research calendar to the four-market cycle. PM publishes open questions 6-8 weeks before each market. Merchandising routes through PM, not directly to Insights.</p>
+                  <div className="brief-field">
+                    <span className="brief-col-label">First move</span>
+                    <p className="brief-move">Sync a research calendar to the four-market cycle. PM publishes open questions 6&ndash;8 weeks before each market. Merchandising routes through PM, not directly to Insights.</p>
                   </div>
                 </div>
-                <div className="diag-footer">
-                  <p className="diag-proof-eyebrow">Proof</p>
-                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet.</strong> Used Consumer Insights to track market trends, test whether portfolio brands could actually move on them, and find the whitespace no one was filling. Full Season Fertilizer came out of that process: 8.2% brand growth, 4x the category rate, #1 with Millennials at Walmart.</p>
-                </div>
+                <p className="brief-proof"><strong>Central Garden &amp; Pet.</strong> Consumer Insights shaped Full Season Fertilizer from the start. Result: 8.2% brand growth at 4x the category rate, #1 Millennial appeal at Walmart.</p>
               </article>
 
             </div>

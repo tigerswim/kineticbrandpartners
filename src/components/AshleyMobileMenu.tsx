@@ -28,7 +28,7 @@ export default function AshleyMobileMenu() {
       {mounted && open && createPortal(
         <div className="ashley-mobile-menu">
           <ul>
-            <li><a href="#why" onClick={close}>Three Challenges</a></li>
+            <li><a href="#why" onClick={close}>Hypotheses</a></li>
             <li><a href="#bring" onClick={close}>What I Bring</a></li>
             <li><a href="#work" onClick={close}>Selected Work</a></li>
             <li><a href="#background" onClick={close}>Background</a></li>
