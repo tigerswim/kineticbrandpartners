@@ -8,6 +8,21 @@
   --color-primary: #f68c2c;
   --color-secondary: #215387;
   --font-primary: Helvetica, Arial, sans-serif;
+  --font-display: Helvetica, Arial, sans-serif;
+
+  /* OKLCH palette — tinted toward Ashley blue hue ~240 */
+  --surface-page:   oklch(97% 0.008 240);
+  --surface-card:   oklch(99.5% 0.004 240);
+  --surface-action: oklch(95% 0.018 240);
+
+  --text-primary:   oklch(22% 0.04 240);
+  --text-body:      oklch(38% 0.03 240);
+  --text-muted:     oklch(60% 0.02 240);
+
+  --border-subtle:  oklch(88% 0.016 240);
+
+  --orange:         #f68c2c;
+  --blue:           #215387;
 }
 
 /* ── NAV ─────────────────────────────────────────────────── */
@@ -230,6 +245,7 @@
   color: var(--color-secondary);
 }
 
+
 /* ── ACCENT WORD IN HEADLINE ─────────────────────────────── */
 .company-page .ashley-accent {
   color: #f68c2c;
@@ -302,6 +318,172 @@
 
 .company-page .qa-answer p:first-child {
   margin-top: 1.25rem;
+}
+
+/* ── DIAGNOSIS CARDS ─────────────────────────────────────── */
+
+.diag-intro {
+  text-align: center;
+  max-width: 56ch;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5rem;
+}
+
+.diag-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.diag-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(33, 83, 135, 0.08);
+}
+
+/* ── Top band: number + headline ── */
+.diag-top {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 1.25rem 2.25rem;
+  background: oklch(31% 0.08 240);
+}
+
+.diag-num {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f68c2c;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 0.2em;
+}
+
+.diag-headline {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* ── Bottom: What I Heard (left) + First Move (right) — equal columns ── */
+.diag-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(33, 83, 135, 0.08);
+}
+
+.diag-col {
+  padding: 1.5rem 2rem 1.75rem;
+}
+
+.diag-col--heard {
+  border-right: 1px solid rgba(33, 83, 135, 0.08);
+}
+
+.diag-col--move {
+  /* no special treatment — same white background as heard */
+}
+
+/* Labels */
+.diag-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin: 0 0 0.5rem 0;
+  display: block;
+}
+
+.diag-prose {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #4a5568;
+  margin: 0;
+}
+
+.diag-action {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #1a202c;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Proof footer strip ── */
+.diag-footer {
+  background: oklch(97% 0.012 240);
+  border-top: 2px solid rgba(246, 140, 44, 0.2);
+  padding: 1rem 2rem 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+}
+
+.diag-proof-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f68c2c;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin: 0;
+  padding-top: 0.15em;
+}
+
+.diag-proof-body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #4a5568;
+  margin: 0;
+}
+
+.diag-proof-body strong {
+  color: #1a202c;
+  font-weight: 600;
+}
+
+/* ── Section background ── */
+#why.kinetic-section--gray {
+  background: #edf0f4;
+}
+
+/* ── Mobile ── */
+@media (max-width: 700px) {
+  .diag-top {
+    padding: 1rem 1.25rem;
+    gap: 0.875rem;
+  }
+
+  .diag-headline {
+    font-size: 1rem;
+  }
+
+  .diag-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .diag-col {
+    padding: 1.25rem;
+  }
+
+  .diag-col--heard {
+    border-right: none;
+    border-bottom: 1px solid rgba(33, 83, 135, 0.08);
+  }
+
+  .diag-footer {
+    padding: 1rem 1.25rem 1.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 
 /* ── IMAGE GLOW — subtle, no gradient ───────────────────── */

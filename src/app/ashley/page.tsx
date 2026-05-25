@@ -26,7 +26,7 @@ export default function AshleyPage() {
             <img src="/ashley/ashley-logo.png" alt="Ashley Furniture Industries" height={36} />
           </a>
           <ul className="ashley-nav">
-            <li><a href="#why">Three Challenges</a></li>
+            <li><a href="#why">The Real Work</a></li>
             <li><a href="#bring">What I Bring</a></li>
             <li><a href="#work">Selected Work</a></li>
             <li><a href="#background">Background</a></li>
@@ -112,113 +112,84 @@ export default function AshleyPage() {
         </section>
 
 
-        {/* ── SECTION 2: THREE CHALLENGES ───────────────────────── */}
+        {/* ── SECTION 2: THE REAL WORK ──────────────────────────── */}
         <section id="why" className="kinetic-section kinetic-section--gray">
           <div className="kinetic-container">
             <div className="kinetic-section-header">
               <span className="kinetic-section-badge">The Real Work</span>
-              <h2 className="kinetic-section-title">Three Challenges This Role Exists to Solve</h2>
+              <h2 className="kinetic-section-title">What I&apos;ve heard. What I think. How I&apos;d start.</h2>
             </div>
-            <p className="mb-subtitle" style={{ marginBottom: "2rem" }}>
-              Ashley is building Product Marketing from scratch inside the world&apos;s
-              largest furniture manufacturer. That is an exciting and specific
-              kind of challenge. Here is how I think about the three biggest ones.
+            <p className="mb-subtitle diag-intro">
+              I&apos;ve spent time with the people closest to this. Three problems that aren&apos;t solved by adding headcount.
             </p>
 
-            <div className="qa-accordion">
+            <div className="diag-cards">
 
-              <details className="qa-item">
-                <summary className="qa-question">
-                  No one owns the bridge between product vision and creative execution
-                </summary>
-                <div className="qa-answer">
-                  <p>
-                    Without a Product Marketing function, the story that makes a
-                    product compelling tends to get lost between the design studio
-                    and the consumer-facing asset. Creative teams get incomplete
-                    briefs. The same product gets described differently by Sales,
-                    e-commerce, and Retail Marketing. Nobody is accountable for
-                    making sure the product intent survives the handoff.
-                  </p>
-                  <p>
-                    My approach: start by auditing where the handoffs break. Talk to
-                    Merchandising, Design, Creative, and Sales to understand what
-                    information arrives late, incomplete, or not at all. Then build
-                    the brief and messaging framework as a working tool, not a
-                    governance document. The first version does not need to be
-                    perfect; it needs to get used. Adoption tells you what to fix.
-                  </p>
-                  <p>
-                    At Central Garden &amp; Pet, I learned that the framework only
-                    works when the people filling it in own the outcome too. That
-                    took time to get right across a $1.5B multi-brand portfolio.
-                  </p>
+              {/* ── Card 01: Handoff Gap ── */}
+              <article className="diag-card">
+                <div className="diag-top">
+                  <span className="diag-num" aria-hidden="true">01</span>
+                  <h3 className="diag-headline">No one owns the handoff between product vision and Creative</h3>
                 </div>
-              </details>
+                <div className="diag-bottom">
+                  <div className="diag-col diag-col--heard">
+                    <p className="diag-label">What I heard</p>
+                    <p className="diag-prose">No PM function connecting Merchandising to Creative. Briefs arrive late or thin. Design intent gets compressed into a spec sheet, and different teams describe the same product differently.</p>
+                  </div>
+                  <div className="diag-col diag-col--move">
+                    <p className="diag-label">First move</p>
+                    <p className="diag-action">Ask Merchandising one question: what do you wish Creative understood before starting? Those answers are the brief. Co-design it with the people who fill it in.</p>
+                  </div>
+                </div>
+                <div className="diag-footer">
+                  <p className="diag-proof-eyebrow">Proof</p>
+                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet, $1.5B portfolio.</strong> Sat down with Digital and Creative to build a briefing template from scratch — not for them, with them. That changed the dynamic: teams could push back on thin briefs because they&apos;d helped write the standard. Fewer revision cycles. Better work.</p>
+                </div>
+              </article>
 
-              <details className="qa-item">
-                <summary className="qa-question">
-                  Product content is inconsistent and there is no authoritative source of truth
-                </summary>
-                <div className="qa-answer">
-                  <p>
-                    At a company Ashley&apos;s size, the same product can be
-                    described four different ways by four different teams. There is
-                    no single authoritative record. That creates confusion for retail
-                    partners, inconsistency in consumer-facing materials, and legal
-                    exposure from claims no one formally approved. The problem
-                    compounds as the catalog grows.
-                  </p>
-                  <p>
-                    My approach: build the infrastructure before trying to govern it.
-                    Work with Legal and Insights to define what a complete product
-                    record actually looks like, then pilot it on one category before
-                    rolling across the portfolio. The system has to be easier to use
-                    than the workaround; otherwise people will keep writing their own
-                    copy. Access controls and clear ownership matter as much as the
-                    content itself.
-                  </p>
-                  <p>
-                    At Johnson &amp; Johnson, I worked with clinical teams regularly
-                    to turn research findings into consumer claims language that was
-                    motivating, accurate, and legally defensible. That is not a
-                    trivial thing to do at scale, and it is exactly what this
-                    function requires.
-                  </p>
+              {/* ── Card 02: Content at Scale ── */}
+              <article className="diag-card">
+                <div className="diag-top">
+                  <span className="diag-num" aria-hidden="true">02</span>
+                  <h3 className="diag-headline">600+ SKU launches a year is a content operation, not a marketing problem</h3>
                 </div>
-              </details>
+                <div className="diag-bottom">
+                  <div className="diag-col diag-col--heard">
+                    <p className="diag-label">What I heard</p>
+                    <p className="diag-prose">No systematic process for content at that volume. What gets produced doesn&apos;t feed back into what gets built next. Unstructured specs produce generic copy regardless of the tool doing the writing.</p>
+                  </div>
+                  <div className="diag-col diag-col--move">
+                    <p className="diag-label">First move</p>
+                    <p className="diag-action">Run five structured PIM records and five unstructured ones through the same content prompt. The output difference makes the case in an afternoon.</p>
+                  </div>
+                </div>
+                <div className="diag-footer">
+                  <p className="diag-proof-eyebrow">Proof</p>
+                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet.</strong> Built a shared process with Creative, Digital, Customer Marketing, and Brand for Product Detail Page content — who does what, in what order. Retailers noticed. The content got called out as best in class.</p>
+                </div>
+              </article>
 
-              <details className="qa-item">
-                <summary className="qa-question">
-                  Consumer insights are informing too little of the business
-                </summary>
-                <div className="qa-answer">
-                  <p>
-                    Ashley invests in consumer research. But at most large
-                    manufacturers, those findings land in a presentation, get
-                    discussed once, and rarely shape the decisions that follow.
-                    Merchandising selects products based on trend and instinct.
-                    Creative writes briefs without grounding in what consumers
-                    actually said. The insights team ends up studying what someone
-                    already decided, rather than shaping what gets decided next.
-                  </p>
-                  <p>
-                    My approach: treat Insights as a roadmap, not a report. Start
-                    with a prioritization question: which decisions in the next 12
-                    months would most benefit from consumer input, and what does
-                    good input actually look like for each? Build the intake process
-                    so stakeholders learn to ask before they decide, not after.
-                    Deliver findings in formats that drive action: one-pagers,
-                    decision memos, brief-ready summaries. Not 80-slide decks.
-                  </p>
-                  <p>
-                    When consumer research shaped the Full Season Fertilizer
-                    positioning at Central Garden &amp; Pet, the result was 8.2%
-                    brand growth at 4x the category rate and the #1 Millennial
-                    appeal score at Walmart.
-                  </p>
+              {/* ── Card 03: Insights Timing ── */}
+              <article className="diag-card">
+                <div className="diag-top">
+                  <span className="diag-num" aria-hidden="true">03</span>
+                  <h3 className="diag-headline">Consumer insights exist, but they arrive after the decision, not before it</h3>
                 </div>
-              </details>
+                <div className="diag-bottom">
+                  <div className="diag-col diag-col--heard">
+                    <p className="diag-label">What I heard</p>
+                    <p className="diag-prose">A research capability exists inside Ashley. Without a structured path into the planning cycle, it gets pulled in after decisions are made — as validation, not input. The capability is there. The timing isn&apos;t.</p>
+                  </div>
+                  <div className="diag-col diag-col--move">
+                    <p className="diag-label">First move</p>
+                    <p className="diag-action">Sync a research calendar to the four-market cycle. PM publishes open questions 6-8 weeks before each market. Merchandising routes through PM, not directly to Insights.</p>
+                  </div>
+                </div>
+                <div className="diag-footer">
+                  <p className="diag-proof-eyebrow">Proof</p>
+                  <p className="diag-proof-body"><strong>Central Garden &amp; Pet.</strong> Used Consumer Insights to track market trends, test whether portfolio brands could actually move on them, and find the whitespace no one was filling. Full Season Fertilizer came out of that process: 8.2% brand growth, 4x the category rate, #1 with Millennials at Walmart.</p>
+                </div>
+              </article>
 
             </div>
           </div>
