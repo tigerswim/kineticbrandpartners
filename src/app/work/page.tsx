@@ -66,11 +66,11 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-banned-ad-poster.webp"
+                      poster="/videos/FTT-banned-ad-poster.webp"
                       preload="none"
                     >
                       <source
-                        src="/Videos/FTT-banned-ad.mp4"
+                        src="/videos/FTT-banned-ad.mp4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -84,11 +84,11 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-summary-video-poster.webp"
+                      poster="/videos/FTT-summary-video-poster.webp"
                       preload="none"
                     >
                       <source
-                        src="/Videos/FTT-summary-video.mp4"
+                        src="/videos/FTT-summary-video.mp4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -100,7 +100,7 @@ export default function WorkPage() {
               {/* Results Summary Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/Videos/FTT-summary-slide.webp"
+                src="/videos/FTT-summary-slide.webp"
                 alt="FlipTheTurf Campaign Results Summary"
                 width={640}
                 height={454}
@@ -172,12 +172,12 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_Hero30_MP4-poster.webp"
+                      poster="/videos/GFANA_Hero30_MP4-poster.webp"
                       preload="none"
                       playsInline
                     >
                       <source
-                        src="/Videos/GFANA_Hero30_MP4.mp4"
+                        src="/videos/GFANA_Hero30_MP4.mp4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -191,12 +191,12 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_FERT15-poster.jpg"
+                      poster="/videos/GFANA_FERT15-poster.jpg"
                       preload="none"
                       playsInline
                     >
                       <source
-                        src="/Videos/GFANA_FERT15.mp4"
+                        src="/videos/GFANA_FERT15.mp4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -259,11 +259,11 @@ export default function WorkPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                      poster="/videos/Thanks-Mom-Cullen-poster.jpg"
                       preload="none"
                     >
                       <source
-                        src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
+                        src="/videos/Thanks-Mom-Cullen.2.mp4#t=4"
                         type="video/mp4"
                       />
                       Your browser does not support the video tag.
@@ -275,11 +275,11 @@ export default function WorkPage() {
                       <video
                         controls
                         className="media-video"
-                        poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                        poster="/videos/Thanks-Mom-Debbie-poster.jpg"
                         preload="none"
                       >
                         <source
-                          src="/Videos/Thanks-Mom-Debbie.mp4"
+                          src="/videos/Thanks-Mom-Debbie.mp4"
                           type="video/mp4"
                         />
                         Your browser does not support the video tag.

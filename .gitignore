@@ -27,9 +27,9 @@ Dan Setup Info/
 Test Data/
 
 # Large video files and originals backup (too large for GitHub)
-public/Videos/originals-backup/
-public/Videos/*.mov
-public/Videos/*.mpg
+public/videos/originals-backup/
+public/videos/*.mov
+public/videos/*.mpg
 *.mov
 *.mpg
 
@@ -38,6 +38,12 @@ lt-*.png
 
 # Claude/Playwright working files
 .playwright-mcp/
+.impeccable.md
+impeccable/
+docs/plans/
+docs/superpowers/
+KINETIC-BRAND-PARTNERS-TEMPLATE.pptx
+Prompt for Website Update.md
 
 # debug
 npm-debug.log*

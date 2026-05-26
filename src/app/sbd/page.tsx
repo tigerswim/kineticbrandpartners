@@ -243,8 +243,8 @@ export default function SBDPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Banned Ad</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/FTT-banned-ad-poster.webp" preload="none">
-                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/FTT-banned-ad-poster.webp" preload="none">
+                      <source src="/videos/FTT-banned-ad.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -252,15 +252,15 @@ export default function SBDPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Campaign Summary</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/FTT-summary-video-poster.webp" preload="none">
-                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/FTT-summary-video-poster.webp" preload="none">
+                      <source src="/videos/FTT-summary-video.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
                 </div>
               </div>
               <img
-                src="/Videos/FTT-summary-slide.webp"
+                src="/videos/FTT-summary-slide.webp"
                 alt="FlipTheTurf Campaign Results Summary"
                 width={640}
                 height={454}
@@ -303,8 +303,8 @@ export default function SBDPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Brand Campaign :30</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/GFANA_Hero30_MP4-poster.webp" preload="none" playsInline>
-                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/GFANA_Hero30_MP4-poster.webp" preload="none" playsInline>
+                      <source src="/videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -312,8 +312,8 @@ export default function SBDPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Full Season Fertilizer :15</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/GFANA_FERT15-poster.jpg" preload="none" playsInline>
-                      <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/GFANA_FERT15-poster.jpg" preload="none" playsInline>
+                      <source src="/videos/GFANA_FERT15.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -354,16 +354,16 @@ export default function SBDPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom — Cullen</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Cullen-poster.jpg" preload="none">
-                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/Thanks-Mom-Cullen-poster.jpg" preload="none">
+                      <source src="/videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
                   <div style={{ marginTop: "2rem" }}>
                     <h3 className="media-item-title">Thanks Mom — Debbie</h3>
                     <div className="media-wrapper">
-                      <video controls className="media-video" poster="/Videos/Thanks-Mom-Debbie-poster.jpg" preload="none">
-                        <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
+                      <video controls className="media-video" poster="/videos/Thanks-Mom-Debbie-poster.jpg" preload="none">
+                        <source src="/videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                     </div>
@@ -522,7 +522,7 @@ export default function SBDPage() {
 
               <div className="kinetic-card">
                 <div className="about-project-favicon">
-                  <img src="/raceprep-favicon.png" alt="RacePrep" width={48} height={48} />
+                  <img src="/side-projects/raceprep-favicon.png" alt="RacePrep" width={48} height={48} />
                 </div>
                 <h3 className="about-project-title">RacePrep</h3>
                 <p className="about-project-desc">
@@ -541,7 +541,7 @@ export default function SBDPage() {
 
               <div className="kinetic-card">
                 <div className="about-project-favicon">
-                  <img src="/job-tracker-favicon.webp" alt="Job Tracker" width={48} height={48} />
+                  <img src="/side-projects/job-tracker-favicon.webp" alt="Job Tracker" width={48} height={48} />
                 </div>
                 <h3 className="about-project-title">Job Tracker</h3>
                 <p className="about-project-desc">
@@ -560,7 +560,7 @@ export default function SBDPage() {
 
               <div className="kinetic-card">
                 <div className="about-project-favicon">
-                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} />
+                  <img src="/side-projects/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} />
                 </div>
                 <h3 className="about-project-title">SaaS Metrics Calculator</h3>
                 <p className="about-project-desc">

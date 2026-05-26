@@ -31,7 +31,7 @@ export default function Resume() {
             </p>
             <div className="resume-hero-cta">
               <a
-                href="/Dan-Hoeller-Resume.pdf"
+                href="/resume/Dan-Hoeller-Resume.pdf"
                 download
                 className="kinetic-btn kinetic-btn--primary"
               >
@@ -334,7 +334,7 @@ export default function Resume() {
         <section className="resume-download-cta">
           <div className="kinetic-container">
             <a
-              href="/Dan-Hoeller-Resume.pdf"
+              href="/resume/Dan-Hoeller-Resume.pdf"
               download
               className="kinetic-btn kinetic-btn--primary"
             >

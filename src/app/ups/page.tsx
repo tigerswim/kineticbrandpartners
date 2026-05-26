@@ -397,7 +397,7 @@ export default function UPSPage() {
                 </div>
                 <div className="ftt-video">
                   <video
-                    poster="/Videos/FTT-banned-ad-poster.jpg"
+                    poster="/videos/FTT-banned-ad-poster.jpg"
                     controls
                     playsInline
                     style={{
@@ -406,7 +406,7 @@ export default function UPSPage() {
                       display: "block",
                     }}
                   >
-                    <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                    <source src="/videos/FTT-banned-ad.mp4" type="video/mp4" />
                   </video>
                 </div>
               </div>
@@ -463,7 +463,7 @@ export default function UPSPage() {
                 </div>
                 <div className="ftt-video">
                   <video
-                    poster="/Videos/GFANA_FERT15-poster.jpg"
+                    poster="/videos/GFANA_FERT15-poster.jpg"
                     controls
                     playsInline
                     style={{
@@ -472,7 +472,7 @@ export default function UPSPage() {
                       display: "block",
                     }}
                   >
-                    <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
+                    <source src="/videos/GFANA_FERT15.mp4" type="video/mp4" />
                   </video>
                 </div>
               </div>
@@ -528,7 +528,7 @@ export default function UPSPage() {
                 </div>
                 <div className="ftt-video thanks-mom-videos">
                   <video
-                    poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                    poster="/videos/Thanks-Mom-Cullen-poster.jpg"
                     controls
                     playsInline
                     style={{
@@ -538,12 +538,12 @@ export default function UPSPage() {
                     }}
                   >
                     <source
-                      src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4"
+                      src="/videos/Thanks-Mom-Cullen.2.mp4#t=4"
                       type="video/mp4"
                     />
                   </video>
                   <video
-                    poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                    poster="/videos/Thanks-Mom-Debbie-poster.jpg"
                     controls
                     playsInline
                     style={{
@@ -553,7 +553,7 @@ export default function UPSPage() {
                     }}
                   >
                     <source
-                      src="/Videos/Thanks-Mom-Debbie.mp4"
+                      src="/videos/Thanks-Mom-Debbie.mp4"
                       type="video/mp4"
                     />
                   </video>

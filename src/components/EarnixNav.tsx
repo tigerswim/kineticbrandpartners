@@ -27,7 +27,7 @@ export default function EarnixNav() {
             <span>Email</span>
           </a>
           <a
-            href="/Dan-Hoeller-Resume-Earnix.pdf"
+            href="/earnix/Dan-Hoeller-Resume-Earnix.pdf"
             className="earnix-nav-link earnix-nav-download"
             download
             target="_blank"

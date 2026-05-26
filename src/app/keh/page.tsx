@@ -339,11 +339,11 @@ export default function KEHPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_Hero30_MP4-poster.webp"
+                      poster="/videos/GFANA_Hero30_MP4-poster.webp"
                       preload="none"
                       playsInline
                     >
-                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
+                      <source src="/videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -354,11 +354,11 @@ export default function KEHPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/GFANA_FERT15-poster.jpg"
+                      poster="/videos/GFANA_FERT15-poster.jpg"
                       preload="none"
                       playsInline
                     >
-                      <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
+                      <source src="/videos/GFANA_FERT15.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -410,10 +410,10 @@ export default function KEHPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-banned-ad-poster.webp"
+                      poster="/videos/FTT-banned-ad-poster.webp"
                       preload="none"
                     >
-                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                      <source src="/videos/FTT-banned-ad.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -424,10 +424,10 @@ export default function KEHPage() {
                     <video
                       controls
                       className="media-video"
-                      poster="/Videos/FTT-summary-video-poster.webp"
+                      poster="/videos/FTT-summary-video-poster.webp"
                       preload="none"
                     >
-                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
+                      <source src="/videos/FTT-summary-video.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -478,10 +478,10 @@ export default function KEHPage() {
                   <div className="keh-thanks-mom-wrapper">
                     <video
                       controls
-                      poster="/Videos/Thanks-Mom-Cullen-poster.jpg"
+                      poster="/videos/Thanks-Mom-Cullen-poster.jpg"
                       preload="none"
                     >
-                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
+                      <source src="/videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -491,10 +491,10 @@ export default function KEHPage() {
                   <div className="keh-thanks-mom-wrapper">
                     <video
                       controls
-                      poster="/Videos/Thanks-Mom-Debbie-poster.jpg"
+                      poster="/videos/Thanks-Mom-Debbie-poster.jpg"
                       preload="none"
                     >
-                      <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
+                      <source src="/videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
@@ -702,7 +702,7 @@ export default function KEHPage() {
 
               <div className="kinetic-card">
                 <div className="keh-project-icon">
-                  <img src="/raceprep-favicon.png" alt="RacePrep" width={32} height={32} />
+                  <img src="/side-projects/raceprep-favicon.png" alt="RacePrep" width={32} height={32} />
                 </div>
                 <h3 className="about-project-title">RacePrep</h3>
                 <p className="about-project-desc">
@@ -728,7 +728,7 @@ export default function KEHPage() {
 
               <div className="kinetic-card">
                 <div className="keh-project-icon">
-                  <img src="/job-tracker-favicon.png" alt="Job Tracker" width={32} height={32} />
+                  <img src="/side-projects/job-tracker-favicon.png" alt="Job Tracker" width={32} height={32} />
                 </div>
                 <h3 className="about-project-title">Job Tracker</h3>
                 <p className="about-project-desc">
@@ -754,7 +754,7 @@ export default function KEHPage() {
 
               <div className="kinetic-card">
                 <div className="keh-project-icon">
-                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={32} height={32} />
+                  <img src="/side-projects/saas-favicon.svg" alt="SaaS Metrics Calculator" width={32} height={32} />
                 </div>
                 <h3 className="about-project-title">SaaS Metrics Calculator</h3>
                 <p className="about-project-desc">

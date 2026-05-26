@@ -141,7 +141,7 @@ export default function AboutPage() {
               <div className="kinetic-card animate-slide-up delay-2">
                 <div className="about-project-favicon">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
+                  <img src="/side-projects/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
                 </div>
                 <h3 className="about-project-title">RacePrep</h3>
                 <p className="about-project-desc">
@@ -171,9 +171,9 @@ export default function AboutPage() {
               <div className="kinetic-card animate-slide-up delay-3">
                 <div className="about-project-favicon">
                   <picture>
-                    <source srcSet="/job-tracker-favicon.webp" type="image/webp" />
+                    <source srcSet="/side-projects/job-tracker-favicon.webp" type="image/webp" />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
+                    <img src="/side-projects/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
                   </picture>
                 </div>
                 <h3 className="about-project-title">Job Tracker</h3>
@@ -203,7 +203,7 @@ export default function AboutPage() {
               <div className="kinetic-card animate-slide-up delay-4">
                 <div className="about-project-favicon">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
+                  <img src="/side-projects/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
                 </div>
                 <h3 className="about-project-title">SaaS Metrics Calculator</h3>
                 <p className="about-project-desc">

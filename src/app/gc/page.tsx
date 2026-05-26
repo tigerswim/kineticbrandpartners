@@ -249,16 +249,16 @@ export default function GCPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Banned Ad</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/FTT-banned-ad-poster.webp" preload="none">
-                      <source src="/Videos/FTT-banned-ad.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/FTT-banned-ad-poster.webp" preload="none">
+                      <source src="/videos/FTT-banned-ad.mp4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Campaign Summary</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/FTT-summary-video-poster.webp" preload="none">
-                      <source src="/Videos/FTT-summary-video.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/FTT-summary-video-poster.webp" preload="none">
+                      <source src="/videos/FTT-summary-video.mp4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
@@ -306,16 +306,16 @@ export default function GCPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Brand Campaign :30</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/GFANA_Hero30_MP4-poster.webp" preload="none" playsInline>
-                      <source src="/Videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/GFANA_Hero30_MP4-poster.webp" preload="none" playsInline>
+                      <source src="/videos/GFANA_Hero30_MP4.mp4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Full Season :15</h3>
                   <div className="media-wrapper">
-                    <video controls className="media-video" poster="/Videos/GFANA_FERT15-poster.jpg" preload="none" playsInline>
-                      <source src="/Videos/GFANA_FERT15.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/GFANA_FERT15-poster.jpg" preload="none" playsInline>
+                      <source src="/videos/GFANA_FERT15.mp4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
@@ -360,16 +360,16 @@ export default function GCPage() {
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom - Cullen</h3>
                   <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
-                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Cullen-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
-                      <source src="/Videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/Thanks-Mom-Cullen-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
+                      <source src="/videos/Thanks-Mom-Cullen.2.mp4#t=4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
                 <div className="media-item">
                   <h3 className="media-item-title">Thanks Mom - Debbie</h3>
                   <div className="media-wrapper" style={{ aspectRatio: "352/240" }}>
-                    <video controls className="media-video" poster="/Videos/Thanks-Mom-Debbie-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
-                      <source src="/Videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
+                    <video controls className="media-video" poster="/videos/Thanks-Mom-Debbie-poster.jpg" preload="none" style={{ height: "100%", objectFit: "contain" }}>
+                      <source src="/videos/Thanks-Mom-Debbie.mp4" type="video/mp4" />
                     </video>
                   </div>
                 </div>
@@ -573,7 +573,7 @@ export default function GCPage() {
 
               <div className="gc-project-card">
                 <div className="gc-project-icon">
-                  <img src="/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
+                  <img src="/side-projects/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
                 </div>
                 <div className="gc-project-body">
                   <h3 className="gc-project-title">RacePrep</h3>
@@ -590,7 +590,7 @@ export default function GCPage() {
 
               <div className="gc-project-card">
                 <div className="gc-project-icon">
-                  <img src="/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
+                  <img src="/side-projects/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
                 </div>
                 <div className="gc-project-body">
                   <h3 className="gc-project-title">Job Tracker</h3>
@@ -607,7 +607,7 @@ export default function GCPage() {
 
               <div className="gc-project-card">
                 <div className="gc-project-icon">
-                  <img src="/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
+                  <img src="/side-projects/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
                 </div>
                 <div className="gc-project-body">
                   <h3 className="gc-project-title">SaaS Metrics Calculator</h3>
