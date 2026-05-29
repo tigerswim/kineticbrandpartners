@@ -63,6 +63,7 @@ export default function ParticleField({ scope = "hero" }: Props) {
         p.x = Math.max(0, Math.min(W, p.x)); p.y = Math.max(0, Math.min(H, p.y));
         cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fillStyle = ACC + ".5)"; cx.fill();
       }
+      // O(n^2) over particles, but particleCount() caps N at 90 (~4k pairs/frame) — safe.
       const L = 110 * dpr;
       for (let i = 0; i < parts.length; i++)
         for (let j = i + 1; j < parts.length; j++) {
