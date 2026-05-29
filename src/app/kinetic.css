@@ -171,6 +171,30 @@
 .kinetic-light [data-reveal].is-revealed{opacity:1;transform:none}
 
 /* ============================================================================
+   HOMEPAGE LAYOUT — portrait grid, split, cards, exp list
+   ========================================================================= */
+.kinetic .portrait-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:clamp(2.5rem,6vw,6rem);align-items:center}
+@media(max-width:880px){.kinetic .portrait-grid{grid-template-columns:1fr;gap:3rem}}
+.kinetic .portrait-frame{aspect-ratio:3/4;max-width:440px;margin-left:auto}
+@media(max-width:880px){.kinetic .portrait-frame{margin:0 auto;max-width:360px}}
+.kinetic .ch-quote{font-family:var(--fd);font-weight:400;font-size:clamp(1.7rem,3.6vw,3rem);line-height:1.28;letter-spacing:-.025em;color:#fff;max-width:20ch}
+.kinetic .ch-quote .em{font-style:italic;color:var(--accent)}
+.kinetic .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:center}
+@media(max-width:860px){.kinetic .split{grid-template-columns:1fr;gap:2.5rem}}
+.kinetic .split .frame{aspect-ratio:3/4;max-width:420px}
+.kinetic .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;margin-top:1rem}
+@media(max-width:760px){.kinetic .cards{grid-template-columns:1fr}}
+.kinetic .pcard .num{font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1rem}
+.kinetic .pcard h3{font-family:var(--fd);font-weight:600;font-size:1.35rem;letter-spacing:-.02em;margin:0 0 .7rem;color:#fff}
+.kinetic .pcard p{color:var(--gray-400);font-size:.95rem;line-height:1.6;flex:1}
+.kinetic .exp-item{display:grid;grid-template-columns:9rem 1fr;gap:2.5rem;padding:2.4rem 0;border-bottom:1px solid var(--hair);transition:transform .4s var(--spring),background .4s;align-items:start}
+.kinetic .exp-item:hover{transform:translateX(10px);background:oklch(14% 0.03 252)}
+.kinetic .exp-yr{font-family:var(--fd);color:var(--accent-deep);font-weight:600;font-size:.9rem}
+.kinetic .exp-co{font-family:var(--fd);font-weight:600;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.025em;color:#fff}
+.kinetic .exp-role{color:var(--accent);font-weight:600;font-size:.9rem;margin-top:.3rem}
+@media(max-width:760px){.kinetic .exp-item{grid-template-columns:1fr;gap:.4rem}}
+
+/* ============================================================================
    REDUCED MOTION + PRINT
    ========================================================================= */
 @media(prefers-reduced-motion:reduce){
