@@ -5,6 +5,8 @@ import { splitIntoWords } from "./lib/motion";
 
 type Props = { lead: string; emphasis?: string; as?: "h1" | "h2"; className?: string };
 
+// Must be rendered inside a `.kinetic` container — all .display/.ch/.word/.em
+// styling (incl. inline-block needed for the per-letter transforms) is scoped there.
 export default function SpringHeadline({ lead, emphasis, as = "h1", className }: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
   const Tag = as;
@@ -36,7 +38,7 @@ export default function SpringHeadline({ lead, emphasis, as = "h1", className }:
     }
     loop();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); };
-  }, []);
+  }, [lead, emphasis]);
 
   const renderSegment = (text: string, em: boolean, keyBase: string) =>
     splitIntoWords(text).map((tok, i) =>
