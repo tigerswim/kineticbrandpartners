@@ -92,6 +92,8 @@
   background:color-mix(in oklch,var(--abyss) 35%,transparent);backdrop-filter:blur(6px);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;transition:transform .4s var(--spring),background .4s;pointer-events:none}
 .kinetic .vframe:hover .vplay{transform:translate(-50%,-50%) scale(1.12);background:var(--accent)}
 
+.kinetic .media-item .cap{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--gray-400);margin-bottom:.7rem}
+
 /* results */
 .kinetic .res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;margin-top:1rem}
 @media(max-width:760px){.kinetic .res-grid{grid-template-columns:1fr;gap:2.5rem}}
