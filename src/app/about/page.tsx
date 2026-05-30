@@ -27,7 +27,7 @@ export default function AboutPage() {
         <section className="chapter container" id="family">
           <div className="ch-tag"><span className="idx">01 /</span> What Matters Most</div>
           <div className="split">
-            <FramedImage src="/images/family-sketch.webp" alt="Family sketch" width={800} height={533} ratio="3/2" />
+            <FramedImage src="/images/family-sketch.webp" alt="Family sketch" width={800} height={533} ratio="3/2" className="frame--wide" />
             <div>
               <h2 className="sec-title" data-reveal>The home team.</h2>
               <p className="body" data-reveal>Along with my amazing wife, we wrangle three knuckleheads every day. It&apos;s been a joy to watch them grow &mdash; we still can&apos;t believe the oldest will be in college soon. Not pictured: our two dogs, a mini goldendoodle and a sheepadoodle. With only dudes and doodles in the house, my wife is a saint.</p>

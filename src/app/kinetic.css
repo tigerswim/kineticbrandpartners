@@ -182,6 +182,7 @@
 .kinetic .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:center}
 @media(max-width:860px){.kinetic .split{grid-template-columns:1fr;gap:2.5rem}}
 .kinetic .split .frame{aspect-ratio:2/3;max-width:420px}
+.kinetic .split .frame.frame--wide{max-width:none;width:100%}
 .kinetic .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;margin-top:1rem}
 @media(max-width:760px){.kinetic .cards{grid-template-columns:1fr}}
 .kinetic .pcard .num{font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1rem}
@@ -217,7 +218,6 @@
 .kinetic .cards-3{grid-template-columns:repeat(3,1fr)}
 @media(max-width:860px){.kinetic .cards-3{grid-template-columns:1fr}}
 .kinetic .split.rev{grid-template-columns:1.05fr 0.95fr}
-@media(max-width:860px){.kinetic .split.rev{grid-template-columns:1fr}}
 .kinetic .badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
 .kinetic .badges span{font-size:.82rem;font-weight:500;color:var(--gray-300);border:1px solid var(--hair);padding:.4rem .85rem;border-radius:4px}
 .kinetic .stack{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.1rem 0}
