@@ -1,355 +1,86 @@
-// About Me Page: Personal side beyond the professional
-// Showcases family, interests (AI/coding), and athletics
-
-import "@/app/kbp-main.css";
+import "@/app/kinetic.css";
 import CalendlyButton from "@/components/CalendlyButton";
-import {
-  Activity,
-  Award,
-  Code,
-  Database,
-  Cloud,
-  Key,
-  Globe,
-  ExternalLink,
-  GitHub,
-  Zap,
-  Mail,
-  Calendar,
-} from "react-feather";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import KineticNav from "@/components/kinetic/KineticNav";
+import KineticFooter from "@/components/kinetic/KineticFooter";
+import ParticleField from "@/components/kinetic/ParticleField";
+import SpringHeadline from "@/components/kinetic/SpringHeadline";
+import TiltCard from "@/components/kinetic/TiltCard";
+import FramedImage from "@/components/kinetic/FramedImage";
 
 export default function AboutPage() {
   return (
-    <div className="kinetic-page kbp-main">
+    <div className="kinetic">
+      <div className="grain" aria-hidden />
+      <div id="kscrim" aria-hidden />
+      <ParticleField scope="hero" />
       <ScrollReveal />
-      <Header />
+      <KineticNav active="/about" />
 
       <main>
-        {/* Hero Section - Compact intro */}
-        <section className="about-hero">
-          <div className="kinetic-container">
-            <div className="about-hero-content">
-              <h1 className="about-hero-title" data-reveal>
-                Beyond the{" "}
-                <span className="kinetic-title-gradient">resume</span>
-              </h1>
-              <p className="about-hero-text" data-reveal style={{ ['--reveal-delay' as string]: '180ms' }}>
-                There&apos;s more to life than work of course, and I&apos;m
-                lucky to have an incredible family. I love learning by doing,
-                endurance sports, and cheering on my favorite teams.
-              </p>
+        <header className="hero container" style={{ minHeight: "62vh", display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "8rem", paddingBottom: "3rem", position: "relative", zIndex: 3 }}>
+          <div className="eyebrow">About · Dan Hoeller</div>
+          <SpringHeadline lead="Beyond the" emphasis="resume." />
+          <p className="body" style={{ marginTop: "2rem" }}>There&apos;s more to life than work, of course. I&apos;m lucky to have an incredible family, I love learning by doing, and I&apos;ve been an athlete my whole life &mdash; competitive swimming, cycling, and Ironman racing.</p>
+        </header>
+
+        <section className="chapter container" id="family">
+          <div className="ch-tag"><span className="idx">01 /</span> What Matters Most</div>
+          <div className="split">
+            <FramedImage src="/images/family-sketch.webp" alt="Family sketch" width={800} height={533} ratio="3/2" className="frame--wide" />
+            <div>
+              <h2 className="sec-title" data-reveal>The home team.</h2>
+              <p className="body" data-reveal>Along with my amazing wife, we wrangle three knuckleheads every day. It&apos;s been a joy to watch them grow &mdash; we still can&apos;t believe the oldest will be in college soon. Not pictured: our two dogs, a mini goldendoodle and a sheepadoodle. With only dudes and doodles in the house, my wife is a saint.</p>
             </div>
           </div>
         </section>
 
-        {/* Family Section */}
-        <section className="kinetic-section about-family">
-          <div className="kinetic-container">
-            <div className="about-family-grid">
-              <div className="about-image-card animate-slide-in">
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcSet="/images/family-sketch-mobile.webp 400w, /images/family-sketch-560.webp 560w, /images/family-sketch.webp 800w"
-                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/family-sketch.png"
-                    alt="Family sketch"
-                    width={500}
-                    height={333}
-                    className="about-sketch-image"
-                    fetchPriority="high"
-                    loading="eager"
-                    decoding="sync"
-                  />
-                </picture>
-              </div>
-              <div className="about-content-block animate-slide-up">
-                <h2 className="kinetic-section-title mb-section-title--left">What matters most</h2>
-                <div className="about-text-content">
-                  <p>
-                    Along with my amazing wife, we wrangle these three
-                    knuckleheads every day. It&apos;s been a joy to see them
-                    grow, develop, and learn over the years, and we still
-                    can&apos;t believe the oldest will be in college soon! Not
-                    pictured: our two dogs, a mini goldendoodle and a
-                    sheepadoodle. With only dudes and doodles in the house; my
-                    wife is a saint.
-                  </p>
-                </div>
-              </div>
+        <section className="chapter container" id="building">
+          <div className="ch-tag"><span className="idx">02 /</span> Learning AI by Building</div>
+          <h2 className="sec-title" data-reveal>I didn&apos;t take the course. <b>I built the thing.</b></h2>
+          <p className="body" data-reveal>Instead of certifications, I chose to learn AI by building. Without writing code, I&apos;ve developed this website and the projects below &mdash; asking questions, making changes, fixing mistakes, always learning. Along the way I&apos;ve built a sharp sense for where the AI hype is justified, and where it isn&apos;t.</p>
+          <div className="badges" data-reveal>
+            <span>Claude Code</span><span>GitHub</span><span>Netlify</span><span>Supabase</span><span>Cloudflare</span><span>Google OAuth</span><span>n8n</span><span>Zapier</span><span>APIs</span>
+          </div>
+          <div className="cards cards-3">
+            <TiltCard><h3>RacePrep</h3><p>A triathlon training app built to scratch my own itch for better visibility into swim, bike, and run training beyond Strava.</p><div className="stack"><span>Next.js</span><span>Supabase</span><span>TypeScript</span></div><a className="link" href="https://raceprep.kineticbrandpartners.com/" target="_blank" rel="noopener noreferrer">View Live &uarr;</a></TiltCard>
+            <TiltCard><h3>Job Tracker</h3><p>Job hunting isn&apos;t about applying more &mdash; it&apos;s about networking smarter and tracking your actions. The job seeker&apos;s CRM.</p><div className="stack"><span>Next.js</span><span>Supabase</span><span>OAuth</span><span>n8n</span></div><a className="link" href="https://job-tracker.kineticbrandpartners.com/" target="_blank" rel="noopener noreferrer">View Live &uarr;</a></TiltCard>
+            <TiltCard><h3>SaaS Metrics Calculator</h3><p>A dashboard for measuring key SaaS KPIs and seeing how they respond to assumptions. Shows leaders what actually matters.</p><div className="stack"><span>Next.js</span><span>TypeScript</span><span>Netlify</span></div><a className="link" href="https://saas-metrics-calculator.netlify.app/" target="_blank" rel="noopener noreferrer">View Live &uarr;</a></TiltCard>
+          </div>
+        </section>
+
+        <section className="chapter container" id="athletics">
+          <div className="ch-tag"><span className="idx">03 /</span> The Athletic Journey</div>
+          <p className="body" data-reveal style={{ marginBottom: "3rem" }}>I&apos;ve been an athlete all my life &mdash; it taught me commitment, grit, teamwork, and time management. From walking onto the college swim team and becoming a four-year letterman and co-captain, to road and MTB cycling, to Ironman racing, I&apos;ve always been drawn to an active life.</p>
+          <div className="split rev" style={{ marginBottom: "3.5rem" }}>
+            <div>
+              <h2 className="sec-title" data-reveal>Triathlon.</h2>
+              <p className="body" data-reveal>My brother and college buddies were racing and having a blast &mdash; FOMO is a hell of a motivator. There&apos;s nothing like a Half or Full Ironman on the calendar to focus your training.</p>
+            </div>
+            <FramedImage src="/images/Ironman-sketch.webp" alt="Ironman" width={533} height={800} ratio="2/3" />
+          </div>
+          <div className="split">
+            <FramedImage src="/images/Clemson-swimming-sketch.webp" alt="Collegiate swimming" width={533} height={800} ratio="2/3" />
+            <div>
+              <h2 className="sec-title" data-reveal>Collegiate swimming.</h2>
+              <p className="body" data-reveal>I started on a summer swim team around age 6 and swam through college. I learned first-hand that the kids with determination often beat those with natural talent &mdash; the only way I made it as far as I did. The sport gave me lifelong friends, a strong work ethic, and a love for the water.</p>
             </div>
           </div>
         </section>
 
-        {/* Interests Section - AI/Coding Projects */}
-        <section className="kinetic-section kinetic-section--gray about-interests">
-          <div className="kinetic-container">
-            <h2 className="kinetic-section-title mb-section-title--left">Learning AI through Building</h2>
-
-            <div className="about-interests-intro animate-slide-up">
-              <p>
-                Instead of taking courses and earning certifications, I chose to
-                learn AI by building. Without writing code I&apos;ve developed
-                this website and those below by simply asking questions, making
-                changes, and fixing mistakes...but always learning. Along the
-                way I&apos;ve built a sense for where the AI hype is justified,
-                and where it isn&apos;t.
-              </p>
-            </div>
-
-            <div className="about-tech-stack animate-slide-up delay-1">
-              <h3>Tech Stack</h3>
-              <div className="about-tech-badges">
-                <span className="about-tech-badge">
-                  <Code size={16} /> Claude Code
-                </span>
-                <span className="about-tech-badge">
-                  <GitHub size={16} /> GitHub
-                </span>
-                <span className="about-tech-badge">
-                  <Globe size={16} /> Netlify
-                </span>
-                <span className="about-tech-badge">
-                  <Database size={16} /> Supabase
-                </span>
-                <span className="about-tech-badge">
-                  <Cloud size={16} /> Cloudflare
-                </span>
-                <span className="about-tech-badge">
-                  <Key size={16} /> Google OAuth
-                </span>
-                <span className="about-tech-badge">
-                  <Zap size={16} /> n8n
-                </span>
-                <span className="about-tech-badge">
-                  <Zap size={16} /> Zapier
-                </span>
-                <span className="about-tech-badge">
-                  <Code size={16} /> APIs
-                </span>
-              </div>
-            </div>
-
-            <div className="about-projects-grid">
-              {/* RacePrep Card */}
-              <div className="kinetic-card animate-slide-up delay-2">
-                <div className="about-project-favicon">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/side-projects/raceprep-favicon.png" alt="RacePrep" width={48} height={48} loading="lazy" />
-                </div>
-                <h3 className="about-project-title">RacePrep</h3>
-                <p className="about-project-desc">
-                  A triathlon training app built to scratch my own itch for
-                  better visibility into swim, bike, and run training beyond
-                  Strava. Building this taught me how to work with complex
-                  relational data and design interfaces that surface just the
-                  right information.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>Supabase</span>
-                  <span>TypeScript</span>
-                  <span>APIs</span>
-                </div>
-                <a
-                  href="https://raceprep.kineticbrandpartners.com/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live <ExternalLink size={16} />
-                </a>
-              </div>
-
-              {/* Job Tracker Card */}
-              <div className="kinetic-card animate-slide-up delay-3">
-                <div className="about-project-favicon">
-                  <picture>
-                    <source srcSet="/side-projects/job-tracker-favicon.webp" type="image/webp" />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/side-projects/job-tracker-favicon.png" alt="Job Tracker" width={48} height={48} loading="lazy" />
-                  </picture>
-                </div>
-                <h3 className="about-project-title">Job Tracker</h3>
-                <p className="about-project-desc">
-                  Job hunting isn&apos;t about applying more, it&apos;s about
-                  networking smarter and keeping track of your actions. This app
-                  tracks every contact and connection in one place. Think of it
-                  as the job seeker's CRM.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>Supabase</span>
-                  <span>OAuth</span>
-                  <span>n8n</span>
-                </div>
-                <a
-                  href="https://job-tracker.kineticbrandpartners.com/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live <ExternalLink size={16} />
-                </a>
-              </div>
-
-              {/* SaaS Metrics Calculator Card */}
-              <div className="kinetic-card animate-slide-up delay-4">
-                <div className="about-project-favicon">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/side-projects/saas-favicon.svg" alt="SaaS Metrics Calculator" width={48} height={48} loading="lazy" />
-                </div>
-                <h3 className="about-project-title">SaaS Metrics Calculator</h3>
-                <p className="about-project-desc">
-                  A dashboard for measuring key SaaS KPIs and seeing how they
-                  respond to different assumptions. The app tailors views based
-                  on the user&apos;s role and recommends where to focus
-                  energy—showing leaders what actually matters.
-                </p>
-                <div className="about-project-tech">
-                  <span>Next.js</span>
-                  <span>TypeScript</span>
-                  <span>Netlify</span>
-                </div>
-                <a
-                  href="https://saas-metrics-calculator.netlify.app/"
-                  className="kinetic-btn kinetic-btn--secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Live <ExternalLink size={16} />
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Athletics Section */}
-        <section className="kinetic-section about-athletics">
-          <div className="kinetic-container">
-            <h2 className="kinetic-section-title mb-section-title--left">Athletic Journey</h2>
-
-            <div className="about-interests-intro animate-slide-up">
-              <p>
-                I&apos;ve been an athlete all my life. It taught me commitment,
-                grit, teamwork, time management, and more. From competitive
-                swimming in college where I walked on to the team and became a 4
-                year letterman and co-captain my senior year, to road and MTB
-                cycling, and to Ironman races in more recent years, I&apos;ve
-                always been drawn towards an active lifestyle.
-              </p>
-            </div>
-
-            <div className="about-athletics-grid">
-              {/* Triathlon Card */}
-              <div className="about-athletics-card animate-scale-in delay-1">
-                <div className="about-athletics-image">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      srcSet="/images/Ironman-sketch-mobile.webp 400w, /images/Ironman-sketch-560.webp 560w, /images/Ironman-sketch.webp 800w"
-                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
-                    />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/Ironman-sketch.png"
-                      alt="Ironman triathlon"
-                      width={500}
-                      height={750}
-                      className="about-sketch-image"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-                <div className="about-athletics-content">
-                  <h3 className="about-athletics-title">
-                    <Activity size={24} /> Triathlon
-                  </h3>
-                  <p>
-                    I got into triathlons because my brother, college buddies,
-                    and other friends were competing and having a great time.
-                    FOMO is a hell of a motivator, so I got into triathlons too!
-                    There&apos;s nothing like a Half or Full Ironman on your
-                    calendar to focus your training.
-                  </p>
-                </div>
-              </div>
-
-              {/* Swimming Card */}
-              <div className="about-athletics-card animate-scale-in delay-2">
-                <div className="about-athletics-image">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      srcSet="/images/Clemson-swimming-sketch-mobile.webp 400w, /images/Clemson-swimming-sketch-560.webp 560w, /images/Clemson-swimming-sketch.webp 800w"
-                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 560px"
-                    />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/Clemson-swimming-sketch.png"
-                      alt="Clemson swimming"
-                      width={500}
-                      height={750}
-                      className="about-sketch-image"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-                <div className="about-athletics-content">
-                  <h3 className="about-athletics-title">
-                    <Award size={24} /> Collegiate Swimming
-                  </h3>
-                  <p>
-                    I started on a local summer swim team around the age of 6,
-                    and swam competitive through college. I learned first hand
-                    that the kids with determination often beat those with
-                    natural talent, and that&apos;s the only way I made it as
-                    far as I did! This sport gave me lifelong friends, a strong
-                    work ethic, and a love for the water.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className="mb-contact">
-          <div className="kinetic-container">
-            <div className="mb-contact-card">
-              <div className="mb-contact-inner">
-                <h2 className="mb-contact-title">Let&apos;s Connect</h2>
-                <p className="mb-contact-text">
-                  Want to chat about projects, ideas, or just say hello?
-                </p>
-                <div className="mb-contact-buttons">
-                  <a
-                    href="mailto:letstalk@kineticbrandpartners.com"
-                    className="mb-contact-btn mb-contact-btn--email"
-                  >
-                    <Mail size={18} />
-                    Send Email
-                  </a>
-                  <CalendlyButton className="mb-contact-btn mb-contact-btn--calendly">
-                    <Calendar size={18} />
-                    Schedule 30 Min
-                  </CalendlyButton>
-                </div>
-              </div>
+        <section className="contact" id="contact">
+          <div className="halo" aria-hidden />
+          <div className="container">
+            <SpringHeadline as="h2" lead="Let's" emphasis="connect." />
+            <div className="contact-cta">
+              <CalendlyButton className="btn">Schedule 30 Min <span>&rarr;</span></CalendlyButton>
+              <a className="link" href="mailto:letstalk@kineticbrandpartners.com">letstalk@kineticbrandpartners.com</a>
             </div>
           </div>
         </section>
       </main>
 
-      <Footer />
+      <KineticFooter />
     </div>
   );
 }
