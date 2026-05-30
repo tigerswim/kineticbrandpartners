@@ -84,7 +84,7 @@ export default function Home() {
           <div className="halo" aria-hidden />
           <div className="container">
             <SpringHeadline as="h2" lead="Let's set things" emphasis="in motion." />
-            <div style={{ display: "flex", gap: "1.4rem", alignItems: "center", justifyContent: "center", marginTop: "2.4rem", flexWrap: "wrap" }}>
+            <div className="contact-cta">
               <CalendlyButton className="btn">Schedule 30 Min <span>&rarr;</span></CalendlyButton>
               <a className="link" href="mailto:letstalk@kineticbrandpartners.com">letstalk@kineticbrandpartners.com</a>
             </div>
