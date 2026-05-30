@@ -28,3 +28,10 @@ export function easeOutCubic(p: number): number {
 export function particleCount(viewportWidth: number): number {
   return Math.min(90, Math.floor(viewportWidth / 16));
 }
+
+// Read prefers-reduced-motion once per page load — avoids repeated MediaQueryList
+// allocations across ParticleField, SpringHeadline, TiltCard, CountUp, FramedImage.
+export function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { particleCount } from "./lib/motion";
+import { particleCount, prefersReducedMotion } from "./lib/motion";
 
 type Props = { scope?: "page" | "hero" };
 
@@ -9,8 +9,7 @@ export default function ParticleField({ scope = "hero" }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    if (prefersReducedMotion()) return;
     const cv = ref.current!;
     const cx = cv.getContext("2d")!;
     const dpr = window.devicePixelRatio || 1;

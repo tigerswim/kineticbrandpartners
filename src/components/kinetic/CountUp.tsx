@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { easeOutCubic } from "./lib/motion";
+import { easeOutCubic, prefersReducedMotion } from "./lib/motion";
 
 type Props = { value?: number; prefix?: string; suffix?: string; decimals?: number; plain?: string };
 
@@ -13,7 +13,7 @@ export default function CountUp({ value = 0, prefix = "", suffix = "", decimals,
     if (plain) { setText(plain); return; }
     const el = ref.current!;
     const dec = decimals ?? (value % 1 !== 0 ? (value < 10 ? 2 : 1) : 0);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       setText(`${prefix}${value.toFixed(dec)}${suffix}`); return;
     }
     const io = new IntersectionObserver((entries) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { splitIntoWords } from "./lib/motion";
+import { splitIntoWords, prefersReducedMotion } from "./lib/motion";
 
 type Props = { lead: string; emphasis?: string; as?: "h1" | "h2"; className?: string };
 
@@ -12,13 +12,20 @@ export default function SpringHeadline({ lead, emphasis, as = "h1", className }:
   const Tag = as;
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    if (prefersReducedMotion()) return;
     const el = ref.current!;
     const chs = Array.from(el.querySelectorAll<HTMLElement>(".ch")).map((node) => ({
       el: node, ox: 0, oy: 0, vx: 0, vy: 0,
     }));
     let raf = 0;
+    let active = false;
+
+    const startLoop = () => {
+      if (active) return;
+      active = true;
+      loop();
+    };
+
     const onMove = (e: MouseEvent) => {
       chs.forEach((o) => {
         const r = o.el.getBoundingClientRect();
@@ -26,17 +33,21 @@ export default function SpringHeadline({ lead, emphasis, as = "h1", className }:
         const dx = cxp - e.clientX, dy = cyp - e.clientY, d = Math.hypot(dx, dy), R = 130;
         if (d < R && d > 0) { const f = (1 - d / R) * 22; o.vx += (dx / d) * f * 0.12; o.vy += (dy / d) * f * 0.12; }
       });
+      startLoop();
     };
     window.addEventListener("mousemove", onMove);
+
     function loop() {
-      raf = requestAnimationFrame(loop);
+      let allRest = true;
       chs.forEach((o) => {
         o.vx += -o.ox * 0.12; o.vy += -o.oy * 0.12; o.vx *= 0.8; o.vy *= 0.8;
         o.ox += o.vx; o.oy += o.vy;
-        o.el.style.transform = `translate(${o.ox}px,${o.oy}px)`;
+        o.el.style.transform = `translate(${o.ox.toFixed(3)}px,${o.oy.toFixed(3)}px)`;
+        if (Math.abs(o.ox) > 0.05 || Math.abs(o.oy) > 0.05 || Math.abs(o.vx) > 0.05 || Math.abs(o.vy) > 0.05) allRest = false;
       });
+      if (allRest) { active = false; return; }
+      raf = requestAnimationFrame(loop);
     }
-    loop();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); };
   }, [lead, emphasis]);
 

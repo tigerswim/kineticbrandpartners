@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "./lib/motion";
 
 type Props = {
   src: string; alt: string; width: number; height: number;
@@ -15,7 +16,7 @@ export default function FramedImage({ src, alt, width, height, ratio, parallax, 
   const innerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!parallax) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const el = innerRef.current!;
     const frame = el.parentElement!;
     const onScroll = () => {

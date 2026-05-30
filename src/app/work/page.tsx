@@ -76,7 +76,7 @@ export default function WorkPage() {
             />
             <VideoFrame
               src="/videos/FTT-summary-video.mp4"
-              poster="/videos/FTT-summary-video-poster.webp"
+              poster="/videos/FTT-summary-video-poster.jpg"
               label="Campaign Summary"
             />
           </div>
@@ -134,12 +134,12 @@ export default function WorkPage() {
           <div className="media-grid two" data-reveal>
             <VideoFrame
               src="/videos/GFANA_Hero30_MP4.mp4"
-              poster="/videos/GFANA_Hero30_MP4-poster.webp"
+              poster="/videos/GFANA_Hero30_MP4-poster.jpg"
               label="Brand Campaign :30"
             />
             <VideoFrame
               src="/videos/GFANA_FERT15.mp4"
-              poster="/videos/GFANA_GARDEN15-poster.webp"
+              poster="/videos/GFANA_FERT15-poster.jpg"
               label="Full Season :15"
             />
           </div>
