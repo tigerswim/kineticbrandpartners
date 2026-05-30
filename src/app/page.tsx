@@ -26,6 +26,7 @@ export default function Home() {
           <div style={{ display: "flex", gap: "1.4rem", alignItems: "center", marginTop: "2.4rem", flexWrap: "wrap" }}>
             <CalendlyButton className="btn">Schedule a Meeting <span>&rarr;</span></CalendlyButton>
             <a className="link" href="#story">Meet the operator &darr;</a>
+            <a className="link" href="https://linkedin.com/in/danhoeller" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </header>
 
@@ -35,16 +36,16 @@ export default function Home() {
               <div className="ch-tag"><span className="idx">01 /</span> The Operator</div>
               <p className="ch-quote" data-reveal>Player-coach who&apos;s led marketing orgs from three to twenty-five, run <span className="em">$100MM+ P&amp;Ls</span>, and shipped Clio-winning work that moved both brand health and the top line.</p>
             </div>
-            <FramedImage src="/images/DJH-CGPT-Sketch.webp" alt="Dan Hoeller" width={534} height={712} ratio="3/4" parallax className="portrait-frame" />
+            <FramedImage src="/images/DJH-CGPT-Sketch.webp" alt="Dan Hoeller" width={533} height={800} ratio="2/3" parallax className="portrait-frame" />
           </div>
         </section>
 
         <section className="chapter container">
           <div className="split">
-            <FramedImage src="/images/Ironman-sketch.webp" alt="Ironman" width={500} height={750} ratio="3/4" />
+            <FramedImage src="/images/Ironman-sketch.webp" alt="Ironman" width={533} height={800} ratio="2/3" />
             <div>
               <div className="ch-tag"><span className="idx">02 /</span> How I Operate</div>
-              <h3 className="sec-title" data-reveal>Endurance as an operating system.</h3>
+              <h2 className="sec-title" data-reveal>Endurance as an operating system.</h2>
               <p className="body" data-reveal>Four-year collegiate swim letterman, co-captain, and Ironman finisher. The same discipline that gets you through a 140.6 shows up in how I run a marketing org: long horizon, daily reps, no shortcuts. I lead like a player-coach &mdash; in the work, not above it.</p>
             </div>
           </div>
