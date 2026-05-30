@@ -210,3 +210,15 @@
   .kinetic-light section{border:none;padding:1rem 0}
   .kinetic-light [data-reveal]{opacity:1!important;transform:none!important}
 }
+
+/* ============================================================================
+   ABOUT PAGE — modifiers scoped under .kinetic
+   ========================================================================= */
+.kinetic .cards-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.kinetic .cards-3{grid-template-columns:1fr}}
+.kinetic .split.rev{grid-template-columns:1.05fr 0.95fr}
+@media(max-width:860px){.kinetic .split.rev{grid-template-columns:1fr}}
+.kinetic .badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
+.kinetic .badges span{font-size:.82rem;font-weight:500;color:var(--gray-300);border:1px solid var(--hair);padding:.4rem .85rem;border-radius:4px}
+.kinetic .stack{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.1rem 0}
+.kinetic .stack span{font-size:.7rem;font-weight:600;letter-spacing:.04em;color:var(--accent);background:color-mix(in oklch,var(--accent) 12%,transparent);padding:.25rem .6rem;border-radius:100px}
