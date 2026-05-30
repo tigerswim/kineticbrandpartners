@@ -65,9 +65,9 @@ export default function Home() {
         <section className="chapter container" id="exp">
           <div className="ch-tag"><span className="idx">04 /</span> Where I&apos;ve Operated</div>
           <div data-reveal>
-            <div className="exp-item"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div></div></div>
-            <div className="exp-item"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div></div></div>
-            <div className="exp-item"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div></div></div>
+            <div className="exp-item"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div><p className="exp-desc">Led marketing for the $1.5B Garden segment. Built and managed a 25-person team across brand development and marketing plans for a multi-brand portfolio.</p></div></div>
+            <div className="exp-item"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div><p className="exp-desc">Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio responsibility, award-winning campaigns.</p></div></div>
+            <div className="exp-item"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div><p className="exp-desc">Supply chain software implementations for Fortune 500 clients. Built a foundation in technology, complex B2B sales cycles, and operational excellence.</p></div></div>
           </div>
         </section>
 
