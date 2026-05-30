@@ -71,7 +71,7 @@ export default function WorkPage() {
           <div className="media-grid two" data-reveal>
             <VideoFrame
               src="/videos/FTT-banned-ad.mp4"
-              poster="/videos/FTT-banned-ad-poster.webp"
+              poster="/videos/FTT-banned-ad-poster.jpg"
               label="Banned Ad"
             />
             <VideoFrame

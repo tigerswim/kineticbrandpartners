@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CalendlyButton from "@/components/CalendlyButton";
 import NavScroll from "./NavScroll";
+import KineticMobileMenu from "./KineticMobileMenu";
 
 type Item = { label: string; href: string };
 const ITEMS: Item[] = [
@@ -21,7 +22,7 @@ export default function KineticNav({ active }: { active: string }) {
             <Image src="/logos/kinetic-brand-partners.png" alt="Kinetic Brand Partners" width={180} height={73} />
           </Link>
         </div>
-        <ul>
+        <ul className="knav-desktop">
           {ITEMS.map((it) => (
             <li key={it.href}>
               <Link href={it.href} className={active === it.href ? "active" : undefined}>{it.label}</Link>
@@ -29,6 +30,7 @@ export default function KineticNav({ active }: { active: string }) {
           ))}
           <li><CalendlyButton className="cta">Let&apos;s Talk</CalendlyButton></li>
         </ul>
+        <KineticMobileMenu active={active} />
       </nav>
     </>
   );

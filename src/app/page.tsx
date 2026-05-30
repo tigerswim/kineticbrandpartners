@@ -20,9 +20,9 @@ export default function Home() {
 
       <main>
         <header className="hero container" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "6rem", position: "relative", zIndex: 3 }}>
-          <span className="eyebrow">Marketing Executive · Atlanta, GA · Open to VP / CMO</span>
+          <span className="eyebrow">Marketing Executive · Atlanta, GA</span>
           <SpringHeadline lead="Marketing in" emphasis="motion." />
-          <p className="body" style={{ marginTop: "2rem" }}>15 years building brands from Fortune 50 to Fortune 1000. Player-coach who runs $20MM&ndash;$100MM+ P&amp;Ls and ships work that moves both brand health and the top line.</p>
+          <p className="body" style={{ marginTop: "2rem" }}>15 years. Fortune 50 to Fortune 1000. I run full P&amp;Ls, build teams from scratch, and make work that wins awards and moves revenue.</p>
           <div style={{ display: "flex", gap: "1.4rem", alignItems: "center", marginTop: "2.4rem", flexWrap: "wrap" }}>
             <CalendlyButton className="btn">Schedule a Meeting <span>&rarr;</span></CalendlyButton>
             <a className="link" href="#story">Meet the operator &darr;</a>
@@ -34,7 +34,7 @@ export default function Home() {
           <div className="portrait-grid">
             <div className="portrait-inner">
               <div className="ch-tag"><span className="idx">01 /</span> The Operator</div>
-              <p className="ch-quote" data-reveal>Player-coach who&apos;s led marketing orgs from three to twenty-five, run <span className="em">$100MM+ P&amp;Ls</span>, and shipped Clio-winning work that moved both brand health and the top line.</p>
+              <p className="ch-quote" data-reveal>I hire well, stay in the work, and hold the team accountable to outcomes. Two Clio Awards and a <span className="em">$100MM+ P&amp;L</span> will tell you the approach works.</p>
             </div>
             <FramedImage src="/images/DJH-CGPT-Sketch.webp" alt="Dan Hoeller" width={533} height={800} ratio="2/3" parallax className="portrait-frame" />
           </div>
@@ -62,21 +62,21 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="chapter container" id="exp">
-          <div className="ch-tag"><span className="idx">04 /</span> Where I&apos;ve Operated</div>
-          <div data-reveal>
-            <div className="exp-item"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div><p className="exp-desc">Led marketing for the $1.5B Garden segment. Built and managed a 25-person team across brand development and marketing plans for a multi-brand portfolio.</p></div></div>
-            <div className="exp-item"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div><p className="exp-desc">Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio responsibility, award-winning campaigns.</p></div></div>
-            <div className="exp-item"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div><p className="exp-desc">Supply chain software implementations for Fortune 500 clients. Built a foundation in technology, complex B2B sales cycles, and operational excellence.</p></div></div>
-          </div>
-        </section>
-
         <section className="chapter container">
-          <div className="ch-tag"><span className="idx">05 /</span> The Impact</div>
+          <div className="ch-tag"><span className="idx">04 /</span> The Impact</div>
           <div className="res-grid">
             <div data-reveal><CountUp value={3.95} suffix="B" /><div className="res-lbl">Media impressions &mdash; #FlipTheTurf, 2&times; Clio winner</div></div>
             <div data-reveal><CountUp value={8.2} suffix="%" /><div className="res-lbl">Brand growth &mdash; 4&times; the category rate</div></div>
             <div data-reveal><CountUp plain="+25%" /><div className="res-lbl">Marketing efficiency via MMM &amp; attribution</div></div>
+          </div>
+        </section>
+
+        <section className="chapter container" id="exp">
+          <div className="ch-tag"><span className="idx">05 /</span> Where I&apos;ve Operated</div>
+          <div data-reveal>
+            <div className="exp-item"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div><p className="exp-desc">Led marketing for the $1.5B Garden segment. Built and managed a 25-person team across brand development and marketing plans for a multi-brand portfolio.</p></div></div>
+            <div className="exp-item"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div><p className="exp-desc">Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio responsibility, award-winning campaigns.</p></div></div>
+            <div className="exp-item exp-item--last"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div><p className="exp-desc">Supply chain software implementations for Fortune 500 clients. Built a foundation in technology, complex B2B sales cycles, and operational excellence.</p></div></div>
           </div>
         </section>
 
