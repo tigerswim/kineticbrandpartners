@@ -245,16 +245,7 @@ export default function WorkPage() {
           <div className="halo" aria-hidden />
           <div className="container">
             <SpringHeadline as="h2" lead="Let's create something" emphasis="amazing." />
-            <div
-              style={{
-                display: "flex",
-                gap: "1.4rem",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: "2.4rem",
-                flexWrap: "wrap",
-              }}
-            >
+            <div className="contact-cta">
               <CalendlyButton className="btn">
                 Get In Touch <span>&rarr;</span>
               </CalendlyButton>
