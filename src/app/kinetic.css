@@ -137,9 +137,17 @@
 .kinetic .contact-cta{display:flex;gap:1.4rem;align-items:center;justify-content:center;margin-top:2.4rem;flex-wrap:wrap}
 .kinetic .kfooter{padding:2.5rem 0;border-top:1px solid var(--hair);text-align:center;color:var(--gray-500);font-size:.85rem;position:relative;z-index:3}
 
-/* scroll reveal (reuses [data-reveal] + ScrollReveal component) */
+/* scroll reveal — directional variants + stagger delays */
 .kinetic [data-reveal]{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.kinetic [data-reveal="left"]{transform:translateX(-36px)}
+.kinetic [data-reveal="right"]{transform:translateX(36px)}
+.kinetic [data-reveal="scale"]{transform:translateY(20px) scale(.96)}
 .kinetic [data-reveal].is-revealed{opacity:1;transform:none}
+.kinetic [data-delay="1"]{transition-delay:.1s}
+.kinetic [data-delay="2"]{transition-delay:.2s}
+.kinetic [data-delay="3"]{transition-delay:.3s}
+.kinetic [data-delay="4"]{transition-delay:.4s}
+.kinetic [data-delay="5"]{transition-delay:.5s}
 
 /* ============================================================================
    LIGHT DOCUMENT MODE (/resume)

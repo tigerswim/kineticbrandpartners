@@ -36,9 +36,16 @@ export default function ParticleField({ scope = "hero" }: Props) {
 
     const onMove = (e: MouseEvent) => { mouse.x = e.clientX * dpr; mouse.y = e.clientY * dpr; };
     const onOut = () => { mouse.x = -9999; mouse.y = -9999; };
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) { mouse.x = t.clientX * dpr; mouse.y = t.clientY * dpr; }
+    };
+    const onTouchEnd = () => { mouse.x = -9999; mouse.y = -9999; };
     const onResize = () => { resize(); seed(); };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseout", onOut);
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("resize", onResize);
 
     // For hero scope, pause the loop once the hero is scrolled past (perf).
@@ -76,6 +83,8 @@ export default function ParticleField({ scope = "hero" }: Props) {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseout", onOut);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScroll);
     };

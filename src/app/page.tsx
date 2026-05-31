@@ -65,19 +65,17 @@ export default function Home() {
         <section className="chapter container">
           <div className="ch-tag"><span className="idx">04 /</span> The Impact</div>
           <div className="res-grid">
-            <div data-reveal><CountUp value={3.95} suffix="B" /><div className="res-lbl">Media impressions &mdash; #FlipTheTurf, 2&times; Clio winner</div></div>
-            <div data-reveal><CountUp value={8.2} suffix="%" /><div className="res-lbl">Brand growth &mdash; 4&times; the category rate</div></div>
-            <div data-reveal><CountUp plain="+25%" /><div className="res-lbl">Marketing efficiency via MMM &amp; attribution</div></div>
+            <div data-reveal="scale" data-delay="1"><CountUp value={3.95} suffix="B" /><div className="res-lbl">Media impressions &mdash; #FlipTheTurf, 2&times; Clio winner</div></div>
+            <div data-reveal="scale" data-delay="2"><CountUp value={8.2} suffix="%" /><div className="res-lbl">Brand growth &mdash; 4&times; the category rate</div></div>
+            <div data-reveal="scale" data-delay="3"><CountUp plain="+25%" /><div className="res-lbl">Marketing efficiency via MMM &amp; attribution</div></div>
           </div>
         </section>
 
         <section className="chapter container" id="exp">
           <div className="ch-tag"><span className="idx">05 /</span> Where I&apos;ve Operated</div>
-          <div data-reveal>
-            <div className="exp-item"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div><p className="exp-desc">Led marketing for the $1.5B Garden segment. Built and managed a 25-person team across brand development and marketing plans for a multi-brand portfolio.</p></div></div>
-            <div className="exp-item"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div><p className="exp-desc">Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio responsibility, award-winning campaigns.</p></div></div>
-            <div className="exp-item exp-item--last"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div><p className="exp-desc">Supply chain software implementations for Fortune 500 clients. Built a foundation in technology, complex B2B sales cycles, and operational excellence.</p></div></div>
-          </div>
+          <div className="exp-item" data-reveal data-delay="1"><span className="exp-yr">2013 &mdash; 2024</span><div><div className="exp-co">Central Garden &amp; Pet</div><div className="exp-role">SVP Marketing · 11 years</div><p className="exp-desc">Led marketing for the $1.5B Garden segment. Built and managed a 25-person team across brand development and marketing plans for a multi-brand portfolio.</p></div></div>
+          <div className="exp-item" data-reveal data-delay="2"><span className="exp-yr">2006 &mdash; 2013</span><div><div className="exp-co">Johnson &amp; Johnson</div><div className="exp-role">Brand Management · 7 years</div><p className="exp-desc">Consumer and Medical Device divisions. Multiple brands, $80MM+ portfolio responsibility, award-winning campaigns.</p></div></div>
+          <div className="exp-item exp-item--last" data-reveal data-delay="3"><span className="exp-yr">1999 &mdash; 2004</span><div><div className="exp-co">Manhattan Associates</div><div className="exp-role">Enterprise Tech · 5 years</div><p className="exp-desc">Supply chain software implementations for Fortune 500 clients. Built a foundation in technology, complex B2B sales cycles, and operational excellence.</p></div></div>
         </section>
 
         <section className="contact" id="contact">
